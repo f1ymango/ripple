@@ -1,0 +1,9 @@
+# Pinned so runs are reproducible. Add your component's packages under its heading.
+
+# B: Incident Reader
+jsonschema==4.26.0
+requests==2.34.2
+urllib3==2.8.0
+
+# tests
+pytest==9.1.1

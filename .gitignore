@@ -50,6 +50,5 @@ coverage.xml
 .DS_Store
 Thumbs.db
 
-# Ripple: cached raw data feeds and SUMO scratch output
-data/cache/
-sim/**/*.out.xml
+# Ripple: downloaded raw archives (docs/03-architecture.md section 2)
+data/raw/
