@@ -44,6 +44,13 @@ pip install -r requirements.txt
 # fetch a day of data (cached)
 python -m src.loaders.fetch --date 2026-03-14
 
+# Incident Reader: sample real STN messages, then parse them
+python -m src.reader.sample --start 2026-09-15 --end 2026-09-21 --n 20
+python -m src.reader.run --messages data/labelled_incidents/messages.jsonl
+
+# tests (no LLM needed)
+python -m pytest
+
 # run one scenario
 python -m src.evaluator.run --incident IN-26-01234 --plan P2 \
     --compliance 0.5 --clearance 60

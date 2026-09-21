@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "incident.json",
+  "description": "Output of component B, the Incident Reader. Contract: docs/03-architecture.md section 3. [feed] = copied from the STN message by code. [llm] = extracted by the model.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "incident_id", "source_message_en", "source_message_zh", "announced_at",
+    "closed_at", "status", "district", "road_name", "direction",
+    "near_landmark", "between_landmark", "lat", "lon", "coords_source",
+    "incident_type", "lanes_closed", "lanes_total", "in_scope",
+    "confidence", "notes"
+  ],
+  "properties": {
+    "incident_id": {"type": "string", "description": "[feed] INCIDENT_NUMBER, e.g. IN-26-06947."},
+    "source_message_en": {"type": "string", "description": "[feed] CONTENT_EN."},
+    "source_message_zh": {"type": "string", "description": "[feed] CONTENT_CN."},
+    "announced_at": {"type": "string", "format": "date-time", "description": "[feed] ANNOUNCEMENT_DATE of this message, Hong Kong time (+08:00)."},
+    "closed_at": {"type": ["string", "null"], "format": "date-time", "description": "Set from the incident timeline (component A2). The Reader sees one message, so it leaves this null."},
+    "status": {"enum": ["NEW", "UPDATED", "CLOSED"], "description": "[feed] INCIDENT_STATUS_EN."},
+    "district": {"type": ["string", "null"], "description": "[feed] DISTRICT_EN when present (it is usually empty); otherwise [llm] the district of the named road, or null if unsure."},
+    "road_name": {"type": ["string", "null"], "description": "[llm] The road where the incident is, as its official English name, e.g. 'Aberdeen Tunnel'. null if the message names no road."},
+    "direction": {"type": ["string", "null"], "description": "[llm] Direction of travel affected, written as '<place> bound', e.g. 'Causeway Bay bound'. null if none is stated."},
+    "near_landmark": {"type": ["string", "null"], "description": "[llm] Landmark the incident is near, e.g. 'Wong Chuk Hang Hospital'. null if none is stated."},
+    "between_landmark": {"type": ["string", "null"], "description": "[llm] 'X and Y' when the message places the incident between two points. null otherwise."},
+    "lat": {"type": ["number", "null"], "description": "[feed] LATITUDE (WGS-84) when present, else null. The model never produces coordinates."},
+    "lon": {"type": ["number", "null"], "description": "[feed] LONGITUDE (WGS-84) when present, else null."},
+    "coords_source": {"enum": ["source", "inferred_from_landmark", "none"], "description": "[feed] 'source' when the feed gave coordinates, else 'none'. 'inferred_from_landmark' is reserved for a deterministic landmark lookup (not built yet)."},
+    "incident_type": {
+      "enum": ["traffic_accident", "vehicle_breakdown", "road_works", "flooding", "object_on_road", "public_event", "public_transport_notice", "other"],
+      "description": "[llm] What caused the disruption."
+    },
+    "lanes_closed": {
+      "type": "array",
+      "items": {"enum": ["fast", "middle1", "middle2", "slow", "hard_shoulder", "all"]},
+      "uniqueItems": true,
+      "description": "[llm] Lanes closed to traffic as of this message. [] when the message says lanes have re-opened, or names no specific lane."
+    },
+    "lanes_total": {"type": ["integer", "null"], "minimum": 1, "description": "[llm] Number of lanes in the affected direction, only if the message states it. null otherwise; never guessed from road knowledge."},
+    "in_scope": {"type": "boolean", "description": "[llm] True only for a road incident on the Aberdeen corridor (see the prompt for the road list)."},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1, "description": "[llm] The model's own confidence in this extraction. Always shown to the operator."},
+    "notes": {"type": "string", "description": "[llm] Anything the operator should know: ambiguity, a field left null and why, a Chinese-only detail. Empty string if nothing."}
+  }
+}
