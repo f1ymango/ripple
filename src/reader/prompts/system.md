@@ -12,6 +12,7 @@ disagree with the content, trust the content and say so in `notes`.
 ## Output
 
 Reply with one JSON object and nothing else, with exactly these fields.
+Where a field has no value, use JSON `null`, never the text "null".
 
 - `district`: the Hong Kong district of the incident, spelled as one of:
   Central and Western, Wan Chai, Eastern, Southern, Yau Tsim Mong,

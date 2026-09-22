@@ -1,16 +1,24 @@
 """The one place where Ripple talks to an LLM (Reader, Plan Generator, Briefing Writer).
 
 Every call is appended to evidence/ai-log/<date>.jsonl with the prompt, the
-reply, the model and a timestamp (CLAUDE.md rule 5).
+reply, the model, its settings and a timestamp (CLAUDE.md rule 5).
 
-No provider has been chosen yet. `_send` is the only function to fill in.
+For now models run locally through Ollama (https://ollama.com). Switching
+provider means rewriting `_send` only.
 """
 import json
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import requests
+
 HKT = timezone(timedelta(hours=8))
 LOG_DIR = Path("evidence/ai-log")
+
+OLLAMA_URL = "http://localhost:11434/api/chat"
+SEED = 42              # runs are seeded (CLAUDE.md rule 7)
+CONTEXT_TOKENS = 8192  # room for prompt + message: Ollama silently cuts whatever overflows
 
 
 def complete_json(*, component: str, model: str, system: str, user: str,
@@ -20,12 +28,15 @@ def complete_json(*, component: str, model: str, system: str, user: str,
     The reply is only a candidate: validating it is the caller's job.
     """
     sent_at = datetime.now(HKT)
+    started = time.perf_counter()
     reply = _send(model=model, system=system, user=user, schema=schema, temperature=temperature)
     _log({
         "timestamp": sent_at.isoformat(timespec="seconds"),
         "component": component,
         "model": model,
         "temperature": temperature,
+        "seed": SEED,
+        "duration_s": round(time.perf_counter() - started, 2),
         "system": system,
         "user": user,
         "response": reply,
@@ -34,16 +45,23 @@ def complete_json(*, component: str, model: str, system: str, user: str,
 
 
 def _send(*, model: str, system: str, user: str, schema: dict, temperature: float) -> str:
-    """Send one request to the chosen provider and return the model's reply text.
+    """Send one request to the local Ollama server and return the model's reply text.
 
-    Use the provider's strict structured-output (JSON schema) mode with `schema`.
-    The schema already closes every object (additionalProperties: false) and
-    requires every field. Strip keywords the provider's strict mode rejects
-    (e.g. minimum, maximum, uniqueItems): the caller re-checks them locally.
+    `format` makes Ollama constrain the output to `schema`, so the reply always
+    parses and only uses allowed values. Whether the values are right is still
+    for the caller to check.
     """
-    raise NotImplementedError(
-        "No LLM provider chosen yet: implement _send() in src/llm.py "
-        "and pin MODEL in src/reader/reader.py.")
+    resp = requests.post(OLLAMA_URL, timeout=600, json={
+        "model": model,
+        "messages": [{"role": "system", "content": system},
+                     {"role": "user", "content": user}],
+        "format": schema,
+        "think": False,  # Qwen3's "thinking" mode is for reasoning; this is extraction
+        "stream": False,
+        "options": {"temperature": temperature, "seed": SEED, "num_ctx": CONTEXT_TOKENS},
+    })
+    resp.raise_for_status()
+    return resp.json()["message"]["content"]
 
 
 def _log(entry: dict) -> None:

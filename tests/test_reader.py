@@ -79,6 +79,7 @@ def test_invalid_reply_is_retried_once(stn, model_replies, tmp_path):
     {"confidence": 1.4},             # outside 0..1
     {"lanes_closed": ["left"]},      # not a lane name in the contract
     {"incident_type": "accident"},   # not in the incident_type list
+    {"district": "null"},            # the text "null" instead of JSON null
 ])
 def test_reply_failing_the_contract_twice_is_flagged(stn, model_replies, bad_field):
     bad = json.dumps(json.loads(MOCK_REPLY) | bad_field)

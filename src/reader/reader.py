@@ -16,8 +16,9 @@ HERE = Path(__file__).parent
 SCHEMA = json.loads((HERE / "incident.schema.json").read_text(encoding="utf-8"))
 SYSTEM_PROMPT = (HERE / "prompts" / "system.md").read_text(encoding="utf-8")
 
-MODEL = None       # pin once a provider is chosen (see src/llm.py)
-TEMPERATURE = 0.0  # extraction, not creativity
+MODEL = None       # pin once the model comparison picks one; until then run.py takes --model
+TEMPERATURE = 0.0        # extraction, not creativity
+RETRY_TEMPERATURE = 0.3  # at 0 a retry would repeat the same reply word for word
 
 # STN fields the model sees. IDs, times, status and coordinates are withheld:
 # code copies those, so the model has no reason to repeat them.
@@ -43,20 +44,23 @@ class ReaderError(Exception):
     """The model's reply failed validation twice, so the message is flagged instead of parsed."""
 
 
-def read_message(stn: dict) -> dict:
+def read_message(stn: dict, model: str = MODEL) -> dict:
     """Turn one STN message ({feed field: text}) into a validated incident.json dict."""
     user = json.dumps({field: stn[field] for field in INPUT_FIELDS}, ensure_ascii=False, indent=2)
     problems = []
-    for _attempt in range(2):
-        reply = llm.complete_json(component="reader", model=MODEL, system=SYSTEM_PROMPT,
-                                  user=user, schema=REPLY_SCHEMA, temperature=TEMPERATURE)
+    for attempt in range(2):
+        temperature = TEMPERATURE if attempt == 0 else RETRY_TEMPERATURE
+        reply = llm.complete_json(component="reader", model=model, system=SYSTEM_PROMPT,
+                                  user=user, schema=REPLY_SCHEMA, temperature=temperature)
         try:
             extracted = json.loads(reply)
             jsonschema.validate(extracted, REPLY_SCHEMA)
+            if "null" in extracted.values():  # small models write the text "null" for "no value"
+                raise ValueError('the text "null" where JSON null was meant')
             incident = assemble(stn, extracted)
             jsonschema.validate(incident, SCHEMA)
             return incident
-        except (json.JSONDecodeError, jsonschema.ValidationError) as exc:
+        except (ValueError, jsonschema.ValidationError) as exc:  # includes JSONDecodeError
             problems.append(str(exc).splitlines()[0])
     raise ReaderError(f"{stn['INCIDENT_NUMBER']} (message {stn['ID']}): {problems}")
 
