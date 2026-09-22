@@ -47,7 +47,7 @@ python -m src.loaders.fetch --date 2026-03-14
 # Incident Reader: sample real STN messages, then parse them with a local model
 # (needs Ollama running, https://ollama.com, and `ollama pull qwen3:8b`)
 python -m src.reader.sample --start 2026-09-15 --end 2026-09-21 --n 20
-python -m src.reader.run --model qwen3:8b --messages data/labelled_incidents/messages.jsonl
+python -m src.reader.run --messages data/labelled_incidents/messages.jsonl
 
 # tests (no LLM needed)
 python -m pytest

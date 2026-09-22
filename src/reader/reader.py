@@ -18,7 +18,7 @@ HERE = Path(__file__).parent
 SCHEMA = json.loads((HERE / "incident.schema.json").read_text(encoding="utf-8"))
 SYSTEM_PROMPT = (HERE / "prompts" / "system.md").read_text(encoding="utf-8")
 
-MODEL = None       # pin once the model comparison picks one; until then run.py takes --model
+MODEL = "qwen3:8b"  # beat qwen3:4b on the 20 dev messages (results/reader/, 22 Sep)
 TEMPERATURE = 0.0        # extraction, not creativity
 RETRY_TEMPERATURE = 0.3  # at 0 a retry would repeat the same reply word for word
 
