@@ -1,0 +1,29 @@
+detector_id,leg,road_en,road_tc,district,direction,latitude,longitude,easting,northing,rotation
+AID01101,main_eastbound,Aberdeen Praya Road near Abba House - Eastbound,香港仔海旁道近福群大樓 - 東行,Southern,South East,22.248091,114.152525,833758,812147,100
+AID01102,main_eastbound,Aberdeen Praya Road near Hoi Fai Mansion - Eastbound,香港仔海旁道近海暉大廈 - 東行,Southern,North East,22.24712681,114.1577149,834293,812041,60
+AID01103,main_eastbound,Wong Chuk Hang Road near Aberdeen Technical School - Eastbound,黃竹坑道近香港仔工業學校 - 東行,Southern,South East,22.24863539,114.1621481,834750,812208,80
+AID01104,main_eastbound,Wong Chuk Hang Road Flyover near AXA Southside - Eastbound,黃竹坑道行車天橋近安盛匯 - 東行,Southern,North East,22.24837379,114.1658151,835128,812179,60
+AID01105,main_eastbound,Wong Chuk Hang Road Flyover near Benefit Industrial Factory Building - Eastbound,黃竹坑道行車天橋近本利發工業大廈 - 東行,Southern,North East,22.2496834,114.1686381,835419,812324,50
+AID01106,main_eastbound,Wong Chuk Hang Road near Hong Kong Academy of Medicine - Eastbound,黃竹坑道近香港醫學專科學院 - 東行,Southern,South East,22.25044211,114.1718782,835753,812408,100
+AID01107,main_eastbound,Aberdeen Tunnel near Wong Chuk Hang Hospital - Eastbound,香港仔隧道近黃竹坑醫院 - 東行,Southern,South East,22.24999065,114.1762923,836208,812358,60
+AID01108,main_eastbound,Wong Nai Chung Gap Flyover near Racecourse - Northbound,黃泥涌峽天橋近馬場 - 北行,Wan Chai,North West,22.27186288,114.1801247,836603,814780,320
+AID01109,main_eastbound,Canal Road Flyover near Cricket Club - Northbound,堅拿道天橋近木球會 - 北行,Wan Chai,North,22.27659491,114.1810758,836701,815304,0
+AID01110,main_eastbound,Canal Road Flyover near Wan Chai Fire Station - Northbound,堅拿道天橋近灣仔消防局 - 北行,Wan Chai,North West,22.279356,114.181217,836715,815609,300
+AID01214,main_westbound,Canal Road Flyover near Elizabeth House - Southbound,堅拿道天橋近伊利莎伯大廈 - 南行,Wan Chai,South East,22.280729,114.180701,836662,815761,130
+AID01215,main_westbound,Canal Road Flyover near Wing Tak Building - Southbound,堅拿道天橋近永德大廈 - 南行,Wan Chai,South,22.278219,114.181221,836715,815483,180
+AID01216,main_westbound,Wong Nai Chung Gap Flyover near Racecourse - Southbound,黃泥涌峽天橋近馬場 - 南行,Wan Chai,South East,22.27331682,114.1796008,836549,814941,130
+AID01217,main_westbound,Aberdeen Tunnel near Toll Plaza - Westbound,香港仔隧道近收費廣場 - 西行,Southern,North West,22.250597,114.177565,836339,812425,290
+AID01218,main_westbound,Wong Chuk Hang Road near Wong Chuk Hang Sports Centre - Westbound,黃竹坑道近黃竹坑體育館 - 西行,Southern,North West,22.25005384,114.1737118,835942,812365,280
+AID01219,main_westbound,Wong Chuk Hang Road near Wong Chuk Hang Recreation Ground - Westbound,黃竹坑道行車近黃竹坑遊樂場 - 西行,Southern,South West,22.25007176,114.1694335,835501,812367,210
+AID01220,main_westbound,Wong Chuk Hang Road Flyover near Cheung Tak Industrial Building - Westbound,黃竹坑道行車天橋近長德工業大廈 - 西行,Southern,North West,22.2482744,114.1650487,835049,812168,280
+AID01221,main_westbound,Wong Chuk Hang Road near Aberdeen Police Station - Westbound,黃竹坑道近香港仔警署 - 西行,Southern,South West,22.24862632,114.1617697,834711,812207,260
+AID01222,main_westbound,Aberdeen Praya Road near Ocean Court - Westbound,香港仔海旁道近逸港居 - 西行,Southern,South West,22.24761461,114.1590439,834430,812095,260
+AID01223,main_westbound,Aberdeen Praya Road near Aberdeen Bus Terminus - Westbound,香港仔海旁道近香港仔巴士總站 - 西行,Southern,North West,22.24747861,114.1546396,833976,812080,290
+TDSSPWR10001,western_alternative,Pok Fu Lam Road near St. Paul's College Primary School - Eastbound,薄扶林道近聖保羅書院小學 - 東行,Southern,South East,22.25479041,114.1383205,832294,812890,140
+TDSSPWR10002,western_alternative,Shek Pai Wan Road near Wah Kwai Estate - Eastbound,石排灣道近華貴邨 - 東行,Southern,South East,22.25047441,114.1412418,832595,812412,160
+TDSSPWR10003,western_alternative,Shek Pai Wan Road near Shek Pai Wan Road Playground - Eastbound,石排灣道近石排灣道遊樂場 - 東行,Southern,North East,22.24939152,114.1450352,832986,812292,80
+TDSSPWR20001,western_alternative,Shek Pai Wan Road near Wah Fu Road - Westbound,石排灣道近華富道 - 西行,Southern,North West,22.25236165,114.1404555,832514,812621,320
+TDSSPWR20002,western_alternative,Shek Pai Wan Road near Wah Kwai Estate - Westbound,石排灣道近華貴邨 - 西行,Southern,North West,22.24993262,114.1414748,832619,812352,330
+TDSSPWR20003,western_alternative,Shek Pai Wan Road near Shek Pai Wan Road Playground - Westbound,石排灣道近石排灣道遊樂場 - 西行,Southern,South West,22.249238,114.1450546,832988,812275,260
+TDSAPR10001,western_alternative,Aberdeen Praya Road near Aberdeen Wholesale Fish Market - Eastbound,香港仔海傍道近香港仔魚類批發市場 - 東行,Southern,East,22.24863379,114.1497113,833468,812208,90
+TDSAPR20001,western_alternative,Aberdeen Praya Road near Aberdeen Wholesale Fish Market - Westbound,香港仔海傍道近香港仔魚類批發市場 - 西行,Southern,West,22.24840797,114.1493912,833435,812183,270

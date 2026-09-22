@@ -22,6 +22,13 @@ Data dictionary:
 
 ### Raw XML structure
 
+> ⚠️ **Checked against the live feed on 22 Sep 2026.** The values below are what
+> the XML actually carries. `lane_id` and `direction` arrive as **text**, not as
+> the numeric codes an earlier version of this section implied; the PDF itself
+> types `lane_id` as `string` and lists the exact strings. The **numbering in
+> the PDF's coding table may be the lane's position on the carriageway, or may
+> just enumerate the possible strings — see the open question below.
+
 ```
 date                              yyyy-mm-dd
 └── periods (two 30-second intervals per file)
@@ -29,18 +36,77 @@ date                              yyyy-mm-dd
     ├── period_to                 HH:mm:ss
     └── detectors
         ├── detector_id           string, e.g. AID01107
-        ├── direction             1=N 2=E 3=S 4=W 5=NE 6=SE 7=NW 8=SW
+        ├── direction             TEXT, 8-point compass: "North", "North East",
+        │                         "East", "South East", "South", "South West",
+        │                         "West", "North West"  (not 1-8)
         └── lanes
-            ├── lane_id           4-lane: 1 Fast, 2 Middle2, 3 Middle1, 4 Slow
-            │                     3-lane: 1 Fast, 2 Middle, 3 Slow
-            │                     2-lane: 1 Fast, 2 Slow
-            │                     1-lane: 1 Fast
+            ├── lane_id           TEXT (PDF data type: string). Values, in
+            │                     CARRIAGEWAY ORDER, fast -> slow:
+            │                       4-lane: Fast Lane, Middle Lane 2,
+            │                               Middle Lane 1, Slow Lane
+            │                       3-lane: Fast Lane, Middle Lane, Slow Lane
+            │                       2-lane: Fast Lane, Slow Lane
+            │                       1-lane: Fast Lane
             ├── speed             int, km/h
             ├── occupancy         int, % of time the zone is occupied
             ├── volume            int, vehicles in the interval
-            ├── sd                decimal, standard deviation of speed (1 dp)
+            ├── s.d.              decimal, standard deviation of speed (1 dp)
+            │                     (the tag name really does contain dots)
             └── valid             "Y" = detector online, "N" = offline
 ```
+
+#### ⚠️ Lane position on 4-lane roads — OPEN QUESTION
+
+Positions run fast → slow: from the offside (median) lane across to the
+nearside (kerb) lane. Hong Kong drives on the left, so the Fast Lane is the
+driver's right-hand lane. For 1-, 2- and 3-lane carriageways the names map
+unambiguously. **For 4-lane carriageways, which physical lane `Middle Lane 1`
+is has not been established.**
+
+Two sources, and they may or may not agree:
+
+```
+Data-dictionary PDF, "Coding" column      XML serialisation order
+  1. Fast Lane                              Fast Lane
+  2. Middle Lane 2                          Middle Lane 1
+  3. Middle Lane 1                          Middle Lane 2
+  4. Slow Lane                              Slow Lane
+```
+
+The PDF's numbering may be carriageway positions, or may simply enumerate the
+possible output strings — its wording ("different output will be generated
+depends on the number of lanes") does not say which.
+
+**Evidence so far, from AID01217 over 40 30-second periods (21 Sep, 08:15–08:30):**
+
+| lane, in file order | mean speed | total veh | mean occupancy |
+|---|---|---|---|
+| Fast Lane | 82.7 km/h | 401 | 7.6% |
+| Middle Lane 1 | 80.0 km/h | 181 | 3.4% |
+| Middle Lane 2 | 75.2 km/h | 195 | 6.2% |
+| Slow Lane | 73.1 km/h | 16 | 0.3% |
+
+Speed falls monotonically in file order, and `Middle Lane 2` shows higher
+occupancy than `Middle Lane 1` at similar volume — both consistent with
+`Middle Lane 2` being the lane nearer the kerb, i.e. file order = carriageway
+order. **This is 20 minutes of one morning at one detector and is not
+conclusive.**
+
+**To settle it** (week 2, before [E] needs a lane mapping): rerun the table
+above over the full cached window. If `Middle Lane 1` consistently sits between
+`Fast Lane` and `Middle Lane 2` on speed and occupancy across weeks and across
+times of day, file order is carriageway order. Otherwise ask the Transport
+Department through the data.gov.hk enquiry channel.
+
+**Until then, the rule that is safe either way:** map lanes by **name**, never
+by position in the file, and keep the single name→SUMO-index conversion in one
+function in [E] so that flipping it later is a one-line change. Nothing in the
+loaders depends on the answer; only incident injection does, and only on this
+one detector — AID01217, the Aberdeen Tunnel toll-plaza approach, the only
+4-lane detector on the corridor.
+
+Lane counts across our 28 corridor detectors: **16 two-lane, 11 three-lane,
+1 four-lane**. Nothing may assume a fixed number of lanes per detector.
 
 ### Detector locations CSV columns
 
@@ -107,6 +173,30 @@ Incident") · `INCIDENT_DETAIL_EN/CN` (e.g. "Traffic Accident") · `LOCATION_EN/
 ---
 
 ## 3. Historical archive API (how we replay a past incident)
+
+> ⚠️ **Two things the archive does that will silently corrupt your results if
+> you do not handle them.** Both measured on 21 Sep 2026; see
+> `src/loaders/detectors.py`.
+>
+> **(a) The archive timestamp is not the data timestamp.** The file archived at
+> `20260921-0830` contains the periods `08:21:00-08:22:00` — a publish lag of
+> about nine minutes. Always take the time from `date` + `period_from` *inside*
+> the file, and widen any wanted window by ~15 minutes before asking the archive
+> for versions.
+>
+> **(b) Coverage is partial, and roughly a third of listed versions are dead.**
+> For the hour 08:00-09:00, `list-file-versions` returned 41 timestamps, only 28
+> of which `get-file` would serve — the other 13 are a persistent 404, not a
+> transient error, so do not waste retries on them. Those 28 files held **28
+> distinct data minutes out of 60 (about 47%)**, with gaps of up to five minutes.
+>
+> **The consequence of (b):** a five-minute bin typically contains one to three
+> sampled minutes, not five. **Summing raw volume into a bin understates flow by
+> roughly half**, and since GEH compares counts, a twin calibrated on those sums
+> would be fitted to half of Hong Kong's real traffic — and would still appear to
+> validate. Bins must therefore report a flow *rate* over the seconds actually
+> observed, together with the coverage behind it. See section 7.
+
 
 Both feeds are snapshotted by DATA.GOV.HK. All times are GMT+8. The latest
 available historical data is from **yesterday** — you cannot archive today.
@@ -233,3 +323,42 @@ Wah Fu → Pok Fu Lam Road · **MTR South Island Line** as a mode shift.
   below a threshold.
 - `valid = "N"` means the detector was offline. Never silently treat missing
   data as zero traffic — count and report it.
+
+---
+
+## 7. Using the 5-minute bins — read this before calibrating
+
+`src/loaders/detectors.py` emits one row per detector per five minutes. Because
+of the partial coverage in section 3, every row carries how much of the window
+was actually observed:
+
+| Column | Meaning |
+|---|---|
+| `speed_kmh` | volume-weighted mean over valid lanes |
+| `flow_veh_h` | vehicles per hour, over the seconds actually observed |
+| `count_5min` | the count a full five-minute bin implies — **this is the number for GEH** |
+| `volume_observed` | vehicles actually counted (usually far fewer than `count_5min`) |
+| `periods_observed` | how many 30-second periods the bin is built from |
+| `coverage_pct` | `periods_observed × 30 / 300` — the sampling fraction |
+| `lanes_valid` / `lanes_offline` | offline lanes are counted, never treated as zero traffic |
+
+**`coverage_pct` is a precision label, not a correctness label.** A bin at 10%
+is not wrong, it is uncertain — the same five minutes estimated from one sample
+can come out at 200 vehicles when the truth is 90.
+
+**Rules:**
+
+- **Speed survives low coverage. Counts do not.** A 30-second reading of
+  26 km/h is a fair estimate of the speed at that moment; a 30-second count
+  scaled ×10 is a gamble. Use every bin for the speed chart; use only
+  high-coverage bins for GEH.
+- **Calibrate on `coverage_pct >= 40`** (the loader's default, exported as a
+  separate `_cov40.csv`). If that leaves too few points, relax the threshold
+  deliberately and **state the threshold on the validation slide**.
+- **Never quote a count from a bin without quoting its coverage.** Every number
+  in the deck traces to `results/`; a count whose sampling fraction is unknown
+  cannot be defended in the Q&A.
+- Run the loader's coverage-versus-speed check before filtering. If low- and
+  high-coverage bins show similar mean speeds, the filter is a precision filter
+  and nothing more. If they differ, filtering would bias the calibration and
+  that has to be said out loud.
