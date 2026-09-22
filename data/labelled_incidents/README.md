@@ -16,6 +16,10 @@ one message per incident.
 The ~100 hand-labelled messages behind the accuracy number must not include
 any of these IDs, so the prompt was never tuned on them.
 
+The prompt's worked examples are messages 146439, 146525, 146509, 146286
+and 146213 (none from these 20 incidents). Keep them out of the labelled set
+too.
+
 None of the 20 is on the Aberdeen corridor; the whole week had only two
 corridor incidents (IN-26-06874, IN-26-06904). Corridor messages need to be
 sought out deliberately from a longer window.

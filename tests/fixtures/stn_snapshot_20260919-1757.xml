@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.td.gov.hk/en/special_news/trafficnews.xsd">
+  <message>
+    <INCIDENT_NUMBER>IN-26-06904</INCIDENT_NUMBER>
+    <INCIDENT_HEADING_EN>Road Incident</INCIDENT_HEADING_EN>
+    <INCIDENT_HEADING_CN>道路事故</INCIDENT_HEADING_CN>
+    <INCIDENT_DETAIL_EN>Heavy Traffic</INCIDENT_DETAIL_EN>
+    <INCIDENT_DETAIL_CN>車多關係</INCIDENT_DETAIL_CN>
+    <LOCATION_EN>Busy Road Sections</LOCATION_EN>
+    <LOCATION_CN>繁忙路段</LOCATION_CN>
+    <DISTRICT_EN/>
+    <DISTRICT_CN/>
+    <DIRECTION_EN/>
+    <DIRECTION_CN/>
+    <ANNOUNCEMENT_DATE>2026-09-19T17:37:00</ANNOUNCEMENT_DATE>
+    <INCIDENT_STATUS_EN>NEW</INCIDENT_STATUS_EN>
+    <INCIDENT_STATUS_CN>最新情況</INCIDENT_STATUS_CN>
+    <NEAR_LANDMARK_EN/>
+    <NEAR_LANDMARK_CN/>
+    <BETWEEN_LANDMARK_EN/>
+    <BETWEEN_LANDMARK_CN/>
+    <ID>146433</ID>
+    <CONTENT_EN>The following road sections are busy:
+Hong Kong Island
+– Gloucester Road (Cross Harbour Tunnel bound)
+– Wong Nai Chung Gap Flyover (Canal Road Flyover bound)
+– Connaught Road West (Western Harbour Crossing bound)
+– Connaught Road Central Flyover (Western Harbour Crossing bound)
+– Connaught Road Central (Western Harbour Crossing bound)
+Kowloon
+– Tseung Kwan O Road (Kwun Tong bound)
+Motorists passing through the above road sections are advised to drive with utmost care and patience. </CONTENT_EN>
+    <CONTENT_CN>以下路段的交通繁忙:
+香港島
+–告士打道(往海底隧道方向)
+–黃泥涌峽天橋(往堅拿道天橋方向)
+–干諾道西(往西區海底隧道方向)
+–干諾道中天橋(往西區海底隧道方向)
+–干諾道中(往西區海底隧道方向)
+九龍
+–將軍澳道(往觀塘方向)
+駕駛人士行經上述路段敬請忍讓及小心駕駛。</CONTENT_CN>
+    <LATITUDE/>
+    <LONGITUDE/>
+  </message>
+</list>

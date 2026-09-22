@@ -1,13 +1,13 @@
 {
-  "district": "Eastern",
   "road_name": "Wing Tai Road",
   "direction": "Chai Wan Road bound",
   "near_landmark": "Wing Tai Road Garden",
   "between_landmark": null,
   "incident_type": "road_works",
-  "lanes_closed": ["slow"],
+  "lanes_closed": [
+    "slow"
+  ],
   "lanes_total": 2,
-  "in_scope": false,
   "confidence": 0.9,
   "notes": ""
 }

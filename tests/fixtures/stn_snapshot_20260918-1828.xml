@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.td.gov.hk/en/special_news/trafficnews.xsd">
+  <message>
+    <INCIDENT_NUMBER>IN-26-06874</INCIDENT_NUMBER>
+    <INCIDENT_HEADING_EN>Road Incident</INCIDENT_HEADING_EN>
+    <INCIDENT_HEADING_CN>道路事故</INCIDENT_HEADING_CN>
+    <INCIDENT_DETAIL_EN>Traffic Accident</INCIDENT_DETAIL_EN>
+    <INCIDENT_DETAIL_CN>交通意外</INCIDENT_DETAIL_CN>
+    <LOCATION_EN>Pok Fu Lam Road</LOCATION_EN>
+    <LOCATION_CN>薄扶林道</LOCATION_CN>
+    <DISTRICT_EN/>
+    <DISTRICT_CN/>
+    <DIRECTION_EN>Central</DIRECTION_EN>
+    <DIRECTION_CN>中環</DIRECTION_CN>
+    <ANNOUNCEMENT_DATE>2026-09-18T18:17:00</ANNOUNCEMENT_DATE>
+    <INCIDENT_STATUS_EN>UPDATED</INCIDENT_STATUS_EN>
+    <INCIDENT_STATUS_CN>更新情況</INCIDENT_STATUS_CN>
+    <NEAR_LANDMARK_EN>Ebenezer School &amp; Home For The Visually Impaired</NEAR_LANDMARK_EN>
+    <NEAR_LANDMARK_CN>心光盲人院暨學校</NEAR_LANDMARK_CN>
+    <BETWEEN_LANDMARK_EN/>
+    <BETWEEN_LANDMARK_CN/>
+    <ID>146380</ID>
+    <CONTENT_EN>Part of the lanes of Pok Fu Lam Road (Central bound) near Ebenezer School &amp;amp; Home For The Visually Impaired which was closed due to traffic accident is re-opened to all traffic. </CONTENT_EN>
+    <CONTENT_CN>較早前因交通意外而封閉的薄扶林道(往中環方向)近心光盲人院暨學校的部份行車線現已解封。</CONTENT_CN>
+    <LATITUDE/>
+    <LONGITUDE/>
+  </message>
+</list>

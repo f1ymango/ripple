@@ -1,11 +1,13 @@
 """Incident Reader (component B, GenAI #1): one Special Traffic News message -> incident.json.
 
 The model extracts only what is written in the message: road, direction,
-lanes, incident type, scope, confidence. Fields the feed already carries
-(ID, text, time, status, coordinates) are copied by code, never by the model.
+lanes, incident type, confidence. Fields the feed already carries (ID, text,
+time, status, district, coordinates) are copied by code, never by the model,
+and code decides whether the message is about our corridor.
 A reply that fails validation is retried once, then flagged, never used.
 """
 import json
+import re
 from pathlib import Path
 
 import jsonschema
@@ -30,14 +32,26 @@ INPUT_FIELDS = [
 ]
 
 # The model's reply: exactly the [llm] fields of the contract, nothing more.
-LLM_FIELDS = ["district", "road_name", "direction", "near_landmark", "between_landmark",
-              "incident_type", "lanes_closed", "lanes_total", "in_scope", "confidence", "notes"]
+LLM_FIELDS = ["road_name", "direction", "near_landmark", "between_landmark",
+              "incident_type", "lanes_closed", "lanes_total", "confidence", "notes"]
 REPLY_SCHEMA = {
     "type": "object",
     "additionalProperties": False,
     "required": LLM_FIELDS,
     "properties": {field: SCHEMA["properties"][field] for field in LLM_FIELDS},
 }
+
+
+# The Aberdeen corridor (docs/02-data.md section 5). The Chinese names are
+# the ones in TD's detector list; every message so far also has English.
+CORRIDOR_ROADS = [
+    "Aberdeen Praya Road", "Wong Chuk Hang Road", "Aberdeen Tunnel",
+    "Wong Nai Chung Gap Flyover", "Canal Road Flyover", "Pok Fu Lam Road",
+    "Shek Pai Wan Road", "Wah Fu Road", "Wong Nai Chung Gap Road", "Stubbs Road",
+    "香港仔海旁道", "香港仔海傍道", "黃竹坑道", "香港仔隧道", "黃泥涌峽天橋",
+    "堅拿道天橋", "薄扶林道", "石排灣道",
+]
+NOT_ROAD_INCIDENTS = {"public_event", "public_transport_notice"}
 
 
 class ReaderError(Exception):
@@ -75,7 +89,7 @@ def assemble(stn: dict, extracted: dict) -> dict:
         "announced_at": stn["ANNOUNCEMENT_DATE"] + "+08:00",  # feed times are Hong Kong time
         "closed_at": None,  # needs the whole incident timeline: component A2 sets it
         "status": stn["INCIDENT_STATUS_EN"],
-        "district": stn["DISTRICT_EN"] or extracted["district"],
+        "district": stn["DISTRICT_EN"] or None,  # usually empty; never guessed
         "road_name": extracted["road_name"],
         "direction": extracted["direction"],
         "near_landmark": extracted["near_landmark"],
@@ -86,7 +100,19 @@ def assemble(stn: dict, extracted: dict) -> dict:
         "incident_type": extracted["incident_type"],
         "lanes_closed": extracted["lanes_closed"],
         "lanes_total": extracted["lanes_total"],
-        "in_scope": extracted["in_scope"],
+        "in_scope": (names_corridor_road(stn)
+                     and extracted["incident_type"] not in NOT_ROAD_INCIDENTS),
         "confidence": extracted["confidence"],
         "notes": extracted["notes"],
     }
+
+
+def names_corridor_road(stn: dict) -> bool:
+    """True if the message names a corridor road as a place.
+
+    "(Canal Road Flyover bound)" / "(往堅拿道天橋方向)" only says where traffic
+    is heading, so those brackets are dropped before matching.
+    """
+    text = " ".join((stn["CONTENT_EN"] + " " + stn["CONTENT_CN"]).split()).lower()
+    text = re.sub(r"[(（][^)）]*(bound|方向)[)）]", "", text)
+    return any(road.lower() in text for road in CORRIDOR_ROADS)

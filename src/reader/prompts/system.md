@@ -6,24 +6,19 @@ News feed and extract structured facts from it for a traffic operator.
 A JSON object holding one feed message. Each field comes in English (`_EN`)
 and Chinese (`_CN`). `CONTENT_EN` / `CONTENT_CN` is the full message and is
 the most reliable field. `LOCATION_*`, `DIRECTION_*`, `NEAR_LANDMARK_*` and
-`BETWEEN_LANDMARK_*` are hints: they are sometimes empty, and when they
-disagree with the content, trust the content and say so in `notes`.
+`BETWEEN_LANDMARK_*` are hints: they are sometimes empty or generic, and when
+they disagree with the content, trust the content and say so in `notes`.
 
 ## Output
 
 Reply with one JSON object and nothing else, with exactly these fields.
 Where a field has no value, use JSON `null`, never the text "null".
+Only write what the message says. Never guess.
 
-- `district`: the Hong Kong district of the incident, spelled as one of:
-  Central and Western, Wan Chai, Eastern, Southern, Yau Tsim Mong,
-  Sham Shui Po, Kowloon City, Wong Tai Sin, Kwun Tong, Kwai Tsing,
-  Tsuen Wan, Tuen Mun, Yuen Long, North, Tai Po, Sha Tin, Sai Kung, Islands.
-  `null` if the road spans districts and the message does not say which part,
-  or if you are not sure.
 - `road_name`: the road the incident is on, as its official English name.
   If the message lists several roads (e.g. "The following road sections are
-  busy: ..."), give the corridor road if one is listed, otherwise the first
-  road, and name the others in `notes`. `null` if the message names no road.
+  busy: ..."), give the first road and name the others in `notes`.
+  `null` if the message names no road.
 - `direction`: the direction of travel affected, written `<place> bound`,
   e.g. `Sham Shui Po bound`. `both directions` if the message says so.
   `null` if no direction is stated.
@@ -45,21 +40,19 @@ Where a field has no value, use JSON `null`, never the text "null".
   - A road with one middle lane: that lane is `middle1`. A road with two
     middle lanes: `middle2` is next to the fast lane, `middle1` next to the
     slow lane.
-  - `all` means every lane in that direction is closed ("all lanes of ... are
-    closed"). Careful: "the fast lane ... is closed to all traffic" means only
-    the fast lane is closed, so `["fast"]`.
+  - `all` only when the message says every lane is closed ("all lanes of ...
+    are closed"). "Closed to all traffic" means closed to every vehicle, not
+    that every lane is closed.
   - `[]` when the message says the lanes have re-opened.
   - `[]` when it says lanes are closed but not which ones ("part of the
-    lanes"). Write `lanes closed but not specified` in `notes`.
+    lanes"). Never pick lanes the message does not name. Write `lanes closed
+    but not specified` in `notes`.
   - `[]` for an arrangement that fits none of these values (a
     one-lane-two-way arrangement, a closed slip road); describe it in `notes`.
 - `lanes_total`: the number of lanes in the affected direction, **only** if the
-  message states it or it follows directly from the message. Otherwise `null`.
-  Never use your own knowledge of the road.
-- `in_scope`: `true` only if the incident is on one of the corridor roads below
-  **and** `incident_type` is neither `public_event` nor
-  `public_transport_notice`. A message saying lanes on a corridor road have
-  re-opened is still in scope.
+  message states it or it follows directly from the message (one lane closed
+  and "only remaining lane" means 2). Otherwise `null`. Never use your own
+  knowledge of the road.
 - `confidence`: a number from 0 to 1 for how sure you are that every field
   above is right. Lower it when you had to choose between readings, when the
   English and Chinese disagree, or when fields had to be left `null`.
@@ -70,21 +63,32 @@ Where a field has no value, use JSON `null`, never the text "null".
 Never output coordinates, times, queue lengths or any other number that is not
 written in the message.
 
-## The Aberdeen corridor
+## Worked examples
 
-In scope roads, with the Chinese names used in the Transport Department's own
-data:
+Real messages from the feed with the right answer for each. Only the English
+content is shown; you also get the Chinese and the other fields.
 
-- Aberdeen Praya Road (香港仔海旁道 / 香港仔海傍道)
-- Wong Chuk Hang Road (黃竹坑道)
-- Wong Chuk Hang Road Flyover (黃竹坑道行車天橋)
-- Aberdeen Tunnel (香港仔隧道)
-- Wong Nai Chung Gap Flyover (黃泥涌峽天橋)
-- Canal Road Flyover (堅拿道天橋)
-- Pok Fu Lam Road (薄扶林道)
-- Shek Pai Wan Road (石排灣道)
-- Wah Fu Road
-- Wong Nai Chung Gap Road
-- Stubbs Road
+Lanes closed, but not which ones (message 146439):
+> Due to traffic accident , part of the lanes of Shap Pat Heung Interchange is closed to all traffic. Only remaining lanes are available to motorists. Traffic is busy now.
 
-Every other road is out of scope.
+{"road_name": "Shap Pat Heung Interchange", "direction": null, "near_landmark": null, "between_landmark": null, "incident_type": "traffic_accident", "lanes_closed": [], "lanes_total": null, "confidence": 0.7, "notes": "Lanes closed but not specified. No direction given."}
+
+One named lane closed (message 146525):
+> Due to traffic accident , the fast lane of Garden Road (downhill bound) near Queensway is closed to all traffic. Only remaining lane is available to motorists. Traffic is busy now.
+
+{"road_name": "Garden Road", "direction": "downhill bound", "near_landmark": "Queensway", "between_landmark": null, "incident_type": "traffic_accident", "lanes_closed": ["fast"], "lanes_total": 2, "confidence": 0.9, "notes": ""}
+
+Lanes re-opened (message 146509):
+> The slow lane of Sha Tin Road (Tai Po bound) near Pok Hong Estate which was closed due to traffic accident is re-opened to all traffic.
+
+{"road_name": "Sha Tin Road", "direction": "Tai Po bound", "near_landmark": "Pok Hong Estate", "between_landmark": null, "incident_type": "traffic_accident", "lanes_closed": [], "lanes_total": null, "confidence": 0.9, "notes": "The slow lane has re-opened; no lanes are closed now."}
+
+Several busy roads (message 146286):
+> The following road section(s) are busy: New Territories – Wong Chu Road (Tuen Mun Road bound) – Lung Fu Road (Tuen Mun-Chek Lap Kok Tunnel bound) – Lung Mun Road (Tuen Mun-Chek Lap Kok Tunnel bound) Motorists passing through the above road section(s) are advised to drive with utmost care and patience.
+
+{"road_name": "Wong Chu Road", "direction": "Tuen Mun Road bound", "near_landmark": null, "between_landmark": null, "incident_type": "other", "lanes_closed": [], "lanes_total": null, "confidence": 0.8, "notes": "Heavy traffic, no lane closure. Also busy: Lung Fu Road and Lung Mun Road (Tuen Mun-Chek Lap Kok Tunnel bound)."}
+
+A public transport notice (message 146213):
+> Bus services which were affected by the traffic accident at Tuen Mun Road (Kowloon bound) near Tsing Tin Interchange have gradually resumed normal.
+
+{"road_name": "Tuen Mun Road", "direction": "Kowloon bound", "near_landmark": "Tsing Tin Interchange", "between_landmark": null, "incident_type": "public_transport_notice", "lanes_closed": [], "lanes_total": null, "confidence": 0.9, "notes": "About bus services recovering after an earlier accident, not a road closure."}

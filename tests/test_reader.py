@@ -53,7 +53,8 @@ def test_feed_fields_are_copied_and_model_fields_extracted(stn, model_replies, t
     assert (incident["lat"], incident["lon"], incident["coords_source"]) == (None, None, "none")
     assert incident["closed_at"] is None
     assert incident["lanes_closed"] == ["slow"]
-    assert incident["district"] == "Eastern"  # feed district is empty, so the model's is used
+    assert incident["district"] is None  # empty in the feed, and never guessed
+    assert incident["in_scope"] is False  # Wing Tai Road is in Chai Wan
 
     [call] = logged_calls(tmp_path)
     assert call["component"] == "reader"
@@ -79,7 +80,8 @@ def test_invalid_reply_is_retried_once(stn, model_replies, tmp_path):
     {"confidence": 1.4},             # outside 0..1
     {"lanes_closed": ["left"]},      # not a lane name in the contract
     {"incident_type": "accident"},   # not in the incident_type list
-    {"district": "null"},            # the text "null" instead of JSON null
+    {"near_landmark": "null"},       # the text "null" instead of JSON null
+    {"in_scope": True},              # scope is decided by code, not the model
 ])
 def test_reply_failing_the_contract_twice_is_flagged(stn, model_replies, bad_field):
     bad = json.dumps(json.loads(MOCK_REPLY) | bad_field)
@@ -94,3 +96,32 @@ def test_pick_is_prefix_stable():
     first_five = sample.pick(messages, 5, seed=42)
     assert first_five == sample.pick(messages, 8, seed=42)[:5]
     assert len({m["stn"]["INCIDENT_NUMBER"] for m in first_five}) == 5  # one per incident
+
+
+@pytest.mark.parametrize("snapshot, on_corridor", [
+    ("stn_snapshot_20260915-0000.xml", False),  # Wing Tai Road, Chai Wan
+    ("stn_snapshot_20260918-1828.xml", True),   # Pok Fu Lam Road lanes re-opened
+    ("stn_snapshot_20260919-1757.xml", True),   # busy roads, Wong Nai Chung Gap Flyover second
+])
+def test_scope_comes_from_the_corridor_road_list(snapshot, on_corridor):
+    stn = sample.parse_messages((FIXTURES / snapshot).read_bytes())[0]
+    assert reader.names_corridor_road(stn) is on_corridor
+
+
+def test_corridor_road_only_as_destination_does_not_count():
+    # Made-up variation of real message 146443: its road swapped for one off the corridor.
+    stn = {"CONTENT_EN": "Traffic at the following road section has resumed normal: "
+                         "– Gloucester Road (Canal Road Flyover bound).",
+           "CONTENT_CN": ""}
+    assert not reader.names_corridor_road(stn)
+
+
+@pytest.mark.parametrize("incident_type, in_scope", [
+    ("traffic_accident", True),
+    ("public_transport_notice", False),
+])
+def test_corridor_message_scope_depends_on_type(model_replies, incident_type, in_scope):
+    # The real Pok Fu Lam Road message; the model's reply is the mock with its type swapped.
+    stn = sample.parse_messages((FIXTURES / "stn_snapshot_20260918-1828.xml").read_bytes())[0]
+    model_replies.append(json.dumps(json.loads(MOCK_REPLY) | {"incident_type": incident_type}))
+    assert reader.read_message(stn)["in_scope"] is in_scope
