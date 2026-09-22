@@ -130,22 +130,36 @@ def load_window(start: dt.datetime, end: dt.datetime,
     return rows
 
 
-def bin_5min(rows: list[dict], per_lane: bool = False) -> list[dict]:
-    """Aggregate lane readings into 5-minute bins.
+def bin_window(rows: list[dict], minutes: int = BIN_MINUTES,
+               per_lane: bool = False) -> list[dict]:
+    """Aggregate lane readings into fixed-width bins.
+
+    `minutes` trades time resolution against precision, and the right answer
+    depends on the job. The archive keeps under half the minutes, so a bin holds
+    only a sample: widening it multiplies the samples behind each count.
+
+      5 minutes   incident dynamics -- when the queue formed, when it cleared
+      15 minutes  demand calibration for the pre-incident hour, where a stable
+                  count matters far more than fine timing (3x the samples)
+
+    Must divide 60 so bins align to the hour.
 
     Per bin:
       flow_veh_h   vehicles per hour, over the seconds actually observed
-      count_5min   the count a five-minute bin implies -- this is the number to
-                   put against a modelled count in a GEH calculation
+      count_bin    the count this bin width implies -- the number to put
+                   against a modelled count in a GEH calculation
       speed_kmh    volume-weighted mean over valid lanes (a plain mean would
                    let an empty fast lane outvote a loaded slow lane)
       coverage_pct how much of the five minutes we actually saw
       offline      lane readings with valid="N", counted, never treated as zero
     """
+    if 60 % minutes:
+        raise ValueError(f"bin width must divide 60 minutes, got {minutes}")
+
     buckets: dict[tuple, list[dict]] = defaultdict(list)
     for row in rows:
         floor = row["timestamp"].replace(
-            minute=row["timestamp"].minute - row["timestamp"].minute % BIN_MINUTES,
+            minute=row["timestamp"].minute - row["timestamp"].minute % minutes,
             second=0, microsecond=0)
         key = (floor, row["detector_id"], row["lane"]) if per_lane else (floor, row["detector_id"])
         buckets[key].append(row)
@@ -157,6 +171,7 @@ def bin_5min(rows: list[dict], per_lane: bool = False) -> list[dict]:
         offline = len(group) - len(valid)
         periods = {r["timestamp"] for r in valid}
         observed_s = len(periods) * PERIOD_SECONDS
+        bin_seconds = minutes * 60
         volume = sum(r["volume"] or 0 for r in valid)
         flow = (volume / observed_s * 3600) if observed_s else None
 
@@ -174,11 +189,12 @@ def bin_5min(rows: list[dict], per_lane: bool = False) -> list[dict]:
             "detector_id": detector_id,
             "speed_kmh": round(speed, 1) if speed is not None else "",
             "flow_veh_h": round(flow) if flow is not None else "",
-            "count_5min": round(flow * BIN_MINUTES / 60) if flow is not None else "",
+            "count_bin": round(flow * minutes / 60) if flow is not None else "",
+            "bin_minutes": minutes,
             "occupancy_pct": round(sum(occupancies) / len(occupancies), 1) if occupancies else "",
             "volume_observed": round(volume),   # int: these are whole vehicles
             "periods_observed": len(periods),
-            "coverage_pct": round(observed_s / (BIN_MINUTES * 60) * 100),
+            "coverage_pct": round(observed_s / bin_seconds * 100),
             "lanes_valid": len(valid),
             "lanes_offline": offline,
         }
@@ -275,3 +291,8 @@ def format_warning(report: dict) -> str:
             f"!! {report['warning']}\n"
             f"!! See docs/02-data.md section 7.\n"
             f"{bar}")
+
+
+def bin_5min(rows: list[dict], per_lane: bool = False) -> list[dict]:
+    """Five-minute bins: the default resolution for incident dynamics."""
+    return bin_window(rows, BIN_MINUTES, per_lane)

@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from src.loaders import detectors, incidents
+from src.loaders import candidates, detectors, incidents, live
 from src.loaders.corridor import DETECTOR_IDS, LEG, on_corridor
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -69,6 +69,32 @@ def test_missing_values_are_none_never_zero():
     assert row["valid"] is False
 
 
+def test_wider_bins_multiply_the_samples_behind_a_count():
+    """The archive keeps <50% of minutes, so widening a bin is the cheapest way
+    to make a count precise: same data, more of it behind each number."""
+    base = dt.datetime(2026, 9, 21, 8, 0, tzinfo=HK)
+    rows = [{"timestamp": base + dt.timedelta(minutes=m), "detector_id": "AID01107",
+             "direction": "", "lane": "Fast Lane", "speed_kmh": 40.0, "volume": 10.0,
+             "occupancy_pct": 10.0, "speed_sd": 0, "valid": True}
+            for m in (0, 4, 7, 12)]
+
+    five = detectors.bin_window(rows, 5)
+    fifteen = detectors.bin_window(rows, 15)
+
+    assert len(five) == 3 and len(fifteen) == 1
+    assert max(b["periods_observed"] for b in five) == 2
+    assert fifteen[0]["periods_observed"] == 4          # every sample in one bin
+    assert fifteen[0]["bin_minutes"] == 15
+    assert fifteen[0]["coverage_pct"] == 13             # 4 x 30s of 900s
+    # The rate is the same either way -- only the precision changed.
+    assert fifteen[0]["flow_veh_h"] == 1200
+
+
+def test_bin_width_must_divide_an_hour():
+    with pytest.raises(ValueError, match="divide 60"):
+        detectors.bin_window([], 7)
+
+
 def test_bins_report_a_flow_rate_not_a_partial_sum():
     """Archive coverage is ~47% of minutes, so a five-minute bin holds one or two
     sampled periods. Summing raw volume would understate flow by about half."""
@@ -87,7 +113,7 @@ def test_bins_report_a_flow_rate_not_a_partial_sum():
     assert b["periods_observed"] == 1                 # one 30-second period
     assert b["coverage_pct"] == 10                    # 30s of the 300s bin
     assert b["flow_veh_h"] == 1200                    # 10 vehicles in 30s
-    assert b["count_5min"] == 100                     # what a full bin implies
+    assert b["count_bin"] == 100                      # what a full bin implies
     assert b["speed_kmh"] == 20.0                     # volume-weighted, not 40.0
 
 
@@ -174,7 +200,7 @@ def test_shortlist_excludes_short_and_censored_incidents():
 
 def _bin(detector_id: str, coverage_pct: int, speed: float | str = 50.0) -> dict:
     return {"bin_start": "2026-09-21T08:00:00+08:00", "detector_id": detector_id,
-            "speed_kmh": speed, "flow_veh_h": 1200, "count_5min": 100,
+            "speed_kmh": speed, "flow_veh_h": 1200, "count_bin": 100,
             "occupancy_pct": 10, "volume_observed": 10,
             "periods_observed": max(coverage_pct // 10, 0),
             "coverage_pct": coverage_pct, "lanes_valid": 2, "lanes_offline": 0}
@@ -233,3 +259,58 @@ def test_four_lane_detector_sends_the_expected_lane_names_in_file_order(detector
     first_period = min(r["timestamp"] for r in rows)
     lanes = [r["lane"] for r in rows if r["timestamp"] == first_period]
     assert lanes == ["Fast Lane", "Middle Lane 1", "Middle Lane 2", "Slow Lane"]
+
+
+# --- candidate screening --------------------------------------------------
+
+def _incident(number, new_at, closed_at, duration):
+    return {"incident_number": number, "new_at": new_at, "closed_at": closed_at,
+            "duration_min": duration, "location_en": "Aberdeen Tunnel",
+            "direction_en": "Causeway Bay", "corridor_road": "aberdeen tunnel",
+            "left_censored": False, "right_censored": False}
+
+
+def test_candidate_window_covers_the_pre_incident_hour_and_recovery():
+    start, end = candidates.window_for(
+        _incident("IN-1", "2026-09-18T18:00:00+08:00", "2026-09-18T19:00:00+08:00", 60))
+    assert start.strftime("%H:%M") == "16:30"     # 90 min before NEW
+    assert end.strftime("%H:%M") == "20:00"       # 60 min after CLOSED
+
+
+def test_candidate_window_is_none_when_times_are_censored():
+    assert candidates.window_for(_incident("IN-2", "", "", None)) is None
+
+
+def test_score_prefers_well_covered_incidents_with_a_visible_drop():
+    covered = {"retrievable_pct": 80, "speed_drop_kmh": -30, "duration_min": 60}
+    invisible = {"retrievable_pct": 80, "speed_drop_kmh": -2, "duration_min": 60}
+    patchy = {"retrievable_pct": 20, "speed_drop_kmh": -30, "duration_min": 60}
+    assert candidates.score(covered) > candidates.score(invisible)
+    assert candidates.score(covered) > candidates.score(patchy)
+
+
+def test_shortlist_markdown_explains_coverage_and_names_the_decision(tmp_path):
+    rows = [{**_incident("IN-26-06874", "2026-09-18T18:00:00+08:00",
+                         "2026-09-18T19:00:00+08:00", 60),
+             "retrievable_pct": 71, "score": 3.2, "bins": 84,
+             "mean_coverage_pct": 52, "usable_pct": 67, "lanes_valid_pct": 98,
+             "speed_drop_kmh": -31.4}]
+    path = candidates.write_markdown(rows, tmp_path / "candidates.md")
+    text = path.read_text(encoding="utf-8")
+    assert "IN-26-06874" in text and "71%" in text
+    assert "selection criterion" in text        # says why coverage is a column
+    assert "The team picks one incident" in text
+
+
+# --- live poller ----------------------------------------------------------
+
+def test_live_filename_comes_from_the_data_not_the_wall_clock(detector_xml):
+    """Two polls of an unrefreshed feed must land on the same name, or the
+    poller would store duplicates every 30 seconds instead of one per minute."""
+    assert live._stamp("detectors", detector_xml) == "20260921-082100"
+    assert live._stamp("detectors", detector_xml) == live._stamp("detectors", detector_xml)
+
+
+def test_live_stamp_for_stn_uses_the_newest_announcement():
+    xml = (FIXTURES / "stn_snapshot_20260918-1828.xml").read_bytes()
+    assert live._stamp("stn", xml).startswith("20260918-")

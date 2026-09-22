@@ -184,11 +184,43 @@ Incident") · `INCIDENT_DETAIL_EN/CN` (e.g. "Traffic Accident") · `LOCATION_EN/
 > the file, and widen any wanted window by ~15 minutes before asking the archive
 > for versions.
 >
-> **(b) Coverage is partial, and roughly a third of listed versions are dead.**
-> For the hour 08:00-09:00, `list-file-versions` returned 41 timestamps, only 28
-> of which `get-file` would serve — the other 13 are a persistent 404, not a
-> transient error, so do not waste retries on them. Those 28 files held **28
-> distinct data minutes out of 60 (about 47%)**, with gaps of up to five minutes.
+> **(b) Coverage is partial: only about half of the listed detector versions can
+> actually be retrieved.** `list-file-versions` returns timestamps that
+> `get-file` then 404s on. The 404 is persistent, not transient — retrying is
+> wasted effort — and it is **specific to the raw detector feed**:
+>
+> | Feed (sampled 40 versions, 21 Sep) | listed/day | retrievable | avg size |
+> |---|---|---|---|
+> | Special Traffic News | 127 | **40/40** | ~1.5 KB |
+> | Segment speeds (`irnAvgSpeed-all.xml`) | 619 | **40/40** | ~373 KB |
+> | Raw detectors (`rawSpeedVol-all.xml`) | 901 | **17/40** | ~694 KB |
+>
+> Across time-of-day bands on two days, detector retrievability ran 36–71% with
+> no pattern we can establish at this sample size — treat it as roughly half,
+> scattered, with early indications that night windows are worse than daytime
+> ones (33% at 04:00 against 47% at 08:00). It is not a timestamp-rounding
+> problem: neighbouring minutes usually serve fine. **Nor is it
+> de-duplication** — inspecting the data periods either side of a 404 shows
+> genuine holes, e.g. a jump from 03:56 straight to 04:05 with five 404s in
+> between, 26 minutes lost in one 40-minute stretch. The minutes are gone, not
+> stored elsewhere.
+>
+> Update frequency is not the cause either: the processed feed refreshes every
+> 2 minutes (less often than the raw feed's 1 minute) and loses nothing. What
+> tracks the failures is storage load — 0.2 MB/day for STN and 231 MB/day for
+> the processed feed, both intact, against 625 MB/day for the raw feed. The cause is unverified; the raw detector feed is by far
+> the heaviest thing the archive stores (~625 MB/day against ~231 MB for
+> segments), so retention or storage pressure is the leading guess. Asking the
+> Transport Department is the only way to know.
+>
+> Net effect: for the hour 08:00-09:00, 41 versions listed, 28 served, holding
+> **28 distinct data minutes out of 60 (about 47%)**, with gaps of up to five
+> minutes.
+>
+> **Note for [C]:** the processed segment-speed feed is fully retrievable and
+> twice as dense. It carries no volume, so it cannot support GEH — but for the
+> *speed* side of validation, where sparse coverage hurts least anyway, it is a
+> better series than the raw feed. Worth using alongside it.
 >
 > **The consequence of (b):** a five-minute bin typically contains one to three
 > sampled minutes, not five. **Summing raw volume into a bin understates flow by
@@ -336,10 +368,11 @@ was actually observed:
 |---|---|
 | `speed_kmh` | volume-weighted mean over valid lanes |
 | `flow_veh_h` | vehicles per hour, over the seconds actually observed |
-| `count_5min` | the count a full five-minute bin implies — **this is the number for GEH** |
-| `volume_observed` | vehicles actually counted (usually far fewer than `count_5min`) |
+| `count_bin` | the count this bin width implies — **this is the number for GEH** |
+| `volume_observed` | vehicles actually counted (usually far fewer than `count_bin`) |
 | `periods_observed` | how many 30-second periods the bin is built from |
-| `coverage_pct` | `periods_observed × 30 / 300` — the sampling fraction |
+| `bin_minutes` | the bin width these numbers were computed at |
+| `coverage_pct` | observed seconds ÷ bin seconds — the sampling fraction |
 | `lanes_valid` / `lanes_offline` | offline lanes are counted, never treated as zero traffic |
 
 **`coverage_pct` is a precision label, not a correctness label.** A bin at 10%
@@ -362,3 +395,48 @@ can come out at 200 vehicles when the truth is 90.
   high-coverage bins show similar mean speeds, the filter is a precision filter
   and nothing more. If they differ, filtering would bias the calibration and
   that has to be said out loud.
+
+
+### Four ways we offset the missing minutes
+
+The gaps cannot be filled — the files do not exist, on either archive host, at
+any timestamp (checked 22 Sep). So the loader offsets them instead, cheapest
+first:
+
+**1. Choose an incident that falls where the gaps are smallest.** Coverage
+varies window to window and is effectively random, so it is a *selection*
+criterion, not a defect to fight. `data/candidates.md` scores every candidate on
+retrievability and measured coverage, and the team picks from that table:
+
+    python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21
+
+Screening is two-stage — a 12-version sample per incident, then a full pull for
+the best few — so it runs in an afternoon rather than a night.
+
+**2. Widen the bin where precision matters more than timing.** Demand
+calibration for the pre-incident hour wants a stable count, not fine timing:
+
+    python -m src.loaders.fetch detectors --start ... --end ... --bin-minutes 15
+
+Three times the samples behind each count. Keep 5-minute bins for the incident
+itself, where timing is the whole point. Two resolutions, two jobs.
+
+**3. Poll the live feed from now on (component A4).** The live feed has no gap —
+the Transport Department republishes every minute and we can take all of them:
+
+    python -m src.loaders.fetch live
+
+It cannot help a past incident, but every corridor incident from the moment it
+starts is captured at 100% coverage, and corridor incidents run about two a
+week. Needs a machine that stays awake; files are named by the data's own
+timestamp, so a sleep costs only the minutes slept.
+
+> This is also the honest Q&A answer: **our coverage limit is an artefact of
+> replaying history, not of the system.** Deployed, Ripple reads the live feed.
+
+**4. (Deferred) The processed segment-speed feed** is 100% retrievable and twice
+as dense, and would strengthen the speed side of validation. But it keys on IRN
+`segment_id`, and `speed_segments_info.csv` carries only `irn_id` and `route` —
+no road names — so mapping segments to our corridor needs the separate Road
+Network (2nd Generation) GML and a geospatial join against detector lat/lon.
+Worth doing if week 2 has room; not a quick win.

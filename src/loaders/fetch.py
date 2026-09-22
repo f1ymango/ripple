@@ -16,7 +16,7 @@ import argparse
 import datetime as dt
 from pathlib import Path
 
-from src.loaders import archive, corridor, detectors, incidents
+from src.loaders import archive, candidates, corridor, detectors, incidents, live
 
 HK = dt.timezone(dt.timedelta(hours=8))
 
@@ -64,9 +64,9 @@ def cmd_detectors(args) -> None:
     if not rows:
         print("no detector readings in that window -- the archive's latest day is yesterday")
         return
-    binned = detectors.bin_5min(rows)
+    binned = detectors.bin_window(rows, args.bin_minutes)
     usable = detectors.usable_for_calibration(binned, args.min_coverage)
-    stem = f"{start:%Y%m%d-%H%M}_{end:%H%M}"
+    stem = f"{start:%Y%m%d-%H%M}_{end:%H%M}_b{args.bin_minutes}"
 
     detectors.write_csv(rows, Path(f"data/detector_readings_{stem}.csv"))
     detectors.write_csv(binned, Path(f"data/detector_5min_{stem}.csv"))
@@ -76,7 +76,7 @@ def cmd_detectors(args) -> None:
         detectors.write_csv(usable,
                             Path(f"data/detector_5min_{stem}_cov{args.min_coverage}.csv"))
 
-    print(f"{len(rows)} lane readings -> {len(binned)} five-minute bins")
+    print(f"{len(rows)} lane readings -> {len(binned)} bins of {args.bin_minutes} min")
     report = detectors.coverage_report(binned, args.min_coverage)
     for key, value in report.items():
         if key != "warning":
@@ -89,6 +89,24 @@ def cmd_detectors(args) -> None:
               f"{bias['high_coverage_mean_speed']} km/h for high-coverage bins "
               f"({bias['mean_speed_gap_kmh']} km/h apart). Filtering by coverage may be "
               f"selecting for traffic conditions -- say so on the validation slide.")
+
+
+def cmd_candidates(args) -> None:
+    rows = candidates.shortlist(args.start, args.end, args.top, args.bin_minutes)
+    if not rows:
+        print("no usable corridor incidents in that window -- widen the dates")
+        return
+    path = candidates.write_markdown(rows, top=args.top)
+    print(f"\n{len(rows)} candidates -> {path}")
+    print("Top of the list (the team picks one):")
+    for row in rows[:args.top]:
+        print(f"  {row['incident_number']}  score {row['score']:<6} "
+              f"{row['duration_min']:>4} min  coverage {row.get('mean_coverage_pct', '?')}%  "
+              f"drop {row.get('speed_drop_kmh', '?')} km/h  {row['location_en']}")
+
+
+def cmd_live(args) -> None:
+    live.run(minutes=args.minutes, poll_seconds=args.poll_seconds)
 
 
 def main() -> None:
@@ -112,11 +130,32 @@ def main() -> None:
     p = sub.add_parser("detectors", help="tidy + 5-minute bins for one time window")
     p.add_argument("--start", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
     p.add_argument("--end", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
+    p.add_argument("--bin-minutes", type=int, default=detectors.BIN_MINUTES,
+                   dest="bin_minutes",
+                   help="bin width; 5 for incident dynamics, 15 for demand "
+                        "calibration where a stable count beats fine timing "
+                        "(default %(default)s)")
     p.add_argument("--min-coverage", type=int, default=detectors.MIN_COVERAGE_PCT,
                    dest="min_coverage",
                    help="sampling-fraction threshold for the calibration export "
                         "(default %(default)s%%; see docs/02-data.md section 7)")
     p.set_defaults(func=cmd_detectors)
+
+    p = sub.add_parser("candidates", help="shortlist demo incidents, scored on coverage")
+    p.add_argument("--start", required=True)
+    p.add_argument("--end", required=True)
+    p.add_argument("--top", type=int, default=6,
+                   help="how many to pull in full after the cheap screen (default %(default)s)")
+    p.add_argument("--bin-minutes", type=int, default=detectors.BIN_MINUTES,
+                   dest="bin_minutes")
+    p.set_defaults(func=cmd_candidates)
+
+    p = sub.add_parser("live", help="poll the live feeds at full rate (component A4)")
+    p.add_argument("--minutes", type=int, default=0,
+                   help="0 runs until stopped (default %(default)s)")
+    p.add_argument("--poll-seconds", type=int, default=live.POLL_SECONDS,
+                   dest="poll_seconds")
+    p.set_defaults(func=cmd_live)
 
     args = parser.parse_args()
     args.func(args)
