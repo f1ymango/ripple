@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Tue 22 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
+**Last updated: Wed 23 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
 the incident) · Stand-ups: Sunday and Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
@@ -47,7 +47,7 @@ this chain.
 
 | | Component | Owner | Status |
 |---|---|---|---|
-| A | Loaders: detector and incident archives, live poller | Data | ⚪ Nothing in the repo yet |
+| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, detector and incident loaders, corridor table, candidate screening and live poller merged, with 28 tests ([src/loaders/](src/loaders/)). Committed output so far: the 28-detector [data/detectors.csv](data/detectors.csv) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Parses all 20 dev messages; accuracy not measured yet ([src/reader/](src/reader/)) |
 | C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | ⚪ Nothing in the repo yet |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
@@ -64,7 +64,7 @@ The JSON contracts between modules are in
 | Owner | Task | Done when | Status |
 |---|---|---|---|
 | Lead | Freeze scope; write `CLAUDE.md`; create repo; test the Incident Reader on 20 real messages | repo exists, 20 messages parsed | ✅ 22 Sep |
-| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | ⚪ |
+| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screening tool built ([src/loaders/candidates.py](src/loaders/candidates.py)); shortlist not generated yet |
 | Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ⚪ |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | ⚪ |
 | Impact | Gather problem evidence; line up 2–3 user interviews | `05-pitch.md` evidence section filled | 🟡 evidence drafted |
@@ -73,7 +73,25 @@ The JSON contracts between modules are in
 
 - **The demo incident** (🔒 Sun 27 Sep), from Data's shortlist. Corridor
   incidents are rare: 15–21 Sep had only two (IN-26-06874, IN-26-06904), so
-  search a longer window.
+  search a longer window. Detector coverage is now a selection criterion, and
+  the screen that scores it takes an afternoon, so it has to start before
+  Sunday: `python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21`
+  writes `data/candidates.md`.
+- **Middle-lane order on 4-lane roads.** The data dictionary and the XML
+  disagree on which physical lane `Middle Lane 1` is. It matters for one
+  corridor detector (AID01217, the only 4-lane one) and for [E]'s lane
+  mapping. Settle it in week 2; until then the Reader prompt stays as it is
+  ([docs/02-data.md](docs/02-data.md) §1, [docs/03-architecture.md](docs/03-architecture.md) §3).
+- **The calibration coverage threshold.** The loader keeps 5-minute bins with
+  at least 40% coverage for calibration. Relax it only as a team, and state
+  whatever threshold is used on the validation slide
+  ([docs/02-data.md](docs/02-data.md) §7).
+- **One corridor-road list.** The Reader ([src/reader/reader.py](src/reader/reader.py))
+  and the loaders ([src/loaders/corridor.py](src/loaders/corridor.py)) each
+  keep their own, and they differ: Stubbs Road and the Chinese road names are
+  only in the Reader's. Pick one and share it.
+- **Who runs the live poller, and on which machine.** Its data has no gaps,
+  but it only records while it runs (`python -m src.loaders.fetch live`).
 - **An `unspecified` lane value in `incident.json`**, so "part of the lanes is
   closed" stops coming out as "no lanes closed". A contract change: decide as a
   team, then update [docs/03-architecture.md](docs/03-architecture.md) the same day.
@@ -88,6 +106,14 @@ The JSON contracts between modules are in
 - Lane totals are wrong on 2 of the 20 dev messages.
 - No Aberdeen-corridor message has been through a live model run yet. Scope
   detection is tested on two real corridor messages, with the model mocked.
+- The historical archive serves only about half the raw detector minutes (28
+  of 60 for 08:00–09:00 on 21 Sep), and the missing ones cannot be recovered.
+  Summing raw volume into bins would understate flow by about half, so the
+  loader reports a flow rate and a `coverage_pct` for every bin
+  ([docs/02-data.md](docs/02-data.md) §3, §7).
+- For [C]: the processed segment-speed feed is fully retrievable. It has no
+  volume, so it cannot support GEH, but it is the better series for the speed
+  side of validation ([docs/02-data.md](docs/02-data.md) §3).
 
 ### Definition of done
 
@@ -107,6 +133,19 @@ The JSON contracts between modules are in
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Wed 23 Sep**
+- Data layer (component A) merged ([#2](https://github.com/f1ymango/ripple/pull/2)):
+  archive client with a resumable parallel cache, detector loader with
+  coverage-aware 5- and 15-minute bins, NEW → CLOSED incident timelines, the
+  28-detector corridor table, two-stage candidate screening, live poller and
+  the `fetch` command line; 28 tests ([src/loaders/](src/loaders/)).
+- Archive measured: about half the raw detector minutes are missing and
+  cannot be recovered, so every bin carries its coverage
+  ([docs/02-data.md](docs/02-data.md) §3, §7).
+- Contract note: lane names, not indices, travel between modules; the
+  4-lane middle-lane order is an open question
+  ([docs/03-architecture.md](docs/03-architecture.md) §3).
 
 **Tue 22 Sep**
 - Incident Reader pinned to `qwen3:8b`. After the fix below, both models
@@ -140,8 +179,21 @@ cd ripple
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-python -m pytest                   # 17 tests, no LLM needed
+python -m pytest                   # 45 tests, no LLM needed
 ```
+
+### Run the data layer
+
+```bash
+python -m src.loaders.fetch corridor     # writes data/detectors.csv
+python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21
+python -m src.loaders.fetch detectors --start 2026-09-21T07:00 --end 2026-09-21T10:00
+python -m src.loaders.fetch live         # polls the live feeds until stopped
+```
+
+Downloads are cached in `data/raw/`, so each machine fills its own cache the
+first time. Read [docs/02-data.md](docs/02-data.md) §7 before calibrating on
+the detector bins.
 
 ### Run the Incident Reader
 
