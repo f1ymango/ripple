@@ -47,7 +47,7 @@ this chain.
 
 | | Component | Owner | Status |
 |---|---|---|---|
-| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines, detector bins with coverage, corridor table, candidate screener and live poller, 153 tests ([src/loaders/](src/loaders/)). Shortlist still to generate |
+| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines, detector bins with coverage, corridor table, candidate screener and live poller ([src/loaders/](src/loaders/)). Committed output: the 28-detector [data/detectors.csv](data/detectors.csv); shortlist still to generate |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Parses all 20 dev messages; accuracy not measured yet ([src/reader/](src/reader/)) |
 | C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | ⚪ Nothing in the repo yet |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
@@ -64,7 +64,7 @@ The JSON contracts between modules are in
 | Owner | Task | Done when | Status |
 |---|---|---|---|
 | Lead | Freeze scope; write `CLAUDE.md`; create repo; test the Incident Reader on 20 real messages | repo exists, 20 messages parsed | ✅ 22 Sep |
-| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/](src/loaders/)); 3-month STN pull and `fetch candidates` still to run |
+| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/candidates.py](src/loaders/candidates.py)); 3-month STN pull and `fetch candidates` still to run |
 | Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ⚪ |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | ⚪ |
 | Impact | Gather problem evidence; line up 2–3 user interviews | `05-pitch.md` evidence section filled | 🟡 evidence drafted |
@@ -75,8 +75,16 @@ The JSON contracts between modules are in
   incidents are rare: 15–21 Sep had only two (IN-26-06874, IN-26-06904), so
   search a longer window. Only about a quarter of incidents have a captured
   CLOSED message, so three months should give roughly 5–7 usable candidates.
-  The screener ranks them on archive coverage as well as the speed drop:
-  `python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21`.
+  The screener ranks them on archive coverage as well as the speed drop, and
+  the run takes an afternoon, so it has to start before Sunday:
+  `python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21`
+  writes `data/candidates.md`.
+- **One corridor-road list.** The Reader ([src/reader/reader.py](src/reader/reader.py))
+  and the loaders ([src/loaders/corridor.py](src/loaders/corridor.py)) each
+  keep their own, and they differ: Stubbs Road and the Chinese road names are
+  only in the Reader's. Pick one and share it.
+- **Who runs the live poller, and on which machine.** Its data has no gaps,
+  but it only records while it runs (`python -m src.loaders.fetch live`).
 - **An `unspecified` lane value in `incident.json`**, so "part of the lanes is
   closed" stops coming out as "no lanes closed". A contract change: decide as a
   team, then update [docs/03-architecture.md](docs/03-architecture.md) the same day.
@@ -102,8 +110,13 @@ The JSON contracts between modules are in
   detection is tested on two real corridor messages, with the model mocked.
 - The historical archive serves only about half the raw detector snapshots it
   lists (39% were a persistent 404 on 21 Sep), so a 5-minute bin usually holds
-  1–3 observed minutes. Every count carries its `coverage_pct`; the missing
-  minutes cannot be recovered ([docs/02-data.md](docs/02-data.md) §3).
+  1–3 observed minutes. Summing raw volume into a bin would understate flow by
+  about half, so the loader reports a flow rate and a `coverage_pct` instead.
+  The missing minutes cannot be recovered
+  ([docs/02-data.md](docs/02-data.md) §3, §7).
+- For [C]: the processed segment-speed feed is fully retrievable. It has no
+  volume, so it cannot support GEH, but it is the better series for the speed
+  side of validation ([docs/02-data.md](docs/02-data.md) §3).
 
 ### Definition of done
 
@@ -143,6 +156,8 @@ Newest first. One line per change that matters, with a link to the proof.
   coverage, `--bin-minutes 15` for calibration, and a live poller
   ([src/loaders/candidates.py](src/loaders/candidates.py),
   [src/loaders/live.py](src/loaders/live.py)).
+- Tracker and `CLAUDE.md` brought up to date with the data layer
+  ([#3](https://github.com/f1ymango/ripple/pull/3)).
 
 **Tue 22 Sep**
 - Data layer (component A): archive client, incident timelines from archived
@@ -184,8 +199,21 @@ cd ripple
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-python -m pytest                   # 17 tests, no LLM needed
+python -m pytest                   # 153 tests, no LLM needed
 ```
+
+### Run the data layer
+
+```bash
+python -m src.loaders.fetch corridor     # writes data/detectors.csv
+python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21
+python -m src.loaders.fetch detectors --start 2026-09-21T07:00 --end 2026-09-21T10:00
+python -m src.loaders.fetch live         # polls the live feeds until stopped
+```
+
+Downloads are cached in `data/raw/`, so each machine fills its own cache the
+first time. Read [docs/02-data.md](docs/02-data.md) §7 before calibrating on
+the detector bins.
 
 ### Run the Incident Reader
 
