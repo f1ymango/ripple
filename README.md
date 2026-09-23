@@ -54,7 +54,7 @@ this chain.
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
 | G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed ([src/console/app.py](src/console/app.py)) |
-| H | Evidence pack: validation, accuracy, interviews | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3 |
+| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3; workspaces and their definitions of done are in [evidence/interviews/](evidence/interviews/) and [deck/](deck/) |
 
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
@@ -67,7 +67,22 @@ The JSON contracts between modules are in
 | Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/candidates.py](src/loaders/candidates.py)); 3-month STN pull and `fetch candidates` still to run |
 | Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | 🟡 map built ([src/console/app.py](src/console/app.py)); screenshot to post |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | ⚪ |
-| Impact | Gather problem evidence; line up 2–3 user interviews | `05-pitch.md` evidence section filled | 🟡 evidence drafted |
+| Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 evidence drafted; interviews and fact-check outstanding |
+
+### In review
+
+Work that exists but is not on `main` yet, as of Wed 23 Sep. Merged work shows
+in the rows above.
+
+| What | Who | Branch |
+|---|---|---|
+| [#7](https://github.com/f1ymango/ripple/pull/7) Evidence-pack workspaces: interview plan and deck outline, each with a definition of done | Impact | `docs/impact-workspace` |
+| [#6](https://github.com/f1ymango/ripple/pull/6) Console: the Visuals role label instead of a personal name | Visuals | `visuals/tracker-role-label` |
+| Console: headline stats, legend, street basemap, cleaner tooltip — **pushed, but no pull request is open** | Visuals | `visuals/map-improvements` |
+
+Four branches whose pull request is already merged are still on the remote
+(`docs/readme-tracker`, `docs/tracker-data-layer`, `data/loaders`,
+`visuals/detector-map`). Deleting them keeps the branch list readable.
 
 ### Open decisions
 
@@ -138,6 +153,9 @@ The JSON contracts between modules are in
 Newest first. One line per change that matters, with a link to the proof.
 
 **Wed 23 Sep**
+- Evidence pack (component H): workspaces for the interviews and the deck, each
+  with its own definition of done ([evidence/interviews/](evidence/interviews/),
+  [deck/](deck/)).
 - Operator console (component G) started: Streamlit app with the 28-detector
   corridor map coloured by speed, greying detectors when no speed snapshot is
   loaded rather than inventing one ([src/console/app.py](src/console/app.py)).
@@ -246,6 +264,17 @@ python -m src.reader.sample --start 2026-09-15 --end 2026-09-21 --n 20
 This **overwrites** `data/labelled_incidents/messages.jsonl`, the committed
 dev set. Downloads are cached in `data/raw/` (not committed); a week of archive
 takes about 20 minutes the first time.
+
+### Run the operator console
+
+```bash
+streamlit run src/console/app.py
+```
+
+The map draws all 28 corridor detectors from [data/detectors.csv](data/detectors.csv).
+Colour comes from a `data/detector_5min_*.csv` window written by the data
+layer; without one, every detector stays grey rather than being given an
+invented speed.
 
 ## Rules everyone follows
 
