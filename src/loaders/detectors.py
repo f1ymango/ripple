@@ -17,24 +17,24 @@ That last point decides how a bin is built. A five-minute bin usually holds
 one to three sampled minutes, so **summing raw volume would understate flow by
 roughly half** and any GEH comparison built on it would calibrate the twin to
 half the real traffic. Instead each bin reports a flow *rate* over the seconds
-actually observed, plus the coverage behind it, and `count_5min` is the
+actually observed, plus the coverage behind it, and `count_bin` is the
 comparable count derived from that rate.
 
     python -m src.loaders.fetch detectors --start 2026-09-21T07:00 --end 2026-09-21T10:00
 """
 from __future__ import annotations
 
-import csv
 import datetime as dt
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-from pathlib import Path
 
 from src.loaders import archive
+from src.loaders.common import HK, write_csv  # noqa: F401  (write_csv re-exported)
 from src.loaders.corridor import DETECTOR_IDS
 
-HK = dt.timezone(dt.timedelta(hours=8))
-PERIOD_SECONDS = 30       # each <period> covers 30 seconds
+# Each <period> is 30 seconds in every file seen so far, but nothing here
+# assumes it: a period's length is read from its own period_to - period_from,
+# and that length is the denominator of every flow and coverage figure.
 BIN_MINUTES = 5
 ARCHIVE_LAG_MIN = 15      # widen a wanted window by this before hitting the archive
 
@@ -42,6 +42,12 @@ ARCHIVE_LAG_MIN = 15      # widen a wanted window by this before hitting the arc
 # chart, not fine for a GEH count. Changing it is a team decision, because it
 # trades precision against how many points Simulation has left to fit.
 MIN_COVERAGE_PCT = 40
+
+# Share of lane readings in a bin that must be valid="Y" before its count can be
+# calibrated against. Detector outages track traffic (sensors fail in the
+# conditions we care about), so a partly-offline bin is suspect, not merely
+# imprecise. Also a team decision.
+MIN_LANE_COMPLETENESS_PCT = 90
 
 
 def parse_snapshot(xml_bytes: bytes, keep: set[str] | None = None) -> list[dict]:
@@ -53,12 +59,20 @@ def parse_snapshot(xml_bytes: bytes, keep: set[str] | None = None) -> list[dict]
     root = ET.fromstring(xml_bytes)
     day = root.findtext("date", "").strip()
     rows: list[dict] = []
-    for period in root.find("periods").findall("period"):
+    periods = root.find("periods")
+    if periods is None:                  # a snapshot with no periods has no readings
+        return rows
+    for period in periods.findall("period"):
         period_from = period.findtext("period_from", "").strip()
+        period_to = period.findtext("period_to", "").strip()
         try:
             timestamp = dt.datetime.fromisoformat(f"{day}T{period_from}").replace(tzinfo=HK)
+            ends = dt.datetime.fromisoformat(f"{day}T{period_to}").replace(tzinfo=HK)
         except ValueError:
-            continue
+            continue                     # a period we cannot time cannot be a rate
+        if ends <= timestamp:
+            ends += dt.timedelta(days=1)  # 23:59:30 -> 00:00:00
+        period_s = (ends - timestamp).total_seconds()
         for detector in period.iter("detector"):
             detector_id = (detector.findtext("detector_id") or "").strip()
             if keep is not None and detector_id not in keep:
@@ -66,29 +80,47 @@ def parse_snapshot(xml_bytes: bytes, keep: set[str] | None = None) -> list[dict]
             direction = (detector.findtext("direction") or "").strip()
             for lane in detector.iter("lane"):
                 valid = (lane.findtext("valid") or "").strip().upper() == "Y"
+                volume = _number(lane.findtext("volume"))
+                speed = _number(lane.findtext("speed"))
+                occupancy = _number(lane.findtext("occupancy"))
+                if volume == 0:
+                    # No vehicle crossed the loop in this period. The feed then
+                    # reports the road's SPEED LIMIT as the speed (70, 80, 100...
+                    # about 19% of all lane readings on 21 Sep) and often -1 as
+                    # the occupancy (2,143 of 2,143 times it appeared). Neither
+                    # was measured: speed is unknown, and an empty loop is 0%
+                    # occupied.
+                    speed = None
+                    occupancy = 0.0 if occupancy is None else occupancy
                 rows.append({
                     "timestamp": timestamp,
                     "detector_id": detector_id,
                     "direction": direction,
                     "lane": (lane.findtext("lane_id") or "").strip(),
-                    "speed_kmh": _number(lane.findtext("speed")),
-                    "volume": _number(lane.findtext("volume")),
-                    "occupancy_pct": _number(lane.findtext("occupancy")),
+                    "speed_kmh": speed,
+                    "volume": volume,
+                    "occupancy_pct": occupancy,
                     # The tag really is <s.d.> -- a dot in the tag name.
                     "speed_sd": _number(lane.findtext("s.d.")),
                     "valid": valid,
+                    "period_s": period_s,
                 })
     return rows
 
 
 def _number(text: str | None) -> float | None:
-    """'26' -> 26.0, '' or None or rubbish -> None. Never 0.0 by accident."""
+    """'26' -> 26.0; '', None, rubbish or a negative -> None. Never 0.0 by accident.
+
+    Speed, volume, occupancy and their spread cannot be negative, so a negative
+    is a marker (the feed uses -1 for "not measured"), never a reading.
+    """
     if text is None or not text.strip():
         return None
     try:
-        return float(text.strip())
+        value = float(text.strip())
     except ValueError:
         return None
+    return value if value >= 0 else None
 
 
 def window_timestamps(start: dt.datetime, end: dt.datetime) -> list[str]:
@@ -109,7 +141,11 @@ def window_timestamps(start: dt.datetime, end: dt.datetime) -> list[str]:
 
 def load_window(start: dt.datetime, end: dt.datetime,
                 detector_ids: list[str] | None = None) -> list[dict]:
-    """Every corridor lane reading whose own timestamp falls inside [start, end].
+    """Every corridor lane reading whose own timestamp falls in [start, end).
+
+    Half-open, like every window in this package: a 15-minute request returns
+    15 minutes. With a closed end, a reading stamped exactly at `end` opened an
+    extra bin beyond the request, at a few percent coverage.
 
     Consecutive archived files overlap, so identical readings are dropped on
     (timestamp, detector, lane) rather than counted twice.
@@ -119,7 +155,7 @@ def load_window(start: dt.datetime, end: dt.datetime,
     rows: list[dict] = []
     for _, xml_bytes in archive.iter_snapshots("detectors", window_timestamps(start, end)):
         for row in parse_snapshot(xml_bytes, keep):
-            if not (start <= row["timestamp"] <= end):
+            if not (start <= row["timestamp"] < end):
                 continue
             key = (row["timestamp"], row["detector_id"], row["lane"])
             if key in seen:
@@ -150,11 +186,13 @@ def bin_window(rows: list[dict], minutes: int = BIN_MINUTES,
                    against a modelled count in a GEH calculation
       speed_kmh    volume-weighted mean over valid lanes (a plain mean would
                    let an empty fast lane outvote a loaded slow lane)
-      coverage_pct how much of the five minutes we actually saw
+      coverage_pct how much of the bin the ARCHIVE delivered (archive gaps only)
+      lane_completeness_pct  share of those lane readings the SENSORS reported
+                   as valid (detector outages only) -- a separate failure
       offline      lane readings with valid="N", counted, never treated as zero
     """
-    if 60 % minutes:
-        raise ValueError(f"bin width must divide 60 minutes, got {minutes}")
+    if minutes <= 0 or 60 % minutes:
+        raise ValueError(f"bin width must be a positive divisor of 60 minutes, got {minutes}")
 
     buckets: dict[tuple, list[dict]] = defaultdict(list)
     for row in rows:
@@ -169,19 +207,44 @@ def bin_window(rows: list[dict], minutes: int = BIN_MINUTES,
         bin_start, detector_id = key[0], key[1]
         valid = [r for r in group if r["valid"]]
         offline = len(group) - len(valid)
-        periods = {r["timestamp"] for r in valid}
-        observed_s = len(periods) * PERIOD_SECONDS
+
+        # Archive coverage counts every period the archive delivered, whatever
+        # the sensors said. A detector outage is not an archive gap: outages
+        # track traffic and archive gaps do not, so they are counted apart.
+        period_s = {r["timestamp"]: r["period_s"] for r in group}
+        periods = set(period_s)
         bin_seconds = minutes * 60
+        bin_end = bin_start + dt.timedelta(minutes=minutes)
+        # Only the part of each period inside this bin counts towards coverage,
+        # so a period running past the bin's end cannot push it over 100%.
+        observed_s = sum(min(seconds, (bin_end - t).total_seconds())
+                         for t, seconds in period_s.items())
         volume = sum(r["volume"] or 0 for r in valid)
-        flow = (volume / observed_s * 3600) if observed_s else None
+
+        # Flow per lane over that lane's own valid seconds, then summed. Pooling
+        # lanes over the bin's seconds counted an offline lane as an empty one
+        # and halved a two-lane road while coverage still read 100%. A lane with
+        # no valid reading at all leaves the total unknown, not smaller.
+        lanes_seen = {r["lane"] for r in group}
+        lane_periods: dict[str, set] = defaultdict(set)
+        lane_volume: dict[str, float] = defaultdict(float)
+        for r in valid:
+            lane_periods[r["lane"]].add(r["timestamp"])
+            lane_volume[r["lane"]] += r["volume"] or 0
+        if lanes_seen and all(lane_periods[lane] for lane in lanes_seen):
+            flow = sum(lane_volume[lane] / sum(period_s[t] for t in lane_periods[lane]) * 3600
+                       for lane in lanes_seen)
+        else:
+            flow = None
+        lane_slots = len(lanes_seen) * len(periods)
+        completeness = round(len(valid) / lane_slots * 100) if lane_slots else 0
 
         weight = sum(r["volume"] or 0 for r in valid if r["speed_kmh"] is not None)
         if weight:
             speed = sum((r["speed_kmh"] or 0) * (r["volume"] or 0)
                         for r in valid if r["speed_kmh"] is not None) / weight
-        else:  # no traffic in the bin: fall back to the plain mean of the readings
-            speeds = [r["speed_kmh"] for r in valid if r["speed_kmh"] is not None]
-            speed = sum(speeds) / len(speeds) if speeds else None
+        else:  # no vehicle in the bin, so no speed was measured
+            speed = None
         occupancies = [r["occupancy_pct"] for r in valid if r["occupancy_pct"] is not None]
 
         row = {
@@ -195,6 +258,7 @@ def bin_window(rows: list[dict], minutes: int = BIN_MINUTES,
             "volume_observed": round(volume),   # int: these are whole vehicles
             "periods_observed": len(periods),
             "coverage_pct": round(observed_s / bin_seconds * 100),
+            "lane_completeness_pct": completeness,
             "lanes_valid": len(valid),
             "lanes_offline": offline,
         }
@@ -202,15 +266,6 @@ def bin_window(rows: list[dict], minutes: int = BIN_MINUTES,
             row["lane"] = key[2]
         out.append(row)
     return out
-
-
-def write_csv(rows: list[dict], path: Path) -> Path:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
-    return path
 
 
 def usable_for_calibration(binned: list[dict],
@@ -221,7 +276,10 @@ def usable_for_calibration(binned: list[dict],
     coverage, counts do not, and throwing away sparse bins would leave the
     chart with holes it does not need.
     """
-    return [b for b in binned if b["coverage_pct"] >= min_coverage_pct]
+    return [b for b in binned
+            if b["coverage_pct"] >= min_coverage_pct
+            and b["lane_completeness_pct"] >= MIN_LANE_COMPLETENESS_PCT
+            and b["count_bin"] != ""]
 
 
 def coverage_bias_check(binned: list[dict],
@@ -270,14 +328,17 @@ def coverage_report(binned: list[dict],
         "empty_bins": len([b for b in binned if b["periods_observed"] == 0]),
         "mean_coverage_pct": round(sum(b["coverage_pct"] for b in binned) / len(binned)),
         "bins_with_offline_lanes": len([b for b in binned if b["lanes_offline"]]),
+        "bins_below_lane_completeness": len(
+            [b for b in binned if b["lane_completeness_pct"] < MIN_LANE_COMPLETENESS_PCT]),
         "min_coverage_pct": min_coverage_pct,
         "usable_for_calibration": len(usable),
         "usable_pct": round(len(usable) / len(binned) * 100),
     }
     report["warning"] = (
-        f"count_5min is an ESTIMATE scaled from {report['mean_coverage_pct']}% mean "
+        f"count_bin is an ESTIMATE scaled from {report['mean_coverage_pct']}% mean "
         f"coverage. Calibrate counts only on the {report['usable_for_calibration']} "
-        f"bins at >= {min_coverage_pct}% coverage; use every bin for speed.")
+        f"bins at >= {min_coverage_pct}% coverage with >= {MIN_LANE_COMPLETENESS_PCT}% "
+        f"of lane readings valid; use every bin for speed.")
     return report
 
 

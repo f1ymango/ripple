@@ -59,3 +59,4 @@ data/raw/
 data/detector_readings_*.csv
 data/detector_5min_*.csv
 data/incidents_*.csv
+data/lane_identity_*.md

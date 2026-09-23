@@ -20,6 +20,8 @@ from pathlib import Path
 
 import requests
 
+from src.loaders.common import write_csv
+
 LOCATIONS_CSV = ("https://static.data.gov.hk/td/traffic-data-strategic-major-roads/"
                  "info/traffic_speed_volume_occ_info.csv")
 OUT_PATH = Path("data/detectors.csv")
@@ -115,9 +117,5 @@ def build_table(out_path: Path = OUT_PATH) -> list[dict[str, str]]:
             "rotation": source["Rotation"].strip(),
         })
 
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    with out_path.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
+    write_csv(rows, out_path)
     return rows

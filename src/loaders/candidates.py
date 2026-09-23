@@ -23,6 +23,7 @@ import random
 from pathlib import Path
 
 from src.loaders import archive, detectors, incidents
+from src.loaders.common import MIN_DURATION_MIN
 from src.loaders.corridor import TUNNEL_DETECTORS
 
 OUT_PATH = Path("data/candidates.md")
@@ -32,7 +33,6 @@ OUT_PATH = Path("data/candidates.md")
 BEFORE_MIN, AFTER_MIN = 90, 60
 
 SAMPLE_VERSIONS = 12      # stage-1 probes per incident
-MIN_DURATION_MIN = 20     # roles/data-experiments.md
 
 
 def window_for(incident: dict) -> tuple[dt.datetime, dt.datetime] | None:
@@ -77,9 +77,10 @@ def estimate_retrievability(start: dt.datetime, end: dt.datetime,
 def measure(incident: dict, bin_minutes: int = 5) -> dict:
     """Stage 2: pull the whole window and measure what we would really have.
 
-    `speed_drop_kmh` compares the quietest five minutes during the incident
-    against the pre-incident hour, on the tunnel detectors. An incident that
-    does not move those is not worth simulating, whatever the message says.
+    `speed_drop_kmh` compares the slowest bin during the incident against the
+    pre-incident mean, per tunnel detector, and keeps the largest drop. An
+    incident that does not move those is not worth simulating, whatever the
+    message says.
     """
     window = window_for(incident)
     if window is None:
@@ -87,20 +88,30 @@ def measure(incident: dict, bin_minutes: int = 5) -> dict:
     start, end = window
     rows = detectors.load_window(start, end)
     if not rows:
-        return {"bins": 0}
+        return {"bins": 0, "mean_coverage_pct": 0, "usable_pct": 0,
+                "lanes_valid_pct": 0, "speed_drop_kmh": None, "drop_detector": None}
 
     binned = detectors.bin_window(rows, bin_minutes)
     report = detectors.coverage_report(binned)
     new_at = dt.datetime.fromisoformat(incident["new_at"])
+    closed_at = dt.datetime.fromisoformat(incident["closed_at"])
+    width = dt.timedelta(minutes=bin_minutes)
 
-    def speeds(bins, where):
-        return [float(b["speed_kmh"]) for b in bins
-                if b["speed_kmh"] != "" and b["detector_id"] in TUNNEL_DETECTORS
-                and where(dt.datetime.fromisoformat(b["bin_start"]))]
+    def speeds(detector_id, keep):
+        return [float(b["speed_kmh"]) for b in binned
+                if b["detector_id"] == detector_id and b["speed_kmh"] != ""
+                and keep(dt.datetime.fromisoformat(b["bin_start"]))]
 
-    before = speeds(binned, lambda t: t < new_at)
-    during = speeds(binned, lambda t: t >= new_at)
-    drop = round(min(during) - (sum(before) / len(before)), 1) if before and during else None
+    # One detector at a time: an incident closes one direction, and pooling
+    # both let the other direction's ordinary traffic pass for a drop. "During"
+    # is the incident itself, not the recovery hour after CLOSED.
+    drops = {}
+    for detector_id in TUNNEL_DETECTORS:
+        before = speeds(detector_id, lambda t: t + width <= new_at)
+        during = speeds(detector_id, lambda t: t < closed_at and t + width > new_at)
+        if before and during:
+            drops[detector_id] = round(min(during) - sum(before) / len(before), 1)
+    drop_detector = min(drops, key=drops.get) if drops else None
 
     offline = sum(b["lanes_offline"] for b in binned)
     lanes = sum(b["lanes_valid"] + b["lanes_offline"] for b in binned)
@@ -110,18 +121,25 @@ def measure(incident: dict, bin_minutes: int = 5) -> dict:
         "usable_pct": report["usable_pct"],
         "detectors_seen": report["detectors"],
         "lanes_valid_pct": round((lanes - offline) / lanes * 100) if lanes else 0,
-        "speed_drop_kmh": drop,
+        "speed_drop_kmh": drops.get(drop_detector),
+        "drop_detector": drop_detector,
     }
 
 
 def score(row: dict) -> float:
     """Rank candidates. Coverage and a visible speed drop matter most.
 
+    Coverage is the stage-1 `retrievable_pct` until the incident has been pulled
+    in full; after that the measured `usable_pct` -- the share of bins Simulation
+    can actually calibrate against -- replaces it. Only a fall in speed counts:
+    a rise is not evidence of an incident.
+
     Deliberately simple and deliberately visible: the team picks the incident,
     this only decides which few are worth a full pull.
     """
-    coverage = row.get("retrievable_pct", 0) / 100
-    drop = min(abs(row.get("speed_drop_kmh") or 0) / 30, 1.0)
+    measured = row.get("usable_pct")
+    coverage = (measured if measured is not None else row.get("retrievable_pct", 0)) / 100
+    drop = min(max(-(row.get("speed_drop_kmh") or 0), 0) / 30, 1.0)
     duration = min((row.get("duration_min") or 0) / 60, 1.0)
     return round(2 * coverage + 2 * drop + duration, 3)
 
@@ -152,8 +170,15 @@ def shortlist(start: str, end: str, top: int = 6, bin_minutes: int = 5,
         log(f"  full pull: {row['incident_number']} ...")
         row.update(measure(row, bin_minutes))
         row["score"] = score(row)
-    rows.sort(key=lambda r: r["score"], reverse=True)
+    # Measured candidates first: their scores rest on the full pull, the rest on
+    # a 12-file sample, and the two are not on the same scale.
+    rows.sort(key=lambda r: ("bins" in r, r["score"]), reverse=True)
     return rows
+
+
+def _cell(value, suffix: str = "") -> str:
+    """A table cell: the value with its unit, or a dash -- never 'None' or '—%'."""
+    return "—" if value is None or value == "" else f"{value}{suffix}"
 
 
 def write_markdown(rows: list[dict], path: Path = OUT_PATH, top: int = 6) -> Path:
@@ -180,10 +205,11 @@ def write_markdown(rows: list[dict], path: Path = OUT_PATH, top: int = 6) -> Pat
             f"| {r['location_en']} {r['direction_en']} "
             f"| {r['duration_min']} min "
             f"| {r.get('retrievable_pct', '?')}% "
-            f"| {str(r.get('mean_coverage_pct', '—')) + '%' if measured else '—'} "
-            f"| {str(r.get('usable_pct', '—')) + '%' if measured else '—'} "
-            f"| {str(r.get('lanes_valid_pct', '—')) + '%' if measured else '—'} "
-            f"| {r.get('speed_drop_kmh') if measured else '—'} "
+            f"| {_cell(r.get('mean_coverage_pct'), '%') if measured else '—'} "
+            f"| {_cell(r.get('usable_pct'), '%') if measured else '—'} "
+            f"| {_cell(r.get('lanes_valid_pct'), '%') if measured else '—'} "
+            f"| {_cell(r.get('speed_drop_kmh'), ' km/h') if measured else '—'}"
+            f"{' (' + r['drop_detector'] + ')' if measured and r.get('drop_detector') else ''} "
             f"| {r['score']} |")
 
     lines += [
@@ -201,9 +227,12 @@ def write_markdown(rows: list[dict], path: Path = OUT_PATH, top: int = 6) -> Pat
         f"({detectors.MIN_COVERAGE_PCT}%). This is what Simulation has to fit demand against.",
         "- **Lanes valid** — share of lane readings with `valid=\"Y\"`. Low means detectors "
         "were offline, which is a different problem from archive gaps.",
-        "- **Speed drop** — quietest 5 minutes during the incident against the "
-        "pre-incident mean, on the tunnel detectors. An incident that does not move "
-        "these is not worth simulating.",
+        "- **Speed drop** — slowest bin during the incident against the pre-incident "
+        "mean, per tunnel detector (named in brackets), largest drop kept. An incident "
+        "that does not move these is not worth simulating.",
+        "- **Order** — fully measured candidates come first, ranked on measured "
+        "usable bins; the rest are ranked on a 12-file sample and are not comparable "
+        "with them.",
         "",
         "## Decision",
         "",
