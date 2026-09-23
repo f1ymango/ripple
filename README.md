@@ -53,7 +53,7 @@ this chain.
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
-| G | Operator console: map, plan comparison, Approve + audit log | Visuals | ⚪ Nothing in the repo yet |
+| G | Operator console: map, plan comparison, Approve + audit log | Rorath (Visuals) | 🟡 Streamlit console with the corridor detector map, coloured by speed ([src/console/app.py](src/console/app.py)) |
 | H | Evidence pack: validation, accuracy, interviews | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3 |
 
 The JSON contracts between modules are in
@@ -65,7 +65,7 @@ The JSON contracts between modules are in
 |---|---|---|---|
 | Lead | Freeze scope; write `CLAUDE.md`; create repo; test the Incident Reader on 20 real messages | repo exists, 20 messages parsed | ✅ 22 Sep |
 | Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screening tool built ([src/loaders/candidates.py](src/loaders/candidates.py)); shortlist not generated yet |
-| Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ⚪ |
+| Rorath (Visuals) | Map of corridor detectors coloured by speed, from a static file | screenshot posted | 🟡 map built ([src/console/app.py](src/console/app.py)); screenshot to post |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | ⚪ |
 | Impact | Gather problem evidence; line up 2–3 user interviews | `05-pitch.md` evidence section filled | 🟡 evidence drafted |
 
@@ -135,6 +135,9 @@ The JSON contracts between modules are in
 Newest first. One line per change that matters, with a link to the proof.
 
 **Wed 23 Sep**
+- Operator console (component G) started by Rorath: Streamlit app with the
+  28-detector corridor map coloured by speed, greying detectors when no speed
+  snapshot is loaded rather than inventing one ([src/console/app.py](src/console/app.py)).
 - Data layer (component A) merged ([#2](https://github.com/f1ymango/ripple/pull/2)):
   archive client with a resumable parallel cache, detector loader with
   coverage-aware 5- and 15-minute bins, NEW → CLOSED incident timelines, the
