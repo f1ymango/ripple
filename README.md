@@ -54,7 +54,7 @@ this chain.
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
 | G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed ([src/console/app.py](src/console/app.py)) |
-| H | Evidence pack: validation, accuracy, interviews | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3 |
+| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3; workspaces and their definitions of done are in [evidence/interviews/](evidence/interviews/) and [deck/](deck/) |
 
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
@@ -67,7 +67,7 @@ The JSON contracts between modules are in
 | Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/candidates.py](src/loaders/candidates.py)); 3-month STN pull and `fetch candidates` still to run |
 | Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | 🟡 map built ([src/console/app.py](src/console/app.py)); screenshot to post |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | ⚪ |
-| Impact | Gather problem evidence; line up 2–3 user interviews | `05-pitch.md` evidence section filled | 🟡 evidence drafted |
+| Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 evidence drafted; interviews and fact-check outstanding |
 
 ### Open decisions
 
