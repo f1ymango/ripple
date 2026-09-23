@@ -16,9 +16,20 @@ import argparse
 import datetime as dt
 from pathlib import Path
 
-from src.loaders import archive, candidates, corridor, detectors, incidents, live
+from src.loaders import archive, candidates, corridor, detectors, incidents, lanes, live
+from src.loaders.common import HK, MIN_DURATION_MIN
 
-HK = dt.timezone(dt.timedelta(hours=8))
+
+def _bin_width(text: str) -> int:
+    """--bin-minutes: a positive divisor of 60, refused at the command line."""
+    try:
+        minutes = int(text)
+    except ValueError:
+        raise argparse.ArgumentTypeError(f"not a whole number of minutes: {text!r}") from None
+    if minutes <= 0 or 60 % minutes:
+        raise argparse.ArgumentTypeError(
+            f"must be a positive divisor of 60 (5, 10, 15, 20, 30, 60), got {minutes}")
+    return minutes
 
 
 def _moment(text: str) -> dt.datetime:
@@ -37,22 +48,29 @@ def cmd_prefetch(args) -> None:
     stamps = archive.list_versions(args.feed, args.start, args.end)
     print(f"{args.feed}: archive lists {len(stamps)} snapshots for {args.start}..{args.end}")
     counts = archive.prefetch(args.feed, stamps, workers=args.workers)
-    if counts["missing"]:
+    not_served = counts["missing"] + counts["known_missing"]
+    if not_served:
         # About a third of listed detector versions 404 persistently. Expected,
         # not a bug, but the number belongs in the run log.
-        print(f"note: {counts['missing']} listed snapshots are not actually served "
-              f"({counts['missing'] / max(len(stamps), 1) * 100:.0f}% of the window)")
+        print(f"note: {not_served} listed snapshots are not actually served "
+              f"({not_served / max(len(stamps), 1) * 100:.0f}% of the window)")
+    if counts["failed"]:
+        print(f"note: {counts['failed']} failed transiently -- run the same command "
+              f"again to retry only those")
 
 
 def cmd_incidents(args) -> None:
     rows = incidents.load(args.start, args.end)
+    if not rows:
+        print(f"no incidents in the archived STN snapshots for {args.start}..{args.end}")
+        return
     out = Path(f"data/incidents_{args.start}_{args.end}.csv")
     incidents.write_csv(rows, out)
     on_corridor = [r for r in rows if r["corridor_road"]]
     usable = incidents.usable_corridor_incidents(on_corridor)
     print(f"{len(rows)} incidents -> {out}")
     print(f"  on the corridor:            {len(on_corridor)}")
-    print(f"  with a clear NEW and CLOSED >= 20 min apart: {len(usable)}")
+    print(f"  with a clear NEW and CLOSED >= {MIN_DURATION_MIN} min apart: {len(usable)}")
     for row in usable:
         print(f"    {row['incident_number']}  {row['new_at'][:16]}  "
               f"{row['duration_min']:>4} min  {row['location_en']} ({row['corridor_road']})")
@@ -105,6 +123,16 @@ def cmd_candidates(args) -> None:
               f"drop {row.get('speed_drop_kmh', '?')} km/h  {row['location_en']}")
 
 
+def cmd_lanes(args) -> None:
+    summary, conclusion, bands = lanes.analyse(args.detector)
+    if not summary:
+        print(f"no cached readings for {args.detector} -- run `prefetch` or `live` first")
+        return
+    out = lanes.OUT_DIR / f"lane_identity_{args.detector}.md"
+    print(lanes.report(args.detector, summary, conclusion, out, bands))
+    print(f"written to {out}")
+
+
 def cmd_live(args) -> None:
     live.run(minutes=args.minutes, poll_seconds=args.poll_seconds)
 
@@ -130,7 +158,7 @@ def main() -> None:
     p = sub.add_parser("detectors", help="tidy + 5-minute bins for one time window")
     p.add_argument("--start", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
     p.add_argument("--end", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
-    p.add_argument("--bin-minutes", type=int, default=detectors.BIN_MINUTES,
+    p.add_argument("--bin-minutes", type=_bin_width, default=detectors.BIN_MINUTES,
                    dest="bin_minutes",
                    help="bin width; 5 for incident dynamics, 15 for demand "
                         "calibration where a stable count beats fine timing "
@@ -146,9 +174,15 @@ def main() -> None:
     p.add_argument("--end", required=True)
     p.add_argument("--top", type=int, default=6,
                    help="how many to pull in full after the cheap screen (default %(default)s)")
-    p.add_argument("--bin-minutes", type=int, default=detectors.BIN_MINUTES,
+    p.add_argument("--bin-minutes", type=_bin_width, default=detectors.BIN_MINUTES,
                    dest="bin_minutes")
     p.set_defaults(func=cmd_candidates)
+
+    p = sub.add_parser("lanes", help="evidence on which physical lane Middle Lane 1 is")
+    p.add_argument("--detector", default="AID01217",
+                   help="4-lane detector to analyse (default %(default)s, the only "
+                        "4-lane one on our corridor)")
+    p.set_defaults(func=cmd_lanes)
 
     p = sub.add_parser("live", help="poll the live feeds at full rate (component A4)")
     p.add_argument("--minutes", type=int, default=0,

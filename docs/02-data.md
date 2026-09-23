@@ -55,55 +55,53 @@ date                              yyyy-mm-dd
             └── valid             "Y" = detector online, "N" = offline
 ```
 
-#### ⚠️ Lane position on 4-lane roads — OPEN QUESTION
 
-Positions run fast → slow: from the offside (median) lane across to the
-nearside (kerb) lane. Hong Kong drives on the left, so the Fast Lane is the
-driver's right-hand lane. For 1-, 2- and 3-lane carriageways the names map
-unambiguously. **For 4-lane carriageways, which physical lane `Middle Lane 1`
-is has not been established.**
+#### ⚠️ Two markers in the readings (measured across all of Hong Kong, 21 Sep)
 
-Two sources, and they may or may not agree:
+- **When no vehicle crosses a loop, the feed reports the road's speed limit as
+  the speed** — 70, 80, 100, 50, 110 km/h. That is 441,064 readings a day, about
+  19% of all lane readings. It is not a measurement.
+- **`<occupancy>-1</occupancy>` means "not measured"**, and appeared 2,143
+  times, every one of them with `volume` 0.
+
+The loader treats a lane with `volume` 0 as having **no speed** and **0%
+occupancy** (an empty loop is unoccupied), and treats any negative value as
+missing. The raw cache keeps what the feed sent. Before this was handled, a bin
+with no vehicles reported the speed limit as its speed — at night, 77 of 975
+five-minute bins on the corridor.
+
+#### Lane position on 4-lane roads — adopted convention
+
+**Team decision, 23 Sep.** Offside (median) to nearside (kerb) — Hong Kong drives
+on the left, so the Fast Lane is the driver's right-hand lane:
 
 ```
-Data-dictionary PDF, "Coding" column      XML serialisation order
-  1. Fast Lane                              Fast Lane
-  2. Middle Lane 2                          Middle Lane 1
-  3. Middle Lane 1                          Middle Lane 2
-  4. Slow Lane                              Slow Lane
+Fast Lane  →  Middle Lane 2  →  Middle Lane 1  →  Slow Lane
 ```
 
-The PDF's numbering may be carriageway positions, or may simply enumerate the
-possible output strings — its wording ("different output will be generated
-depends on the number of lanes") does not say which.
+So **`Middle Lane 1` is next to the Slow Lane** and `Middle Lane 2` is next to
+the Fast Lane. This matches the data-dictionary PDF's coding table and
+`src/reader/prompts/system.md` (`middle2` next to `fast`), so the Reader's
+vocabulary and the detector names line up with no translation. For 1-, 2- and
+3-lane carriageways the names are unambiguous; a 3-lane road's single middle
+lane is `Middle Lane` in the feed and `middle1` in `incident.json`.
 
-**Evidence so far, from AID01217 over 40 30-second periods (21 Sep, 08:15–08:30):**
+**The XML does not list lanes in carriageway order.** It sends
+`Fast Lane, Middle Lane 1, Middle Lane 2, Slow Lane`. Never infer a lane's
+position from its place in the file — match by name.
 
-| lane, in file order | mean speed | total veh | mean occupancy |
-|---|---|---|---|
-| Fast Lane | 82.7 km/h | 401 | 7.6% |
-| Middle Lane 1 | 80.0 km/h | 181 | 3.4% |
-| Middle Lane 2 | 75.2 km/h | 195 | 6.2% |
-| Slow Lane | 73.1 km/h | 16 | 0.3% |
+**One recorded disagreement, not acted on.** At AID01217 (Aberdeen Tunnel near
+Toll Plaza) over a full day (1,102 periods), `(occupancy ÷ vehicles) × speed`
+— a proxy for vehicle length — is 96.7 for `Middle Lane 2` against 70.1 for
+`Middle Lane 1` (~38% higher), in all five time bands. The usual pattern of heavy vehicles keeping left would put
+`Middle Lane 2` nearer the kerb, which contradicts the convention. The
+convention stands: that proxy assumes keep-left behaviour, and lane use on a
+toll-plaza approach can be set by booth assignment instead. We do not know which
+explains it. `python -m src.loaders.fetch lanes` reproduces the numbers; it
+reports agreement or disagreement and never changes the mapping.
 
-Speed falls monotonically in file order, and `Middle Lane 2` shows higher
-occupancy than `Middle Lane 1` at similar volume — both consistent with
-`Middle Lane 2` being the lane nearer the kerb, i.e. file order = carriageway
-order. **This is 20 minutes of one morning at one detector and is not
-conclusive.**
-
-**To settle it** (week 2, before [E] needs a lane mapping): rerun the table
-above over the full cached window. If `Middle Lane 1` consistently sits between
-`Fast Lane` and `Middle Lane 2` on speed and occupancy across weeks and across
-times of day, file order is carriageway order. Otherwise ask the Transport
-Department through the data.gov.hk enquiry channel.
-
-**Until then, the rule that is safe either way:** map lanes by **name**, never
-by position in the file, and keep the single name→SUMO-index conversion in one
-function in [E] so that flipping it later is a one-line change. Nothing in the
-loaders depends on the answer; only incident injection does, and only on this
-one detector — AID01217, the Aberdeen Tunnel toll-plaza approach, the only
-4-lane detector on the corridor.
+AID01217 is our only 4-lane detector, so this affects one detector and one
+function ([E]'s name → SUMO-index mapping, week 3).
 
 Lane counts across our 28 corridor detectors: **16 two-lane, 11 three-lane,
 1 four-lane**. Nothing may assume a fixed number of lanes per detector.
@@ -212,6 +210,12 @@ Incident") · `INCIDENT_DETAIL_EN/CN` (e.g. "Traffic Accident") · `LOCATION_EN/
 > the heaviest thing the archive stores (~625 MB/day against ~231 MB for
 > segments), so retention or storage pressure is the leading guess. Asking the
 > Transport Department is the only way to know.
+>
+> **How the loader handles it.** A 404 is permanent, so it is recorded as a
+> zero-byte `<timestamp>.404` beside the cache and never requested again
+> (delete those files to force a recheck). A 5xx, a network failure, or a 200
+> whose body is not the feed's XML is transient: not recorded, not cached, and
+> retried on the next run. `prefetch` reports the two separately.
 >
 > Net effect: for the hour 08:00-09:00, 41 versions listed, 28 served, holding
 > **28 distinct data minutes out of 60 (about 47%)**, with gaps of up to five
@@ -366,14 +370,15 @@ was actually observed:
 
 | Column | Meaning |
 |---|---|
-| `speed_kmh` | volume-weighted mean over valid lanes |
-| `flow_veh_h` | vehicles per hour, over the seconds actually observed |
+| `speed_kmh` | volume-weighted mean over valid lanes. Blank when no vehicle crossed — never the speed limit the feed reports then |
+| `flow_veh_h` | vehicles per hour: each lane's rate over its own valid seconds, summed. Blank if any lane never reported — the total is unknown, not smaller |
 | `count_bin` | the count this bin width implies — **this is the number for GEH** |
 | `volume_observed` | vehicles actually counted (usually far fewer than `count_bin`) |
 | `periods_observed` | how many 30-second periods the bin is built from |
 | `bin_minutes` | the bin width these numbers were computed at |
-| `coverage_pct` | observed seconds ÷ bin seconds — the sampling fraction |
-| `lanes_valid` / `lanes_offline` | offline lanes are counted, never treated as zero traffic |
+| `coverage_pct` | seconds the **archive** delivered ÷ bin seconds — archive gaps only |
+| `lane_completeness_pct` | share of delivered lane readings the **sensors** marked valid — detector outages only |
+| `lanes_valid` / `lanes_offline` | offline lane readings are counted, never treated as zero traffic |
 
 **`coverage_pct` is a precision label, not a correctness label.** A bin at 10%
 is not wrong, it is uncertain — the same five minutes estimated from one sample
@@ -385,8 +390,12 @@ can come out at 200 vehicles when the truth is 90.
   26 km/h is a fair estimate of the speed at that moment; a 30-second count
   scaled ×10 is a gamble. Use every bin for the speed chart; use only
   high-coverage bins for GEH.
-- **Calibrate on `coverage_pct >= 40`** (the loader's default, exported as a
-  separate `_cov40.csv`). If that leaves too few points, relax the threshold
+- **Calibrate on `coverage_pct >= 40` *and* `lane_completeness_pct >= 90`**
+  (the loader's defaults, exported as a separate `_cov40.csv`). The two are
+  different failures and must not be merged: archive gaps are unrelated to
+  traffic, detector outages are not — sensors fail in exactly the conditions an
+  incident creates. Before 23 Sep an offline lane was counted as an empty one,
+  halving a two-lane road's count while coverage still read 100%. If that leaves too few points, relax the threshold
   deliberately and **state the threshold on the validation slide**.
 - **Never quote a count from a bin without quoting its coverage.** Every number
   in the deck traces to `results/`; a count whose sampling fraction is unknown
