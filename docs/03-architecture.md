@@ -104,6 +104,26 @@ ripple/
 - `incident_type` ∈ `traffic_accident | vehicle_breakdown | road_works |
   flooding | object_on_road | public_event | public_transport_notice | other`
 - `lanes_closed` ⊂ `fast | middle1 | middle2 | slow | hard_shoulder | all`
+
+  **Middle-lane ordering — unresolved for 4-lane roads.** On a 3-lane road the
+  single middle lane is `middle1`, matching the feed's plain `Middle Lane`; no
+  ambiguity. On a **4-lane** road it is not established whether `middle1` is the
+  lane next to `fast` or next to `slow`: the data-dictionary PDF numbers them
+  Fast, Middle Lane 2, Middle Lane 1, Slow, while the XML serialises them Fast,
+  Middle Lane 1, Middle Lane 2, Slow, and detector readings weakly favour the
+  latter. See `02-data.md` §1 for the evidence and how to settle it.
+
+  `src/reader/prompts/system.md` currently follows the PDF. **Leave it alone
+  until the question is settled** — changing it on a guess is worse than a
+  known unknown. The exposure is one detector (AID01217, Aberdeen Tunnel
+  toll-plaza approach) and one function ([E]'s name→SUMO-index mapping, week 3).
+
+  **Lane names, not indices, travel between modules.** An index is meaningless
+  without a counting convention, and the same index denotes a different physical
+  lane on a 2-, 3- or 4-lane road. The conversion to a SUMO lane index happens
+  once, in [E], where the lane count and the left-hand-traffic convention are
+  both known.
+
 - `in_scope = false` for processions, PT notices, anything outside the corridor.
 - `confidence` is the model's own; **always** shown to the operator in [G].
 

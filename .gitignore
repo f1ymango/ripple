@@ -52,3 +52,10 @@ Thumbs.db
 
 # Ripple: downloaded raw archives (docs/03-architecture.md section 2)
 data/raw/
+
+# Ripple: regenerable loader outputs (component A). data/detectors.csv is NOT
+# ignored -- it is a committed deliverable. Everything below is reproducible
+# from the cache with one command, and results/ is the source of truth.
+data/detector_readings_*.csv
+data/detector_5min_*.csv
+data/incidents_*.csv
