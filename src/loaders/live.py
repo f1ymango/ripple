@@ -18,14 +18,16 @@ this feed.
     python -m src.loaders.fetch live --minutes 0        # run until stopped
     python -m src.loaders.fetch live --minutes 30       # or a fixed stretch
 
-Needs a machine that stays awake. Files land in data/raw/live/<feed>/, named by
-the data's own timestamp, so restarting after a laptop sleeps costs only the
-minutes it slept and never corrupts what is already there.
+Needs a machine that stays awake. Files land in data/raw/live/<feed>/. A body is
+stored only when its content differs from the last one kept, so an unrefreshed
+or empty feed writes nothing, and a restart after a laptop sleeps costs only
+the minutes it slept.
 """
 from __future__ import annotations
 
 import datetime as dt
 import gzip
+import hashlib
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -34,60 +36,83 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-HK = dt.timezone(dt.timedelta(hours=8))
+from src.loaders.archive import FEEDS, looks_like_feed
+from src.loaders.common import HK
+
 LIVE_ROOT = Path("data/raw/live")
 POLL_SECONDS = 30      # the feed updates every 60s; poll twice to never miss one
-
-LIVE_URLS = {
-    "detectors": "https://resource.data.one.gov.hk/td/traffic-detectors/rawSpeedVol-all.xml",
-    "stn": "https://www.td.gov.hk/en/special_news/trafficnews.xml",
-}
+LIVE_FEEDS = ("detectors", "stn")   # URLs come from archive.FEEDS: one source of truth
 
 http = requests.Session()
 http.mount("https://", HTTPAdapter(max_retries=Retry(
     total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504])))
 
+# Hash of the last body stored per feed. "Has the feed changed?" is decided by
+# content, never by a timestamp read out of it: the STN feed has no file-level
+# time, an empty feed has none at all, and the newest announcement moves
+# BACKWARD when a CLOSED message disappears -- which is the very change this
+# poller exists to catch.
+_last_hash: dict[str, str] = {}
 
-def _stamp(feed: str, xml_bytes: bytes) -> str:
-    """The data's own timestamp, so a file is named by when the traffic was.
 
-    Never the wall clock: two polls of an unchanged feed must land on the same
-    filename, which is what makes this idempotent and restart-safe.
+def _stamp(feed: str, xml_bytes: bytes, now: dt.datetime | None = None) -> str:
+    """Filename stem for a stored body.
+
+    Detectors: the data's own first period, so files sort by when the traffic
+    was. STN: the moment we polled, since the feed carries no time of its own.
     """
-    root = ET.fromstring(xml_bytes)
     if feed == "detectors":
+        root = ET.fromstring(xml_bytes)
         day = (root.findtext("date") or "").strip()
         first = root.find("periods/period/period_from")
         moment = (first.text or "").strip() if first is not None else ""
         return f"{day.replace('-', '')}-{moment.replace(':', '')[:6]}"
-    # STN carries no file-level time; fall back to the newest announcement.
-    dates = sorted((m.findtext("ANNOUNCEMENT_DATE") or "").strip()
-                   for m in root.findall("message"))
-    newest = dates[-1] if dates else dt.datetime.now(HK).isoformat(timespec="seconds")
-    return newest.replace("-", "").replace(":", "").replace("T", "-")[:15]
+    return (now or dt.datetime.now(HK)).strftime("%Y%m%d-%H%M%S")
 
 
-def poll_once(feed: str) -> tuple[str, bool]:
-    """Fetch the live feed and store it if we do not already have that moment.
+def _digest(body: bytes) -> str:
+    return hashlib.sha1(body).hexdigest()
 
-    Returns (stamp, stored). `stored` is False when the feed had not refreshed
-    since the previous poll -- expected, and not an error.
+
+def _newest_stored_hash(feed: str) -> str | None:
+    """So a restart does not store a duplicate of what was saved before it."""
+    files = sorted((LIVE_ROOT / feed).glob("*.xml.gz"))
+    if not files:
+        return None
+    with gzip.open(files[-1], "rb") as f:
+        return _digest(f.read())
+
+
+def poll_once(feed: str, now: dt.datetime | None = None) -> tuple[str, bool]:
+    """Fetch the live feed and store it if its content changed since the last store.
+
+    Returns (stamp, stored). `stored` is False when the body is identical to the
+    last one kept -- an unrefreshed feed, or an empty STN feed at a quiet hour.
     """
-    resp = http.get(LIVE_URLS[feed], timeout=60)
+    resp = http.get(FEEDS[feed], timeout=60)
     resp.raise_for_status()
-    stamp = _stamp(feed, resp.content)
-    path = LIVE_ROOT / feed / f"{stamp}.xml.gz"
-    if path.exists():
+    body = resp.content
+    if not looks_like_feed(feed, body):
+        raise ValueError(f"live {feed} returned something that is not its XML: {body[:80]!r}")
+
+    digest = _digest(body)
+    if feed not in _last_hash:
+        _last_hash[feed] = _newest_stored_hash(feed)
+    stamp = _stamp(feed, body, now)
+    if digest == _last_hash[feed]:
         return stamp, False
+
+    path = LIVE_ROOT / feed / f"{stamp}-{digest[:8]}.xml.gz"
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(".part")
     with gzip.open(tmp, "wb") as f:
-        f.write(resp.content)
+        f.write(body)
     tmp.replace(path)
+    _last_hash[feed] = digest
     return stamp, True
 
 
-def run(feeds: tuple[str, ...] = ("detectors", "stn"), minutes: int = 0,
+def run(feeds: tuple[str, ...] = LIVE_FEEDS, minutes: int = 0,
         poll_seconds: int = POLL_SECONDS, log=print) -> dict[str, int]:
     """Poll until `minutes` have passed, or forever when minutes == 0.
 

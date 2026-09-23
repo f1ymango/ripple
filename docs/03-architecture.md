@@ -105,18 +105,12 @@ ripple/
   flooding | object_on_road | public_event | public_transport_notice | other`
 - `lanes_closed` ⊂ `fast | middle1 | middle2 | slow | hard_shoulder | all`
 
-  **Middle-lane ordering — unresolved for 4-lane roads.** On a 3-lane road the
-  single middle lane is `middle1`, matching the feed's plain `Middle Lane`; no
-  ambiguity. On a **4-lane** road it is not established whether `middle1` is the
-  lane next to `fast` or next to `slow`: the data-dictionary PDF numbers them
-  Fast, Middle Lane 2, Middle Lane 1, Slow, while the XML serialises them Fast,
-  Middle Lane 1, Middle Lane 2, Slow, and detector readings weakly favour the
-  latter. See `02-data.md` §1 for the evidence and how to settle it.
-
-  `src/reader/prompts/system.md` currently follows the PDF. **Leave it alone
-  until the question is settled** — changing it on a guess is worse than a
-  known unknown. The exposure is one detector (AID01217, Aberdeen Tunnel
-  toll-plaza approach) and one function ([E]'s name→SUMO-index mapping, week 3).
+  **Middle-lane ordering (adopted 23 Sep).** Offside to nearside a 4-lane
+  carriageway is `fast → middle2 → middle1 → slow`: **`middle1` is next to
+  `slow`**, matching the TD data-dictionary PDF and the Reader prompt. On a
+  3-lane road the single middle lane is `middle1` (the feed's plain
+  `Middle Lane`). The detector XML lists lanes in a different order, so map by
+  name, never by position in the file — see `02-data.md` §1.
 
   **Lane names, not indices, travel between modules.** An index is meaningless
   without a counting convention, and the same index denotes a different physical

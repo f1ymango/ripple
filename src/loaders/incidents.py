@@ -23,15 +23,14 @@ Clearance time = CLOSED time - NEW time (docs/02-data.md section 2).
 """
 from __future__ import annotations
 
-import csv
 import datetime as dt
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from src.loaders import archive
+from src.loaders import archive, common
+from src.loaders.common import HK, MIN_DURATION_MIN
 from src.loaders.corridor import on_corridor
 
-HK = dt.timezone(dt.timedelta(hours=8))  # every Transport Department time is GMT+8
 OUT_DIR = Path("data")
 
 # Statuses the feed uses. Anything else is passed through untouched so a new
@@ -102,14 +101,22 @@ def build_incidents(messages: dict[str, dict]) -> list[dict]:
 
         # No NEW message means the incident was already running when our window
         # opened (or its NEW fell in a snapshot gap); no CLOSED means it was
-        # still running when the window shut. Either way the duration is a
-        # lower bound, not a measurement -- say so rather than quoting it.
+        # still running when the window shut. Either way we did not see its
+        # duration, so duration_min stays blank; observed_span_min is the lower
+        # bound we did see, under a name that says so.
         left_censored = new_at is None
         right_censored = closed_at is None
-        start = new_at or _announced_at(first)
-        end = closed_at or _announced_at(last)
-        duration_min = (round((end - start).total_seconds() / 60)
-                        if start and end else None)
+        first_at, last_at = _announced_at(first), _announced_at(last)
+        duration_min = (round((closed_at - new_at).total_seconds() / 60)
+                        if new_at and closed_at else None)
+        observed_span_min = (round((last_at - first_at).total_seconds() / 60)
+                             if first_at and last_at else None)
+
+        # Scope from every message, not just the first: a terse NEW followed by
+        # an UPDATED that names the road is still our incident.
+        corridor_road = on_corridor(*(r["stn"].get(field, "") for r in records
+                                      for field in ("LOCATION_EN", "CONTENT_EN",
+                                                    "NEAR_LANDMARK_EN")))
 
         incidents.append({
             "incident_number": number,
@@ -120,18 +127,21 @@ def build_incidents(messages: dict[str, dict]) -> list[dict]:
             "direction_en": first.get("DIRECTION_EN", ""),
             "near_landmark_en": first.get("NEAR_LANDMARK_EN", ""),
             "district_en": first.get("DISTRICT_EN", ""),          # usually empty
-            "new_at": start.isoformat() if start else "",
+            "new_at": new_at.isoformat() if new_at else "",
             "closed_at": closed_at.isoformat() if closed_at else "",
             "duration_min": duration_min if duration_min is not None else "",
+            "first_announced_at": first_at.isoformat() if first_at else "",
+            "last_announced_at": last_at.isoformat() if last_at else "",
+            "observed_span_min": observed_span_min if observed_span_min is not None else "",
             "left_censored": left_censored,
             "right_censored": right_censored,
             "n_messages": len(records),
             "statuses": "|".join(statuses),
-            "corridor_road": on_corridor(first.get("LOCATION_EN", ""),
-                                         first.get("CONTENT_EN", ""),
-                                         first.get("NEAR_LANDMARK_EN", "")) or "",
-            "first_seen": records[0]["first_seen"],
-            "last_seen": records[-1]["last_seen"],
+            "corridor_road": corridor_road or "",
+            # Across every message: the last-announced one is not always the
+            # last one we saw in the feed.
+            "first_seen": min(r["first_seen"] for r in records),
+            "last_seen": max(r["last_seen"] for r in records),
             "content_en": first.get("CONTENT_EN", ""),
             "content_cn": first.get("CONTENT_CN", ""),
         })
@@ -150,18 +160,14 @@ def load(start: str, end: str) -> list[dict]:
 
 def write_csv(incidents: list[dict], path: Path) -> Path:
     """One row per incident. utf-8-sig so Excel on Windows shows the Chinese."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8-sig", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=list(incidents[0]))
-        writer.writeheader()
-        writer.writerows(incidents)
-    return path
+    return common.write_csv(incidents, path, encoding="utf-8-sig")
 
 
-def usable_corridor_incidents(incidents: list[dict], min_duration_min: int = 20) -> list[dict]:
+def usable_corridor_incidents(incidents: list[dict],
+                              min_duration_min: int = MIN_DURATION_MIN) -> list[dict]:
     """Corridor incidents with a clear start and clearance, long enough to simulate.
 
-    The role brief asks for a clear NEW and CLOSED at least 20 minutes apart
+    The role brief asks for a clear NEW and CLOSED at least MIN_DURATION_MIN apart
     (roles/data-experiments.md), so censored rows are excluded here rather than
     quietly carried into the shortlist.
     """
