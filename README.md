@@ -53,7 +53,7 @@ this chain.
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
-| G | Operator console: map, plan comparison, Approve + audit log | Visuals | ⚪ Nothing in the repo yet |
+| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed ([src/console/app.py](src/console/app.py)) |
 | H | Evidence pack: validation, accuracy, interviews | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3 |
 
 The JSON contracts between modules are in
@@ -65,7 +65,7 @@ The JSON contracts between modules are in
 |---|---|---|---|
 | Lead | Freeze scope; write `CLAUDE.md`; create repo; test the Incident Reader on 20 real messages | repo exists, 20 messages parsed | ✅ 22 Sep |
 | Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/candidates.py](src/loaders/candidates.py)); 3-month STN pull and `fetch candidates` still to run |
-| Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ⚪ |
+| Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | 🟡 map built ([src/console/app.py](src/console/app.py)); screenshot to post |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | ⚪ |
 | Impact | Gather problem evidence; line up 2–3 user interviews | `05-pitch.md` evidence section filled | 🟡 evidence drafted |
 
@@ -138,6 +138,9 @@ The JSON contracts between modules are in
 Newest first. One line per change that matters, with a link to the proof.
 
 **Wed 23 Sep**
+- Operator console (component G) started: Streamlit app with the 28-detector
+  corridor map coloured by speed, greying detectors when no speed snapshot is
+  loaded rather than inventing one ([src/console/app.py](src/console/app.py)).
 - All 15 items from the PR #2 review of the data layer fixed, each with a test
   that fails on the previous code. The ones that changed numbers: an offline
   lane halved a detector's count, and sensor outages were reported as archive
