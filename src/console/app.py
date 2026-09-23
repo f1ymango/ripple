@@ -13,7 +13,7 @@ rule 4). Run with:
 
     streamlit run src/console/app.py
 
-Owner: Rorath (Visuals).
+Owner: Visuals.
 """
 from __future__ import annotations
 
@@ -88,7 +88,7 @@ def build_map(df: pd.DataFrame) -> pdk.Deck:
 def main() -> None:
     st.set_page_config(page_title="Ripple — corridor detectors", layout="wide")
     st.title("Ripple — Aberdeen corridor detectors")
-    st.caption("Component G · operator console · Rorath")
+    st.caption("Component G · operator console")
 
     detectors = load_detectors()
     speed_files = find_speed_files()
