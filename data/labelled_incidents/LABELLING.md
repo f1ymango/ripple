@@ -10,6 +10,7 @@ so that two people labelling the same message write the same answer.
 | `messages.jsonl` | The **dev set**: 20 messages, read freely while working on the prompt. |
 | `gold_messages.jsonl` | The **gold set**: messages the prompt was never tuned on. |
 | `gold_labels.jsonl` | One hand-written label per gold message. |
+| `history/gold_labels_v1.jsonl` | The labels as they stood for the held-out v1 score (see Score history). |
 
 ## Rules that keep the number honest
 
@@ -134,6 +135,49 @@ Fixed before any gold score was seen, in `src/reader/score.py`:
 - Each figure comes with a 95% interval. The `citywide` figure is the
   headline, the `corridor` one is what the demo depends on, and each is
   reported separately as well as together.
+
+## Score history
+
+"All fields right" per message; 95% intervals in brackets. Every figure is a
+file in `results/reader/`, written by `src/reader/score.py`.
+
+| Version | Prompt | Labels | Citywide (80) | Corridor (20) |
+|---|---|---|---|---|
+| **v1, held out** (25 Sep) | as merged in #9 | first pass, final before any score | **50%** (39–61%) | **75%** (53–89%) |
+| v2 (25 Sep) | `bound` kept in direction | 4 corrected after v1 was seen | 75% (64–83%) | 85% (64–95%) |
+
+**v1** is the held-out number: labels final (`history/gold_labels_v1.jsonl`)
+and matching rules fixed before the Reader's output was looked at.
+Files: `2026-09-25T0026_qwen3-8b_score.json`.
+
+**What changed after v1 was seen**, so v2 is *not* a held-out number:
+
+- **The prompt.** The 24 Sep road_name example dropped "(Kowloon bound)"
+  without saying where it goes, and the model learned to drop `bound` from
+  direction. The fix was found and checked on the dev set alone (directions
+  with `bound`: 19/19 on 22 Sep, 13/19 on 24 Sep, 19/19 after the fix).
+- **Four labels**, each a slip against the rules above, found because the
+  Reader disagreed with them, so every one moves the score in its favour:
+  144214 (an arrangement "now cancelled": lanes empty), 144622 and 146041
+  ("leading to X" is not a stated direction: blank), 144352 (only about ferry
+  sailings: `public_transport_notice`).
+
+Almost all of the gain is the prompt fix: the v2 run scored against the v1
+labels gives 59/80 citywide (74%) and 16/20 corridor
+(`2026-09-25T0048_qwen3-8b_score_labels-v1.json`); the label corrections add
+one message on each side (`2026-09-25T0048_qwen3-8b_score.json`). The fix also
+lost three fields the v1 run had right. Quote v2 next to v1, never alone. A
+new held-out number needs a fresh set, labelled after the gaps below are
+settled.
+
+**Known Reader errors left in v2**: one named lane closed with "only
+remaining lanes are" (plural) gets `lanes_total` 2, which the message does
+not say (7 of 100); a road junction ("the junction of X and Y") becomes road
+X with Y as a landmark or direction; `near_landmark` filled where the message
+has no "near" (7 of 100).
+
+**Gaps to settle before labelling another set**: road junctions; a traffic
+advisory that also announces extra public transport service.
 
 ## Decided cases
 

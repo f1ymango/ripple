@@ -89,6 +89,8 @@ def main() -> None:
     parser.add_argument("--run", type=Path, required=True, help="results/reader/<run_id>.jsonl")
     parser.add_argument("--labels", type=Path, default=gold.LABELS_PATH)
     parser.add_argument("--messages", type=Path, default=gold.MESSAGES_PATH)
+    parser.add_argument("--out", type=Path,
+                        help="where to write the score (default: <run>_score.json next to the run)")
     args = parser.parse_args()
 
     messages = gold.load_messages(args.messages)
@@ -109,7 +111,7 @@ def main() -> None:
         "gold_messages": len(messages),
         "strata": report,
     }
-    out_path = args.run.with_name(f"{args.run.stem}_score.json")
+    out_path = args.out or args.run.with_name(f"{args.run.stem}_score.json")
     out_path.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
 
     if len(labels) < len(messages):
