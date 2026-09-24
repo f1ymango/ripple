@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Thu 24 Sep 2026, 01:30** · Week 1 of 5 (21–27 Sep: setup and pick
+**Last updated: Thu 24 Sep 2026, 18:00** · Week 1 of 5 (21–27 Sep: setup and pick
 the incident) · Stand-ups: Sunday and Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
@@ -53,7 +53,7 @@ this chain.
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
-| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed ([src/console/app.py](src/console/app.py)) |
+| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, with headline stats and a bin slider ([src/console/app.py](src/console/app.py), [screenshot](docs/img/week1-corridor-map.png)). Plan comparison, Approve and audit log still to build |
 | H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3; workspaces and their definitions of done are in [evidence/interviews/](evidence/interviews/) and [deck/](deck/) |
 
 The JSON contracts between modules are in
@@ -65,18 +65,18 @@ The JSON contracts between modules are in
 |---|---|---|---|
 | Lead | Freeze scope; write `CLAUDE.md`; create repo; test the Incident Reader on 20 real messages | repo exists, 20 messages parsed | ✅ 22 Sep |
 | Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/candidates.py](src/loaders/candidates.py)); 3-month STN pull and `fetch candidates` still to run |
-| Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | 🟡 map built ([src/console/app.py](src/console/app.py)); screenshot to post |
+| Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ✅ 24 Sep — [screenshot](docs/img/week1-corridor-map.png) of the 21 Sep 08:20 bin ([src/console/app.py](src/console/app.py)) |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | ⚪ |
 | Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 evidence drafted; interviews and fact-check outstanding |
 
 ### In review
 
-Work that exists but is not on `main` yet, as of Thu 24 Sep, 01:30. Everything
-merged shows in the rows above; pull requests #1–#7 are all merged.
+Work that exists but is not on `main` yet, as of Thu 24 Sep, 18:00. Everything
+merged shows in the rows above; pull requests #1–#10 are all merged.
 
 | What | Who | Branch |
 |---|---|---|
-| Console: headline stats, legend, street basemap, cleaner tooltip — **pushed, but no pull request is open** | Visuals | `visuals/map-improvements` |
+| [#11](https://github.com/f1ymango/ripple/pull/11) Console: headline stats, legend, street basemap, clock-time bin slider, and the week-1 screenshot | Visuals | `visuals/map-improvements` |
 
 Six branches whose pull request is already merged are still on the remote
 (`data/loaders`, `docs/impact-workspace`, `docs/readme-tracker`,
@@ -155,6 +155,19 @@ Six branches whose pull request is already merged are still on the remote
 Newest first. One line per change that matters, with a link to the proof.
 
 **Thu 24 Sep**
+- Week-1 Visuals task done: the corridor map, coloured by speed, screenshot
+  posted ([docs/img/week1-corridor-map.png](docs/img/week1-corridor-map.png)).
+  The frame is the 21 Sep 08:20 bin — mean 55 km/h, 5 of 28 detectors at or
+  below 30 km/h, slowest AID01106 at 14 km/h. The morning peak clears by 08:45,
+  so the later bins show nothing.
+- Console: the bin slider showed a full ISO timestamp
+  (`2026-09-21T08:20:00+08:00`) on every tick; it now shows clock time. Also
+  landed: headline stats, colour legend, street basemap, a readable snapshot
+  picker, and fixes for a blank-speed snapshot crashing the page, a bin width
+  labelled 5 minutes whatever the data said, and the coverage-filtered exports
+  being indistinguishable from full windows
+  ([src/console/app.py](src/console/app.py), 17 tests in
+  [tests/test_console.py](tests/test_console.py)).
 - Data layer: a truncated archive snapshot no longer crashes `fetch incidents`,
   `candidates` or `detectors`. Any snapshot that does not parse is skipped, and
   each run prints how many snapshots were listed, read, not served and
@@ -315,10 +328,15 @@ behind the accuracy number is made and labelled as described in
 streamlit run src/console/app.py
 ```
 
+![The corridor console at the 21 Sep 08:20 bin: five detectors at or below 30
+km/h along the Aberdeen Tunnel approach](docs/img/week1-corridor-map.png)
+
 The map draws all 28 corridor detectors from [data/detectors.csv](data/detectors.csv).
 Colour comes from a `data/detector_5min_*.csv` window written by the data
 layer; without one, every detector stays grey rather than being given an
-invented speed.
+invented speed. Pick the window in the sidebar and the bin on the slider —
+prefer a full window over a `_cov` export, which is a filtered subset meant for
+count calibration ([docs/02-data.md](docs/02-data.md) §7).
 
 ## Rules everyone follows
 
