@@ -32,9 +32,9 @@
     },
     "lanes_closed": {
       "type": "array",
-      "items": {"enum": ["fast", "middle1", "middle2", "slow", "hard_shoulder", "all"]},
+      "items": {"enum": ["fast", "middle1", "middle2", "slow", "hard_shoulder", "all", "unspecified"]},
       "uniqueItems": true,
-      "description": "[llm] Lanes closed to traffic as of this message. [] when the message says lanes have re-opened, or names no specific lane."
+      "description": "[llm] Lanes closed to traffic as of this message. ['unspecified'] when lanes are closed but the message does not say which ([E] decides what to simulate). 'all' and 'unspecified' stand alone. [] when no lane is closed, e.g. the lanes have re-opened."
     },
     "lanes_total": {"type": ["integer", "null"], "minimum": 1, "description": "[llm] Number of lanes in the affected direction, only if the message states it. null otherwise; never guessed from road knowledge."},
     "in_scope": {"type": "boolean", "description": "[code] True when the message names an Aberdeen corridor road (CORRIDOR_ROADS in src/reader/reader.py) and is not a public event or public transport notice."},
