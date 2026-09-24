@@ -159,6 +159,5 @@ way. Examples come from the dev set, never from the gold set.
   that *was* closed (decided 25 Sep, after the first gold pass labelled 40 of
   these with the lane).
 - "between X and Y" counts in any message, a public transport notice
-  included: a rail fault "between Admiralty Station and Tsim Sha Tsui
-  Station" → between_landmark `Admiralty Station and Tsim Sha Tsui Station`
-  (decided 25 Sep).
+  included: a rail fault between two stations → between_landmark
+  `X and Y`, with the stations as the message names them (decided 25 Sep).
