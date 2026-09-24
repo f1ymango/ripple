@@ -54,15 +54,23 @@ def _announced_at(message: dict[str, str]) -> dt.datetime | None:
         return None
 
 
-def collect_messages(timestamps: list[str]) -> dict[str, dict]:
+def collect_messages(timestamps: list[str], log=print) -> dict[str, dict]:
     """Every distinct STN message across these snapshots, keyed by message ID.
 
     Streams the cache one snapshot at a time; three months is ~11,000 files and
-    we only keep the messages, not the XML.
+    we only keep the messages, not the XML. A snapshot that does not parse is
+    skipped and named in the run summary (see archive.read_summary).
     """
     messages: dict[str, dict] = {}
+    read, unparseable = 0, []
     for archive_time, xml_bytes in archive.iter_snapshots("stn", timestamps):
-        for stn in parse_snapshot(xml_bytes):
+        try:
+            snapshot = parse_snapshot(xml_bytes)
+        except ET.ParseError:
+            unparseable.append(archive_time)
+            continue
+        read += 1
+        for stn in snapshot:
             message_id = stn.get("ID", "")
             if not message_id:
                 continue
@@ -72,6 +80,7 @@ def collect_messages(timestamps: list[str]) -> dict[str, dict]:
                                         "last_seen": archive_time, "stn": stn}
             else:
                 seen["last_seen"] = archive_time
+    log(archive.read_summary("stn", len(timestamps), read, unparseable))
     return messages
 
 

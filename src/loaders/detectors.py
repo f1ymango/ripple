@@ -140,7 +140,7 @@ def window_timestamps(start: dt.datetime, end: dt.datetime) -> list[str]:
 
 
 def load_window(start: dt.datetime, end: dt.datetime,
-                detector_ids: list[str] | None = None) -> list[dict]:
+                detector_ids: list[str] | None = None, log=print) -> list[dict]:
     """Every corridor lane reading whose own timestamp falls in [start, end).
 
     Half-open, like every window in this package: a 15-minute request returns
@@ -148,13 +148,22 @@ def load_window(start: dt.datetime, end: dt.datetime,
     extra bin beyond the request, at a few percent coverage.
 
     Consecutive archived files overlap, so identical readings are dropped on
-    (timestamp, detector, lane) rather than counted twice.
+    (timestamp, detector, lane) rather than counted twice. A snapshot that does
+    not parse is skipped and named in the run summary (see archive.read_summary).
     """
     keep = set(detector_ids or DETECTOR_IDS)
+    stamps = window_timestamps(start, end)
     seen: set[tuple] = set()
     rows: list[dict] = []
-    for _, xml_bytes in archive.iter_snapshots("detectors", window_timestamps(start, end)):
-        for row in parse_snapshot(xml_bytes, keep):
+    read, unparseable = 0, []
+    for archive_time, xml_bytes in archive.iter_snapshots("detectors", stamps):
+        try:
+            snapshot = parse_snapshot(xml_bytes, keep)
+        except ET.ParseError:
+            unparseable.append(archive_time)
+            continue
+        read += 1
+        for row in snapshot:
             if not (start <= row["timestamp"] < end):
                 continue
             key = (row["timestamp"], row["detector_id"], row["lane"])
@@ -162,6 +171,7 @@ def load_window(start: dt.datetime, end: dt.datetime,
                 continue
             seen.add(key)
             rows.append(row)
+    log(archive.read_summary("detectors", len(stamps), read, unparseable))
     rows.sort(key=lambda r: (r["timestamp"], r["detector_id"], r["lane"]))
     return rows
 

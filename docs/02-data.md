@@ -215,7 +215,12 @@ Incident") · `INCIDENT_DETAIL_EN/CN` (e.g. "Traffic Accident") · `LOCATION_EN/
 > zero-byte `<timestamp>.404` beside the cache and never requested again
 > (delete those files to force a recheck). A 5xx, a network failure, or a 200
 > whose body is not the feed's XML is transient: not recorded, not cached, and
-> retried on the next run. `prefetch` reports the two separately.
+> retried on the next run. `prefetch` reports the two separately. A snapshot
+> the archive serves **cut off part-way** is a third case: STN `20260803-0815`
+> stops mid-`<LONGITUDE>`, and the archive returns the same 1,583 bytes on
+> every request, so it is cached as served. The loaders skip any snapshot that
+> does not parse, and every run prints one line per feed: snapshots listed,
+> read, not served, and unparseable, naming the unparseable ones.
 >
 > Net effect: for the hour 08:00-09:00, 41 versions listed, 28 served, holding
 > **28 distinct data minutes out of 60 (about 47%)**, with gaps of up to five

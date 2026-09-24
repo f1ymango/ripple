@@ -152,6 +152,17 @@ Four branches whose pull request is already merged are still on the remote
 
 Newest first. One line per change that matters, with a link to the proof.
 
+**Thu 24 Sep**
+- Data layer: a truncated archive snapshot no longer crashes `fetch incidents`,
+  `candidates` or `detectors`. Any snapshot that does not parse is skipped, and
+  each run prints how many snapshots were listed, read, not served and
+  unparseable, naming the unparseable ones. Across 22 Jun–21 Sep only one of
+  9,690 STN snapshots is affected, 3 Aug 08:15. The archive returns the same
+  cut-off file on every request, so refetching cannot fix it
+  ([src/loaders/incidents.py](src/loaders/incidents.py),
+  [tests/test_loaders_edges.py](tests/test_loaders_edges.py),
+  [docs/02-data.md](docs/02-data.md) §3).
+
 **Wed 23 Sep**
 - Evidence pack (component H): workspaces for the interviews and the deck, each
   with its own definition of done ([evidence/interviews/](evidence/interviews/),
