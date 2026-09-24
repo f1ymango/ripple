@@ -103,7 +103,15 @@ ripple/
 
 - `incident_type` ∈ `traffic_accident | vehicle_breakdown | road_works |
   flooding | object_on_road | public_event | public_transport_notice | other`
-- `lanes_closed` ⊂ `fast | middle1 | middle2 | slow | hard_shoulder | all`
+- `lanes_closed` ⊂ `fast | middle1 | middle2 | slow | hard_shoulder | all | unspecified`
+
+  **`unspecified` (adopted 24 Sep).** `["unspecified"]` means lanes are closed
+  but the message does not say which ("part of the lanes of ... is closed"),
+  which is the feed's most common wording. `[]` means no lane is closed, e.g.
+  the lanes have re-opened. Before this, both came out as `[]`, and [E] would
+  have injected such an incident as no closure at all. **[E] decides what to
+  simulate** for `unspecified` and states that assumption with the results.
+  `all` and `unspecified` are never combined with another lane.
 
   **Middle-lane ordering (adopted 23 Sep).** Offside to nearside a 4-lane
   carriageway is `fast → middle2 → middle1 → slow`: **`middle1` is next to
