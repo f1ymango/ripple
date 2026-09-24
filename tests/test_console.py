@@ -130,6 +130,15 @@ def test_label_separates_snapshots_that_differ_only_by_bin_width():
     assert "21/09 08:00–09:00" in five and "5 min" in five and "15 min" in fifteen
 
 
+def test_bin_slider_ticks_show_clock_time_not_the_raw_timestamp():
+    assert app.label_bin("2026-09-21T08:20:00+08:00") == "08:20"
+
+
+def test_an_unparseable_bin_start_is_shown_as_it_came():
+    # Better a tick that looks odd than one that quietly invents a time.
+    assert app.label_bin("not-a-timestamp") == "not-a-timestamp"
+
+
 # --- grey fallbacks -------------------------------------------------------
 
 def test_blank_speeds_are_dropped_rather_than_read_as_zero(tmp_path):

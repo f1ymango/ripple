@@ -108,6 +108,14 @@ def bin_minutes(speeds: pd.DataFrame) -> int | None:
     return int(widths[0]) if len(widths) == 1 else None
 
 
+def label_bin(bin_start: str) -> str:
+    """Clock time for the bin slider. The CSV carries a full ISO timestamp with
+    an offset; every bin in a file is the same day, so the date and the zone are
+    noise on a slider tick. Anything unparseable is shown as it came."""
+    m = re.search(r"T(\d{2}):(\d{2})", str(bin_start))
+    return f"{m.group(1)}:{m.group(2)}" if m else str(bin_start)
+
+
 def speed_to_colour(speed: float | None) -> list[int]:
     """Green (free-flow) through red (stopped); grey when speed is unknown."""
     if speed is None or pd.isna(speed):
@@ -205,7 +213,7 @@ def main() -> None:
             width = bin_minutes(speeds)
             bin_start = st.select_slider(
                 f"{width}-minute bin" if width else "Time bin",
-                options=bins, value=bins[-1])
+                options=bins, value=bins[-1], format_func=label_bin)
             window = speeds[speeds["bin_start"] == bin_start]
             speed_by_id = window.set_index("detector_id")["speed_kmh"].to_dict()
             detectors["speed_kmh"] = detectors["detector_id"].map(speed_by_id)
