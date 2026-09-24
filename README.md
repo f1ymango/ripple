@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Wed 23 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
+**Last updated: Thu 24 Sep 2026, 01:30** · Week 1 of 5 (21–27 Sep: setup and pick
 the incident) · Stand-ups: Sunday and Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
@@ -71,18 +71,17 @@ The JSON contracts between modules are in
 
 ### In review
 
-Work that exists but is not on `main` yet, as of Wed 23 Sep. Merged work shows
-in the rows above.
+Work that exists but is not on `main` yet, as of Thu 24 Sep, 01:30. Everything
+merged shows in the rows above; pull requests #1–#7 are all merged.
 
 | What | Who | Branch |
 |---|---|---|
-| [#7](https://github.com/f1ymango/ripple/pull/7) Evidence-pack workspaces: interview plan and deck outline, each with a definition of done | Impact | `docs/impact-workspace` |
-| [#6](https://github.com/f1ymango/ripple/pull/6) Console: the Visuals role label instead of a personal name | Visuals | `visuals/tracker-role-label` |
 | Console: headline stats, legend, street basemap, cleaner tooltip — **pushed, but no pull request is open** | Visuals | `visuals/map-improvements` |
 
-Four branches whose pull request is already merged are still on the remote
-(`docs/readme-tracker`, `docs/tracker-data-layer`, `data/loaders`,
-`visuals/detector-map`). Deleting them keeps the branch list readable.
+Six branches whose pull request is already merged are still on the remote
+(`data/loaders`, `docs/impact-workspace`, `docs/readme-tracker`,
+`docs/tracker-data-layer`, `visuals/detector-map`,
+`visuals/tracker-role-label`). Deleting them keeps the branch list readable.
 
 ### Open decisions
 
