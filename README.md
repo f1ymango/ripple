@@ -155,6 +155,15 @@ Six branches whose pull request is already merged are still on the remote
 Newest first. One line per change that matters, with a link to the proof.
 
 **Thu 24 Sep**
+- Data layer: a truncated archive snapshot no longer crashes `fetch incidents`,
+  `candidates` or `detectors`. Any snapshot that does not parse is skipped, and
+  each run prints how many snapshots were listed, read, not served and
+  unparseable, naming the unparseable ones. Across 22 Jun–21 Sep only one of
+  9,690 STN snapshots is affected, 3 Aug 08:15. The archive returns the same
+  cut-off file on every request, so refetching cannot fix it
+  ([src/loaders/incidents.py](src/loaders/incidents.py),
+  [tests/test_loaders_edges.py](tests/test_loaders_edges.py),
+  [docs/02-data.md](docs/02-data.md) §3).
 - Contract change agreed by the team: `lanes_closed` gains `unspecified` for
   "part of the lanes is closed", which had come out the same as "no lane
   closed". The Evaluator (E) decides what to simulate for it
@@ -182,8 +191,8 @@ Newest first. One line per change that matters, with a link to the proof.
   lanes" closures, but still types "road incident" as `road_works`
   ([results/reader/2026-09-24T1504_qwen3-8b.jsonl](results/reader/2026-09-24T1504_qwen3-8b.jsonl)).
 - One archived STN snapshot (3 Aug 08:15) is truncated. The gold sampler skips
-  and reports it; the data layer's incident loader still crashes on it, which
-  blocks the candidate screen over 22 Jun–21 Sep.
+  and reports it. The data layer's incident loader crashed on it, which
+  blocked the candidate screen over 22 Jun–21 Sep; fixed in the entry above.
 
 **Wed 23 Sep**
 - Evidence pack (component H): workspaces for the interviews and the deck, each
