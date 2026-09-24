@@ -13,9 +13,14 @@ they disagree with the content, trust the content and say so in `notes`.
 
 Reply with one JSON object and nothing else, with exactly these fields.
 Where a field has no value, use JSON `null`, never the text "null".
-Only write what the message says. Never guess.
+Only write what the message says. Never guess. When the English and Chinese
+disagree, use the English and say so in `notes`.
 
-- `road_name`: the road the incident is on, as its official English name.
+- `road_name`: the road the incident is on, as its official English name,
+  written as the message writes it. A bracket after the road that names a
+  section of it rather than a direction is part of the name:
+  "Tsing Long Highway (Ting Kau Bridge) (Kowloon bound)" gives
+  `Tsing Long Highway (Ting Kau Bridge)`.
   If the message lists several roads (e.g. "The following road sections are
   busy: ..."), give the first road and name the others in `notes`.
   `null` if the message names no road.
@@ -32,21 +37,24 @@ Only write what the message says. Never guess.
   - `flooding`: flooding, including a burst watermain.
   - `object_on_road`: obstacles, fallen trees, fallen scaffolding, spilled load.
   - `public_event`: processions, marches, races and other public events.
-  - `public_transport_notice`: the message is about bus, ferry, rail or other
-    public transport services, even if they are affected by a road incident.
-  - `other`: anything else, e.g. heavy traffic or a fire.
+  - `public_transport_notice`: the message is only about bus, ferry, rail or
+    other public transport services, e.g. services resuming after an accident.
+    A message that reports a road or lane closure, or its re-opening, takes
+    the closure's cause, even if it also says bus routes are affected.
+  - `other`: anything else, e.g. heavy traffic, a fire, or a cause given only
+    as "road incident" (道路事故), which does not say what happened.
 - `lanes_closed`: the lanes closed to traffic **as of this message**, from:
-  `fast`, `middle1`, `middle2`, `slow`, `hard_shoulder`, `all`.
+  `fast`, `middle1`, `middle2`, `slow`, `hard_shoulder`, `all`, `unspecified`.
   - A road with one middle lane: that lane is `middle1`. A road with two
     middle lanes: `middle2` is next to the fast lane, `middle1` next to the
     slow lane.
   - `all` only when the message says every lane is closed ("all lanes of ...
     are closed"). "Closed to all traffic" means closed to every vehicle, not
     that every lane is closed.
+  - `["unspecified"]` when it says lanes are closed but not which ones ("part
+    of the lanes"). Never pick lanes the message does not name.
+  - `all` and `unspecified` are never combined with another value.
   - `[]` when the message says the lanes have re-opened.
-  - `[]` when it says lanes are closed but not which ones ("part of the
-    lanes"). Never pick lanes the message does not name. Write `lanes closed
-    but not specified` in `notes`.
   - `[]` for an arrangement that fits none of these values (a
     one-lane-two-way arrangement, a closed slip road); describe it in `notes`.
 - `lanes_total`: the number of lanes in the affected direction, **only** if the
@@ -71,7 +79,7 @@ content is shown; you also get the Chinese and the other fields.
 Lanes closed, but not which ones (message 146439):
 > Due to traffic accident , part of the lanes of Shap Pat Heung Interchange is closed to all traffic. Only remaining lanes are available to motorists. Traffic is busy now.
 
-{"road_name": "Shap Pat Heung Interchange", "direction": null, "near_landmark": null, "between_landmark": null, "incident_type": "traffic_accident", "lanes_closed": [], "lanes_total": null, "confidence": 0.7, "notes": "Lanes closed but not specified. No direction given."}
+{"road_name": "Shap Pat Heung Interchange", "direction": null, "near_landmark": null, "between_landmark": null, "incident_type": "traffic_accident", "lanes_closed": ["unspecified"], "lanes_total": null, "confidence": 0.7, "notes": "Lanes closed but not specified. No direction given."}
 
 One named lane closed (message 146525):
 > Due to traffic accident , the fast lane of Garden Road (downhill bound) near Queensway is closed to all traffic. Only remaining lane is available to motorists. Traffic is busy now.

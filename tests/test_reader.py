@@ -79,6 +79,8 @@ def test_invalid_reply_is_retried_once(stn, model_replies, tmp_path):
     {"lat": 22.26},                  # the model must not produce coordinates
     {"confidence": 1.4},             # outside 0..1
     {"lanes_closed": ["left"]},      # not a lane name in the contract
+    {"lanes_closed": ["unspecified", "fast"]},  # 'unspecified' stands alone
+    {"lanes_closed": ["all", "slow"]},          # so does 'all'
     {"incident_type": "accident"},   # not in the incident_type list
     {"near_landmark": "null"},       # the text "null" instead of JSON null
     {"in_scope": True},              # scope is decided by code, not the model
@@ -88,6 +90,12 @@ def test_reply_failing_the_contract_twice_is_flagged(stn, model_replies, bad_fie
     model_replies.extend([bad, bad])
     with pytest.raises(reader.ReaderError, match="IN-26-06772"):
         reader.read_message(stn)
+
+
+def test_unspecified_lanes_pass_the_contract(stn, model_replies):
+    model_replies.append(json.dumps(json.loads(MOCK_REPLY) | {"lanes_closed": ["unspecified"],
+                                                              "lanes_total": None}))
+    assert reader.read_message(stn)["lanes_closed"] == ["unspecified"]
 
 
 def test_pick_is_prefix_stable():
