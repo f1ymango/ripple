@@ -48,7 +48,7 @@ this chain.
 | | Component | Owner | Status |
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines, detector bins with coverage, corridor table, candidate screener and live poller ([src/loaders/](src/loaders/)). Committed output: the 28-detector [data/detectors.csv](data/detectors.csv); shortlist still to generate |
-| B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Parses all 20 dev messages; accuracy not measured yet ([src/reader/](src/reader/)) |
+| B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Parses all 20 dev messages ([src/reader/](src/reader/)). Accuracy: 100 gold messages drawn ([gold_messages.jsonl](data/labelled_incidents/gold_messages.jsonl)), labelling app and scorer ready, labels not started ([LABELLING.md](data/labelled_incidents/LABELLING.md)) |
 | C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | ⚪ Nothing in the repo yet |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
@@ -99,11 +99,12 @@ Six branches whose pull request is already merged are still on the remote
   only in the Reader's. Pick one and share it.
 - **Who runs the live poller, and on which machine.** Its data has no gaps,
   but it only records while it runs (`python -m src.loaders.fetch live`).
-- **An `unspecified` lane value in `incident.json`**, so "part of the lanes is
-  closed" stops coming out as "no lanes closed". A contract change: decide as a
-  team, then update [docs/03-architecture.md](docs/03-architecture.md) the same day.
-  12 of the 20 dev messages are this case. Without it, the Evaluator (E) would
-  inject such an incident as no closure at all.
+- **What the Evaluator (E) simulates for `lanes_closed: ["unspecified"]`**
+  (Data, before E's first run). The Reader now says "some lanes are closed, the
+  message does not say which" instead of "none"; E picks the closure to
+  simulate and states that assumption with the results
+  ([docs/03-architecture.md](docs/03-architecture.md) §3). 7 of the 20 dev
+  messages are this case.
 - **Calibration thresholds** (Data + Simulation): a bin is used for GEH only at
   ≥ 40% archive coverage and ≥ 90% of lane readings valid
   ([docs/02-data.md](docs/02-data.md) §7). Relax them deliberately if too few
@@ -116,9 +117,11 @@ Six branches whose pull request is already merged are still on the remote
 
 ### Known issues
 
-- Incident Reader accuracy is not measured yet. That needs ~100 hand-labelled
-  messages, none of them from the dev set or the prompt's worked examples
-  (see [data/labelled_incidents/README.md](data/labelled_incidents/README.md)).
+- Incident Reader accuracy is not measured yet. The 100 gold messages still
+  need labelling ([data/labelled_incidents/LABELLING.md](data/labelled_incidents/LABELLING.md)).
+- `requirements.txt` pins `pandas==2.2.3`, which has no build for Python 3.14,
+  so `pip install -r requirements.txt` fails on a 3.14 venv. `pip install
+  streamlit==1.40.2` on its own works there (it brings pandas 2.3.3).
 - Lane totals are wrong on 2 of the 20 dev messages.
 - No Aberdeen-corridor message has been through a live model run yet. Scope
   detection is tested on two real corridor messages, with the model mocked.
@@ -150,6 +153,37 @@ Six branches whose pull request is already merged are still on the remote
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Thu 24 Sep**
+- Contract change agreed by the team: `lanes_closed` gains `unspecified` for
+  "part of the lanes is closed", which had come out the same as "no lane
+  closed". The Evaluator (E) decides what to simulate for it
+  ([docs/03-architecture.md](docs/03-architecture.md) §3,
+  [src/reader/incident.schema.json](src/reader/incident.schema.json),
+  [src/reader/prompts/system.md](src/reader/prompts/system.md)).
+- Incident Reader accuracy, set up: the sampler draws a gold set of 80
+  citywide + 20 corridor messages from 22 Jun–21 Sep, leaving out the dev set
+  and the prompt's worked examples; a Streamlit app to label them; a scorer
+  with per-field accuracy and 95% intervals, its matching rules fixed before
+  any score is seen ([LABELLING.md](data/labelled_incidents/LABELLING.md),
+  [src/reader/label.py](src/reader/label.py), [src/reader/score.py](src/reader/score.py)).
+  The sampler now reads the data layer's cache and still rebuilds the dev set
+  byte for byte.
+- Gold set drawn: 80 citywide + 20 corridor messages from 2,519 incidents,
+  with no dev-set incident or worked example among them. 47 of the 100 say
+  "part of the lanes"
+  ([data/labelled_incidents/gold_messages.jsonl](data/labelled_incidents/gold_messages.jsonl)).
+- Reader prompt and labelling guide aligned on four rules found by labelling
+  the dev set twice: a closure that also mentions buses takes the closure's
+  cause, not `public_transport_notice` (otherwise code marks a corridor
+  closure out of scope); "road incident" alone is `other`; a bracketed
+  section name stays in `road_name`; English wins over Chinese. On the dev
+  set the Reader parses 20/20 and gives `unspecified` for all 7 "part of the
+  lanes" closures, but still types "road incident" as `road_works`
+  ([results/reader/2026-09-24T1504_qwen3-8b.jsonl](results/reader/2026-09-24T1504_qwen3-8b.jsonl)).
+- One archived STN snapshot (3 Aug 08:15) is truncated. The gold sampler skips
+  and reports it; the data layer's incident loader still crashes on it, which
+  blocks the candidate screen over 22 Jun–21 Sep.
 
 **Wed 23 Sep**
 - Evidence pack (component H): workspaces for the interviews and the deck, each
@@ -257,12 +291,14 @@ on the CPU, much more slowly.
 To collect real messages from the DATA.GOV.HK archive:
 
 ```bash
-python -m src.reader.sample --start 2026-09-15 --end 2026-09-21 --n 20
+python -m src.reader.sample --start 2026-09-15 --end 2026-09-21 --n 20 --out dev.jsonl
 ```
 
-This **overwrites** `data/labelled_incidents/messages.jsonl`, the committed
-dev set. Downloads are cached in `data/raw/` (not committed); a week of archive
-takes about 20 minutes the first time.
+It never overwrites an existing file. Downloads go through the data layer's
+cache in `data/raw/` (not committed); run `python -m src.loaders.fetch prefetch
+--feed stn ...` first to download a long window in parallel. The gold set
+behind the accuracy number is made and labelled as described in
+[data/labelled_incidents/LABELLING.md](data/labelled_incidents/LABELLING.md).
 
 ### Run the operator console
 

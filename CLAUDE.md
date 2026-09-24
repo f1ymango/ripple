@@ -48,8 +48,12 @@ python -m src.loaders.fetch detectors --start 2026-09-21T07:00 --end 2026-09-21T
 
 # Incident Reader: sample real STN messages, then parse them with a local model
 # (needs Ollama running, https://ollama.com, and `ollama pull qwen3:8b`)
-python -m src.reader.sample --start 2026-09-15 --end 2026-09-21 --n 20
+python -m src.reader.sample --start 2026-09-15 --end 2026-09-21 --n 20 --out dev.jsonl
 python -m src.reader.run --messages data/labelled_incidents/messages.jsonl
+
+# Reader accuracy: label the gold set, then score a run (data/labelled_incidents/LABELLING.md)
+streamlit run src/reader/label.py
+python -m src.reader.score --run results/reader/<run_id>.jsonl
 
 # tests (no LLM needed)
 python -m pytest
