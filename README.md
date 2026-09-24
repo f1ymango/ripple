@@ -76,7 +76,7 @@ merged shows in the rows above; pull requests #1–#10 are all merged.
 
 | What | Who | Branch |
 |---|---|---|
-| Console: headline stats, legend, street basemap, clock-time bin slider, and the week-1 screenshot | Visuals | `visuals/map-improvements` |
+| [#11](https://github.com/f1ymango/ripple/pull/11) Console: headline stats, legend, street basemap, clock-time bin slider, and the week-1 screenshot | Visuals | `visuals/map-improvements` |
 
 Six branches whose pull request is already merged are still on the remote
 (`data/loaders`, `docs/impact-workspace`, `docs/readme-tracker`,
