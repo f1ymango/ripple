@@ -119,7 +119,8 @@ with st.form(f"label:{mid}", enter_to_submit=False):
     c.selectbox("incident_type", TYPES, key=f"incident_type:{mid}",
                 index=TYPES.index(existing["incident_type"]) if existing else None)
     d.multiselect("lanes_closed", LANES, default=existing["lanes_closed"] if existing else [],
-                  help="Empty = no lane closed now. 'unspecified' = closed, but not which.",
+                  help="Lanes closed AS OF this message. Re-opened = empty, even if a lane is named. "
+                       "'unspecified' = closed, but not which.",
                   key=f"lanes_closed:{mid}")
     # A text box, not a number box: once a number box holds a saved value it cannot be emptied again.
     e.text_input("lanes_total", key=f"lanes_total:{mid}",

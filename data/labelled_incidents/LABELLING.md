@@ -151,4 +151,14 @@ way. Examples come from the dev set, never from the gold set.
   notice), `all`, `both directions` (IN-26-06846).
 - "Tsing Long Highway (Ting Kau Bridge) (Kowloon bound)" → road_name
   `Tsing Long Highway (Ting Kau Bridge)`, direction `Kowloon bound`
-  (IN-26-06774).
+  (IN-26-06774). The same holds for any bracket that names a place on the
+  road, such as a bridge or a roundabout: it is part of road_name, never
+  near_landmark (decided 25 Sep).
+- "The slow lane of X ... which was closed ... is re-opened": `lanes_closed`
+  is **empty**, even though the message names the lane. It names the lane
+  that *was* closed (decided 25 Sep, after the first gold pass labelled 40 of
+  these with the lane).
+- "between X and Y" counts in any message, a public transport notice
+  included: a rail fault "between Admiralty Station and Tsim Sha Tsui
+  Station" → between_landmark `Admiralty Station and Tsim Sha Tsui Station`
+  (decided 25 Sep).
