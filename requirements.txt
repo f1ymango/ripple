@@ -5,6 +5,10 @@ jsonschema==4.26.0
 requests==2.34.2
 urllib3==2.8.0
 
+# C: SUMO simulation (install SUMO itself separately)
+sumolib==1.27.1
+traci==1.27.1
+
 # G: Operator console
 streamlit==1.40.2
 pydeck==0.9.1

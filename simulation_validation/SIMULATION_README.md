@@ -1,6 +1,6 @@
 # Aberdeen traffic twin: build and run guide
 
-This starter project follows the simulation-validation role brief. It does not contain the team's referenced `02-data.md` or architecture contract, and SUMO is not installed in the current environment. The scripts are ready for you to run after installing SUMO and supplying the actual detector observations and coordinates. No calibration result is claimed until that data is added and the evaluation script is run.
+This starter project is the simulation-validation component of Ripple. Run the commands below from the `simulation_validation` folder. It is a starter workflow: add the team's actual detector observations and coordinates before claiming calibration results. No calibration result is claimed until that data is added and the evaluation script is run.
 
 ## What the pieces mean
 
@@ -12,18 +12,19 @@ This starter project follows the simulation-validation role brief. It does not c
 
 ## Step 1 — Install and check SUMO
 
-Install a current SUMO release using the official SUMO Windows installer. Open a new PowerShell after installation and make sure `sumo`, `netconvert`, and the SUMO tools directory are available. Set `SUMO_HOME` to the SUMO installation directory if the installer did not do so. Install Python 3.10+ and run:
+Install SUMO using the official SUMO Windows installer. Open a new PowerShell after installation and make sure `sumo`, `netconvert`, and the SUMO tools directory are available. Set `SUMO_HOME` to the SUMO installation directory if the installer did not do so. Install Python 3.10+ and run these commands from the repository root:
 
 ```powershell
 py -m pip install -r requirements.txt
+Set-Location .\simulation_validation
 py scripts/check_sumo.py
 ```
 
-If the check fails, fix the SUMO PATH / `SUMO_HOME` before continuing. No SUMO installation was detected when this starter was prepared.
+If the check fails, fix the SUMO PATH / `SUMO_HOME` before continuing. The Python packages are listed under component C in the repository root `requirements.txt`; install SUMO itself separately.
 
 ## Step 2 — Add the team's inputs
 
-Copy `config/detectors.example.json` to `config/detectors.json` and enter the real detector IDs, WGS84 longitude/latitude, observed 5-minute counts, and speeds. One observation row is required per detector per 5-minute interval for the pre-incident calibration hour and incident replay window. Preserve missing values as `null`; do not invent or interpolate observations. The coordinates, detector IDs, times, incident lane list and actual incident duration must come from the team data, not this template.
+Copy `config/detectors.example.json` to `config/detectors.json` and enter the real detector IDs, WGS84 longitude/latitude, observed 5-minute counts, and speeds. One observation row is required per detector per 5-minute interval for the pre-incident calibration hour and incident replay window. Preserve missing values as `null`; do not invent or interpolate observations. The coordinates, detector IDs, times, incident lane list and actual incident duration must come from the team data, not this template. Keep the working `detectors.json` and `scenario.json` local; they are excluded from Git.
 
 Copy `config/scenario.example.json` to `config/scenario.json`. Set incident start, duration, lanes, simulation horizon and route files. Fill `osm_bbox` to cover the complete corridor (including both directions and the western alternative). Coordinate order is west,south,east,north.
 
