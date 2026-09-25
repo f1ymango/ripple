@@ -1,0 +1,16 @@
+{
+  "timezone": "Asia/Hong_Kong",
+  "interval_seconds": 300,
+  "detectors": [
+    {
+      "id": "REPLACE_WITH_REAL_TD_ID",
+      "lon": 114.0,
+      "lat": 22.0,
+      "edge_id": null,
+      "position_m": null,
+      "observations": [
+        {"time": "2026-10-01T08:00:00+08:00", "count": null, "speed_kmh": null}
+      ]
+    }
+  ]
+}

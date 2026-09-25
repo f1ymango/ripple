@@ -49,12 +49,12 @@ this chain.
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines, detector bins with coverage, corridor table, candidate screener and live poller ([src/loaders/](src/loaders/)). Committed output: the 28-detector [data/detectors.csv](data/detectors.csv); shortlist still to generate |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | ⚪ Nothing in the repo yet |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Starter scripts and a draft Aberdeen network workflow are in [src/twin/](src/twin/README.md). Runs on Simulation's machine (vehicles moving, reported 26 Sep; no screenshot or video in the repo yet); route teleports, detector calibration, and incident validation still need work. |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
 | G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, with headline stats and a bin slider ([src/console/app.py](src/console/app.py), [screenshot](docs/img/week1-corridor-map.png)). Plan comparison, Approve and audit log still to build |
-| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3; workspaces and their definitions of done are in [evidence/interviews/](evidence/interviews/) and [deck/](deck/) |
+| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3; interview plan with three target profiles and the first interview scheduled for Sat 26 Sep ([evidence/interviews/plan.md](evidence/interviews/plan.md)); deck workspace in [deck/](deck/) |
 
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
@@ -66,25 +66,17 @@ The JSON contracts between modules are in
 | Lead | Freeze scope; write `CLAUDE.md`; create repo; test the Incident Reader on 20 real messages | repo exists, 20 messages parsed | ✅ 22 Sep |
 | Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/candidates.py](src/loaders/candidates.py)); STN archive for 22 Jun–21 Sep cached (24 Sep, Lead's machine) and parseable since #10; `fetch candidates` still to run |
 | Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ✅ 24 Sep — [screenshot](docs/img/week1-corridor-map.png) of the 21 Sep 08:20 bin ([src/console/app.py](src/console/app.py)) |
-| Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | ⚪ |
-| Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 evidence drafted; interviews and fact-check outstanding |
+| Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | 🟡 SUMO and a draft network run locally; record/share evidence and improve route coverage ([guide](src/twin/README.md)) |
+| Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 plan exists and one interview is scheduled, Sat 26 Sep 15:00 ([plan](evidence/interviews/plan.md)); fact-check outstanding |
 
 ### In review
 
 Work that exists but is not on `main` yet, as of Sat 26 Sep. Everything
-merged shows in the rows above; pull requests #1–#11 are all merged.
+merged shows in the rows above; pull requests #1–#11, #13 and #14 are merged.
 
 | What | Who | Branch |
 |---|---|---|
-| [#12](https://github.com/f1ymango/ripple/pull/12) Week-1 SUMO setup: starter scripts and a draft Aberdeen network workflow | Simulation | `sumo-week1` |
-| [#13](https://github.com/f1ymango/ripple/pull/13) Interview plan: three target participant profiles, one interview scheduled | Impact | `markwang798369-patch-1` |
-| [#14](https://github.com/f1ymango/ripple/pull/14) Incident Reader accuracy: gold labels, v1 and v2 scores, the `bound` prompt fix | Lead | `reader/gold-labels` |
-
-Ten branches whose pull request is already merged are still on the remote
-(`data/loaders`, `data/skip-truncated-snapshots`, `docs/impact-workspace`,
-`docs/readme-tracker`, `docs/tracker-24sep`, `docs/tracker-data-layer`,
-`reader/gold-set`, `visuals/detector-map`, `visuals/map-improvements`,
-`visuals/tracker-role-label`). Deleting them keeps the branch list readable.
+| [#12](https://github.com/f1ymango/ripple/pull/12) Week-1 SUMO setup, moved into `src/twin/` and `sim/` | Simulation | `sumo-week1` |
 
 ### Open decisions
 
@@ -158,6 +150,21 @@ Ten branches whose pull request is already merged are still on the remote
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Sat 26 Sep**
+- The twin (component C) has code: SUMO setup scripts from Simulation (#12),
+  moved into the repo layout — scripts in [src/twin/](src/twin/README.md),
+  run from the repo root as `python -m src.twin.<script>`; the reviewed
+  network and loops committed as `sim/aberdeen.net.xml` and
+  `sim/detectors.add.xml`; downloads, routes and SUMO output in the
+  git-ignored `sim/work/`. A review of the move also fixed crashes in
+  `fit_demand` and in `place_detectors` for lon/lat detectors. Not run end to
+  end since the move: SUMO is not installed on the Lead's machine.
+- Interview plan: three target profiles, first interview scheduled for
+  Sat 26 Sep 15:00 ([evidence/interviews/plan.md](evidence/interviews/plan.md), #13).
+- Incident Reader accuracy merged (#14).
+- Housekeeping: every branch whose pull request is merged was deleted from
+  the remote.
 
 **Fri 25 Sep**
 - Incident Reader accuracy measured on the 100 hand-labelled gold messages.
