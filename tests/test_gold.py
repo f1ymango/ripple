@@ -135,3 +135,14 @@ def test_wilson_interval_brackets_the_rate_even_at_the_edges():
     assert low < 0.9 < high and high - low < 0.13
     assert score.wilson(100, 100)[1] == 1.0 and score.wilson(100, 100)[0] < 1.0
     assert score.wilson(0, 0) is None
+
+
+def test_scorer_never_overwrites_a_score(tmp_path, monkeypatch):
+    run = tmp_path / "mock_run.jsonl"
+    run.write_text("", encoding="utf-8")
+    existing = tmp_path / "mock_run_score.json"
+    existing.write_text("held-out score", encoding="utf-8")
+    monkeypatch.setattr("sys.argv", ["score", "--run", str(run)])
+    with pytest.raises(SystemExit):
+        score.main()
+    assert existing.read_text(encoding="utf-8") == "held-out score"

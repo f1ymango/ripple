@@ -10,12 +10,15 @@ so that two people labelling the same message write the same answer.
 | `messages.jsonl` | The **dev set**: 20 messages, read freely while working on the prompt. |
 | `gold_messages.jsonl` | The **gold set**: messages the prompt was never tuned on. |
 | `gold_labels.jsonl` | One hand-written label per gold message. |
+| `history/gold_labels_v1.jsonl` | The labels as they stood for the held-out v1 score (see Score history). |
 
 ## Rules that keep the number honest
 
 1. **Label from the message alone.** Do not run the Reader on the gold set
-   until every message is labelled, and never label with its output open. The
-   labelling app never shows it.
+   until the labels are final, checks and corrections included, and never
+   label with its output open. The labelling app never shows it. (On 25 Sep
+   the run started after the first pass but before the check; see Score
+   history.)
 2. **Do not tune the prompt on the gold set.** Once a gold score has been
    seen, a prompt change afterwards makes the next score optimistic. If the
    prompt must change, say so next to the number, or label a fresh set.
@@ -135,6 +138,65 @@ Fixed before any gold score was seen, in `src/reader/score.py`:
   headline, the `corridor` one is what the demo depends on, and each is
   reported separately as well as together.
 
+## Score history
+
+"All fields right" per message; 95% intervals in brackets. Every figure is a
+file in `results/reader/`, written by `src/reader/score.py`.
+
+| Version | Prompt | Labels | Citywide (80) | Corridor (20) |
+|---|---|---|---|---|
+| **v1, held out** (25 Sep) | as merged in #9 | first pass + 55 corrections to 54 labels, final before any score | **50%** (39–61%) | **75%** (53–89%) |
+| v2 (25 Sep) | `bound` kept in direction | 4 more corrected after v1 was seen | 75% (65–83%) | 85% (64–95%) |
+
+**v1** is the held-out number: labels final (`history/gold_labels_v1.jsonl`)
+and matching rules fixed before any score. Files:
+`2026-09-25T0026_qwen3-8b_score.json`. The first hand-labelled pass is commit
+459cfe8; a rule-based check of each label against its message text and this
+guide then led to 55 approved corrections to 54 labels (7e26e25, 652cb85).
+
+Order of events, from `evidence/ai-log/2026-09-25.jsonl` and the commits: the
+v1 run went through the gold set from 00:26 to 00:34, after every message had
+a first-pass label but while that check was still going on. The corrections
+were committed at 00:35 and 00:38, and the score at 00:40. Until then, the only
+part of the run's output that was read was its summary line ("100 parsed, 0
+flagged"), and the check compared labels with message text, never with the
+run. The repo shows this order; that the output went unread until the score
+is the statement of whoever ran it, not something the repo can prove.
+
+**What changed after v1 was seen**, so v2 is *not* a held-out number:
+
+- **The prompt.** The 24 Sep road_name example dropped "(Kowloon bound)"
+  without saying where it goes, and the model learned to drop `bound` from
+  direction. The fix was found and checked on the dev set alone (dev
+  directions in the `<place> bound` form: 18/18 on 22 Sep, 12/18 on 24 Sep,
+  18/18 after the fix; the 19th, "both bounds", was `both directions` in
+  every run).
+- **Four labels**, each a slip against the rules above, found because the
+  Reader disagreed with them, so every one moves the score in its favour:
+  144214 (an arrangement "now cancelled": lanes empty), 144622 and 146041
+  ("leading to X" is not a stated direction: blank), 144352 (only about ferry
+  sailings: `public_transport_notice`).
+
+Almost all of the gain is the prompt fix: the v2 run scored against the v1
+labels gives 59/80 citywide (74%) and 16/20 corridor
+(`2026-09-25T0048_qwen3-8b_score_labels-v1.json`, made with `python -m
+src.reader.score --run results/reader/2026-09-25T0048_qwen3-8b.jsonl --labels
+data/labelled_incidents/history/gold_labels_v1.jsonl --out
+results/reader/2026-09-25T0048_qwen3-8b_score_labels-v1.json`); the label corrections add
+one message on each side (`2026-09-25T0048_qwen3-8b_score.json`). The fix also
+lost three fields the v1 run had right. Quote v2 next to v1, never alone. A
+new held-out number needs a fresh set, labelled after the gaps below are
+settled.
+
+**Known Reader errors left in v2**: one named lane closed with "only
+remaining lanes are" (plural) gets `lanes_total` 2, which the message does
+not say (7 of 100); a road junction ("the junction of X and Y") becomes road
+X with Y as a landmark or direction; `near_landmark` filled where the message
+has no "near" (7 of 100).
+
+**Gaps to settle before labelling another set**: road junctions; a traffic
+advisory that also announces extra public transport service.
+
 ## Decided cases
 
 When the rules above do not settle a message, choose the reading an operator
@@ -151,4 +213,13 @@ way. Examples come from the dev set, never from the gold set.
   notice), `all`, `both directions` (IN-26-06846).
 - "Tsing Long Highway (Ting Kau Bridge) (Kowloon bound)" → road_name
   `Tsing Long Highway (Ting Kau Bridge)`, direction `Kowloon bound`
-  (IN-26-06774).
+  (IN-26-06774). The same holds for any bracket that names a place on the
+  road, such as a bridge or a roundabout: it is part of road_name, never
+  near_landmark (decided 25 Sep).
+- "The slow lane of X ... which was closed ... is re-opened": `lanes_closed`
+  is **empty**, even though the message names the lane. It names the lane
+  that *was* closed (decided 25 Sep, after the first gold pass labelled 40 of
+  these with the lane).
+- "between X and Y" counts in any message, a public transport notice
+  included: a rail fault between two stations → between_landmark
+  `X and Y`, with the stations as the message names them (decided 25 Sep).
