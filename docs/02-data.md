@@ -230,7 +230,12 @@ Incident") · `INCIDENT_DETAIL_EN/CN` (e.g. "Traffic Accident") · `LOCATION_EN/
 > zero-byte `<timestamp>.404` beside the cache and never requested again
 > (delete those files to force a recheck). A 5xx, a network failure, or a 200
 > whose body is not the feed's XML is transient: not recorded, not cached, and
-> retried on the next run. `prefetch` reports the two separately.
+> retried on the next run. `prefetch` reports the two separately. A snapshot
+> the archive serves **cut off part-way** is a third case: STN `20260803-0815`
+> stops mid-`<LONGITUDE>`, and the archive returns the same 1,583 bytes on
+> every request, so it is cached as served. The loaders skip any snapshot that
+> does not parse, and every run prints one line per feed: snapshots listed,
+> read, not served, and unparseable, naming the unparseable ones.
 >
 > Net effect: for the hour 08:00-09:00, 41 versions listed, 28 served, holding
 > **28 distinct data minutes out of 60 (about 47%)**, with gaps of up to five
@@ -279,8 +284,7 @@ than about 11 days would hit the cap.
 bytes; `common.parse_xml` strips them and reads the file. The other 4
 (`20260419-2002`, `20260608-1446`, `20260608-1449`, `20260803-0815`) stop
 mid-document and come back byte-identical on every request, so they are skipped
-and `incidents.load` prints which. The detector loader skips truncated
-snapshots the same way.
+and named in each run's summary line (§3 above).
 ⚠️ The dataset pages also offer **packaged daily / monthly archives**, which are
 much faster than pulling thousands of 1-minute snapshots. Prefer those for a
 whole-day pull; use the API for precise timestamps.
@@ -443,7 +447,7 @@ varies window to window and is effectively random, so it is a *selection*
 criterion, not a defect to fight. `data/candidates.md` scores every candidate on
 retrievability and measured coverage, and the team picks from that table:
 
-    python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21
+    python -m src.loaders.fetch candidates --start 2026-03-22 --end 2026-09-21
 
 Screening is two-stage — a 12-version sample per incident, then a full pull for
 the best few — so it runs in an afternoon rather than a night.

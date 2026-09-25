@@ -9,8 +9,10 @@ Two things make that work better than the 4-minute snapshot cadence suggests:
 
   * each message carries its own ANNOUNCEMENT_DATE, so once we have caught a
     message its time is exact, not rounded to when we happened to look;
-  * messages are immutable -- a new status means a new message ID -- so
-    keeping every distinct ID per INCIDENT_NUMBER reconstructs the sequence.
+  * keeping every distinct message ID per INCIDENT_NUMBER reconstructs the
+    sequence. A new status is usually a new message, with one exception: TD
+    closes an incident by switching its last message to CLOSED under the
+    same ID, so a later CLOSED on a known ID is kept (collect_messages).
 
 The cadence still costs us: a message issued and superseded inside one gap is
 never archived. That shows up as an incident with no NEW or no CLOSED, which
@@ -25,7 +27,6 @@ from __future__ import annotations
 
 import datetime as dt
 import re
-import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -62,31 +63,29 @@ def _announced_at(message: dict[str, str]) -> dt.datetime | None:
         return None
 
 
-def collect_messages(timestamps: list[str],
-                     unreadable: list[str] | None = None) -> dict[str, dict]:
+def collect_messages(timestamps: list[str], log=print) -> dict[str, dict]:
     """Every distinct STN message across these snapshots, keyed by message ID.
 
     Streams the cache one snapshot at a time; six months is ~18,400 files and
-    we only keep the messages, not the XML.
+    we only keep the messages, not the XML. A snapshot that does not parse is
+    skipped and named in the run summary (see archive.read_summary).
 
     **A message's status changes under the same ID.** TD marks an incident
     finished by switching its last message -- usually the "...is re-opened to
     all traffic" one -- from UPDATED to CLOSED; the ID, text and
     ANNOUNCEMENT_DATE stay the same. Keeping each message as first seen threw
     away about 70% of closures, so a later CLOSED is kept.
-
-    A snapshot the archive stores truncated is skipped and its timestamp added
-    to `unreadable`, instead of ending the run.
     """
     messages: dict[str, dict] = {}
+    read, unparseable = 0, []
     for archive_time, xml_bytes in archive.iter_snapshots("stn", timestamps):
         try:
-            parsed = parse_snapshot(xml_bytes)
+            snapshot = parse_snapshot(xml_bytes)
         except ET.ParseError:
-            if unreadable is not None:
-                unreadable.append(archive_time)
+            unparseable.append(archive_time)
             continue
-        for stn in parsed:
+        read += 1
+        for stn in snapshot:
             message_id = stn.get("ID", "")
             if not message_id:
                 continue
@@ -98,6 +97,7 @@ def collect_messages(timestamps: list[str],
                 seen["last_seen"] = archive_time
                 if stn.get("INCIDENT_STATUS_EN") == STATUS_CLOSED:
                     seen["stn"]["INCIDENT_STATUS_EN"] = STATUS_CLOSED
+    log(archive.read_summary("stn", len(timestamps), read, unparseable))
     return messages
 
 
@@ -193,13 +193,7 @@ def load(start: str, end: str) -> list[dict]:
         raise RuntimeError(
             f"the archive has no STN snapshots for {start}..{end}. Its latest "
             "available day is yesterday -- check the dates.")
-    unreadable: list[str] = []
-    incidents = build_incidents(collect_messages(timestamps, unreadable))
-    if unreadable:
-        print(f"note: skipped {len(unreadable)} of {len(timestamps)} snapshots that the "
-              f"archive stores truncated: {', '.join(unreadable[:6])}"
-              f"{' ...' if len(unreadable) > 6 else ''}", file=sys.stderr)
-    return incidents
+    return build_incidents(collect_messages(timestamps))
 
 
 def write_csv(incidents: list[dict], path: Path) -> Path:

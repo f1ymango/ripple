@@ -41,13 +41,22 @@ Before doing anything substantial, read:
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# fetch a day of data (cached)
-python -m src.loaders.fetch --date 2026-03-14
+# data layer (cached in data/raw/): corridor table, incident shortlist, detector bins
+python -m src.loaders.fetch corridor
+python -m src.loaders.fetch candidates --start 2026-03-22 --end 2026-09-21
+python -m src.loaders.fetch detectors --start 2026-09-21T07:00 --end 2026-09-21T10:00
 
 # Incident Reader: sample real STN messages, then parse them with a local model
 # (needs Ollama running, https://ollama.com, and `ollama pull qwen3:8b`)
-python -m src.reader.sample --start 2026-09-15 --end 2026-09-21 --n 20
+python -m src.reader.sample --start 2026-09-15 --end 2026-09-21 --n 20 --out dev.jsonl
 python -m src.reader.run --messages data/labelled_incidents/messages.jsonl
+
+# Reader accuracy: label the gold set, then score a run (data/labelled_incidents/LABELLING.md)
+streamlit run src/reader/label.py
+python -m src.reader.score --run results/reader/<run_id>.jsonl
+
+# twin (needs SUMO installed; step by step in src/twin/README.md)
+python -m src.twin.check_sumo
 
 # tests (no LLM needed)
 python -m pytest

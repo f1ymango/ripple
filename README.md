@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Wed 23 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
+**Last updated: Sat 26 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
 the incident) · Stand-ups: Sunday and Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
@@ -47,14 +47,14 @@ this chain.
 
 | | Component | Owner | Status |
 |---|---|---|---|
-| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines, detector bins with coverage, corridor table, candidate screener and live poller, 153 tests ([src/loaders/](src/loaders/)). Shortlist still to generate |
-| B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Parses all 20 dev messages; accuracy not measured yet ([src/reader/](src/reader/)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | ⚪ Nothing in the repo yet |
+| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines, detector bins with coverage, corridor table, candidate screener and live poller ([src/loaders/](src/loaders/)). Committed output: the 28-detector [data/detectors.csv](data/detectors.csv); shortlist still to generate |
+| B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Starter scripts and a draft Aberdeen network workflow are in [src/twin/](src/twin/README.md). Runs on Simulation's machine (vehicles moving, reported 26 Sep; no screenshot or video in the repo yet); route teleports, detector calibration, and incident validation still need work. |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
-| G | Operator console: map, plan comparison, Approve + audit log | Visuals | ⚪ Nothing in the repo yet |
-| H | Evidence pack: validation, accuracy, interviews | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3 |
+| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, with headline stats and a bin slider ([src/console/app.py](src/console/app.py), [screenshot](docs/img/week1-corridor-map.png)). Plan comparison, Approve and audit log still to build |
+| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3; interview plan with three target profiles and the first interview scheduled for Sat 26 Sep ([evidence/interviews/plan.md](evidence/interviews/plan.md)); deck workspace in [deck/](deck/) |
 
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
@@ -64,10 +64,19 @@ The JSON contracts between modules are in
 | Owner | Task | Done when | Status |
 |---|---|---|---|
 | Lead | Freeze scope; write `CLAUDE.md`; create repo; test the Incident Reader on 20 real messages | repo exists, 20 messages parsed | ✅ 22 Sep |
-| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders built ([src/loaders/](src/loaders/)); 6-month STN pull done, 22 usable corridor accidents; shortlist drafted, `data/candidates.md` still to write |
-| Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ⚪ |
-| Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | ⚪ |
-| Impact | Gather problem evidence; line up 2–3 user interviews | `05-pitch.md` evidence section filled | 🟡 evidence drafted |
+| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders built ([src/loaders/](src/loaders/)); STN archive for 22 Mar–21 Sep read (18,381 snapshots): 22 usable corridor accidents. Shortlist drafted (4 with the closed lane stated, 1 `unspecified`); `data/candidates.md` still to write |
+| Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ✅ 24 Sep — [screenshot](docs/img/week1-corridor-map.png) of the 21 Sep 08:20 bin ([src/console/app.py](src/console/app.py)) |
+| Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | 🟡 SUMO and a draft network run locally; record/share evidence and improve route coverage ([guide](src/twin/README.md)) |
+| Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 plan exists and one interview is scheduled, Sat 26 Sep 15:00 ([plan](evidence/interviews/plan.md)); every claim in [05-pitch.md](docs/05-pitch.md) §3 now carries a source and a 25 Sep check date, but 8 of the 15 sources are a homepage or listing rather than the page with the figure |
+
+### In review
+
+Work that exists but is not on `main` yet, as of Sat 26 Sep. Everything
+merged shows in the rows above; pull requests #1–#11, #13 and #14 are merged.
+
+| What | Who | Branch |
+|---|---|---|
+| [#12](https://github.com/f1ymango/ripple/pull/12) Week-1 SUMO setup, moved into `src/twin/` and `sim/` | Simulation | `sumo-week1` |
 
 ### Open decisions
 
@@ -78,11 +87,18 @@ The JSON contracts between modules are in
   minutes or more. The screener ranks them on archive coverage as well as the
   speed drop:
   `python -m src.loaders.fetch candidates --start 2026-03-22 --end 2026-09-21`.
-- **An `unspecified` lane value in `incident.json`**, so "part of the lanes is
-  closed" stops coming out as "no lanes closed". A contract change: decide as a
-  team, then update [docs/03-architecture.md](docs/03-architecture.md) the same day.
-  12 of the 20 dev messages are this case. Without it, the Evaluator (E) would
-  inject such an incident as no closure at all.
+- **One corridor-road list.** The Reader ([src/reader/reader.py](src/reader/reader.py))
+  and the loaders ([src/loaders/corridor.py](src/loaders/corridor.py)) each
+  keep their own, and they differ: Stubbs Road and the Chinese road names are
+  only in the Reader's. Pick one and share it.
+- **Who runs the live poller, and on which machine.** Its data has no gaps,
+  but it only records while it runs (`python -m src.loaders.fetch live`).
+- **What the Evaluator (E) simulates for `lanes_closed: ["unspecified"]`**
+  (Data, before E's first run). The Reader now says "some lanes are closed, the
+  message does not say which" instead of "none"; E picks the closure to
+  simulate and states that assumption with the results
+  ([docs/03-architecture.md](docs/03-architecture.md) §3). 7 of the 20 dev
+  messages are this case.
 - **Calibration thresholds** (Data + Simulation): a bin is used for GEH only at
   ≥ 40% archive coverage and ≥ 90% of lane readings valid
   ([docs/02-data.md](docs/02-data.md) §7). Relax them deliberately if too few
@@ -95,16 +111,25 @@ The JSON contracts between modules are in
 
 ### Known issues
 
-- Incident Reader accuracy is not measured yet. That needs ~100 hand-labelled
-  messages, none of them from the dev set or the prompt's worked examples
-  (see [data/labelled_incidents/README.md](data/labelled_incidents/README.md)).
-- Lane totals are wrong on 2 of the 20 dev messages.
-- No Aberdeen-corridor message has been through a live model run yet. Scope
-  detection is tested on two real corridor messages, with the model mocked.
+- Incident Reader errors left in v2
+  ([LABELLING.md](data/labelled_incidents/LABELLING.md#score-history)): one
+  named lane closed with "only remaining lanes are" (plural) gets
+  `lanes_total` 2, which the message does not say (7 of 100); a road junction
+  ("the junction of X and Y") becomes road X; `near_landmark` filled where the
+  message has no "near" (7 of 100). Found on the gold set, so fixing them in
+  the prompt needs a fresh set to measure the result.
+- `requirements.txt` pins `pandas==2.2.3`, which has no build for Python 3.14,
+  so `pip install -r requirements.txt` fails on a 3.14 venv. `pip install
+  streamlit==1.40.2` on its own works there (it brings pandas 2.3.3).
 - The historical archive serves only about half the raw detector snapshots it
   lists (39% were a persistent 404 on 21 Sep), so a 5-minute bin usually holds
-  1–3 observed minutes. Every count carries its `coverage_pct`; the missing
-  minutes cannot be recovered ([docs/02-data.md](docs/02-data.md) §3).
+  1–3 observed minutes. Summing raw volume into a bin would understate flow by
+  about half, so the loader reports a flow rate and a `coverage_pct` instead.
+  The missing minutes cannot be recovered
+  ([docs/02-data.md](docs/02-data.md) §3, §7).
+- For [C]: the processed segment-speed feed is fully retrievable. It has no
+  volume, so it cannot support GEH, but it is the better series for the speed
+  side of validation ([docs/02-data.md](docs/02-data.md) §3).
 
 ### Definition of done
 
@@ -112,7 +137,7 @@ The JSON contracts between modules are in
 - [ ] Validation chart: simulated vs observed, with a stated error
 - [ ] Three plans compared on ≥ 4 metrics
 - [ ] Sensitivity: plan still wins across compliance and clearance ranges
-- [ ] Incident Reader accuracy measured on ~100 labelled messages
+- [x] Incident Reader accuracy measured on ~100 labelled messages
 - [ ] One on-screen moment where a real bilingual message goes in and a ranked
       plan + briefing + sign text come out
 - [ ] Operator console with an Approve action and an audit log
@@ -125,17 +150,119 @@ The JSON contracts between modules are in
 
 Newest first. One line per change that matters, with a link to the proof.
 
-**Wed 23 Sep**
-- Incident timelines fixed. TD closes an incident by switching an existing
-  message to CLOSED, and the loader kept each message only as first seen, so
-  most closures were lost; that is where "only a quarter have a CLOSED" came
-  from. Over six months (22 Mar–21 Sep, 18,381 STN snapshots) 68% of all
-  incidents now have a complete timeline, and 35 of the 53 corridor accidents
-  do. Also: 4 archive snapshots padded with NUL bytes are now read, 4 truncated
-  ones are skipped and reported, and version listings are paged a month at a
-  time to stay under the 10,000-row cap. 164 tests
+**Sat 26 Sep**
+- The twin (component C) has code: SUMO setup scripts from Simulation (#12),
+  moved into the repo layout — scripts in [src/twin/](src/twin/README.md),
+  run from the repo root as `python -m src.twin.<script>`; the reviewed
+  network and loops committed as `sim/aberdeen.net.xml` and
+  `sim/detectors.add.xml`; downloads, routes and SUMO output in the
+  git-ignored `sim/work/`. A review of the move also fixed crashes in
+  `fit_demand` and in `place_detectors` for lon/lat detectors. Not run end to
+  end since the move: SUMO is not installed on the Lead's machine.
+- Interview plan: three target profiles, first interview scheduled for
+  Sat 26 Sep 15:00 ([evidence/interviews/plan.md](evidence/interviews/plan.md), #13).
+- Incident Reader accuracy merged (#14).
+- Evidence fact-check: every claim in [docs/05-pitch.md](docs/05-pitch.md) §3 is tagged with its source and the date it was checked (#15). 8 of the 15 sources are a homepage or listing and should point at the page that holds the figure. Interim report skeleton added ([docs/interim-report.md](docs/interim-report.md), #16).
+- Housekeeping: every branch whose pull request is merged was deleted from
+  the remote.
+
+**Fri 25 Sep**
+- Data layer: incident timelines fixed. TD closes an incident by switching
+  an existing message to CLOSED, and the loader kept each message only as
+  first seen, so most closures were lost; that is where "only a quarter have
+  a CLOSED" came from. Over six months (22 Mar–21 Sep, 18,381 STN snapshots)
+  68% of all incidents now have a complete timeline, and 35 of the 53
+  corridor accidents do. Also: 4 archive snapshots padded with NUL bytes are
+  now read rather than skipped (the 4 truly truncated ones are still skipped,
+  as in #10), and version listings are paged a month at a time to stay under
+  the archive's 10,000-row cap
   ([src/loaders/incidents.py](src/loaders/incidents.py),
-  [docs/02-data.md](docs/02-data.md) §2).
+  [docs/02-data.md](docs/02-data.md) §2, §3).
+- Incident Reader accuracy measured on the 100 hand-labelled gold messages.
+  **v1, held out:** all fields right on 50% citywide (95% CI 39–61%) and 75%
+  on the corridor (53–89%); by field, 90–99% except direction at 73%.
+  **v2**, after one prompt fix and four label corrections made once v1 had
+  been seen: 75% citywide (65–83%), 85% corridor (64–95%). Quote v2 only next
+  to v1 ([LABELLING.md, Score history](data/labelled_incidents/LABELLING.md#score-history),
+  [results/reader/](results/reader/)).
+- Why v1's direction was low: the 24 Sep prompt's road_name example dropped
+  "(Kowloon bound)" without saying where it goes, and the model learned to
+  drop `bound` from directions. Visible on the dev set (`<place> bound`
+  directions 18/18 → 12/18) and fixed there (back to 18/18); on the gold set
+  the fix alone takes citywide
+  from 40 to 59 of 80 ([src/reader/prompts/system.md](src/reader/prompts/system.md)).
+- Before any score was seen, a rule-based check of every label against its
+  message text and the guide led to 55 approved corrections to 54 labels, 40
+  of them re-opened messages labelled with the lane that had been closed. The
+  first hand-labelled pass is commit 459cfe8; the labels as scored for v1 are
+  in [data/labelled_incidents/history/](data/labelled_incidents/history/).
+  The v1 run started once every message had a first-pass label, while that
+  check was under way; only its summary line was read before the score
+  ([LABELLING.md](data/labelled_incidents/LABELLING.md#score-history) gives
+  the order of events).
+- Every corridor message in the gold set (20) has now been through a live
+  model run; none was flagged.
+
+**Thu 24 Sep**
+- Week-1 Visuals task done: the corridor map, coloured by speed, screenshot
+  posted ([docs/img/week1-corridor-map.png](docs/img/week1-corridor-map.png)).
+  The frame is the 21 Sep 08:20 bin — mean 55 km/h, 5 of 28 detectors at or
+  below 30 km/h, slowest AID01106 at 14 km/h. The morning peak clears by 08:45,
+  so the later bins show nothing.
+- Console: the bin slider showed a full ISO timestamp
+  (`2026-09-21T08:20:00+08:00`) on every tick; it now shows clock time. Also
+  landed: headline stats, colour legend, street basemap, a readable snapshot
+  picker, and fixes for a blank-speed snapshot crashing the page, a bin width
+  labelled 5 minutes whatever the data said, and the coverage-filtered exports
+  being indistinguishable from full windows
+  ([src/console/app.py](src/console/app.py), 17 tests in
+  [tests/test_console.py](tests/test_console.py)).
+- Data layer: a truncated archive snapshot no longer crashes `fetch incidents`,
+  `candidates` or `detectors`. Any snapshot that does not parse is skipped, and
+  each run prints how many snapshots were listed, read, not served and
+  unparseable, naming the unparseable ones. Across 22 Jun–21 Sep only one of
+  9,690 STN snapshots is affected, 3 Aug 08:15. The archive returns the same
+  cut-off file on every request, so refetching cannot fix it
+  ([src/loaders/incidents.py](src/loaders/incidents.py),
+  [tests/test_loaders_edges.py](tests/test_loaders_edges.py),
+  [docs/02-data.md](docs/02-data.md) §3).
+- Contract change agreed by the team: `lanes_closed` gains `unspecified` for
+  "part of the lanes is closed", which had come out the same as "no lane
+  closed". The Evaluator (E) decides what to simulate for it
+  ([docs/03-architecture.md](docs/03-architecture.md) §3,
+  [src/reader/incident.schema.json](src/reader/incident.schema.json),
+  [src/reader/prompts/system.md](src/reader/prompts/system.md)).
+- Incident Reader accuracy, set up: the sampler draws a gold set of 80
+  citywide + 20 corridor messages from 22 Jun–21 Sep, leaving out the dev set
+  and the prompt's worked examples; a Streamlit app to label them; a scorer
+  with per-field accuracy and 95% intervals, its matching rules fixed before
+  any score is seen ([LABELLING.md](data/labelled_incidents/LABELLING.md),
+  [src/reader/label.py](src/reader/label.py), [src/reader/score.py](src/reader/score.py)).
+  The sampler now reads the data layer's cache and still rebuilds the dev set
+  byte for byte.
+- Gold set drawn: 80 citywide + 20 corridor messages from 2,519 incidents,
+  with no dev-set incident or worked example among them. 47 of the 100 say
+  "part of the lanes"
+  ([data/labelled_incidents/gold_messages.jsonl](data/labelled_incidents/gold_messages.jsonl)).
+- Reader prompt and labelling guide aligned on four rules found by labelling
+  the dev set twice: a closure that also mentions buses takes the closure's
+  cause, not `public_transport_notice` (otherwise code marks a corridor
+  closure out of scope); "road incident" alone is `other`; a bracketed
+  section name stays in `road_name`; English wins over Chinese. On the dev
+  set the Reader parses 20/20 and gives `unspecified` for all 7 "part of the
+  lanes" closures, but still types "road incident" as `road_works`
+  ([results/reader/2026-09-24T1504_qwen3-8b.jsonl](results/reader/2026-09-24T1504_qwen3-8b.jsonl)).
+- One archived STN snapshot (3 Aug 08:15) is truncated. The gold sampler skips
+  and reports it. The data layer's incident loader crashed on it, which
+  blocked the candidate screen over 22 Jun–21 Sep; fixed in the entry above.
+
+**Wed 23 Sep**
+- Evidence pack (component H): workspaces for the interviews and the deck, each
+  with its own definition of done ([evidence/interviews/](evidence/interviews/),
+  [deck/](deck/)).
+- Operator console (component G) started: Streamlit app with the 28-detector
+  corridor map coloured by speed, greying detectors when no speed snapshot is
+  loaded rather than inventing one ([src/console/app.py](src/console/app.py)).
 - All 15 items from the PR #2 review of the data layer fixed, each with a test
   that fails on the previous code. The ones that changed numbers: an offline
   lane halved a detector's count, and sensor outages were reported as archive
@@ -154,6 +281,8 @@ Newest first. One line per change that matters, with a link to the proof.
   coverage, `--bin-minutes 15` for calibration, and a live poller
   ([src/loaders/candidates.py](src/loaders/candidates.py),
   [src/loaders/live.py](src/loaders/live.py)).
+- Tracker and `CLAUDE.md` brought up to date with the data layer
+  ([#3](https://github.com/f1ymango/ripple/pull/3)).
 
 **Tue 22 Sep**
 - Data layer (component A): archive client, incident timelines from archived
@@ -195,8 +324,21 @@ cd ripple
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-python -m pytest                   # 17 tests, no LLM needed
+python -m pytest                   # 153 tests, no LLM needed
 ```
+
+### Run the data layer
+
+```bash
+python -m src.loaders.fetch corridor     # writes data/detectors.csv
+python -m src.loaders.fetch candidates --start 2026-03-22 --end 2026-09-21
+python -m src.loaders.fetch detectors --start 2026-09-21T07:00 --end 2026-09-21T10:00
+python -m src.loaders.fetch live         # polls the live feeds until stopped
+```
+
+Downloads are cached in `data/raw/`, so each machine fills its own cache the
+first time. Read [docs/02-data.md](docs/02-data.md) §7 before calibrating on
+the detector bins.
 
 ### Run the Incident Reader
 
@@ -220,12 +362,30 @@ on the CPU, much more slowly.
 To collect real messages from the DATA.GOV.HK archive:
 
 ```bash
-python -m src.reader.sample --start 2026-09-15 --end 2026-09-21 --n 20
+python -m src.reader.sample --start 2026-09-15 --end 2026-09-21 --n 20 --out dev.jsonl
 ```
 
-This **overwrites** `data/labelled_incidents/messages.jsonl`, the committed
-dev set. Downloads are cached in `data/raw/` (not committed); a week of archive
-takes about 20 minutes the first time.
+It never overwrites an existing file. Downloads go through the data layer's
+cache in `data/raw/` (not committed); run `python -m src.loaders.fetch prefetch
+--feed stn ...` first to download a long window in parallel. The gold set
+behind the accuracy number is made and labelled as described in
+[data/labelled_incidents/LABELLING.md](data/labelled_incidents/LABELLING.md).
+
+### Run the operator console
+
+```bash
+streamlit run src/console/app.py
+```
+
+![The corridor console at the 21 Sep 08:20 bin: five detectors at or below 30
+km/h along the Aberdeen Tunnel approach](docs/img/week1-corridor-map.png)
+
+The map draws all 28 corridor detectors from [data/detectors.csv](data/detectors.csv).
+Colour comes from a `data/detector_5min_*.csv` window written by the data
+layer; without one, every detector stays grey rather than being given an
+invented speed. Pick the window in the sidebar and the bin on the slider —
+prefer a full window over a `_cov` export, which is a filtered subset meant for
+count calibration ([docs/02-data.md](docs/02-data.md) §7).
 
 ## Rules everyone follows
 

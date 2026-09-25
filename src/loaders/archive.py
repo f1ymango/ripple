@@ -316,3 +316,20 @@ def iter_snapshots(feed: str, timestamps: list[str], skip_missing: bool = True):
             # Skipped like a 404 so one bad minute cannot end a long run -- but
             # said out loud, because unlike a 404 it would succeed next time.
             print(f"warning: skipped {feed} {ts} after retries: {exc}", file=sys.stderr)
+
+
+def read_summary(feed: str, listed: int, read: int, unparseable: list[str]) -> str:
+    """The run-summary line for one pass over the cache: what was read, and what not.
+
+    "Not served" is a 404 or a transient failure; iter_snapshots() skips both.
+    "Unparseable" is a snapshot the archive served cut off part-way: stn
+    20260803-0815 stops mid-<LONGITUDE>, and every refetch returns the same
+    bytes. It passes looks_like_feed(), which reads only the opening tag, so the
+    loaders catch it when they parse, skip it and name it here. The same cache
+    always gives the same result, and a skip is never silent.
+    """
+    line = (f"{feed}: {listed} snapshots listed, {read} read, "
+            f"{listed - read - len(unparseable)} not served")
+    if unparseable:
+        line += f", {len(unparseable)} unparseable and skipped: {', '.join(unparseable)}"
+    return line

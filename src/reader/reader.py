@@ -71,12 +71,19 @@ def read_message(stn: dict, model: str = MODEL) -> dict:
             jsonschema.validate(extracted, REPLY_SCHEMA)
             if "null" in extracted.values():  # small models write the text "null" for "no value"
                 raise ValueError('the text "null" where JSON null was meant')
+            check_lanes(extracted["lanes_closed"])
             incident = assemble(stn, extracted)
             jsonschema.validate(incident, SCHEMA)
             return incident
         except (ValueError, jsonschema.ValidationError) as exc:  # includes JSONDecodeError
             problems.append(str(exc).splitlines()[0])
     raise ReaderError(f"{stn['INCIDENT_NUMBER']} (message {stn['ID']}): {problems}")
+
+
+def check_lanes(lanes: list[str]) -> None:
+    """'all' and 'unspecified' each describe the whole closure, so neither is combined with another lane."""
+    if len(lanes) > 1 and {"all", "unspecified"} & set(lanes):
+        raise ValueError(f"lanes_closed {lanes}: 'all' and 'unspecified' stand alone")
 
 
 def assemble(stn: dict, extracted: dict) -> dict:

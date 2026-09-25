@@ -484,10 +484,10 @@ def _stn(*messages):
     return f"<list>{body}</list>".encode()
 
 
-def _timeline(monkeypatch, *snapshots, unreadable=None):
+def _timeline(monkeypatch, *snapshots, log=lambda line: None):
     monkeypatch.setattr(incidents.archive, "iter_snapshots",
                         lambda feed, ts: ((f"20260509-{n:04d}", b) for n, b in enumerate(snapshots)))
-    msgs = incidents.collect_messages(list(range(len(snapshots))), unreadable)
+    msgs = incidents.collect_messages(list(range(len(snapshots))), log=log)
     return incidents.build_incidents(msgs)[0]
 
 
@@ -536,22 +536,16 @@ def test_nul_padding_is_recovered_and_truncation_still_raises():
         common.parse_xml(doc[:-20])
 
 
-def test_a_truncated_stn_snapshot_is_skipped_and_reported_not_fatal(monkeypatch):
-    skipped = []
+def test_a_nul_padded_stn_snapshot_is_read_not_skipped(monkeypatch):
+    """4 of 18,381 archived STN snapshots are a whole document plus NUL bytes;
+    only the truncated one should reach the unparseable list."""
+    lines = []
     later = ("2", "UPDATED", "2026-05-09T10:32:00", "Lanes are re-opened to all traffic.")
     row = _timeline(monkeypatch, _stn(NEW_MSG), _stn(NEW_MSG, later)[:-25],
-                    _stn(NEW_MSG, later) + b"\x00" * 50, unreadable=skipped)
-    assert skipped == ["20260509-0001"]                  # the truncated one only
+                    _stn(NEW_MSG, later) + b"\x00" * 50, log=lines.append)
+    assert lines == ["stn: 3 snapshots listed, 2 read, 0 not served, "
+                     "1 unparseable and skipped: 20260509-0001"]
     assert row["duration_min"] == 63                     # the padded one was used
-
-
-def test_a_truncated_detector_snapshot_is_skipped_not_fatal(monkeypatch):
-    good = (FIXTURES / "detector_snapshot_20260921-0830.xml").read_bytes()
-    monkeypatch.setattr(detectors, "window_timestamps", lambda a, b: ["a", "b"])
-    monkeypatch.setattr(detectors.archive, "iter_snapshots",
-                        lambda feed, ts: iter([("a", good[:5000]), ("b", good)]))
-    rows = detectors.load_window(T0.replace(hour=8, minute=21), T0.replace(hour=8, minute=22))
-    assert rows and {r["timestamp"].strftime("%H:%M:%S") for r in rows} == {"08:21:00", "08:21:30"}
 
 
 @pytest.mark.parametrize("start,end,expected", [
@@ -575,3 +569,44 @@ def test_archive_listings_are_requested_a_month_at_a_time(stub, start, end, expe
     stamps = archive.list_versions("stn", start, end)
     assert asked == expected
     assert stamps == list(dict.fromkeys(s for a, b in expected for s in (f"{a}-0000", f"{b}-2359")))
+
+
+# ---------------------------------------------------------------- truncated snapshots
+
+# Hand-made, not archive data. Shaped like stn 20260803-0815, which the archive
+# serves cut off mid-<LONGITUDE> and returns byte for byte on every refetch.
+MOCK_TRUNCATED_STN = b"<list>\r\n  <message>\r\n    <ID>0</ID>\r\n    <LATITUDE/>\r\n    <LON"
+MOCK_TRUNCATED_DETECTORS = (b"<raw_speed_volume_list><date>2099-01-01</date><periods>"
+                            b"<period><period_from>08:2")
+
+
+def _cache(feed, timestamp, body):
+    path = archive.cache_path(feed, timestamp)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(gzip.compress(body))
+
+
+def test_a_truncated_stn_snapshot_is_skipped_and_named_not_fatal(stub):
+    _cache("stn", "20990101-0000", (FIXTURES / "stn_snapshot_20260918-1828.xml").read_bytes())
+    _cache("stn", "20990101-0004", MOCK_TRUNCATED_STN)
+    archive.missing_marker("stn", "20990101-0008").touch()
+    assert archive.looks_like_feed("stn", MOCK_TRUNCATED_STN)     # why the cache keeps it
+    lines = []
+    messages = incidents.collect_messages(["20990101-0000", "20990101-0004", "20990101-0008"],
+                                          log=lines.append)
+    assert len(messages) == 1 and stub.hits == []                # from the cache, no refetch
+    assert lines == ["stn: 3 snapshots listed, 1 read, 1 not served, "
+                     "1 unparseable and skipped: 20990101-0004"]
+
+
+def test_a_truncated_detector_snapshot_is_skipped_and_named_not_fatal(stub, monkeypatch):
+    _cache("detectors", "20990101-0000",
+           (FIXTURES / "detector_snapshot_20260921-0830.xml").read_bytes())
+    _cache("detectors", "20990101-0001", MOCK_TRUNCATED_DETECTORS)
+    monkeypatch.setattr(detectors, "window_timestamps",
+                        lambda a, b: ["20990101-0000", "20990101-0001"])
+    lines = []
+    rows = detectors.load_window(T0, T0 + dt.timedelta(hours=1), log=lines.append)
+    assert rows and stub.hits == []
+    assert lines == ["detectors: 2 snapshots listed, 1 read, 0 not served, "
+                     "1 unparseable and skipped: 20990101-0001"]

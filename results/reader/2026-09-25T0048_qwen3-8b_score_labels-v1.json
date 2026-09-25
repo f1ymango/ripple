@@ -1,0 +1,278 @@
+{
+  "run": "2026-09-25T0048_qwen3-8b.jsonl",
+  "labels": "gold_labels_v1.jsonl",
+  "labels_sha256": "407a88ab74be6daf1f85bc9635ddbd46bf07a6b9f14740a4369cd564d884272a",
+  "labelled": 100,
+  "gold_messages": 100,
+  "strata": {
+    "all": {
+      "messages": 100,
+      "flagged": 0,
+      "labelled_unsure": 9,
+      "fields": {
+        "road_name": {
+          "correct": 95,
+          "accuracy": 0.95,
+          "ci95": [
+            0.888,
+            0.978
+          ]
+        },
+        "direction": {
+          "correct": 95,
+          "accuracy": 0.95,
+          "ci95": [
+            0.888,
+            0.978
+          ]
+        },
+        "near_landmark": {
+          "correct": 93,
+          "accuracy": 0.93,
+          "ci95": [
+            0.863,
+            0.966
+          ]
+        },
+        "between_landmark": {
+          "correct": 98,
+          "accuracy": 0.98,
+          "ci95": [
+            0.93,
+            0.994
+          ]
+        },
+        "incident_type": {
+          "correct": 94,
+          "accuracy": 0.94,
+          "ci95": [
+            0.875,
+            0.972
+          ]
+        },
+        "lanes_closed": {
+          "correct": 98,
+          "accuracy": 0.98,
+          "ci95": [
+            0.93,
+            0.994
+          ]
+        },
+        "lanes_total": {
+          "correct": 93,
+          "accuracy": 0.93,
+          "ci95": [
+            0.863,
+            0.966
+          ]
+        },
+        "all_fields": {
+          "correct": 75,
+          "accuracy": 0.75,
+          "ci95": [
+            0.657,
+            0.825
+          ]
+        }
+      },
+      "not_all_right": [
+        "144216",
+        "144352",
+        "143030",
+        "145051",
+        "144622",
+        "144887",
+        "142426",
+        "146265",
+        "144142",
+        "144518",
+        "144214",
+        "143652",
+        "143866",
+        "142721",
+        "145361",
+        "146104",
+        "141816",
+        "143940",
+        "141258",
+        "141918",
+        "141168",
+        "146041",
+        "145820",
+        "144909",
+        "143649"
+      ]
+    },
+    "citywide": {
+      "messages": 80,
+      "flagged": 0,
+      "labelled_unsure": 6,
+      "fields": {
+        "road_name": {
+          "correct": 77,
+          "accuracy": 0.963,
+          "ci95": [
+            0.895,
+            0.987
+          ]
+        },
+        "direction": {
+          "correct": 75,
+          "accuracy": 0.938,
+          "ci95": [
+            0.862,
+            0.973
+          ]
+        },
+        "near_landmark": {
+          "correct": 75,
+          "accuracy": 0.938,
+          "ci95": [
+            0.862,
+            0.973
+          ]
+        },
+        "between_landmark": {
+          "correct": 78,
+          "accuracy": 0.975,
+          "ci95": [
+            0.913,
+            0.993
+          ]
+        },
+        "incident_type": {
+          "correct": 74,
+          "accuracy": 0.925,
+          "ci95": [
+            0.846,
+            0.965
+          ]
+        },
+        "lanes_closed": {
+          "correct": 79,
+          "accuracy": 0.988,
+          "ci95": [
+            0.933,
+            0.998
+          ]
+        },
+        "lanes_total": {
+          "correct": 74,
+          "accuracy": 0.925,
+          "ci95": [
+            0.846,
+            0.965
+          ]
+        },
+        "all_fields": {
+          "correct": 59,
+          "accuracy": 0.738,
+          "ci95": [
+            0.632,
+            0.821
+          ]
+        }
+      },
+      "not_all_right": [
+        "144216",
+        "144352",
+        "143030",
+        "145051",
+        "144622",
+        "144887",
+        "142426",
+        "146265",
+        "143652",
+        "143866",
+        "145361",
+        "146104",
+        "141816",
+        "143940",
+        "141258",
+        "141918",
+        "141168",
+        "146041",
+        "145820",
+        "144909",
+        "143649"
+      ]
+    },
+    "corridor": {
+      "messages": 20,
+      "flagged": 0,
+      "labelled_unsure": 3,
+      "fields": {
+        "road_name": {
+          "correct": 18,
+          "accuracy": 0.9,
+          "ci95": [
+            0.699,
+            0.972
+          ]
+        },
+        "direction": {
+          "correct": 20,
+          "accuracy": 1.0,
+          "ci95": [
+            0.839,
+            1.0
+          ]
+        },
+        "near_landmark": {
+          "correct": 18,
+          "accuracy": 0.9,
+          "ci95": [
+            0.699,
+            0.972
+          ]
+        },
+        "between_landmark": {
+          "correct": 20,
+          "accuracy": 1.0,
+          "ci95": [
+            0.839,
+            1.0
+          ]
+        },
+        "incident_type": {
+          "correct": 20,
+          "accuracy": 1.0,
+          "ci95": [
+            0.839,
+            1.0
+          ]
+        },
+        "lanes_closed": {
+          "correct": 19,
+          "accuracy": 0.95,
+          "ci95": [
+            0.764,
+            0.991
+          ]
+        },
+        "lanes_total": {
+          "correct": 19,
+          "accuracy": 0.95,
+          "ci95": [
+            0.764,
+            0.991
+          ]
+        },
+        "all_fields": {
+          "correct": 16,
+          "accuracy": 0.8,
+          "ci95": [
+            0.584,
+            0.919
+          ]
+        }
+      },
+      "not_all_right": [
+        "144142",
+        "144518",
+        "144214",
+        "142721"
+      ]
+    }
+  }
+}
