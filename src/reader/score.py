@@ -3,7 +3,8 @@
     python -m src.reader.run --messages data/labelled_incidents/gold_messages.jsonl
     python -m src.reader.score --run results/reader/<run_id>.jsonl
 
-Prints the table and writes results/reader/<run_id>_score.json. The matching
+Prints the table and writes results/reader/<run_id>_score.json (or --out), and
+never overwrites an existing score: results/ is written once. The matching
 rules were fixed before any score was seen (LABELLING.md, "How it is scored"):
 
 - text fields match after trimming, collapsing spaces and ignoring case;
@@ -92,6 +93,9 @@ def main() -> None:
     parser.add_argument("--out", type=Path,
                         help="where to write the score (default: <run>_score.json next to the run)")
     args = parser.parse_args()
+    out_path = args.out or args.run.with_name(f"{args.run.stem}_score.json")
+    if out_path.exists():  # e.g. rescoring a run after the labels changed would replace its score
+        parser.error(f"{out_path} exists and results/ is never overwritten; pass --out for a new file")
 
     messages = gold.load_messages(args.messages)
     labels = gold.load_labels(args.labels)
@@ -111,7 +115,6 @@ def main() -> None:
         "gold_messages": len(messages),
         "strata": report,
     }
-    out_path = args.out or args.run.with_name(f"{args.run.stem}_score.json")
     out_path.write_text(json.dumps(out, indent=2) + "\n", encoding="utf-8")
 
     if len(labels) < len(messages):
@@ -123,7 +126,7 @@ def main() -> None:
         for field, f in result["fields"].items():
             low, high = f["ci95"]
             print(f"  {field:18} {f['correct']:>3}/{result['messages']:<3} "
-                  f"{f['accuracy']:>6.1%}   95% CI {low:.0%}-{high:.0%}")
+                  f"{f['accuracy']:>6.1%}   95% CI {low:.1%}-{high:.1%}")
     print(f"\n-> {out_path}")
 
 

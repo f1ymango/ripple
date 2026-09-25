@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Fri 25 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
+**Last updated: Sat 26 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
 the incident) · Stand-ups: Sunday and Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
@@ -48,7 +48,7 @@ this chain.
 | | Component | Owner | Status |
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines, detector bins with coverage, corridor table, candidate screener and live poller ([src/loaders/](src/loaders/)). Committed output: the 28-detector [data/detectors.csv](data/detectors.csv); shortlist still to generate |
-| B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1), 75% after one disclosed prompt fix (v2); corridor 75% → 85%. Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
+| B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
 | C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | ⚪ Nothing in the repo yet |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
@@ -71,11 +71,12 @@ The JSON contracts between modules are in
 
 ### In review
 
-Work that exists but is not on `main` yet, as of Fri 25 Sep. Everything
+Work that exists but is not on `main` yet, as of Sat 26 Sep. Everything
 merged shows in the rows above; pull requests #1–#11 are all merged.
 
 | What | Who | Branch |
 |---|---|---|
+| [#12](https://github.com/f1ymango/ripple/pull/12) Week-1 SUMO setup: starter scripts and a draft Aberdeen network workflow | Simulation | `sumo-week1` |
 | Incident Reader accuracy: gold labels, v1 and v2 scores, the `bound` prompt fix | Lead | `reader/gold-labels` |
 
 Ten branches whose pull request is already merged are still on the remote
@@ -162,19 +163,24 @@ Newest first. One line per change that matters, with a link to the proof.
   **v1, held out:** all fields right on 50% citywide (95% CI 39–61%) and 75%
   on the corridor (53–89%); by field, 90–99% except direction at 73%.
   **v2**, after one prompt fix and four label corrections made once v1 had
-  been seen: 75% citywide (64–83%), 85% corridor (64–95%). Quote v2 only next
+  been seen: 75% citywide (65–83%), 85% corridor (64–95%). Quote v2 only next
   to v1 ([LABELLING.md, Score history](data/labelled_incidents/LABELLING.md#score-history),
   [results/reader/](results/reader/)).
 - Why v1's direction was low: the 24 Sep prompt's road_name example dropped
   "(Kowloon bound)" without saying where it goes, and the model learned to
-  drop `bound` from directions. Visible on the dev set (19/19 → 13/19) and
-  fixed there (back to 19/19); on the gold set the fix alone takes citywide
+  drop `bound` from directions. Visible on the dev set (`<place> bound`
+  directions 18/18 → 12/18) and fixed there (back to 18/18); on the gold set
+  the fix alone takes citywide
   from 40 to 59 of 80 ([src/reader/prompts/system.md](src/reader/prompts/system.md)).
 - Before any score was seen, a rule-based check of every label against its
-  message text and the guide led to 55 approved corrections, 40 of them
-  re-opened messages labelled with the lane that had been closed. The first
-  hand-labelled pass is kept in the history
-  ([data/labelled_incidents/history/](data/labelled_incidents/history/)).
+  message text and the guide led to 55 approved corrections to 54 labels, 40
+  of them re-opened messages labelled with the lane that had been closed. The
+  first hand-labelled pass is commit 459cfe8; the labels as scored for v1 are
+  in [data/labelled_incidents/history/](data/labelled_incidents/history/).
+  The v1 run started once every message had a first-pass label, while that
+  check was under way; only its summary line was read before the score
+  ([LABELLING.md](data/labelled_incidents/LABELLING.md#score-history) gives
+  the order of events).
 - Every corridor message in the gold set (20) has now been through a live
   model run; none was flagged.
 

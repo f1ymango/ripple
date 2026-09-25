@@ -15,8 +15,10 @@ so that two people labelling the same message write the same answer.
 ## Rules that keep the number honest
 
 1. **Label from the message alone.** Do not run the Reader on the gold set
-   until every message is labelled, and never label with its output open. The
-   labelling app never shows it.
+   until the labels are final, checks and corrections included, and never
+   label with its output open. The labelling app never shows it. (On 25 Sep
+   the run started after the first pass but before the check; see Score
+   history.)
 2. **Do not tune the prompt on the gold set.** Once a gold score has been
    seen, a prompt change afterwards makes the next score optimistic. If the
    prompt must change, say so next to the number, or label a fresh set.
@@ -143,19 +145,32 @@ file in `results/reader/`, written by `src/reader/score.py`.
 
 | Version | Prompt | Labels | Citywide (80) | Corridor (20) |
 |---|---|---|---|---|
-| **v1, held out** (25 Sep) | as merged in #9 | first pass, final before any score | **50%** (39–61%) | **75%** (53–89%) |
-| v2 (25 Sep) | `bound` kept in direction | 4 corrected after v1 was seen | 75% (64–83%) | 85% (64–95%) |
+| **v1, held out** (25 Sep) | as merged in #9 | first pass + 55 corrections to 54 labels, final before any score | **50%** (39–61%) | **75%** (53–89%) |
+| v2 (25 Sep) | `bound` kept in direction | 4 more corrected after v1 was seen | 75% (65–83%) | 85% (64–95%) |
 
 **v1** is the held-out number: labels final (`history/gold_labels_v1.jsonl`)
-and matching rules fixed before the Reader's output was looked at.
-Files: `2026-09-25T0026_qwen3-8b_score.json`.
+and matching rules fixed before any score. Files:
+`2026-09-25T0026_qwen3-8b_score.json`. The first hand-labelled pass is commit
+459cfe8; a rule-based check of each label against its message text and this
+guide then led to 55 approved corrections to 54 labels (7e26e25, 652cb85).
+
+Order of events, from `evidence/ai-log/2026-09-25.jsonl` and the commits: the
+v1 run went through the gold set from 00:26 to 00:34, after every message had
+a first-pass label but while that check was still going on. The corrections
+were committed at 00:35 and 00:38, and the score at 00:40. Until then, the only
+part of the run's output that was read was its summary line ("100 parsed, 0
+flagged"), and the check compared labels with message text, never with the
+run. The repo shows this order; that the output went unread until the score
+is the statement of whoever ran it, not something the repo can prove.
 
 **What changed after v1 was seen**, so v2 is *not* a held-out number:
 
 - **The prompt.** The 24 Sep road_name example dropped "(Kowloon bound)"
   without saying where it goes, and the model learned to drop `bound` from
-  direction. The fix was found and checked on the dev set alone (directions
-  with `bound`: 19/19 on 22 Sep, 13/19 on 24 Sep, 19/19 after the fix).
+  direction. The fix was found and checked on the dev set alone (dev
+  directions in the `<place> bound` form: 18/18 on 22 Sep, 12/18 on 24 Sep,
+  18/18 after the fix; the 19th, "both bounds", was `both directions` in
+  every run).
 - **Four labels**, each a slip against the rules above, found because the
   Reader disagreed with them, so every one moves the score in its favour:
   144214 (an arrangement "now cancelled": lanes empty), 144622 and 146041
@@ -164,7 +179,10 @@ Files: `2026-09-25T0026_qwen3-8b_score.json`.
 
 Almost all of the gain is the prompt fix: the v2 run scored against the v1
 labels gives 59/80 citywide (74%) and 16/20 corridor
-(`2026-09-25T0048_qwen3-8b_score_labels-v1.json`); the label corrections add
+(`2026-09-25T0048_qwen3-8b_score_labels-v1.json`, made with `python -m
+src.reader.score --run results/reader/2026-09-25T0048_qwen3-8b.jsonl --labels
+data/labelled_incidents/history/gold_labels_v1.jsonl --out
+results/reader/2026-09-25T0048_qwen3-8b_score_labels-v1.json`); the label corrections add
 one message on each side (`2026-09-25T0048_qwen3-8b_score.json`). The fix also
 lost three fields the v1 run had right. Quote v2 next to v1, never alone. A
 new held-out number needs a fresh set, labelled after the gaps below are
