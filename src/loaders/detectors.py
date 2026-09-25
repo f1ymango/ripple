@@ -29,7 +29,7 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 
 from src.loaders import archive
-from src.loaders.common import HK, write_csv  # noqa: F401  (write_csv re-exported)
+from src.loaders.common import HK, parse_xml, write_csv  # noqa: F401  (write_csv re-exported)
 from src.loaders.corridor import DETECTOR_IDS
 
 # Each <period> is 30 seconds in every file seen so far, but nothing here
@@ -56,7 +56,7 @@ def parse_snapshot(xml_bytes: bytes, keep: set[str] | None = None) -> list[dict]
     `keep` filters to a set of detector IDs; the feed carries all 765 detectors
     in Hong Kong and we want 28 of them.
     """
-    root = ET.fromstring(xml_bytes)
+    root = parse_xml(xml_bytes)
     day = root.findtext("date", "").strip()
     rows: list[dict] = []
     periods = root.find("periods")
@@ -148,13 +148,19 @@ def load_window(start: dt.datetime, end: dt.datetime,
     extra bin beyond the request, at a few percent coverage.
 
     Consecutive archived files overlap, so identical readings are dropped on
-    (timestamp, detector, lane) rather than counted twice.
+    (timestamp, detector, lane) rather than counted twice. A snapshot the
+    archive stores truncated is skipped -- it shows up as lower coverage, which
+    is exactly what it is -- instead of ending the run.
     """
     keep = set(detector_ids or DETECTOR_IDS)
     seen: set[tuple] = set()
     rows: list[dict] = []
     for _, xml_bytes in archive.iter_snapshots("detectors", window_timestamps(start, end)):
-        for row in parse_snapshot(xml_bytes, keep):
+        try:
+            readings = parse_snapshot(xml_bytes, keep)
+        except ET.ParseError:
+            continue
+        for row in readings:
             if not (start <= row["timestamp"] < end):
                 continue
             key = (row["timestamp"], row["detector_id"], row["lane"])

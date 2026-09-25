@@ -64,7 +64,7 @@ The JSON contracts between modules are in
 | Owner | Task | Done when | Status |
 |---|---|---|---|
 | Lead | Freeze scope; write `CLAUDE.md`; create repo; test the Incident Reader on 20 real messages | repo exists, 20 messages parsed | ✅ 22 Sep |
-| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/](src/loaders/)); 3-month STN pull and `fetch candidates` still to run |
+| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders built ([src/loaders/](src/loaders/)); 6-month STN pull done, 22 usable corridor accidents; shortlist drafted, `data/candidates.md` still to write |
 | Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ⚪ |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | ⚪ |
 | Impact | Gather problem evidence; line up 2–3 user interviews | `05-pitch.md` evidence section filled | 🟡 evidence drafted |
@@ -73,10 +73,11 @@ The JSON contracts between modules are in
 
 - **The demo incident** (🔒 Sun 27 Sep), from Data's shortlist. Corridor
   incidents are rare: 15–21 Sep had only two (IN-26-06874, IN-26-06904), so
-  search a longer window. Only about a quarter of incidents have a captured
-  CLOSED message, so three months should give roughly 5–7 usable candidates.
-  The screener ranks them on archive coverage as well as the speed drop:
-  `python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21`.
+  search a longer window. Over six months (22 Mar–21 Sep) the corridor had 53
+  traffic accidents: 35 have a complete timeline and 22 of those lasted 20
+  minutes or more. The screener ranks them on archive coverage as well as the
+  speed drop:
+  `python -m src.loaders.fetch candidates --start 2026-03-22 --end 2026-09-21`.
 - **An `unspecified` lane value in `incident.json`**, so "part of the lanes is
   closed" stops coming out as "no lanes closed". A contract change: decide as a
   team, then update [docs/03-architecture.md](docs/03-architecture.md) the same day.
@@ -125,6 +126,16 @@ The JSON contracts between modules are in
 Newest first. One line per change that matters, with a link to the proof.
 
 **Wed 23 Sep**
+- Incident timelines fixed. TD closes an incident by switching an existing
+  message to CLOSED, and the loader kept each message only as first seen, so
+  most closures were lost; that is where "only a quarter have a CLOSED" came
+  from. Over six months (22 Mar–21 Sep, 18,381 STN snapshots) 68% of all
+  incidents now have a complete timeline, and 35 of the 53 corridor accidents
+  do. Also: 4 archive snapshots padded with NUL bytes are now read, 4 truncated
+  ones are skipped and reported, and version listings are paged a month at a
+  time to stay under the 10,000-row cap. 164 tests
+  ([src/loaders/incidents.py](src/loaders/incidents.py),
+  [docs/02-data.md](docs/02-data.md) §2).
 - All 15 items from the PR #2 review of the data layer fixed, each with a test
   that fails on the previous code. The ones that changed numbers: an offline
   lane halved a detector's count, and sensor outages were reported as archive

@@ -28,6 +28,7 @@ and we never write into that layout or import from that module.
 """
 from __future__ import annotations
 
+import datetime as dt
 import gzip
 import io
 import sys
@@ -107,12 +108,30 @@ def _compact(day: str) -> str:
     return day.replace("-", "")
 
 
+def _as_date(day: str) -> dt.date:
+    """'2026-09-21' or '20260921' -> date."""
+    return dt.datetime.strptime(_compact(day), "%Y%m%d").date()
+
+
 def list_versions(feed: str, start: str, end: str) -> list[str]:
     """Archive timestamps ('YYYYMMDD-HHmm') of every snapshot from start to end, inclusive.
 
-    The archive's latest available day is yesterday; asking for today returns
-    nothing rather than an error, which is why callers should check the count.
+    Asked for one calendar month at a time: the archive returns at most 10,000
+    versions per request, and six months of STN alone is ~18,400. The archive's
+    latest available day is yesterday; asking for today returns nothing rather
+    than an error, which is why callers should check the count.
     """
+    first, last = _as_date(start), _as_date(end)
+    stamps: list[str] = []
+    while first <= last:
+        month_end = (first.replace(day=28) + dt.timedelta(days=4)).replace(day=1) - dt.timedelta(days=1)
+        chunk_end = min(month_end, last)
+        stamps += _list_versions_once(feed, first.strftime("%Y%m%d"), chunk_end.strftime("%Y%m%d"))
+        first = chunk_end + dt.timedelta(days=1)
+    return list(dict.fromkeys(stamps))            # in order, no duplicates
+
+
+def _list_versions_once(feed: str, start: str, end: str) -> list[str]:
     try:
         resp = _session().get(
             f"{ARCHIVE_API}/list-file-versions",

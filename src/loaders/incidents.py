@@ -24,6 +24,8 @@ Clearance time = CLOSED time - NEW time (docs/02-data.md section 2).
 from __future__ import annotations
 
 import datetime as dt
+import re
+import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -37,10 +39,16 @@ OUT_DIR = Path("data")
 # one shows up in the data instead of being silently dropped.
 STATUS_NEW, STATUS_CLOSED = "NEW", "CLOSED"
 
+# A message announcing the end of a closure. Used as the clearance only when
+# the CLOSED status itself was never archived -- and never when the same
+# message says something is still shut ("the slow lane remains closed").
+REOPENED = re.compile(r"re-?opened|resumed|now cancelled|has been cleared", re.IGNORECASE)
+STILL_CLOSED = re.compile(r"remain(s|ing)? closed|still (being )?closed", re.IGNORECASE)
+
 
 def parse_snapshot(xml_bytes: bytes) -> list[dict[str, str]]:
     """Every <message> in one snapshot, as {field name: text}, '' for empty fields."""
-    root = ET.fromstring(xml_bytes)
+    root = common.parse_xml(xml_bytes)
     return [{field.tag: (field.text or "").strip() for field in message}
             for message in root.findall("message")]
 
@@ -54,15 +62,31 @@ def _announced_at(message: dict[str, str]) -> dt.datetime | None:
         return None
 
 
-def collect_messages(timestamps: list[str]) -> dict[str, dict]:
+def collect_messages(timestamps: list[str],
+                     unreadable: list[str] | None = None) -> dict[str, dict]:
     """Every distinct STN message across these snapshots, keyed by message ID.
 
-    Streams the cache one snapshot at a time; three months is ~11,000 files and
+    Streams the cache one snapshot at a time; six months is ~18,400 files and
     we only keep the messages, not the XML.
+
+    **A message's status changes under the same ID.** TD marks an incident
+    finished by switching its last message -- usually the "...is re-opened to
+    all traffic" one -- from UPDATED to CLOSED; the ID, text and
+    ANNOUNCEMENT_DATE stay the same. Keeping each message as first seen threw
+    away about 70% of closures, so a later CLOSED is kept.
+
+    A snapshot the archive stores truncated is skipped and its timestamp added
+    to `unreadable`, instead of ending the run.
     """
     messages: dict[str, dict] = {}
     for archive_time, xml_bytes in archive.iter_snapshots("stn", timestamps):
-        for stn in parse_snapshot(xml_bytes):
+        try:
+            parsed = parse_snapshot(xml_bytes)
+        except ET.ParseError:
+            if unreadable is not None:
+                unreadable.append(archive_time)
+            continue
+        for stn in parsed:
             message_id = stn.get("ID", "")
             if not message_id:
                 continue
@@ -72,6 +96,8 @@ def collect_messages(timestamps: list[str]) -> dict[str, dict]:
                                         "last_seen": archive_time, "stn": stn}
             else:
                 seen["last_seen"] = archive_time
+                if stn.get("INCIDENT_STATUS_EN") == STATUS_CLOSED:
+                    seen["stn"]["INCIDENT_STATUS_EN"] = STATUS_CLOSED
     return messages
 
 
@@ -98,6 +124,17 @@ def build_incidents(messages: dict[str, dict]) -> list[dict]:
                        if r["stn"].get("INCIDENT_STATUS_EN") == STATUS_NEW), None)
         closed_at = next((_announced_at(r["stn"]) for r in reversed(records)
                           if r["stn"].get("INCIDENT_STATUS_EN") == STATUS_CLOSED), None)
+        clearance_source = "CLOSED status" if closed_at else ""
+        if closed_at is None:
+            # The CLOSED switch can fall in an archive gap even when the message
+            # announcing the re-opening was captured. Its announcement time is
+            # the clearance -- the same time the CLOSED switch would have given.
+            reopened = [_announced_at(r["stn"]) for r in records
+                        if REOPENED.search(r["stn"].get("CONTENT_EN", ""))
+                        and not STILL_CLOSED.search(r["stn"].get("CONTENT_EN", ""))]
+            reopened = [t for t in reopened if t]
+            if reopened:
+                closed_at, clearance_source = max(reopened), "re-opened message"
 
         # No NEW message means the incident was already running when our window
         # opened (or its NEW fell in a snapshot gap); no CLOSED means it was
@@ -129,6 +166,7 @@ def build_incidents(messages: dict[str, dict]) -> list[dict]:
             "district_en": first.get("DISTRICT_EN", ""),          # usually empty
             "new_at": new_at.isoformat() if new_at else "",
             "closed_at": closed_at.isoformat() if closed_at else "",
+            "clearance_source": clearance_source,
             "duration_min": duration_min if duration_min is not None else "",
             "first_announced_at": first_at.isoformat() if first_at else "",
             "last_announced_at": last_at.isoformat() if last_at else "",
@@ -155,7 +193,13 @@ def load(start: str, end: str) -> list[dict]:
         raise RuntimeError(
             f"the archive has no STN snapshots for {start}..{end}. Its latest "
             "available day is yesterday -- check the dates.")
-    return build_incidents(collect_messages(timestamps))
+    unreadable: list[str] = []
+    incidents = build_incidents(collect_messages(timestamps, unreadable))
+    if unreadable:
+        print(f"note: skipped {len(unreadable)} of {len(timestamps)} snapshots that the "
+              f"archive stores truncated: {', '.join(unreadable[:6])}"
+              f"{' ...' if len(unreadable) > 6 else ''}", file=sys.stderr)
+    return incidents
 
 
 def write_csv(incidents: list[dict], path: Path) -> Path:

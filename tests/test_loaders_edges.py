@@ -466,3 +466,112 @@ def test_a_bad_file_skipped_by_prefetch_is_still_caught_when_read(stub):
     path.write_bytes(gzip.compress(b"<html>error page</html>"))
     archive.prefetch("detectors", ["20990101-0000"], log=io.StringIO())   # skipped: exists
     assert archive.fetch("detectors", "20990101-0000") == good            # caught on read
+
+
+# ---------------------------------------------------------------- timelines (23 Sep)
+
+import json as _json
+from urllib.parse import parse_qs, urlparse
+
+
+def _stn(*messages):
+    """An STN snapshot from (id, status, announced, content) tuples."""
+    body = "".join(
+        f"<message><INCIDENT_NUMBER>IN-T</INCIDENT_NUMBER><ID>{i}</ID>"
+        f"<INCIDENT_STATUS_EN>{st}</INCIDENT_STATUS_EN><ANNOUNCEMENT_DATE>{at}</ANNOUNCEMENT_DATE>"
+        f"<LOCATION_EN>Wong Chuk Hang Road</LOCATION_EN><CONTENT_EN>{text}</CONTENT_EN></message>"
+        for i, st, at, text in messages)
+    return f"<list>{body}</list>".encode()
+
+
+def _timeline(monkeypatch, *snapshots, unreadable=None):
+    monkeypatch.setattr(incidents.archive, "iter_snapshots",
+                        lambda feed, ts: ((f"20260509-{n:04d}", b) for n, b in enumerate(snapshots)))
+    msgs = incidents.collect_messages(list(range(len(snapshots))), unreadable)
+    return incidents.build_incidents(msgs)[0]
+
+
+NEW_MSG = ("1", "NEW", "2026-05-09T09:29:00", "Due to traffic accident, part of the lanes is closed.")
+
+
+def test_a_closed_status_arriving_on_an_existing_message_is_kept(monkeypatch):
+    """TD closes an incident by switching its last message to CLOSED, same ID.
+    Keeping messages as first seen lost ~70% of closures."""
+    later = ("2", "UPDATED", "2026-05-09T10:32:00", "Traffic is busy now.")    # no re-open wording
+    row = _timeline(monkeypatch, _stn(NEW_MSG), _stn(NEW_MSG, later),
+                    _stn(("2", "CLOSED") + later[2:]))
+    assert row["right_censored"] is False
+    assert row["closed_at"].startswith("2026-05-09T10:32")
+    assert row["clearance_source"] == "CLOSED status" and row["duration_min"] == 63
+
+
+def test_a_captured_reopened_message_is_the_clearance_when_closed_was_missed(monkeypatch):
+    reopened = ("2", "UPDATED", "2026-05-09T10:32:00",
+                "Part of the lanes which was closed due to traffic accident is re-opened to all traffic.")
+    row = _timeline(monkeypatch, _stn(NEW_MSG), _stn(NEW_MSG, reopened))
+    assert row["closed_at"].startswith("2026-05-09T10:32")
+    assert row["clearance_source"] == "re-opened message" and row["duration_min"] == 63
+
+
+def test_a_partial_reopening_is_not_a_clearance(monkeypatch):
+    partial = ("2", "UPDATED", "2026-05-09T10:00:00",
+               "The fast lane is re-opened to all traffic. The slow lane remains closed.")
+    row = _timeline(monkeypatch, _stn(NEW_MSG), _stn(NEW_MSG, partial))
+    assert row["right_censored"] is True and row["duration_min"] == ""
+
+
+def test_a_cancelled_traffic_arrangement_is_a_clearance(monkeypatch):
+    cancelled = ("2", "UPDATED", "2026-08-19T13:23:00",
+                 "The one-lane-two-way traffic arrangement which was implemented due to "
+                 "traffic accident is now cancelled.")
+    row = _timeline(monkeypatch, _stn(("1", "NEW", "2026-08-19T11:31:00", "Accident.")),
+                    _stn(cancelled))
+    assert row["duration_min"] == 112
+
+
+def test_nul_padding_is_recovered_and_truncation_still_raises():
+    doc = _stn(NEW_MSG)
+    assert common.parse_xml(doc + b"\r\n" + b"\x00" * 118).tag == "list"
+    with pytest.raises(Exception):
+        common.parse_xml(doc[:-20])
+
+
+def test_a_truncated_stn_snapshot_is_skipped_and_reported_not_fatal(monkeypatch):
+    skipped = []
+    later = ("2", "UPDATED", "2026-05-09T10:32:00", "Lanes are re-opened to all traffic.")
+    row = _timeline(monkeypatch, _stn(NEW_MSG), _stn(NEW_MSG, later)[:-25],
+                    _stn(NEW_MSG, later) + b"\x00" * 50, unreadable=skipped)
+    assert skipped == ["20260509-0001"]                  # the truncated one only
+    assert row["duration_min"] == 63                     # the padded one was used
+
+
+def test_a_truncated_detector_snapshot_is_skipped_not_fatal(monkeypatch):
+    good = (FIXTURES / "detector_snapshot_20260921-0830.xml").read_bytes()
+    monkeypatch.setattr(detectors, "window_timestamps", lambda a, b: ["a", "b"])
+    monkeypatch.setattr(detectors.archive, "iter_snapshots",
+                        lambda feed, ts: iter([("a", good[:5000]), ("b", good)]))
+    rows = detectors.load_window(T0.replace(hour=8, minute=21), T0.replace(hour=8, minute=22))
+    assert rows and {r["timestamp"].strftime("%H:%M:%S") for r in rows} == {"08:21:00", "08:21:30"}
+
+
+@pytest.mark.parametrize("start,end,expected", [
+    ("2026-03-22", "2026-06-05", [("20260322", "20260331"), ("20260401", "20260430"),
+                                  ("20260501", "20260531"), ("20260601", "20260605")]),
+    ("2026-09-18", "2026-09-18", [("20260918", "20260918")]),
+    ("2025-12-20", "2026-01-10", [("20251220", "20251231"), ("20260101", "20260110")]),
+    ("2024-02-10", "2024-03-02", [("20240210", "20240229"), ("20240301", "20240302")]),  # leap year
+])
+def test_archive_listings_are_requested_a_month_at_a_time(stub, start, end, expected):
+    """The archive returns at most 10,000 versions per request; six months of
+    STN alone is ~18,400."""
+    asked = []
+
+    def respond(path):
+        q = parse_qs(urlparse(path).query)
+        asked.append((q["start"][0], q["end"][0]))
+        return 200, _json.dumps({"timestamps": [f"{q['start'][0]}-0000",
+                                                f"{q['end'][0]}-2359"]}).encode()
+    stub.respond = respond
+    stamps = archive.list_versions("stn", start, end)
+    assert asked == expected
+    assert stamps == list(dict.fromkeys(s for a, b in expected for s in (f"{a}-0000", f"{b}-2359")))

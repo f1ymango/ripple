@@ -167,6 +167,21 @@ Incident") · `INCIDENT_DETAIL_EN/CN` (e.g. "Traffic Accident") · `LOCATION_EN/
   The Reader must output an `in_scope` flag.
 - Status transitions are how you get duration: first `NEW`, then zero or more
   `UPDATED`, then `CLOSED`. **Clearance time = CLOSED time − NEW time.**
+- **`CLOSED` is usually not a new message.** TD closes an incident by switching
+  a message already in the feed, normally the last one (*"...is re-opened to
+  all traffic"*), from `UPDATED` to `CLOSED`. Its `ID`, text and
+  `ANNOUNCEMENT_DATE` stay the same, so the clearance time is that message's
+  announcement time, not the time the flip was seen. A loader that keeps each
+  message ID only as first seen never sees the `CLOSED`; ours did, and that is
+  why only about a quarter of incidents first looked complete.
+- When the flip falls in an archive gap, a captured *"re-opened to all
+  traffic"* (or *"...has been cleared"*, *"...now cancelled"*) message gives the
+  same clearance time. *"...remain closed"* is a partial reopening and does not
+  count. `incidents.csv` says which source was used in `clearance_source`.
+  Measured over 22 Mar–21 Sep (4,681 incidents): 3,020 cleared by a `CLOSED`
+  status, 1,096 by a re-opened message, 565 (12%) with neither. With the start
+  also required, **68% have a complete timeline, and 35 of the 53 corridor
+  traffic accidents do.**
 
 ---
 
@@ -256,6 +271,16 @@ Response codes: 200 success · 302 redirect (file downloads) · 400 syntax error
 (missing parameter) · 404 that version does not exist.
 
 ⚠️ Historical queries return at most **10,000 rows** for a date range — page it.
+`archive.list_versions` asks for one calendar month at a time: a month of raw
+detector versions is about 27,000 rows (~900 a day), so any request longer
+than about 11 days would hit the cap.
+⚠️ **A few archived snapshots are malformed.** Of 18,381 STN snapshots for
+22 Mar–21 Sep, 8 would not parse. 4 are a complete document followed by NUL
+bytes; `common.parse_xml` strips them and reads the file. The other 4
+(`20260419-2002`, `20260608-1446`, `20260608-1449`, `20260803-0815`) stop
+mid-document and come back byte-identical on every request, so they are skipped
+and `incidents.load` prints which. The detector loader skips truncated
+snapshots the same way.
 ⚠️ The dataset pages also offer **packaged daily / monthly archives**, which are
 much faster than pulling thousands of 1-minute snapshots. Prefer those for a
 whole-day pull; use the API for precise timestamps.
@@ -263,7 +288,8 @@ whole-day pull; use the API for precise timestamps.
 **Practical recipe for one incident day:**
 1. Pull the STN archive for the day, dedupe by `INCIDENT_NUMBER`, find incidents
    whose `LOCATION_EN` matches our corridor.
-2. Note `NEW` and `CLOSED` timestamps.
+2. Note `NEW` and `CLOSED` timestamps (`CLOSED` is a status change on an
+   existing message, see §2).
 3. Pull raw detector snapshots for `NEW − 90 min` to `CLOSED + 60 min`.
 4. Aggregate detector data to 5-minute bins per detector per lane.
 
