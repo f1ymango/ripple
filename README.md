@@ -77,7 +77,8 @@ merged shows in the rows above; pull requests #1–#11 are all merged.
 | What | Who | Branch |
 |---|---|---|
 | [#12](https://github.com/f1ymango/ripple/pull/12) Week-1 SUMO setup: starter scripts and a draft Aberdeen network workflow | Simulation | `sumo-week1` |
-| Incident Reader accuracy: gold labels, v1 and v2 scores, the `bound` prompt fix | Lead | `reader/gold-labels` |
+| [#13](https://github.com/f1ymango/ripple/pull/13) Interview plan: three target participant profiles, one interview scheduled | Impact | `markwang798369-patch-1` |
+| [#14](https://github.com/f1ymango/ripple/pull/14) Incident Reader accuracy: gold labels, v1 and v2 scores, the `bound` prompt fix | Lead | `reader/gold-labels` |
 
 Ten branches whose pull request is already merged are still on the remote
 (`data/loaders`, `data/skip-truncated-snapshots`, `docs/impact-workspace`,
