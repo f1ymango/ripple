@@ -19,14 +19,16 @@ disagree, use the English and say so in `notes`.
 - `road_name`: the road the incident is on, as its official English name,
   written as the message writes it. A bracket after the road that names a
   section of it rather than a direction is part of the name:
-  "Tsing Long Highway (Ting Kau Bridge) (Kowloon bound)" gives
-  `Tsing Long Highway (Ting Kau Bridge)`.
+  "Tsing Long Highway (Ting Kau Bridge) (Kowloon bound)" gives road_name
+  `Tsing Long Highway (Ting Kau Bridge)` and direction `Kowloon bound`.
+  The direction bracket is never part of `road_name`.
   If the message lists several roads (e.g. "The following road sections are
   busy: ..."), give the first road and name the others in `notes`.
   `null` if the message names no road.
-- `direction`: the direction of travel affected, written `<place> bound`,
-  e.g. `Sham Shui Po bound`. `both directions` if the message says so.
-  `null` if no direction is stated.
+- `direction`: the direction of travel affected, written `<place> bound`
+  with the word `bound` kept: "(Sham Shui Po bound)" gives
+  `Sham Shui Po bound`, never `Sham Shui Po`. `both directions` if the
+  message says so. `null` if no direction is stated.
 - `near_landmark`: the landmark the incident is near, or `null`.
 - `between_landmark`: `X and Y` if the message places the incident between two
   points, otherwise `null`.
