@@ -67,7 +67,7 @@ The JSON contracts between modules are in
 | Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/candidates.py](src/loaders/candidates.py)); STN archive for 22 Jun–21 Sep cached (24 Sep, Lead's machine) and parseable since #10; `fetch candidates` still to run |
 | Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ✅ 24 Sep — [screenshot](docs/img/week1-corridor-map.png) of the 21 Sep 08:20 bin ([src/console/app.py](src/console/app.py)) |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | 🟡 SUMO and a draft network run locally; record/share evidence and improve route coverage ([guide](src/twin/README.md)) |
-| Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 plan exists and one interview is scheduled, Sat 26 Sep 15:00 ([plan](evidence/interviews/plan.md)); fact-check outstanding |
+| Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 plan exists and one interview is scheduled, Sat 26 Sep 15:00 ([plan](evidence/interviews/plan.md)); every claim in [05-pitch.md](docs/05-pitch.md) §3 now carries a source and a 25 Sep check date, but 8 of the 15 sources are a homepage or listing rather than the page with the figure |
 
 ### In review
 
@@ -163,6 +163,7 @@ Newest first. One line per change that matters, with a link to the proof.
 - Interview plan: three target profiles, first interview scheduled for
   Sat 26 Sep 15:00 ([evidence/interviews/plan.md](evidence/interviews/plan.md), #13).
 - Incident Reader accuracy merged (#14).
+- Evidence fact-check: every claim in [docs/05-pitch.md](docs/05-pitch.md) §3 is tagged with its source and the date it was checked (#15). 8 of the 15 sources are a homepage or listing and should point at the page that holds the figure. Interim report skeleton added ([docs/interim-report.md](docs/interim-report.md), #16).
 - Housekeeping: every branch whose pull request is merged was deleted from
   the remote.
 
