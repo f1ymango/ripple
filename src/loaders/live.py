@@ -37,7 +37,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from src.loaders.archive import FEEDS, looks_like_feed
-from src.loaders.common import HK
+from src.loaders.common import HK, parse_xml
 
 LIVE_ROOT = Path("data/raw/live")
 POLL_SECONDS = 30      # the feed updates every 60s; poll twice to never miss one
@@ -62,7 +62,7 @@ def _stamp(feed: str, xml_bytes: bytes, now: dt.datetime | None = None) -> str:
     was. STN: the moment we polled, since the feed carries no time of its own.
     """
     if feed == "detectors":
-        root = ET.fromstring(xml_bytes)
+        root = parse_xml(xml_bytes)
         day = (root.findtext("date") or "").strip()
         first = root.find("periods/period/period_from")
         moment = (first.text or "").strip() if first is not None else ""

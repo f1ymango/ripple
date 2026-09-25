@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import csv
 import datetime as dt
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 HK = dt.timezone(dt.timedelta(hours=8))   # every Transport Department time is GMT+8
@@ -15,6 +16,18 @@ HK = dt.timezone(dt.timedelta(hours=8))   # every Transport Department time is G
 # Shortest incident worth replaying: a clear NEW and CLOSED at least this many
 # minutes apart (roles/data-experiments.md).
 MIN_DURATION_MIN = 20
+
+
+def parse_xml(body: bytes) -> ET.Element:
+    """Parse a feed document, tolerating the padding the archive sometimes adds.
+
+    In six months of archived STN snapshots, 8 of 18,381 were malformed in the
+    archive itself. 4 were complete documents followed by NUL bytes; stripping
+    the padding recovers every message. The other 4 are truncated (byte-identical
+    on re-request) and still raise ET.ParseError here -- callers skip those
+    rather than abandon the run.
+    """
+    return ET.fromstring(body.rstrip(b"\x00 \t\r\n"))
 
 
 def write_csv(rows: list[dict], path: Path, encoding: str = "utf-8") -> Path:
