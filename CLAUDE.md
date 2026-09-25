@@ -55,6 +55,9 @@ python -m src.reader.run --messages data/labelled_incidents/messages.jsonl
 streamlit run src/reader/label.py
 python -m src.reader.score --run results/reader/<run_id>.jsonl
 
+# twin (needs SUMO installed; step by step in src/twin/README.md)
+python -m src.twin.check_sumo
+
 # tests (no LLM needed)
 python -m pytest
 

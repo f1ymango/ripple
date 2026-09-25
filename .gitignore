@@ -60,3 +60,10 @@ data/detector_readings_*.csv
 data/detector_5min_*.csv
 data/incidents_*.csv
 data/lane_identity_*.md
+
+# Ripple: the twin's generated files (component C): OSM downloads, networks,
+# routes and SUMO output, plus local configs that may hold real detector data
+# and the chosen incident. The *.example.json files are committed.
+sim/work/
+sim/scenarios/scenario.json
+sim/scenarios/detectors.json

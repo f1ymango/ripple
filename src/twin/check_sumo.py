@@ -2,7 +2,7 @@ import os
 import sys
 from pathlib import Path
 
-from common import require_command, sumo_tools
+from src.twin.common import require_command, sumo_tools
 
 
 try:
@@ -15,7 +15,7 @@ try:
         print("Python TraCI and sumolib: available")
     except ImportError as exc:
         print("Python SUMO modules missing:", exc)
-        print("Run: py -m pip install -r requirements.txt")
+        print("Run: python -m pip install -r requirements.txt")
         raise SystemExit(1)
 except RuntimeError as exc:
     print(exc, file=sys.stderr)

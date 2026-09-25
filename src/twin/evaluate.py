@@ -4,7 +4,7 @@ import math
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
-from common import load_json, resolve
+from src.twin.common import load_json, resolve
 
 
 def geh(m, c):

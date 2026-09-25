@@ -3,7 +3,7 @@ import os
 import sys
 from pathlib import Path
 
-from common import load_json, require_command, resolve, sumo_tools
+from src.twin.common import load_json, require_command, resolve, sumo_tools
 
 
 def main():
@@ -15,12 +15,11 @@ def main():
     ap.add_argument("--clearance", type=float, default=60.0)
     args = ap.parse_args()
     cfg = load_json(resolve(args.config))
-    sys.path.insert(0, str(Path(__file__).resolve().parent))
     import traci
-    import policies
+    from src.twin import policies
     net, routes = resolve(cfg["network"]), resolve(args.plan_routes or cfg["routes"])
     add = resolve(cfg["detector_additional"])
-    output = resolve(cfg.get("output_dir", "work/results")); output.mkdir(parents=True, exist_ok=True)
+    output = resolve(cfg.get("output_dir", "sim/work/results")); output.mkdir(parents=True, exist_ok=True)
     cmd = [require_command("sumo"), "-n", str(net), "-r", str(routes), "-a", str(add),
            "--begin", str(cfg.get("begin", 0)), "--end", str(cfg.get("end", 7200)),
            "--step-length", str(cfg.get("step_length", 1)), "--seed", str(cfg.get("seed", 2026)),
@@ -52,7 +51,7 @@ def main():
             if now >= cfg.get("end", 7200): break
     finally:
         traci.close()
-    print(f"Run complete. E1 output files should be in {Path.cwd() / 'work/results'} (as configured in additional file).")
+    print(f"Run complete. E1 output files should be in {output} (as configured in the additional file).")
     if args.plan_routes and not policies.IMPLEMENTED:
         print("WARNING: policy hook is not implemented; this is not an intervention result.")
 

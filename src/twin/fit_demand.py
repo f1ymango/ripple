@@ -3,7 +3,7 @@ import json
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
-from common import load_json, resolve
+from src.twin.common import load_json, resolve
 
 
 def main():
@@ -13,12 +13,12 @@ def main():
     ap.add_argument("--iterations", type=int, default=300)
     args = ap.parse_args()
     cfg, data = load_json(resolve(args.config)), load_json(resolve(args.detectors))
-    candidate = resolve("work/routes/candidates.rou.xml")
+    candidate = resolve("sim/work/routes/candidates.rou.xml")
     root = ET.parse(candidate).getroot()
     edges = {e.getID() for e in __import__("sumolib").net.readNet(str(resolve(cfg["network"]))).getEdges()}
     ordered = sorted(data["detectors"], key=lambda d: (d.get("position_m") is None, d.get("id", "")))
     # Mapping file supplies the map-matched edge IDs. Ordering is the user's corridor order, if provided.
-    mapping_path = resolve(cfg.get("detector_additional", "work/network/real_detectors.add.xml")).with_suffix(".csv")
+    mapping_path = resolve(cfg.get("detector_additional", "sim/work/network/real_detectors.add.xml")).with_suffix(".csv")
     import csv
     edge_by_id = {}
     with open(mapping_path, encoding="utf-8") as f:
@@ -48,7 +48,7 @@ def main():
                 numerator += a * (observed - pred + a * flow[i])
                 denominator += a * a
             if denominator: flow[i] = max(0.0, numerator / denominator)
-    out = resolve(cfg.get("routes", "work/routes/fitted.rou.xml")); out.parent.mkdir(parents=True, exist_ok=True)
+    out = resolve(cfg.get("routes", "sim/work/routes/fitted.rou.xml")); out.parent.mkdir(parents=True, exist_ok=True)
     # Convert fitted route-level trips to explicit vehicles spread over the observed hour.
     fitted_root = ET.Element("routes")
     for typ in root.findall("vType"): fitted_root.append(typ)

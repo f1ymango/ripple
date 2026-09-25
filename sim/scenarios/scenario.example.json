@@ -1,16 +1,16 @@
 {
   "osm_bbox": [114.1200, 22.2350, 114.1950, 22.2850],
-  "network": "work/network/aberdeen.net.xml",
-  "detector_additional": "work/network/real_detectors.add.xml",
-  "routes": "work/routes/fitted.rou.xml",
+  "network": "sim/work/network/aberdeen.net.xml",
+  "detector_additional": "sim/work/network/real_detectors.add.xml",
+  "routes": "sim/work/routes/fitted.rou.xml",
   "seed": 2026,
   "begin": 0,
   "end": 7200,
   "step_length": 1,
   "detector_interval": 300,
   "incident": {"start": 1800, "duration_seconds": 1800, "edge_id": "REPLACE_EDGE_ID", "lane_indices": [0]},
-  "output_dir": "work/results",
-  "osm_output": "work/osm/aberdeen.osm.xml",
+  "output_dir": "sim/work/results",
+  "osm_output": "sim/work/osm/aberdeen.osm.xml",
   "netconvert_config": null,
   "plans": []
 }

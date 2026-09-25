@@ -2,7 +2,7 @@ import argparse
 import subprocess
 import sys
 
-from common import load_json, resolve
+from src.twin.common import ROOT, load_json, resolve
 
 
 def main():
@@ -17,9 +17,9 @@ def main():
     for compliance in (0.3, 0.5, 0.7):
         for clearance in (30, 60, 90):
             label = f"plan_c{int(compliance*100)}_t{clearance}"
-            subprocess.run([sys.executable, str(resolve("scripts/run_scenario.py")), "--config", args.config,
+            subprocess.run([sys.executable, "-m", "src.twin.run_scenario", "--config", args.config,
                             "--label", label, "--plan-routes", plan, "--compliance", str(compliance),
-                            "--clearance", str(clearance)], check=True)
+                            "--clearance", str(clearance)], check=True, cwd=ROOT)
 
 
 if __name__ == "__main__": main()
