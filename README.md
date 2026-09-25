@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Sat 26 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
+**Last updated: Fri 25 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
 the incident) · Stand-ups: Sunday and Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
@@ -71,12 +71,12 @@ The JSON contracts between modules are in
 
 ### In review
 
-Work that exists but is not on `main` yet, as of Sat 26 Sep. Everything
-merged shows in the rows above; pull requests #1–#11, #13 and #14 are merged.
+Work that exists but is not on `main` yet, as of Fri 25 Sep. Everything
+merged shows in the rows above; pull requests #1–#16 are merged.
 
 | What | Who | Branch |
 |---|---|---|
-| [#12](https://github.com/f1ymango/ripple/pull/12) Week-1 SUMO setup, moved into `src/twin/` and `sim/` | Simulation | `sumo-week1` |
+| Loaders: keep STN CLOSED status flips; read malformed archive snapshots — **pushed, but no pull request is open** | Data | `data/loaders` |
 
 ### Open decisions
 
@@ -151,7 +151,7 @@ merged shows in the rows above; pull requests #1–#11, #13 and #14 are merged.
 
 Newest first. One line per change that matters, with a link to the proof.
 
-**Sat 26 Sep**
+**Fri 25 Sep (afternoon)**
 - The twin (component C) has code: SUMO setup scripts from Simulation (#12),
   moved into the repo layout — scripts in [src/twin/](src/twin/README.md),
   run from the repo root as `python -m src.twin.<script>`; the reviewed
