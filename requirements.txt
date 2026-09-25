@@ -8,6 +8,7 @@ urllib3==2.8.0
 # C: SUMO simulation (install SUMO itself separately)
 sumolib==1.27.1
 traci==1.27.1
+pyproj==3.8.0
 
 # G: Operator console
 streamlit==1.40.2

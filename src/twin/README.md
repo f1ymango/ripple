@@ -30,8 +30,18 @@ Copy `sim/scenarios/scenario.example.json` to `sim/scenarios/scenario.json`. Set
 Required observed data shape:
 
 ```json
-{"detector_id":"TD-EXAMPLE","time":"2026-10-01T08:00:00+08:00","count":12,"speed_kmh":31.4}
+{
+  "interval_seconds": 300,
+  "detectors": [
+    {"id": "TD-EXAMPLE", "lon": 114.17, "lat": 22.25, "edge_id": null, "position_m": null,
+     "observations": [{"time": "2026-10-01T08:00:00+08:00", "count": 12, "speed_kmh": 31.4}]}
+  ]
+}
 ```
+
+The values above only show the shape; they are not data.
+
+**Moving from the old `simulation_validation/` layout:** move `simulation_validation/work/` to `sim/work/` and `simulation_validation/config/scenario.json` and `detectors.json` to `sim/scenarios/`. In `scenario.json`, change every path that starts with `work/` to start with `sim/work/`, except `network` and `detector_additional`, which become `sim/aberdeen.net.xml` and `sim/detectors.add.xml`. Paths now resolve from the repository root.
 
 ## Step 3 — Download OSM and build the draft network
 
@@ -71,7 +81,7 @@ The baseline replays the incident with no intervention. Compare simulated and re
 
 ## Step 7 — Run the intervention and sensitivity grid
 
-Put an intervention route file in `sim/scenarios/scenario.json` or specify it with `--plan-routes`. A plan uses the same network, demand, incident and random seed as its baseline counterpart; only the intervention policy differs. Follow the architecture document's definition of driver compliance. The grid runner passes compliance and clearance parameters to the policy hook in `src/twin/policies.py`:
+Set `plan_routes` in `sim/scenarios/scenario.json` to an intervention route file, or pass it with `--plan-routes`. A plan uses the same network, demand, incident and random seed as its baseline counterpart; only the intervention policy differs. Follow the architecture document's definition of driver compliance. The grid runner passes compliance and clearance parameters to the policy hook in `src/twin/policies.py`:
 
 ```powershell
 python -m src.twin.run_sensitivity --config sim/scenarios/scenario.json

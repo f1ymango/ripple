@@ -7,10 +7,9 @@
   "begin": 0,
   "end": 7200,
   "step_length": 1,
-  "detector_interval": 300,
   "incident": {"start": 1800, "duration_seconds": 1800, "edge_id": "REPLACE_EDGE_ID", "lane_indices": [0]},
   "output_dir": "sim/work/results",
   "osm_output": "sim/work/osm/aberdeen.osm.xml",
   "netconvert_config": null,
-  "plans": []
+  "plan_routes": null
 }

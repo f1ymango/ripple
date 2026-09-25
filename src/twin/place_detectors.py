@@ -33,7 +33,7 @@ def main():
                     raise ValueError(f"No network edge within 100 m of detector {d['id']}; check bbox/network.")
                 edge, distance = min(edges, key=lambda pair: pair[1])
                 # Projection to the nearest point along edge shape.
-                pos, _ = edge.getClosestLanePosAndDist(x, y)
+                pos, _ = edge.getLane(0).getClosestLanePosAndDist((x, y))
             pos = max(0.1, min(float(pos), edge.getLength() - 0.1))
             did = str(d["id"]).replace('"', "")
             out.write(f'  <inductionLoop id="{did}" lane="{edge.getID()}_0" pos="{pos:.2f}" freq="{int(data.get("interval_seconds",300))}" file="{Path(os.path.relpath(results_dir / f"e1_{did}.xml", xml_path.parent)).as_posix()}"/>\n')

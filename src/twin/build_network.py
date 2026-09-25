@@ -1,4 +1,5 @@
 import argparse
+import sys
 from pathlib import Path
 
 from src.twin.common import load_json, require_command, resolve, run, sumo_tools
@@ -23,7 +24,7 @@ def main():
     for server in servers:
         try:
             print(f"Trying OpenStreetMap download server: {server}")
-            run(["py", osm_get, "--bbox", f"{west},{south},{east},{north}",
+            run([sys.executable, osm_get, "--bbox", f"{west},{south},{east},{north}",
                  "--prefix", prefix, "--output-dir", osm.parent, "--url", server,
                  "--retries", "0", "--verbose"])
             last_error = None

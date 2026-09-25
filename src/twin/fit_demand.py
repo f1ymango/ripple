@@ -59,7 +59,7 @@ def main():
             v = ET.SubElement(fitted_root, "vehicle", id=f"fit_{serial}", type="DEFAULT_VEHTYPE", depart=f"{(serial * span / max(1, round(sum(flow)))):.2f}")
             ET.SubElement(v, "route", edges=" ".join(path))
             serial += 1
-    fitted_root.write(out, encoding="utf-8", xml_declaration=True)
+    ET.ElementTree(fitted_root).write(out, encoding="utf-8", xml_declaration=True)
     predictions = {did: sum(v for (_, _, c), v in zip(routes, flow) if did in c) for did in target}
     summary = {"target_counts": dict(target), "predicted_counts": predictions,
                "warning": "Simple linear route-weight estimate. Verify route direction/order and fit against a proper simulation before claiming calibration."}
