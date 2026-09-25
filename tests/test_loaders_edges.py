@@ -139,9 +139,11 @@ def test_calibration_thresholds_are_inclusive_and_exact():
 # ---------------------------------------------------------------- incidents
 
 def test_closed_announced_before_new_is_not_usable_and_does_not_crash():
+    """A CLOSED older than the incident's latest message is not its clearance
+    (25 Sep), so this no longer comes out as a -60 min duration."""
     rows = incidents.build_incidents({"1": message(1, "NEW", "2026-09-18T18:00:00"),
                                       "2": message(2, "CLOSED", "2026-09-18T17:00:00")})
-    assert rows[0]["duration_min"] == -60
+    assert rows[0]["right_censored"] and rows[0]["duration_min"] == ""
     assert incidents.usable_corridor_incidents(rows) == []
 
 
@@ -305,31 +307,9 @@ def test_score_survives_an_empty_row():
     assert candidates.score({}) == 0
 
 
-def test_measure_with_no_tunnel_readings_has_no_drop(monkeypatch):
-    other = {"bin_start": "2026-09-18T17:00:00+08:00", "detector_id": "AID01101",
-             "speed_kmh": 40.0, "coverage_pct": 60, "lane_completeness_pct": 100,
-             "count_bin": 50, "periods_observed": 6, "lanes_valid": 2, "lanes_offline": 0}
-    monkeypatch.setattr(candidates.detectors, "load_window", lambda a, b: ["x"])
-    monkeypatch.setattr(candidates.detectors, "bin_window", lambda rows, w: [other])
-    got = candidates.measure({"new_at": "2026-09-18T18:00:00+08:00",
-                              "closed_at": "2026-09-18T19:00:00+08:00"})
-    assert got["speed_drop_kmh"] is None and got["drop_detector"] is None
-
-
 def test_shortlist_with_no_usable_incidents_is_empty(monkeypatch):
     monkeypatch.setattr(candidates.incidents, "load", lambda a, b: [])
     assert candidates.shortlist("2026-09-18", "2026-09-18", log=lambda *a: None) == []
-
-
-def test_an_empty_shortlist_still_writes_a_readable_table(tmp_path):
-    text = candidates.write_markdown([], tmp_path / "c.md").read_text(encoding="utf-8")
-    assert "| # | Incident |" in text and "The team picks one incident" in text
-
-
-def test_retrievability_of_a_window_with_nothing_listed(monkeypatch):
-    monkeypatch.setattr(candidates.detectors, "window_timestamps", lambda a, b: [])
-    got = candidates.estimate_retrievability(T0, T0)
-    assert got == {"listed": 0, "sampled": 0, "served": 0, "retrievable_pct": 0}
 
 
 # ---------------------------------------------------------------- live
@@ -610,3 +590,279 @@ def test_a_truncated_detector_snapshot_is_skipped_and_named_not_fatal(stub, monk
     assert rows and stub.hits == []
     assert lines == ["detectors: 2 snapshots listed, 1 read, 0 not served, "
                      "1 unparseable and skipped: 20990101-0001"]
+
+
+# ---------------------------------------------------------------- three STN files (25 Sep)
+
+import itertools
+
+TC_TEXT = "黃竹坑道部分行車線已封閉"        # traditional script
+SC_TEXT = "黄竹坑道部分行车线已封闭"        # the same sentence, simplified
+
+
+def _xmsg(mid, status, announced, en="Part of the lanes is closed.", cn=TC_TEXT, number="IN-X"):
+    """One STN message with the fields the three files share."""
+    return (f"<message><INCIDENT_NUMBER>{number}</INCIDENT_NUMBER><ID>{mid}</ID>"
+            f"<INCIDENT_STATUS_EN>{status}</INCIDENT_STATUS_EN><INCIDENT_STATUS_CN>-</INCIDENT_STATUS_CN>"
+            f"<ANNOUNCEMENT_DATE>{announced}</ANNOUNCEMENT_DATE>"
+            f"<LOCATION_EN>Wong Chuk Hang Road</LOCATION_EN><LOCATION_CN>{cn[:4]}</LOCATION_CN>"
+            f"<CONTENT_EN>{en}</CONTENT_EN><CONTENT_CN>{cn}</CONTENT_CN></message>")
+
+
+def _xsnap(*messages):
+    return f"<list>{''.join(messages)}</list>".encode()
+
+
+def _feeds(monkeypatch, files):
+    """files: {feed: [(archive_time, snapshot bytes), ...]} served by a fake archive."""
+    monkeypatch.setattr(incidents.archive, "list_versions",
+                        lambda feed, start, end: [t for t, _ in files.get(feed, [])])
+    monkeypatch.setattr(incidents.archive, "iter_snapshots",
+                        lambda feed, ts: iter([(t, b) for t, b in files.get(feed, []) if t in ts]))
+
+
+NEW_X = ("1", "NEW", "2026-05-09T09:29:00")
+REOPENED_EN = "Part of the lanes which was closed due to traffic accident is re-opened to all traffic."
+REOPEN_X = ("2", "UPDATED", "2026-05-09T10:32:00", REOPENED_EN)
+CLOSED_X = ("2", "CLOSED", "2026-05-09T10:32:00", REOPENED_EN)
+
+
+def test_the_three_stn_files_are_archive_feeds_and_stn_is_still_english():
+    assert archive.FEEDS["stn"] == "https://www.td.gov.hk/en/special_news/trafficnews.xml"
+    assert archive.FEEDS["stn_tc"] == "https://www.td.gov.hk/tc/special_news/trafficnews.xml"
+    assert archive.FEEDS["stn_sc"] == "https://www.td.gov.hk/sc/special_news/trafficnews.xml"
+    for feed in incidents.STN_FEEDS:
+        assert archive.looks_like_feed(feed, _xsnap(_xmsg(*NEW_X)))
+    assert incidents.STN_FEEDS[0] == "stn"          # English first: its copy is the one kept
+
+
+def test_a_closed_only_the_sc_file_caught_closes_the_incident(monkeypatch):
+    """IN-26-03212: the English archive has the re-opened message only as UPDATED;
+    the /sc/ file was saved while it showed CLOSED."""
+    _feeds(monkeypatch, {
+        "stn": [("20260509-0930", _xsnap(_xmsg(*NEW_X))), ("20260509-1043", _xsnap(_xmsg(*REOPEN_X)))],
+        "stn_tc": [("20260509-1038", _xsnap(_xmsg(*REOPEN_X)))],
+        "stn_sc": [("20260509-1047", _xsnap(_xmsg(*CLOSED_X, cn=SC_TEXT)))],
+    })
+    row = incidents.load("2026-05-09", "2026-05-09", log=lambda line: None)[0]
+    assert row["clearance_source"] == "CLOSED status"
+    assert row["closed_at"].startswith("2026-05-09T10:32") and row["duration_min"] == 63
+    assert row["seen_in"] == "stn|stn_tc|stn_sc"
+    english = incidents.load("2026-05-09", "2026-05-09", feeds=("stn",), log=lambda line: None)[0]
+    assert english["clearance_source"] == "re-opened message"
+    assert english["closed_at"] == row["closed_at"]          # same time, stronger evidence
+
+
+def test_a_message_only_a_chinese_file_caught_is_added(monkeypatch):
+    _feeds(monkeypatch, {
+        "stn": [("20260509-0930", _xsnap(_xmsg(*NEW_X)))],
+        "stn_tc": [("20260509-1034", _xsnap(_xmsg(*CLOSED_X)))],
+    })
+    row = incidents.load("2026-05-09", "2026-05-09", log=lambda line: None)[0]
+    assert row["n_messages"] == 2 and row["duration_min"] == 63 and not row["right_censored"]
+
+
+@pytest.mark.parametrize("order", list(itertools.permutations(["stn", "stn_tc", "stn_sc"])))
+def test_an_out_of_date_copy_never_undoes_a_closed_whatever_the_file_order(monkeypatch, order):
+    """The feed can serve a stale copy saying UPDATED for minutes after the switch
+    (seen up to 8 min, 38 of 127 closed messages on 5 sample days)."""
+    files = {
+        "stn": [("20260509-1049", _xsnap(_xmsg(*CLOSED_X))), ("20260509-1050", _xsnap(_xmsg(*REOPEN_X)))],
+        "stn_tc": [("20260509-1051", _xsnap(_xmsg(*REOPEN_X)))],
+        "stn_sc": [("20260509-1052", _xsnap(_xmsg(*REOPEN_X, cn=SC_TEXT)))],
+    }
+    _feeds(monkeypatch, files)
+    messages = {}
+    for feed in order:
+        incidents.collect_messages([t for t, _ in files[feed]], log=lambda line: None,
+                                   feed=feed, messages=messages)
+    kept = messages["2"]
+    assert kept["stn"]["INCIDENT_STATUS_EN"] == "CLOSED"
+    assert (kept["first_seen"], kept["last_seen"]) == ("20260509-1049", "20260509-1052")
+    assert kept["feeds"] == {"stn", "stn_tc", "stn_sc"}
+    assert kept["stn"]["CONTENT_CN"] == TC_TEXT          # never the simplified copy
+
+
+def test_simplified_chinese_text_never_reaches_a_record(monkeypatch):
+    """A message seen only in /sc/ keeps its English fields and no Chinese text;
+    a later traditional copy fills the Chinese in."""
+    _feeds(monkeypatch, {"stn_sc": [("20260509-0930", _xsnap(_xmsg(*NEW_X, cn=SC_TEXT)))]})
+    only_sc = incidents.collect_messages(["20260509-0930"], log=lambda line: None, feed="stn_sc")
+    record = only_sc["1"]["stn"]
+    assert record["CONTENT_EN"] == "Part of the lanes is closed."
+    assert record["CONTENT_CN"] == "" and record["LOCATION_CN"] == ""
+    _feeds(monkeypatch, {"stn_tc": [("20260509-0931", _xsnap(_xmsg(*NEW_X)))]})
+    incidents.collect_messages(["20260509-0931"], log=lambda line: None, feed="stn_tc",
+                               messages=only_sc)
+    assert only_sc["1"]["stn"]["CONTENT_CN"] == TC_TEXT
+    assert only_sc["1"]["text_feed"] == "stn_tc"
+
+
+def _changed(field, value):
+    base = dict(ANNOUNCEMENT_DATE=NEW_X[2], INCIDENT_NUMBER="IN-X",
+                CONTENT_EN="Part of the lanes is closed.", LOCATION_EN="Wong Chuk Hang Road")
+    return _xmsg(*NEW_X).replace(f"<{field}>{base[field]}</{field}>", f"<{field}>{value}</{field}>")
+
+
+@pytest.mark.parametrize("field,value", [("ANNOUNCEMENT_DATE", "2026-05-09T09:31:00"),
+                                         ("INCIDENT_NUMBER", "IN-OTHER")])
+def test_a_copy_with_another_number_or_time_is_a_conflict_and_not_merged(monkeypatch, field, value):
+    _feeds(monkeypatch, {"stn": [("20260509-0930", _xsnap(_xmsg(*NEW_X)))],
+                         "stn_tc": [("20260509-0935", _xsnap(_changed(field, value)))]})
+    lines = []
+    row = incidents.load("2026-05-09", "2026-05-09", log=lines.append)
+    assert len(row) == 1 and row[0]["incident_number"] == "IN-X"
+    assert row[0]["new_at"].startswith("2026-05-09T09:29")        # the English copy is kept
+    assert row[0]["last_seen"] == "20260509-0930"                 # the odd copy adds nothing
+    assert any("1 conflicting copies, 0 with text edited by TD" in line for line in lines)
+    assert any(line.startswith("  conflict:") and field in line and "not merged" in line
+               for line in lines)
+
+
+@pytest.mark.parametrize("field,value", [("CONTENT_EN", "All lanes are closed."),
+                                         ("LOCATION_EN", "")])
+def test_text_td_edited_in_place_still_counts_as_a_sighting(monkeypatch, field, value):
+    """Seen in the real archive: message 136089 had its LOCATION_EN filled in
+    after publication, and 145807 its LOCATION_CN. Same message, same status
+    history -- its later copies (one carrying the CLOSED) must still count."""
+    edited = _changed(field, value).replace("<INCIDENT_STATUS_EN>NEW<", "<INCIDENT_STATUS_EN>CLOSED<")
+    _feeds(monkeypatch, {"stn": [("20260509-0930", _xsnap(_xmsg(*NEW_X))),
+                                 ("20260509-0940", _xsnap(edited))]})
+    lines = []
+    messages = incidents.collect_messages(["20260509-0930", "20260509-0940"], log=lines.append,
+                                          conflicts=(found := []))
+    kept = messages["1"]
+    assert kept["last_seen"] == "20260509-0940" and kept["stn"]["INCIDENT_STATUS_EN"] == "CLOSED"
+    assert kept["stn"][field] != value                              # first text kept
+    assert [(c["kind"], c["fields"]) for c in found] == [("edited", [field])]
+
+
+def test_sc_copies_are_compared_on_number_and_time_only(monkeypatch):
+    """TD converts Chinese inside the English text to simplified in the /sc/
+    file too (message 142233), so only the two identity fields are compared."""
+    sc = _xmsg(*NEW_X, en="緊急路軌維修. Part of the lanes is closed.", cn=SC_TEXT).replace(
+        "緊急路軌維修", "紧急路轨维修")
+    _feeds(monkeypatch, {"stn": [("20260509-0930", _xsnap(_xmsg(*NEW_X, en="緊急路軌維修. Part of the lanes is closed.")))],
+                         "stn_sc": [("20260509-0931", _xsnap(sc))]})
+    lines = []
+    incidents.load("2026-05-09", "2026-05-09", log=lines.append)
+    assert not any(line.startswith("  ") for line in lines)
+
+
+def test_traditional_chinese_is_compared_but_simplified_is_not(monkeypatch):
+    _feeds(monkeypatch, {"stn": [("20260509-0930", _xsnap(_xmsg(*NEW_X)))],
+                         "stn_tc": [("20260509-0931", _xsnap(_xmsg(*NEW_X, cn="別的內容")))],
+                         "stn_sc": [("20260509-0932", _xsnap(_xmsg(*NEW_X, cn=SC_TEXT)))]})
+    lines = []
+    incidents.load("2026-05-09", "2026-05-09", log=lines.append)
+    reported = [line for line in lines if line.startswith("  ")]
+    assert len(reported) == 1 and reported[0].startswith("  edited:")
+    assert "stn_tc" in reported[0] and "CONTENT_CN" in reported[0]
+
+
+def test_load_names_every_file_and_the_merge_in_its_summary(monkeypatch):
+    _feeds(monkeypatch, {"stn": [("20260509-0930", _xsnap(_xmsg(*NEW_X)))],
+                         "stn_tc": [("20260509-0931", _xsnap(_xmsg(*NEW_X)))],
+                         "stn_sc": [("20260509-0932", _xsnap(_xmsg(*NEW_X, cn=SC_TEXT)))]})
+    lines = []
+    incidents.load("2026-05-09", "2026-05-09", log=lines.append)
+    assert lines == [
+        "stn: 1 snapshots listed, 1 read, 0 not served",
+        "stn_tc: 1 snapshots listed, 1 read, 0 not served",
+        "stn_sc: 1 snapshots listed, 1 read, 0 not served",
+        "stn merged: 1 distinct messages from stn, stn_tc, stn_sc (1 in the English file), "
+        "0 conflicting copies, 0 with text edited by TD",
+    ]
+
+
+def test_english_only_load_is_unchanged(monkeypatch):
+    """feeds=("stn",) reads only the English file and prints no merge line."""
+    _feeds(monkeypatch, {"stn": [("20260509-0930", _xsnap(_xmsg(*NEW_X)))],
+                         "stn_tc": [("20260509-1034", _xsnap(_xmsg(*CLOSED_X)))]})
+    lines = []
+    row = incidents.load("2026-05-09", "2026-05-09", feeds=("stn",), log=lines.append)[0]
+    assert row["right_censored"] and row["seen_in"] == "stn"
+    assert lines == ["stn: 1 snapshots listed, 1 read, 0 not served"]
+
+
+# ---------------------------------------------------------------- start and clearance rules (25 Sep)
+# Found by merging the three files: TD also switches an incident's NEW message
+# to CLOSED, and an incident number can carry on after one of its messages is
+# closed. Each case below is the shape of a real incident in the archive.
+
+def _rec(mid, statuses, when, content="", number="IN-R"):
+    current = "CLOSED" if "CLOSED" in statuses else statuses[-1]
+    r = message(mid, current, when, number=number, content=content)
+    r["statuses"] = set(statuses)
+    return r
+
+
+def test_a_new_message_later_switched_to_closed_is_still_the_start():
+    """IN-26-05816: its NEW message was seen as CLOSED 14 min later, before the
+    re-opening. Treating it as not-NEW had lost the start."""
+    rows = incidents.build_incidents({
+        "1": _rec(1, ["NEW", "CLOSED"], "2026-08-12T18:22:00"),
+        "2": _rec(2, ["UPDATED", "CLOSED"], "2026-08-12T19:04:00", "... is re-opened to all traffic.")})
+    row = rows[0]
+    assert row["new_at"].startswith("2026-08-12T18:22") and not row["left_censored"]
+    assert row["closed_at"].startswith("2026-08-12T19:04") and row["duration_min"] == 42
+
+
+def test_a_closed_on_the_new_message_alone_gives_no_clearance_time():
+    """IN-26-05702: one message, NEW at 18:22, seen CLOSED at 18:42. Over, but
+    when is not in the data -- and its 18:22 is the start, not the end."""
+    row = incidents.build_incidents({"1": _rec(1, ["NEW", "CLOSED"], "2026-08-07T18:22:00")})[0]
+    assert row["new_at"].startswith("2026-08-07T18:22")
+    assert row["right_censored"] and row["closed_at"] == "" and row["duration_min"] == ""
+
+
+def test_the_new_message_closed_early_does_not_end_the_incident():
+    """IN-26-06887: NEW 10:02 switched to CLOSED by 11:06, arrangement cancelled
+    11:32. English alone had given a 0-minute incident."""
+    row = incidents.build_incidents({
+        "1": _rec(1, ["NEW", "CLOSED"], "2026-09-19T10:02:00"),
+        "2": _rec(2, ["UPDATED"], "2026-09-19T11:32:00", "The arrangement ... is now cancelled.")})[0]
+    assert row["closed_at"].startswith("2026-09-19T11:32") and row["duration_min"] == 90
+    assert row["clearance_source"] == "re-opened message"
+
+
+def test_a_closed_message_with_later_messages_after_it_is_not_the_clearance():
+    """IN-26-02351: a re-opening at 06:04 was CLOSED, then the same incident
+    number closed the lane again at 23:00. The incident is not over."""
+    row = incidents.build_incidents({
+        "1": _rec(1, ["NEW"], "2026-03-31T23:00:00"),
+        "2": _rec(2, ["UPDATED", "CLOSED"], "2026-04-01T06:04:00", "... is re-opened to all traffic."),
+        "3": _rec(3, ["UPDATED"], "2026-04-01T23:00:00", "... the slow lane is closed to all traffic.")})[0]
+    assert row["right_censored"] and row["duration_min"] == ""
+
+
+def test_the_latest_message_reopening_is_used_when_an_earlier_one_was_closed():
+    """IN-26-02235 shape: an early message CLOSED, later updates, and the last
+    one says traffic has resumed -- the clearance is the last one."""
+    row = incidents.build_incidents({
+        "1": _rec(1, ["NEW"], "2026-03-27T14:30:00"),
+        "2": _rec(2, ["UPDATED", "CLOSED"], "2026-03-27T15:12:00", "Traffic has resumed normal."),
+        "3": _rec(3, ["UPDATED"], "2026-03-27T15:46:00", "The road is busy."),
+        "4": _rec(4, ["UPDATED"], "2026-03-27T20:18:00", "Traffic has resumed normal.")})[0]
+    assert row["closed_at"].startswith("2026-03-27T20:18")
+    assert row["clearance_source"] == "re-opened message"
+
+
+def test_statuses_seen_are_kept_per_message(monkeypatch):
+    _feeds(monkeypatch, {"stn": [("20260812-1832", _xsnap(_xmsg("1", "NEW", "2026-08-12T18:22:00")))],
+                         "stn_tc": [("20260812-1836", _xsnap(_xmsg("1", "CLOSED", "2026-08-12T18:22:00")))]})
+    messages = {}
+    for feed in ("stn", "stn_tc"):
+        incidents.collect_messages(["20260812-1832", "20260812-1836"], log=lambda line: None,
+                                   feed=feed, messages=messages)
+    assert messages["1"]["statuses"] == {"NEW", "CLOSED"}
+    assert messages["1"]["stn"]["INCIDENT_STATUS_EN"] == "CLOSED"
+
+
+def test_a_clearance_stamped_with_the_start_time_is_not_a_zero_minute_incident():
+    """IN-26-05880: the second message carries the NEW message's 13:34 and was
+    closed hours later."""
+    row = incidents.build_incidents({
+        "1": _rec(1, ["NEW"], "2026-08-15T13:34:00"),
+        "2": _rec(2, ["UPDATED", "CLOSED"], "2026-08-15T13:34:00")})[0]
+    assert row["right_censored"] and row["duration_min"] == ""

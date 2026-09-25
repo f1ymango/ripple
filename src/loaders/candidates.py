@@ -1,243 +1,317 @@
-"""Shortlist real corridor incidents to replay, scored on how well we can see them.
+"""Shortlist corridor incidents to replay, on evidence the detectors saw them.
 
-The archive keeps under half the detector minutes, and which minutes survive is
-essentially random (docs/02-data.md section 3). We cannot recover the rest --
-so instead of fighting the gaps, we **choose an incident that happens to fall
-where the gaps are smallest**. Coverage becomes a selection criterion, and it
-costs nothing but a column.
+A demo incident has to show up in the detector data, or the twin has nothing
+to be validated against. Picking the worst 5-minute bin was not evidence: one
+noisy detector (AID01108) was "worst" for 8 of 22 incidents. So every
+candidate is compared with ordinary days instead:
 
-Screening runs in two stages so it fits in an afternoon rather than a night:
+  control day  the same weekday and clock time 1-6 weeks earlier, with no
+               corridor incident of any kind in the window -- from all three
+               STN files, so incidents only the Chinese files caught count too
+  noise floor  a second control day compared with the first. Whatever differs
+               between two ordinary days is not this incident's doing.
+  credited     a detector at least SLOW_KMH below the control day for at least
+               RUN_BINS consecutive bins, and for longer than the two ordinary
+               days ever differed that way (a tunnel detector that dips for 10
+               minutes on an ordinary day is not dismissed for a 40-minute
+               closure; one that dips as long on ordinary days is)
+  no traffic   a detector carrying no vehicles for NO_TRAFFIC_BINS bins with
+               every lane reporting, while the control day had traffic: a
+               closure seen directly, which a speed cannot show
 
-  Stage 1  cheap. For every corridor incident, sample a handful of the archive
-           versions in its window and measure what fraction actually serve.
-           ~12 requests per incident instead of ~200.
-  Stage 2  full. For the best few only, pull the whole window and measure real
-           coverage, detector health and the size of the speed drop.
+Three detector windows per incident, read from the cache; on a fresh cache six
+months takes about an hour, most of it downloading.
 
-    python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21 --top 6
+    python -m src.loaders.fetch candidates --start 2026-03-22 --end 2026-09-21
 """
 from __future__ import annotations
 
 import datetime as dt
-import random
+import io
 from pathlib import Path
 
 from src.loaders import archive, detectors, incidents
 from src.loaders.common import MIN_DURATION_MIN
-from src.loaders.corridor import TUNNEL_DETECTORS
+from src.loaders.corridor import LEG
 
 OUT_PATH = Path("data/candidates.md")
 
-# How much road time to pull around an incident: enough pre-incident hour to
-# calibrate against, enough after clearance to see recovery (docs/02-data.md).
+# Road time around an incident: the pre-incident hour to calibrate on, and the
+# recovery after clearance (docs/02-data.md).
 BEFORE_MIN, AFTER_MIN = 90, 60
+# Where the incident is looked for: queues build before TD's report, so from
+# LOOK_BEFORE_MIN before NEW to LOOK_AFTER_MIN after CLOSED.
+LOOK_BEFORE_MIN, LOOK_AFTER_MIN = 30, 15
+CONTROL_WEEKS = (1, 2, 3, 4, 5, 6)
+SLOW_KMH, RUN_BINS = 20, 2          # 20 km/h below an ordinary day, for 10 minutes
+NO_TRAFFIC_BINS = 3                 # 15 minutes without a vehicle
+EARLY_ONSET_MIN = 30                # a slowdown this long before the report may be something else
+# What the demo replays: an unplanned accident (team decision, 23 Sep), short
+# enough for a two-hour simulation to hold it with room either side.
+KINDS = ("Traffic Accident",)
+MAX_DURATION_MIN = 240
 
-SAMPLE_VERSIONS = 12      # stage-1 probes per incident
+
+def _t(text: str) -> dt.datetime | None:
+    try:
+        return dt.datetime.fromisoformat(text)
+    except (TypeError, ValueError):
+        return None
 
 
 def window_for(incident: dict) -> tuple[dt.datetime, dt.datetime] | None:
     """The (start, end) of detector data we would need for this incident."""
-    try:
-        new_at = dt.datetime.fromisoformat(incident["new_at"])
-        closed_at = dt.datetime.fromisoformat(incident["closed_at"])
-    except (ValueError, KeyError):
+    new_at, closed_at = _t(incident.get("new_at")), _t(incident.get("closed_at"))
+    if new_at is None or closed_at is None:
         return None
     return new_at - dt.timedelta(minutes=BEFORE_MIN), closed_at + dt.timedelta(minutes=AFTER_MIN)
 
 
-def estimate_retrievability(start: dt.datetime, end: dt.datetime,
-                            sample: int = SAMPLE_VERSIONS, seed: int = 42) -> dict:
-    """Stage 1: what fraction of this window's archive versions actually serve?
-
-    Downloads `sample` files, not the window. About a third to a half of listed
-    detector versions are a persistent 404, and the rate varies window to
-    window -- this is how we find out before committing to a full pull.
-    """
-    stamps = detectors.window_timestamps(start, end)
-    if not stamps:
-        return {"listed": 0, "sampled": 0, "served": 0, "retrievable_pct": 0}
-
-    rng = random.Random(seed)
-    probe = rng.sample(stamps, min(sample, len(stamps)))
-    served = 0
-    for ts in probe:
-        try:
-            archive.fetch("detectors", ts)
-            served += 1
-        except archive.ArchiveError:
-            pass
-    return {
-        "listed": len(stamps),
-        "sampled": len(probe),
-        "served": served,
-        "retrievable_pct": round(served / len(probe) * 100),
-    }
+def _span(incident: dict) -> tuple[dt.datetime, dt.datetime] | None:
+    """When an incident was running, as far as its messages say (at least 30 min)."""
+    start = _t(incident.get("new_at")) or _t(incident.get("first_announced_at"))
+    if start is None:
+        return None
+    end = _t(incident.get("closed_at")) or _t(incident.get("last_announced_at")) or start
+    return start, max(end, start + dt.timedelta(minutes=30))
 
 
-def measure(incident: dict, bin_minutes: int = 5) -> dict:
-    """Stage 2: pull the whole window and measure what we would really have.
+def others_in(start: dt.datetime, end: dt.datetime, corridor: list[dict],
+              skip: str = "") -> list[str]:
+    """Corridor incidents, of any kind, running at some point in [start, end)."""
+    found = []
+    for other in corridor:
+        span = _span(other)
+        if other.get("incident_number") != skip and span and span[0] < end and span[1] > start:
+            found.append(other["incident_number"])
+    return found
 
-    `speed_drop_kmh` compares the slowest bin during the incident against the
-    pre-incident mean, per tunnel detector, and keeps the largest drop. An
-    incident that does not move those is not worth simulating, whatever the
-    message says.
-    """
-    window = window_for(incident)
-    if window is None:
-        return {}
-    start, end = window
-    rows = detectors.load_window(start, end)
-    if not rows:
-        return {"bins": 0, "mean_coverage_pct": 0, "usable_pct": 0,
-                "lanes_valid_pct": 0, "speed_drop_kmh": None, "drop_detector": None}
 
-    binned = detectors.bin_window(rows, bin_minutes)
-    report = detectors.coverage_report(binned)
-    new_at = dt.datetime.fromisoformat(incident["new_at"])
-    closed_at = dt.datetime.fromisoformat(incident["closed_at"])
-    width = dt.timedelta(minutes=bin_minutes)
+def control_days(incident: dict, corridor: list[dict], n: int = 2) -> list[int]:
+    """The nearest `n` same-weekday days back with no corridor incident in the window."""
+    start, end = window_for(incident)
+    days = []
+    for weeks in CONTROL_WEEKS:
+        back = dt.timedelta(weeks=weeks)
+        if not others_in(start - back, end - back, corridor):
+            days.append(weeks * 7)
+        if len(days) == n:
+            break
+    return days
 
-    def speeds(detector_id, keep):
-        return [float(b["speed_kmh"]) for b in binned
-                if b["detector_id"] == detector_id and b["speed_kmh"] != ""
-                and keep(dt.datetime.fromisoformat(b["bin_start"]))]
 
-    # One detector at a time: an incident closes one direction, and pooling
-    # both let the other direction's ordinary traffic pass for a drop. "During"
-    # is the incident itself, not the recovery hour after CLOSED.
-    drops = {}
-    for detector_id in TUNNEL_DETECTORS:
-        before = speeds(detector_id, lambda t: t + width <= new_at)
-        during = speeds(detector_id, lambda t: t < closed_at and t + width > new_at)
-        if before and during:
-            drops[detector_id] = round(min(during) - sum(before) / len(before), 1)
-    drop_detector = min(drops, key=drops.get) if drops else None
+def _bins(start: dt.datetime, end: dt.datetime, minutes: int) -> dict:
+    # Download in parallel first (a no-op when cached): load_window alone fetches one by one.
+    archive.prefetch("detectors", detectors.window_timestamps(start, end), log=io.StringIO())
+    rows = detectors.load_window(start, end, log=lambda line: None)
+    grid = detectors.bin_window(rows, minutes, start=start, end=end)
+    return {(b["detector_id"], _t(b["bin_start"])): b for b in grid}
 
-    offline = sum(b["lanes_offline"] for b in binned)
-    lanes = sum(b["lanes_valid"] + b["lanes_offline"] for b in binned)
-    return {
-        "bins": report["bins"],
-        "mean_coverage_pct": report["mean_coverage_pct"],
-        "usable_pct": report["usable_pct"],
-        "detectors_seen": report["detectors"],
-        "lanes_valid_pct": round((lanes - offline) / lanes * 100) if lanes else 0,
-        "speed_drop_kmh": drops.get(drop_detector),
-        "drop_detector": drop_detector,
-    }
+
+def _speed(b: dict | None) -> float | None:
+    return None if not b or b["speed_kmh"] == "" else float(b["speed_kmh"])
+
+
+def compare(day: dict, ref: dict, slots: list[dt.datetime], shift: dt.timedelta,
+            ref_shift: dt.timedelta, minutes: int) -> dict[str, dict]:
+    """Per detector: how far `day` ran below `ref`, slot by slot, and for how long."""
+    out = {}
+    for detector_id in LEG:
+        run = longest = 0
+        onset = None
+        diffs = []
+        for slot in slots:
+            a = _speed(day.get((detector_id, slot - shift)))
+            b = _speed(ref.get((detector_id, slot - ref_shift)))
+            d = a - b if a is not None and b is not None else None
+            if d is not None:
+                diffs.append(d)
+            run = run + 1 if d is not None and d <= -SLOW_KMH else 0
+            if run == RUN_BINS and onset is None:
+                onset = slot - dt.timedelta(minutes=minutes * (RUN_BINS - 1))
+            longest = max(longest, run)
+        out[detector_id] = {"sustained": longest >= RUN_BINS, "longest_min": longest * minutes,
+                            "mean_kmh": round(sum(diffs) / len(diffs), 1) if diffs else None,
+                            "worst_kmh": round(min(diffs), 1) if diffs else None,
+                            "onset": onset}
+    return out
+
+
+def no_traffic(day: dict, ref: dict, slots: list[dt.datetime], ref_shift: dt.timedelta,
+               minutes: int) -> dict[str, int]:
+    """Detectors with NO_TRAFFIC_BINS+ slots of zero vehicles the control day did not have."""
+    out = {}
+    for detector_id in LEG:
+        run = longest = 0
+        for slot in slots:
+            a, b = day.get((detector_id, slot)), ref.get((detector_id, slot - ref_shift))
+            empty = (a is not None and a["flow_veh_h"] == 0
+                     and a["lane_completeness_pct"] >= detectors.MIN_LANE_COMPLETENESS_PCT
+                     and b is not None and b["flow_veh_h"] not in ("", 0))
+            run = run + 1 if empty else 0
+            longest = max(longest, run)
+        if longest >= NO_TRAFFIC_BINS:
+            out[detector_id] = longest * minutes
+    return out
+
+
+def evidence(incident: dict, corridor: list[dict], minutes: int = 5) -> dict:
+    """What the detectors saw of one incident, against two ordinary days."""
+    start, end = window_for(incident)
+    new_at, closed_at = _t(incident["new_at"]), _t(incident["closed_at"])
+    days = control_days(incident, corridor)
+    found = {"control_days": days,
+             "others_in_window": others_in(start, end, corridor, incident["incident_number"])}
+    if len(days) < 2:
+        return {**found, "credited": {}, "no_traffic": {}, "noise": [], "coverage_pct": None}
+
+    a, b = (dt.timedelta(days=d) for d in days)
+    day = _bins(start, end, minutes)
+    ctl_a = _bins(start - a, end - a, minutes)
+    ctl_b = _bins(start - b, end - b, minutes)
+    slots = detectors.slot_starts(new_at - dt.timedelta(minutes=LOOK_BEFORE_MIN),
+                                  closed_at + dt.timedelta(minutes=LOOK_AFTER_MIN), minutes)
+    signal = compare(day, ctl_a, slots, dt.timedelta(0), a, minutes)
+    noise = compare(ctl_b, ctl_a, slots, b, a, minutes)
+    credited = {d: {**v, "leg": LEG[d]} for d, v in signal.items()
+                if v["sustained"] and v["longest_min"] > noise[d]["longest_min"]}
+    during = [day[k]["coverage_pct"] for k in day if new_at <= k[1] < closed_at]
+    return {**found, "credited": credited,
+            "no_traffic": no_traffic(day, ctl_a, slots, a, minutes),
+            "noise": sorted(d for d in LEG if noise[d]["sustained"]),
+            "coverage_pct": round(sum(during) / len(during)) if during else 0}
+
+
+def strongest(row: dict) -> tuple[str, dict] | None:
+    """The credited detector furthest below its ordinary day, on average."""
+    credited = row.get("credited") or {}
+    if not credited:
+        return None
+    return min(credited.items(), key=lambda kv: kv[1]["mean_kmh"])
+
+
+def onset_vs_report_min(row: dict) -> int | None:
+    """Minutes from the first credited slowdown to TD's NEW (negative: before it)."""
+    onsets = [v["onset"] for v in (row.get("credited") or {}).values() if v.get("onset")]
+    new_at = _t(row.get("new_at"))
+    if not onsets or new_at is None:
+        return None
+    return round((min(onsets) - new_at).total_seconds() / 60)
 
 
 def score(row: dict) -> float:
-    """Rank candidates. Coverage and a visible speed drop matter most.
+    """Rank candidates on how plainly the detectors show the incident. Visible on purpose.
 
-    Coverage is the stage-1 `retrievable_pct` until the incident has been pulled
-    in full; after that the measured `usable_pct` -- the share of bins Simulation
-    can actually calibrate against -- replaces it. Only a fall in speed counts:
-    a rise is not evidence of an incident.
-
-    Deliberately simple and deliberately visible: the team picks the incident,
-    this only decides which few are worth a full pull.
+    Up to 1 point each for: how far below an ordinary day the strongest
+    detector ran (30 km/h = full), how long (45 min = full), how many detectors
+    (3 = full), a closure seen as no traffic, and archive coverage. Minus 1
+    when another corridor incident overlaps the window, minus 0.5 when the
+    slowdown began over EARLY_ONSET_MIN before TD's report.
     """
-    measured = row.get("usable_pct")
-    coverage = (measured if measured is not None else row.get("retrievable_pct", 0)) / 100
-    drop = min(max(-(row.get("speed_drop_kmh") or 0), 0) / 30, 1.0)
-    duration = min((row.get("duration_min") or 0) / 60, 1.0)
-    return round(2 * coverage + 2 * drop + duration, 3)
+    best = strongest(row)
+    if best is None:
+        return 0.0
+    points = (min(-best[1]["mean_kmh"] / 30, 1.0) if best[1]["mean_kmh"] is not None else 0.0)
+    points += min(max(v["longest_min"] for v in row["credited"].values()) / 45, 1.0)
+    points += min(len(row["credited"]) / 3, 1.0)
+    points += 1.0 if row.get("no_traffic") else 0.0
+    points += (row.get("coverage_pct") or 0) / 100
+    if row.get("others_in_window"):
+        points -= 1.0
+    onset = onset_vs_report_min(row)
+    if onset is not None and onset < -EARLY_ONSET_MIN:
+        points -= 0.5
+    return round(max(points, 0.0), 2)
 
 
-def shortlist(start: str, end: str, top: int = 6, bin_minutes: int = 5,
-              log=print) -> list[dict]:
-    """Every usable corridor incident, stage-1 screened, best `top` measured."""
+def shortlist(start: str, end: str, bin_minutes: int = 5, log=print) -> list[dict]:
+    """Every usable corridor incident, with its evidence, best first."""
     all_incidents = incidents.load(start, end)
+    corridor = [i for i in all_incidents if i["corridor_road"]]
     usable = incidents.usable_corridor_incidents(all_incidents, MIN_DURATION_MIN)
-    log(f"{len(all_incidents)} incidents, {len(usable)} on the corridor with a "
-        f"clear NEW and CLOSED at least {MIN_DURATION_MIN} min apart")
-
+    screened = [i for i in usable
+                if i.get("detail_en") in KINDS and i["duration_min"] <= MAX_DURATION_MIN]
+    log(f"{len(all_incidents)} incidents, {len(usable)} on the corridor with a clear "
+        f"NEW and CLOSED at least {MIN_DURATION_MIN} min apart; {len(screened)} of them "
+        f"{' or '.join(KINDS).lower()} of at most {MAX_DURATION_MIN} min, screened")
+    usable = screened
     rows = []
     for n, incident in enumerate(usable, 1):
-        window = window_for(incident)
-        if window is None:
-            continue
-        probe = estimate_retrievability(*window)
-        row = {**incident, **probe}
+        row = {**incident, **evidence(incident, corridor, bin_minutes)}
         row["score"] = score(row)
         rows.append(row)
-        log(f"  [{n}/{len(usable)}] {incident['incident_number']} "
-            f"{incident['duration_min']:>4} min  "
-            f"{probe['retrievable_pct']:>3}% retrievable  score {row['score']}")
-
+        log(f"  [{n}/{len(usable)}] {incident['incident_number']}  "
+            f"{len(row['credited'])} detectors credited  score {row['score']}")
     rows.sort(key=lambda r: r["score"], reverse=True)
-    for row in rows[:top]:
-        log(f"  full pull: {row['incident_number']} ...")
-        row.update(measure(row, bin_minutes))
-        row["score"] = score(row)
-    # Measured candidates first: their scores rest on the full pull, the rest on
-    # a 12-file sample, and the two are not on the same scale.
-    rows.sort(key=lambda r: ("bins" in r, r["score"]), reverse=True)
     return rows
 
 
 def _cell(value, suffix: str = "") -> str:
-    """A table cell: the value with its unit, or a dash -- never 'None' or '—%'."""
+    """A table cell: the value with its unit, or a dash -- never 'None'."""
     return "—" if value is None or value == "" else f"{value}{suffix}"
 
 
-def write_markdown(rows: list[dict], path: Path = OUT_PATH, top: int = 6) -> Path:
-    """data/candidates.md -- the table the team picks the demo incident from."""
-    today = dt.date.today().isoformat()
+def _strongest_cell(row: dict) -> str:
+    best = strongest(row)
+    if best is None:
+        return "none"
+    d, v = best
+    return f"{d} ({v['leg'].replace('_', ' ')}) {v['mean_kmh']} km/h, {v['longest_min']} min"
+
+
+def write_markdown(rows: list[dict], path: Path = OUT_PATH) -> Path:
+    """data/candidates.md -- the evidence table the team picks demo incidents from."""
     lines = [
         "# Candidate demo incidents",
         "",
-        f"Generated {today} by `python -m src.loaders.fetch candidates`. "
-        "Regenerate rather than edit.",
+        f"Generated {dt.date.today().isoformat()} by `python -m src.loaders.fetch candidates`. "
+        "Regenerate rather than edit; the reasoned pick is in `data/demo_shortlist.md`.",
         "",
-        "**Coverage is a selection criterion, not a defect.** The historical archive "
-        "keeps under half the detector minutes and which minutes survive is "
-        "effectively random, so rather than fight the gaps we pick an incident that "
-        "falls where they are smallest. See `docs/02-data.md` section 3.",
+        f"Screened: corridor incidents of type {', '.join(KINDS)}, with a clear NEW and CLOSED "
+        f"{MIN_DURATION_MIN}-{MAX_DURATION_MIN} min apart, from all three STN files.",
         "",
-        "| # | Incident | Date | Road | Duration | Retrievable | Coverage | Usable bins | Lanes valid | Speed drop | Score |",
-        "|---|---|---|---|---|---|---|---|---|---|---|",
+        "Each incident is compared with two ordinary days: the same weekday and clock time "
+        "1-6 weeks earlier with no corridor incident in the window. A detector is "
+        f"**credited** when it ran at least {SLOW_KMH} km/h below the first ordinary day for "
+        f"{RUN_BINS * 5}+ minutes, longer than the two ordinary days ever differed that way. "
+        "**No traffic** is a detector carrying no vehicles for 15+ minutes with every lane "
+        "reporting: a closure seen directly.",
+        "",
+        "| # | Incident | When | Where | TD's lane wording | Duration | Credited | Strongest "
+        "(mean below ordinary, longest run) | No traffic | Onset vs report | Coverage | Other "
+        "corridor incident | Score |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for n, r in enumerate(rows, 1):
-        measured = "bins" in r
+        onset = onset_vs_report_min(r)
         lines.append(
             f"| {n} | `{r['incident_number']}` | {r['new_at'][:16].replace('T', ' ')} "
-            f"| {r['location_en']} {r['direction_en']} "
+            f"| {r['location_en']} ({r['direction_en'] or 'no direction'}); {r.get('detail_en', '')} "
+            f"| {_cell(r.get('lane_wording'))} "
             f"| {r['duration_min']} min "
-            f"| {r.get('retrievable_pct', '?')}% "
-            f"| {_cell(r.get('mean_coverage_pct'), '%') if measured else '—'} "
-            f"| {_cell(r.get('usable_pct'), '%') if measured else '—'} "
-            f"| {_cell(r.get('lanes_valid_pct'), '%') if measured else '—'} "
-            f"| {_cell(r.get('speed_drop_kmh'), ' km/h') if measured else '—'}"
-            f"{' (' + r['drop_detector'] + ')' if measured and r.get('drop_detector') else ''} "
+            f"| {len(r.get('credited') or {})} "
+            f"| {_strongest_cell(r)} "
+            f"| {', '.join(f'{d} {m} min' for d, m in (r.get('no_traffic') or {}).items()) or '—'} "
+            f"| {_cell(onset, ' min')} "
+            f"| {_cell(r.get('coverage_pct'), '%')} "
+            f"| {', '.join(r.get('others_in_window') or []) or '—'} "
             f"| {r['score']} |")
-
     lines += [
         "",
-        f"Columns are blank below the top {top}: those were screened on a "
-        f"{SAMPLE_VERSIONS}-version sample only, not pulled in full.",
+        "## Reading the table",
         "",
-        "## What the columns mean",
-        "",
-        "- **Retrievable** — of the archive versions listed for this window, the share "
-        "that actually serve rather than returning a persistent 404. Sampled.",
-        "- **Coverage** — mean share of each bin we actually observed, from the full pull. "
-        "Higher means counts are closer to measurements than to estimates.",
-        "- **Usable bins** — share at or above the calibration threshold "
-        f"({detectors.MIN_COVERAGE_PCT}%). This is what Simulation has to fit demand against.",
-        "- **Lanes valid** — share of lane readings with `valid=\"Y\"`. Low means detectors "
-        "were offline, which is a different problem from archive gaps.",
-        "- **Speed drop** — slowest bin during the incident against the pre-incident "
-        "mean, per tunnel detector (named in brackets), largest drop kept. An incident "
-        "that does not move these is not worth simulating.",
-        "- **Order** — fully measured candidates come first, ranked on measured "
-        "usable bins; the rest are ranked on a 12-file sample and are not comparable "
-        "with them.",
-        "",
-        "## Decision",
-        "",
-        "🔒 The team picks one incident from this table. Record the choice in the README "
-        "and in `docs/04-plan.md`, then everything downstream replays that one incident.",
+        "- **Onset vs report** — the first credited slowdown against TD's NEW message; "
+        "negative means before it. Queues usually build 5-25 minutes before the report; "
+        f"more than {EARLY_ONSET_MIN} minutes before may be something else.",
+        "- **Coverage** — mean share of each 5-minute bin the archive delivered during the "
+        "incident (docs/02-data.md section 3).",
+        "- **Other corridor incident** — another incident on the corridor overlaps the "
+        "detector window, so part of the slowdown may be its doing.",
+        "- **Score** — one point each for depth, duration, spread, a closure seen as no "
+        "traffic, and coverage; minus one for an overlapping incident, minus a half for an "
+        "early onset. It orders the table; it does not pick the demo.",
+        "- An incident with fewer than two clean ordinary days is listed with no evidence "
+        "rather than judged against a contaminated one.",
         "",
     ]
     path.parent.mkdir(parents=True, exist_ok=True)

@@ -1,9 +1,12 @@
 """Command line for the data layer (component A).
 
     python -m src.loaders.fetch corridor
-    python -m src.loaders.fetch prefetch  --feed stn --start 2026-06-22 --end 2026-09-21
-    python -m src.loaders.fetch incidents --start 2026-06-22 --end 2026-09-21
+    python -m src.loaders.fetch prefetch  --feed stn --start 2026-03-22 --end 2026-09-21
+    python -m src.loaders.fetch prefetch  --feed stn_tc --start 2026-03-22 --end 2026-09-21
+    python -m src.loaders.fetch prefetch  --feed stn_sc --start 2026-03-22 --end 2026-09-21
+    python -m src.loaders.fetch incidents --start 2026-03-22 --end 2026-09-21
     python -m src.loaders.fetch detectors --start 2026-09-21T07:00 --end 2026-09-21T10:00
+    python -m src.loaders.fetch twin-detectors --start 2026-05-15T08:00 --end 2026-05-15T10:30
 
 `prefetch` is the long one and the only one that needs to run unattended: it
 fills data/raw/ in parallel and is resumable, so a dropped connection costs
@@ -16,7 +19,8 @@ import argparse
 import datetime as dt
 from pathlib import Path
 
-from src.loaders import archive, candidates, corridor, detectors, incidents, lanes, live
+from src.loaders import (archive, candidates, corridor, detectors, incidents, lanes, live,
+                         twin_export)
 from src.loaders.common import HK, MIN_DURATION_MIN
 
 
@@ -82,7 +86,9 @@ def cmd_detectors(args) -> None:
     if not rows:
         print("no detector readings in that window -- the archive's latest day is yesterday")
         return
-    binned = detectors.bin_window(rows, args.bin_minutes)
+    # Every slot of every corridor detector, empty ones included, so the CSV
+    # is a series anyone can line up by position.
+    binned = detectors.bin_window(rows, args.bin_minutes, start=start, end=end)
     usable = detectors.usable_for_calibration(binned, args.min_coverage)
     stem = f"{start:%Y%m%d-%H%M}_{end:%H%M}_b{args.bin_minutes}"
 
@@ -110,17 +116,17 @@ def cmd_detectors(args) -> None:
 
 
 def cmd_candidates(args) -> None:
-    rows = candidates.shortlist(args.start, args.end, args.top, args.bin_minutes)
+    rows = candidates.shortlist(args.start, args.end, args.bin_minutes)
     if not rows:
         print("no usable corridor incidents in that window -- widen the dates")
         return
-    path = candidates.write_markdown(rows, top=args.top)
+    path = candidates.write_markdown(rows)
     print(f"\n{len(rows)} candidates -> {path}")
-    print("Top of the list (the team picks one):")
+    print("Top of the list (the team picks from the whole table):")
     for row in rows[:args.top]:
-        print(f"  {row['incident_number']}  score {row['score']:<6} "
-              f"{row['duration_min']:>4} min  coverage {row.get('mean_coverage_pct', '?')}%  "
-              f"drop {row.get('speed_drop_kmh', '?')} km/h  {row['location_en']}")
+        print(f"  {row['incident_number']}  score {row['score']:<5} {row['duration_min']:>4} min  "
+              f"{len(row['credited'])} detectors credited  {row['location_en']} "
+              f"({row['lane_wording'] or 'lanes not stated'})")
 
 
 def cmd_lanes(args) -> None:
@@ -131,6 +137,25 @@ def cmd_lanes(args) -> None:
     out = lanes.OUT_DIR / f"lane_identity_{args.detector}.md"
     print(lanes.report(args.detector, summary, conclusion, out, bands))
     print(f"written to {out}")
+
+
+def cmd_twin_detectors(args) -> None:
+    start, end = _moment(args.start), _moment(args.end)
+    out = Path(args.out)
+    try:
+        doc = twin_export.build(start, end, args.bin_minutes, min_coverage_pct=args.min_coverage,
+                                keep_from=out)
+    except (ValueError, RuntimeError) as exc:
+        raise SystemExit(f"error: {exc}") from None
+    twin_export.write(doc, out)
+    s = twin_export.summary(doc)
+    print(f"{s['detectors']} detectors x {s['slots_per_detector']} slots of {args.bin_minutes} min "
+          f"-> {out}")
+    print(f"  with a count usable for calibration: {s['with_count']} of {s['observations']}")
+    print(f"  with a measured speed:               {s['with_speed']} of {s['observations']}")
+    print(f"  with both (what the twin compares):  {s['with_both']} of {s['observations']}")
+    print(f"Simulation time 0 is {start:%Y-%m-%d %H:%M}: set the scenario's begin to match, "
+          f"and its incident start in seconds after it.")
 
 
 def cmd_live(args) -> None:
@@ -169,14 +194,27 @@ def main() -> None:
                         "(default %(default)s%%; see docs/02-data.md section 7)")
     p.set_defaults(func=cmd_detectors)
 
-    p = sub.add_parser("candidates", help="shortlist demo incidents, scored on coverage")
+    p = sub.add_parser("candidates",
+                       help="shortlist demo incidents on detector evidence against ordinary days")
     p.add_argument("--start", required=True)
     p.add_argument("--end", required=True)
     p.add_argument("--top", type=int, default=6,
-                   help="how many to pull in full after the cheap screen (default %(default)s)")
+                   help="how many to print; the table has them all (default %(default)s)")
     p.add_argument("--bin-minutes", type=_bin_width, default=detectors.BIN_MINUTES,
                    dest="bin_minutes")
     p.set_defaults(func=cmd_candidates)
+
+    p = sub.add_parser("twin-detectors",
+                       help="write the twin's observed data, one row per slot (A -> C)")
+    p.add_argument("--start", required=True,
+                   help="YYYY-MM-DDTHH:MM on a slot boundary: the simulation's time 0")
+    p.add_argument("--end", required=True, help="YYYY-MM-DDTHH:MM on a slot boundary")
+    p.add_argument("--bin-minutes", type=_bin_width, default=detectors.BIN_MINUTES,
+                   dest="bin_minutes", help="the twin expects 5 (default %(default)s)")
+    p.add_argument("--min-coverage", type=int, default=detectors.MIN_COVERAGE_PCT,
+                   dest="min_coverage")
+    p.add_argument("--out", default=str(twin_export.OUT_PATH))
+    p.set_defaults(func=cmd_twin_detectors)
 
     p = sub.add_parser("lanes", help="evidence on which physical lane Middle Lane 1 is")
     p.add_argument("--detector", default="AID01217",

@@ -24,7 +24,8 @@ src/reader/sample.py keeps its own plain-.xml cache under data/raw/stn/.
 We read those files when they are there, so nothing is downloaded twice,
 and we never write into that layout or import from that module.
 
-    python -m src.loaders.fetch prefetch --feed stn --start 2026-06-22 --end 2026-09-21
+    python -m src.loaders.fetch prefetch --feed stn --start 2026-03-22 --end 2026-09-21
+    (and --feed stn_tc, --feed stn_sc: incidents.load reads all three STN files)
 """
 from __future__ import annotations
 
@@ -45,8 +46,16 @@ from urllib3.util.retry import Retry
 ARCHIVE_API = "https://api.data.gov.hk/v1/historical-archive"
 
 FEEDS = {
-    # The /en/ and /tc/ STN feeds are byte-identical: every message carries both languages.
+    # Special Traffic News is published as three files, one per page language.
+    # Every message in each carries both English and Chinese, with the same ID,
+    # times and status; only the Chinese text of /sc/ is in simplified script.
+    # Each file holds ONE message at a time, and the archive saves the three at
+    # different moments -- so /tc/ and /sc/ catch messages /en/ missed
+    # (incidents.collect_messages merges them; docs/02-data.md section 2).
+    # "stn" stays the English file: src/reader/sample.py reads only that one.
     "stn": "https://www.td.gov.hk/en/special_news/trafficnews.xml",
+    "stn_tc": "https://www.td.gov.hk/tc/special_news/trafficnews.xml",
+    "stn_sc": "https://www.td.gov.hk/sc/special_news/trafficnews.xml",
     "detectors": "https://resource.data.one.gov.hk/td/traffic-detectors/rawSpeedVol-all.xml",
     "segments": "https://resource.data.one.gov.hk/td/traffic-detectors/irnAvgSpeed-all.xml",
 }
@@ -66,8 +75,8 @@ RETRY = Retry(total=4, backoff_factor=2, raise_on_status=False,
 
 # The root element each feed's XML must start with. A 200 response that does
 # not start with this -- an HTML error page, say -- is never cached.
-ROOT_TAGS = {"stn": "list", "detectors": "raw_speed_volume_list",
-             "segments": "segment_speed_list"}
+ROOT_TAGS = {"stn": "list", "stn_tc": "list", "stn_sc": "list",
+             "detectors": "raw_speed_volume_list", "segments": "segment_speed_list"}
 
 
 class ArchiveError(RuntimeError):

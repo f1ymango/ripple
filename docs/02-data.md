@@ -178,10 +178,50 @@ Incident") · `INCIDENT_DETAIL_EN/CN` (e.g. "Traffic Accident") · `LOCATION_EN/
   traffic"* (or *"...has been cleared"*, *"...now cancelled"*) message gives the
   same clearance time. *"...remain closed"* is a partial reopening and does not
   count. `incidents.csv` says which source was used in `clearance_source`.
-  Measured over 22 Mar–21 Sep (4,681 incidents): 3,020 cleared by a `CLOSED`
-  status, 1,096 by a re-opened message, 565 (12%) with neither. With the start
-  also required, **68% have a complete timeline, and 35 of the 53 corridor
-  traffic accidents do.**
+- **TD also switches the NEW message to CLOSED**, sometimes half an hour before
+  the incident ends (IN-26-06887: NEW 10:02 shown CLOSED by 11:06, arrangement
+  cancelled 11:32), and an incident number can carry on after one of its
+  messages is closed (IN-26-02351: a lane re-opened at 06:04, closed again at
+  23:00). So the **start** is the message published as NEW, even once it shows
+  CLOSED, and the **clearance** is read only from the incident's latest
+  message, never from the NEW one. A CLOSED on the NEW message alone says the
+  incident is over, not when: that row stays `right_censored`. No row has a
+  zero or negative duration.
+- **Each archived copy holds exactly one message, and the feed is three
+  files.** Every readable archived copy of the three files above for 22 Mar–21
+  Sep (54,117; 27 more are truncated) holds one `<message>`, so a message is
+  only archived if it is the one
+  on display when the archive saves a copy. The three files carry the same
+  records — same `ID`, `INCIDENT_NUMBER`, times, status and English text; the
+  `/sc/` file's Chinese text is the same text in simplified script — but the
+  archive saves them at different moments, so `incidents.load` reads all three
+  and merges by message ID (`archive.FEEDS`: `stn`, `stn_tc`, `stn_sc`). Rules:
+  - the English copy is kept; `/sc/` Chinese text is never used;
+  - a `CLOSED` is never undone: the feed serves out-of-date copies still saying
+    `UPDATED` for a few minutes after the switch (954 of 3,933 closed
+    messages; median 3 min, one case 3 h);
+  - a copy with a different `INCIDENT_NUMBER` or `ANNOUNCEMENT_DATE` is not the
+    same message and is not merged (none found); a copy whose text TD edited in
+    place still counts as a sighting, first text kept, and is reported (3
+    copies of 2 messages, all location fields).
+
+  Measured over 22 Mar–21 Sep:
+
+  | | English file alone | All three files |
+  |---|---|---|
+  | Distinct messages | 9,119 | 10,410 |
+  | Incidents | 4,681 | 4,784 |
+  | With a complete timeline | 3,176 (68%) | 4,067 (85%) |
+  | Corridor traffic accidents, complete | 35 of 53 | 49 of 55 |
+  | …and lasting ≥ 20 min | 22 | 35 |
+
+  Nothing the English file gave is contradicted: no start time changes, no
+  incident loses its timeline, and all 22 earlier usable corridor accidents
+  keep the same start and end. 11 clearances move later, all off-corridor
+  notices ("heavy traffic", car parks, MTR) whose final message only the
+  Chinese files caught. `seen_in` in `incidents.csv` names the files each
+  incident was seen in. For the English file alone:
+  `incidents.load(start, end, feeds=("stn",))`.
 
 ---
 
@@ -394,9 +434,13 @@ Wah Fu → Pok Fu Lam Road · **MTR South Island Line** as a mode shift.
 
 ## 7. Using the 5-minute bins — read this before calibrating
 
-`src/loaders/detectors.py` emits one row per detector per five minutes. Because
-of the partial coverage in section 3, every row carries how much of the window
-was actually observed:
+`src/loaders/detectors.py` emits one row per detector per five minutes —
+**every** five minutes of the window, for every corridor detector, since 26 Sep.
+A slot the archive delivered nothing for is a row with `periods_observed` 0 and
+blank speed and counts, never a missing row: the twin lines series up by
+position, so one missing row shifted every later slot. Because of the partial
+coverage in section 3, every row carries how much of the window was actually
+observed:
 
 | Column | Meaning |
 |---|---|
@@ -430,11 +474,29 @@ can come out at 200 vehicles when the truth is 90.
 - **Never quote a count from a bin without quoting its coverage.** Every number
   in the deck traces to `results/`; a count whose sampling fraction is unknown
   cannot be defended in the Q&A.
+- **`_cov40.csv` is a subset, not a series.** It drops the bins below the
+  thresholds, so it must never be lined up by position with anything. For a
+  series with unusable counts blanked but every row kept, use
+  `detectors.calibration_series()` — or, for the twin, the file below.
 - Run the loader's coverage-versus-speed check before filtering. If low- and
   high-coverage bins show similar mean speeds, the filter is a precision filter
   and nothing more. If they differ, filtering would bias the calibration and
   that has to be said out loud.
 
+
+### Handing the bins to the twin
+
+    python -m src.loaders.fetch twin-detectors --start 2026-05-15T07:55 --end 2026-05-15T10:35
+
+writes `sim/scenarios/detectors.json` in the twin's own format
+(`sim/scenarios/detectors.example.json`): one observation per detector per
+5-minute slot, starting at `--start`, which is the simulation's time 0. `count`
+is `count_bin` where the bin passes both thresholds above and `null` otherwise;
+`speed_kmh` is the measured speed, `null` where no vehicle was measured; a slot
+with no vehicles and every lane reporting is `count: 0`, a real measurement.
+`coverage_pct` rides along on each observation. Nothing is interpolated. An
+`edge_id` / `position_m` already filled in by hand is kept when the file is
+rewritten. Both ends must sit on 5-minute boundaries.
 
 ### Four ways we offset the missing minutes
 
@@ -442,15 +504,17 @@ The gaps cannot be filled — the files do not exist, on either archive host, at
 any timestamp (checked 22 Sep). So the loader offsets them instead, cheapest
 first:
 
-**1. Choose an incident that falls where the gaps are smallest.** Coverage
-varies window to window and is effectively random, so it is a *selection*
-criterion, not a defect to fight. `data/candidates.md` scores every candidate on
-retrievability and measured coverage, and the team picks from that table:
+**1. Choose an incident the detectors plainly saw.** `data/candidates.md`
+compares every corridor traffic accident with two ordinary days (same weekday
+and clock time, no corridor incident in the window) and credits a detector only
+when it ran 20+ km/h below the ordinary day for longer than the two ordinary
+days ever differed; it also reports archive coverage per incident. The team
+picks from that table, and `data/demo_shortlist.md` gives Data's reasoned pick:
 
     python -m src.loaders.fetch candidates --start 2026-03-22 --end 2026-09-21
 
-Screening is two-stage — a 12-version sample per incident, then a full pull for
-the best few — so it runs in an afternoon rather than a night.
+Three detector windows per incident; about ten minutes on a filled cache, about
+an hour on a fresh one.
 
 **2. Widen the bin where precision matters more than timing.** Demand
 calibration for the pre-incident hour wants a stable count, not fine timing:
