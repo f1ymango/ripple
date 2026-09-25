@@ -1,5 +1,6 @@
 import argparse
 import csv
+import os
 from pathlib import Path
 
 import sumolib
@@ -14,7 +15,7 @@ def main():
     cfg, data = load_json(resolve(args.config)), load_json(resolve(args.detectors))
     net_path = resolve(cfg["network"])
     net = sumolib.net.readNet(str(net_path))
-    xml_path = resolve(cfg.get("detector_additional", "sim/work/network/real_detectors.add.xml"))
+    xml_path = resolve(cfg.get("detector_additional", "sim/detectors.add.xml"))
     xml_path.parent.mkdir(parents=True, exist_ok=True)
     results_dir = resolve(cfg.get("output_dir", "sim/work/results"))
     rows = []
@@ -35,7 +36,7 @@ def main():
                 pos, _ = edge.getClosestLanePosAndDist(x, y)
             pos = max(0.1, min(float(pos), edge.getLength() - 0.1))
             did = str(d["id"]).replace('"', "")
-            out.write(f'  <inductionLoop id="{did}" lane="{edge.getID()}_0" pos="{pos:.2f}" freq="{int(data.get("interval_seconds",300))}" file="{(results_dir / f"e1_{did}.xml").as_posix()}"/>\n')
+            out.write(f'  <inductionLoop id="{did}" lane="{edge.getID()}_0" pos="{pos:.2f}" freq="{int(data.get("interval_seconds",300))}" file="{Path(os.path.relpath(results_dir / f"e1_{did}.xml", xml_path.parent)).as_posix()}"/>\n')
             rows.append([did, edge.getID(), f"{pos:.2f}", f"{distance:.2f}"])
         out.write('</additional>\n')
     with open(xml_path.with_suffix(".csv"), "w", newline="", encoding="utf-8") as f:

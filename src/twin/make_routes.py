@@ -11,7 +11,7 @@ def main():
     cfg = load_json(resolve(args.config))
     out = resolve("sim/work/routes/candidates.rou.xml")
     out.parent.mkdir(parents=True, exist_ok=True)
-    run(["py", sumo_tools() / "randomTrips.py", "-n", resolve(cfg["network"]), "-r", out,
+    run(["py", sumo_tools() / "randomTrips.py", "-n", resolve(cfg["network"]), "-r", out, "-o", out.with_name("candidates.trips.xml"),
          "--begin", cfg.get("begin", 0), "--end", cfg.get("end", 3600), "--period", args.period,
          "--seed", cfg.get("seed", 2026), "--validate"])
     print(f"Candidate trips written: {out}. Use fit_demand.py only after reviewing detector order and route coverage.")

@@ -18,7 +18,7 @@ def main():
     edges = {e.getID() for e in __import__("sumolib").net.readNet(str(resolve(cfg["network"]))).getEdges()}
     ordered = sorted(data["detectors"], key=lambda d: (d.get("position_m") is None, d.get("id", "")))
     # Mapping file supplies the map-matched edge IDs. Ordering is the user's corridor order, if provided.
-    mapping_path = resolve(cfg.get("detector_additional", "sim/work/network/real_detectors.add.xml")).with_suffix(".csv")
+    mapping_path = resolve(cfg.get("detector_additional", "sim/detectors.add.xml")).with_suffix(".csv")
     import csv
     edge_by_id = {}
     with open(mapping_path, encoding="utf-8") as f:

@@ -17,9 +17,13 @@ def test_relative_paths_resolve_from_the_repo_root():
     assert common.resolve("src/twin/common.py") == common.ROOT / "src" / "twin" / "common.py"
 
 
-def test_example_config_keeps_generated_files_under_sim_work():
+def test_example_config_follows_the_repo_layout():
     cfg = common.load_json(common.resolve(EXAMPLE))
-    for key in ("network", "detector_additional", "routes", "output_dir", "osm_output"):
+    # Reviewed, committed files, where docs/03-architecture.md section 2 puts them.
+    assert cfg["network"] == "sim/aberdeen.net.xml"
+    assert cfg["detector_additional"] == "sim/detectors.add.xml"
+    # Everything regenerated lives under the git-ignored sim/work/.
+    for key in ("routes", "output_dir", "osm_output"):
         assert cfg[key].startswith("sim/work/"), key
 
 

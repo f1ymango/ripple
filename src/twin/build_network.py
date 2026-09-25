@@ -11,7 +11,7 @@ def main():
     cfg = load_json(resolve(args.config))
     west, south, east, north = cfg["osm_bbox"]
     osm = resolve(cfg.get("osm_output", "sim/work/osm/aberdeen.osm.xml"))
-    net = resolve(cfg.get("network", "sim/work/network/aberdeen.net.xml"))
+    net = resolve(cfg.get("network", "sim/aberdeen.net.xml"))
     osm.parent.mkdir(parents=True, exist_ok=True)
     net.parent.mkdir(parents=True, exist_ok=True)
     osm_get = sumo_tools() / "osmGet.py"

@@ -1,6 +1,6 @@
 # Aberdeen traffic twin: build and run guide
 
-This is component C of Ripple, the twin: `src/twin/` holds the scripts, `sim/scenarios/` the example configs, and `sim/work/` (git-ignored) everything they generate. Run the commands below from the repository root. It is a starter workflow: add the team's actual detector observations and coordinates before claiming calibration results. No calibration result is claimed until that data is added and the evaluation script is run.
+This is component C of Ripple, the twin: `src/twin/` holds the scripts, `sim/` the network and detector loops once they are reviewed (committed, as `docs/03-architecture.md` §2 lays out), `sim/scenarios/` the example configs, and `sim/work/` (git-ignored) the downloads, routes and SUMO output. Run the commands below from the repository root. It is a starter workflow: add the team's actual detector observations and coordinates before claiming calibration results. No calibration result is claimed until that data is added and the evaluation script is run.
 
 ## What the pieces mean
 
@@ -41,7 +41,7 @@ After checking the bounding box, run:
 python -m src.twin.build_network --config sim/scenarios/scenario.json
 ```
 
-This downloads OSM via SUMO's `osmGet.py`, runs `netconvert`, and writes a SUMO network. Inspect it in `sumo-gui` and fix wrong lane counts, junctions, connections and turn bans using a reviewed `netconvert` configuration / plain XML edits. Particularly inspect tunnel approaches, Aberdeen Tunnel, flyovers and the Pok Fu Lam / Shek Pai Wan route. Automated OSM conversion cannot establish that a restriction matches reality. The downloaded map is under `sim/work/osm/`; generated network is under `sim/work/network/`.
+This downloads OSM via SUMO's `osmGet.py`, runs `netconvert`, and writes a SUMO network. Inspect it in `sumo-gui` and fix wrong lane counts, junctions, connections and turn bans using a reviewed `netconvert` configuration / plain XML edits. Particularly inspect tunnel approaches, Aberdeen Tunnel, flyovers and the Pok Fu Lam / Shek Pai Wan route. Automated OSM conversion cannot establish that a restriction matches reality. The downloaded map is under `sim/work/osm/`; the network is written to `sim/aberdeen.net.xml`. Commit it once it has been inspected and corrected, so the Evaluator and teammates use the same network.
 
 ## Step 4 — Place matching simulated detectors
 
@@ -49,7 +49,7 @@ This downloads OSM via SUMO's `osmGet.py`, runs `netconvert`, and writes a SUMO 
 python -m src.twin.place_detectors --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json
 ```
 
-The script projects each real coordinate to the nearest network edge and writes `sim/work/network/real_detectors.add.xml` with E1 loops and a mapping CSV. Review the map locations and edge direction carefully. A nearest-edge match is only a proposal: approve/correct each edge and position against the road direction and actual detector location before using the outputs.
+The script projects each real coordinate to the nearest network edge and writes `sim/detectors.add.xml` with E1 loops and a mapping CSV (`sim/detectors.add.csv`). Commit both once every location is reviewed. Review the map locations and edge direction carefully. A nearest-edge match is only a proposal: approve/correct each edge and position against the road direction and actual detector location before using the outputs.
 
 ## Step 5 — Make candidate routes and fit demand
 
@@ -64,7 +64,7 @@ The first command calls SUMO `randomTrips.py`. The fitting command creates candi
 
 ```powershell
 python -m src.twin.run_scenario --config sim/scenarios/scenario.json --label baseline
-python -m src.twin.evaluate --observations sim/scenarios/detectors.json --sim sim/work/results --out sim/work/results/baseline-validation.json
+python -m src.twin.evaluate --observations sim/scenarios/detectors.json --sim sim/work/results --out results/twin/baseline-validation.json
 ```
 
 The baseline replays the incident with no intervention. Compare simulated and real detector values at the same places and times. The evaluation reports GEH for count bins, percentage below 5, and speed MAPE over available 5-minute bins. Your brief's target is GEH < 5 for at least 85% of count bins. Report the measured result even if it misses. The runner's detector output is aggregated into the observation interval; ensure the configured interval matches the data.

@@ -67,3 +67,6 @@ data/lane_identity_*.md
 sim/work/
 sim/scenarios/scenario.json
 sim/scenarios/detectors.json
+# Where PR #12 kept the same files before the move; ignored so a teammate's
+# local copies there do not show up as new files.
+simulation_validation/
