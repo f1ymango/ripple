@@ -152,6 +152,10 @@ merged shows in the rows above; pull requests #1–#16 are merged.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Fri 25 Sep (afternoon)**
+- Twin validation fix: `evaluate` read `meanSpeed`, which SUMO's loop output does not have, so every
+  simulated speed was 0 and the speed error 100% on every bin. It now reads `speed` (checked against
+  SUMO's own `det_e1_file.xsd`) and leaves out bins where no vehicle was measured
+  ([src/twin/evaluate.py](src/twin/evaluate.py), [tests/test_twin.py](tests/test_twin.py)).
 - The twin (component C) has code: SUMO setup scripts from Simulation (#12),
   moved into the repo layout — scripts in [src/twin/](src/twin/README.md),
   run from the repo root as `python -m src.twin.<script>`; the reviewed

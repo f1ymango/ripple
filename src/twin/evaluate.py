@@ -32,10 +32,12 @@ def main():
             item = intervals.get(round(i * data.get("interval_seconds", 300), 3))
             if item is None: continue
             measured = float(item.get("nVehContrib", 0))
-            speed = float(item.get("meanSpeed", 0)) * 3.6
+            # E1 output calls the mean speed "speed" (m/s) and writes -1 when no vehicle was measured.
+            speed = float(item.get("speed", -1))
             count_rows.append({"detector_id": d["id"], "time": obs.get("time"), "observed": obs["count"], "simulated": measured,
                                "geh": geh(float(obs["count"]), measured), "within_5": geh(float(obs["count"]), measured) < 5})
-            if float(obs["speed_kmh"]): speed_errors.append(abs(speed - float(obs["speed_kmh"])) / abs(float(obs["speed_kmh"])))
+            if float(obs["speed_kmh"]) and speed >= 0:
+                speed_errors.append(abs(speed * 3.6 - float(obs["speed_kmh"])) / abs(float(obs["speed_kmh"])))
     if not count_rows: raise ValueError("No matched count intervals. Check E1 XML output, detector IDs, and interval alignment.")
     pct = 100 * sum(r["within_5"] for r in count_rows) / len(count_rows)
     result = {"count_bins": count_rows, "geh_under_5_percent": pct,
