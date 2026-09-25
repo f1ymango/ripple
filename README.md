@@ -72,11 +72,11 @@ The JSON contracts between modules are in
 ### In review
 
 Work that exists but is not on `main` yet, as of Fri 25 Sep. Everything
-merged shows in the rows above; pull requests #1–#11, #13 and #14 are merged.
+merged shows in the rows above; pull requests #1–#16 are merged.
 
 | What | Who | Branch |
 |---|---|---|
-| [#12](https://github.com/f1ymango/ripple/pull/12) Week-1 SUMO setup, moved into `src/twin/` and `sim/` | Simulation | `sumo-week1` |
+| Loaders: keep STN CLOSED status flips; read malformed archive snapshots — **pushed, but no pull request is open** | Data | `data/loaders` |
 
 ### Open decisions
 
