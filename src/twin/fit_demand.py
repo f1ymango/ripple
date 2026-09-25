@@ -13,7 +13,7 @@ def main():
     ap.add_argument("--iterations", type=int, default=300)
     args = ap.parse_args()
     cfg, data = load_json(resolve(args.config)), load_json(resolve(args.detectors))
-    candidate = resolve("sim/work/routes/candidates.rou.xml")
+    candidate = resolve(cfg.get("candidate_routes", "sim/work/routes/candidates.rou.xml"))
     root = ET.parse(candidate).getroot()
     edges = {e.getID() for e in __import__("sumolib").net.readNet(str(resolve(cfg["network"]))).getEdges()}
     ordered = sorted(data["detectors"], key=lambda d: (d.get("position_m") is None, d.get("id", "")))
@@ -24,11 +24,20 @@ def main():
     with open(mapping_path, encoding="utf-8") as f:
         for row in csv.DictReader(f): edge_by_id[row["detector_id"]] = row["edge_id"]
     target = defaultdict(float)
+    calibration_coverage = {}
     for d in ordered:
-        vals = [o["count"] for o in d.get("observations", []) if o.get("count") is not None]
-        if vals: target[d["id"]] = sum(vals)
+        observations = d.get("observations", [])
+        vals = [float(o["count"]) for o in observations if o.get("count") is not None]
+        if vals:
+            # Missing archive bins are not zero flow. Scale the observed total
+            # to the declared calibration span, and retain the observed fraction
+            # so a weakly sampled detector is visible in the fit report.
+            observed_seconds = len(vals) * float(data.get("interval_seconds", 300))
+            calibration_seconds = float(cfg.get("calibration_seconds", observed_seconds))
+            target[d["id"]] = sum(vals) * calibration_seconds / observed_seconds
+            calibration_coverage[d["id"]] = len(vals) / max(len(observations), 1)
     routes = []
-    for vehicle in root.findall("vehicle"):
+    for vehicle in root.findall("vehicle") + root.findall("flow"):
         route = vehicle.find("route")
         if route is None: continue
         rid, path = vehicle.get("id"), route.get("edges", "").split()
@@ -38,31 +47,50 @@ def main():
     if not routes or not target:
         raise ValueError("Need candidate routes, detector mappings, and non-null pre-incident observed counts.")
     # Coordinate descent on predicted detector totals, with nonnegative trip counts.
+    # Keep predictions incremental: recomputing every detector's total for each
+    # route update makes this quadratic in the number of random-trip candidates.
     flow = [1.0 for _ in routes]
+    predicted = defaultdict(float)
+    for value, (_, _, crosses) in zip(flow, routes):
+        for did in crosses:
+            predicted[did] += value
     for _ in range(args.iterations):
         for i, (_, _, crosses) in enumerate(routes):
-            numerator = denominator = 0.0
-            for did, observed in target.items():
-                a = 1.0 if did in crosses else 0.0
-                pred = sum(flow[j] for j, (_, _, c) in enumerate(routes) if did in c)
-                numerator += a * (observed - pred + a * flow[i])
-                denominator += a * a
-            if denominator: flow[i] = max(0.0, numerator / denominator)
+            if not crosses:
+                continue
+            updated = max(0.0, sum(target[did] - predicted[did] + flow[i]
+                                   for did in crosses) / len(crosses))
+            change = updated - flow[i]
+            if change:
+                for did in crosses:
+                    predicted[did] += change
+                flow[i] = updated
     out = resolve(cfg.get("routes", "sim/work/routes/fitted.rou.xml")); out.parent.mkdir(parents=True, exist_ok=True)
-    # Convert fitted route-level trips to explicit vehicles spread over the observed hour.
+    # Emit one rate-based flow per route across the full simulation horizon.
     fitted_root = ET.Element("routes")
     for typ in root.findall("vType"): fitted_root.append(typ)
-    span = max(1, int(cfg.get("calibration_seconds", 3600)))
-    serial = 0
-    for (rid, path, _), value in zip(routes, flow):
-        for k in range(int(round(value))):
-            v = ET.SubElement(fitted_root, "vehicle", id=f"fit_{serial}", type="DEFAULT_VEHTYPE", depart=f"{(serial * span / max(1, round(sum(flow)))):.2f}")
-            ET.SubElement(v, "route", edges=" ".join(path))
-            serial += 1
+    calibration_seconds = max(1, float(cfg.get("calibration_seconds", 3600)))
+    simulation_begin = float(cfg.get("begin", 0))
+    simulation_seconds = max(1.0, float(cfg.get("end", 7200)) - simulation_begin)
+    scale = simulation_seconds / calibration_seconds
+    vehicle_counts = [int(round(value * scale)) for value in flow]
+    vehicle_total = sum(vehicle_counts)
+    for serial, ((_, path, _), count) in enumerate(zip(routes, vehicle_counts)):
+        if count <= 0:
+            continue
+        v = ET.SubElement(fitted_root, "flow", id=f"fit_{serial}", type="DEFAULT_VEHTYPE",
+                          begin=f"{simulation_begin:.2f}", end=f"{simulation_begin + simulation_seconds:.2f}",
+                          number=str(count), departLane="random", departSpeed="desired")
+        ET.SubElement(v, "route", edges=" ".join(path))
     ET.ElementTree(fitted_root).write(out, encoding="utf-8", xml_declaration=True)
-    predictions = {did: sum(v for (_, _, c), v in zip(routes, flow) if did in c) for did in target}
+    predictions = dict(predicted)
     summary = {"target_counts": dict(target), "predicted_counts": predictions,
-               "warning": "Simple linear route-weight estimate. Verify route direction/order and fit against a proper simulation before claiming calibration."}
+               "calibration_coverage_fraction": calibration_coverage,
+               "calibration_seconds": calibration_seconds,
+               "simulation_seconds": simulation_seconds,
+               "simulation_to_calibration_scale": scale,
+               "candidate_routes_used": len(routes), "vehicles_generated": vehicle_total,
+               "warning": "Simple linear route-weight estimate. Missing calibration bins are scaled using the observed-bin fraction; verify route direction/order and fit against a proper simulation before claiming calibration."}
     summary_path = out.with_name("fit-summary.json"); summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(f"Fitted candidate route weights: {out}\nFit summary: {summary_path}")
 

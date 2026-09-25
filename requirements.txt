@@ -13,7 +13,7 @@ pyproj==3.8.0
 # G: Operator console
 streamlit==1.40.2
 pydeck==0.9.1
-pandas==2.2.3
+pandas==2.3.3
 
 # tests
 pytest==9.1.1

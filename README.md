@@ -119,9 +119,8 @@ merged shows in the rows above; pull requests #1–#11, #13 and #14 are merged.
   ("the junction of X and Y") becomes road X; `near_landmark` filled where the
   message has no "near" (7 of 100). Found on the gold set, so fixing them in
   the prompt needs a fresh set to measure the result.
-- `requirements.txt` pins `pandas==2.2.3`, which has no build for Python 3.14,
-  so `pip install -r requirements.txt` fails on a 3.14 venv. `pip install
-  streamlit==1.40.2` on its own works there (it brings pandas 2.3.3).
+- The pandas pin is 2.3.3 for Python 3.14 support
+  ([release notes](https://pandas.pydata.org/pandas-docs/version/2.3/whatsnew/v2.3.3.html)).
 - The historical archive serves only about half the raw detector snapshots it
   lists (39% were a persistent 404 on 21 Sep), so a 5-minute bin usually holds
   1–3 observed minutes. Summing raw volume into a bin would understate flow by
@@ -152,6 +151,8 @@ merged shows in the rows above; pull requests #1–#11, #13 and #14 are merged.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Sat 26 Sep**
+- Python 3.14 setup fixed: pinned pandas 2.3.3, the first pandas release with
+  Python 3.14 wheels ([release notes](https://pandas.pydata.org/pandas-docs/version/2.3/whatsnew/v2.3.3.html)), removing the known unsupported 2.2.3 pin.
 - The twin (component C) has code: SUMO setup scripts from Simulation (#12),
   moved into the repo layout — scripts in [src/twin/](src/twin/README.md),
   run from the repo root as `python -m src.twin.<script>`; the reviewed
@@ -166,6 +167,16 @@ Newest first. One line per change that matters, with a link to the proof.
 - Evidence fact-check: every claim in [docs/05-pitch.md](docs/05-pitch.md) §3 is tagged with its source and the date it was checked (#15). 8 of the 15 sources are a homepage or listing and should point at the page that holds the figure. Interim report skeleton added ([docs/interim-report.md](docs/interim-report.md), #16).
 - Housekeeping: every branch whose pull request is merged was deleted from
   the remote.
+- Twin evaluation: the baseline checker reads SUMO E1's `speed` attribute,
+  scores count and speed observations independently, and reports missing
+  detector files or unmatched intervals instead of implying a complete fit
+  from partial output ([src/twin/evaluate.py](src/twin/evaluate.py)).
+- Twin simulation follow-up: demand fitting now emits rate flows, corridor
+  candidate routes are built from detector legs, E1 loops cover every mapped
+  lane, and evaluation matches bins by timestamp. The runner has a fixed time
+  horizon and records FCD output. A diagnostic clip and run caveat are in
+  [results/twin/](results/twin/); this excerpt stopped early after repeated
+  teleports and is not a validated baseline.
 
 **Fri 25 Sep**
 - Incident Reader accuracy measured on the 100 hand-labelled gold messages.

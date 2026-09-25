@@ -20,27 +20,29 @@ def main():
     prefix = osm.name.removesuffix(".osm.xml")
     downloaded_osm = osm.parent / f"{prefix}_bbox.osm.xml"
     servers = [item.strip() for item in cfg.get("osm_servers", "hpi,pcoffee,oapi").split(",") if item.strip()]
-    last_error = None
-    for server in servers:
-        try:
-            print(f"Trying OpenStreetMap download server: {server}")
-            run([sys.executable, osm_get, "--bbox", f"{west},{south},{east},{north}",
-                 "--prefix", prefix, "--output-dir", osm.parent, "--url", server,
-                 "--retries", "0", "--verbose"])
-            last_error = None
-            break
-        except Exception as exc:
-            last_error = exc
-            print(f"That server did not complete; trying the next one. ({exc})")
-    if last_error is not None:
-        raise RuntimeError(f"Could not download OSM data from any server: {servers}") from last_error
+    if not downloaded_osm.exists():
+        last_error = None
+        for server in servers:
+            try:
+                print(f"Trying OpenStreetMap download server: {server}")
+                run([sys.executable, osm_get, "--bbox", f"{west},{south},{east},{north}",
+                     "--prefix", prefix, "--output-dir", osm.parent, "--url", server,
+                     "--retries", "0", "--verbose"])
+                last_error = None
+                break
+            except Exception as exc:
+                last_error = exc
+                print(f"That server did not complete; trying the next one. ({exc})")
+        if last_error is not None:
+            raise RuntimeError(f"Could not download OSM data from any server: {servers}") from last_error
     if not downloaded_osm.exists():
         raise FileNotFoundError(f"The downloader finished but expected file is missing: {downloaded_osm}")
-    cmd = [require_command("netconvert"), "--osm-files", osm, "--output-file", net,
-           "--junctions.join", "true", "--tls.guess", "true", "--roundabouts.guess", "true"]
+    cmd = [require_command("netconvert"), "--osm-files", downloaded_osm, "--output-file", net,
+           "--junctions.join", "true", "--tls.join", "true", "--roundabouts.guess", "true",
+           "--lefthand", "--keep-edges.by-vclass", "passenger", "--geometry.remove", "true"]
+    cmd += ["--keep-edges.in-geo-boundary", f"{west},{south},{east},{north}"]
     if cfg.get("netconvert_config"):
         cmd += ["--configuration-file", resolve(cfg["netconvert_config"])]
-    cmd[cmd.index("--osm-files") + 1] = downloaded_osm
     run(cmd)
     print(f"Draft network written: {net}\nInspect and hand-correct before calibration.")
 

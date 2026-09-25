@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[2]  # the repo root: relative paths reso
 
 
 def load_json(path):
-    with open(path, encoding="utf-8") as f:
+    with open(path, encoding="utf-8-sig") as f:
         return json.load(f)
 
 

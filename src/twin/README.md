@@ -5,7 +5,7 @@ This is component C of Ripple, the twin: `src/twin/` holds the scripts, `sim/` t
 ## What the pieces mean
 
 - **Network (`.net.xml`)**: roads, lanes, junctions and legal connections. `netconvert` builds the first draft from OpenStreetMap; OSM is not a ground-truth engineering map, so inspect and edit the result.
-- **Route (`.rou.xml`)**: each vehicle's trip and departure time. `randomTrips.py` creates candidate trips; the included fitting script adjusts detector-to-detector route weights against observed counts.
+- **Route (`.rou.xml`)**: each vehicle's trip and departure time. the route builder creates detector-to-detector corridor trips; the fitter adjusts route weights against observed counts and emits rate-based flows across the configured horizon.
 - **E1 loop (`.add.xml`)**: a simulated induction loop on an edge. This measures vehicles and speed over a configured interval. Positions are metres along an edge, not latitude/longitude.
 - **TraCI**: Python control of a running SUMO simulation. The runner closes selected lanes for the incident duration, then reopens them.
 - **GEH and MAPE**: GEH compares count totals; speed MAPE compares 5-minute mean speeds. Keep reality vs baseline separate from plan vs baseline.
@@ -51,7 +51,7 @@ After checking the bounding box, run:
 python -m src.twin.build_network --config sim/scenarios/scenario.json
 ```
 
-This downloads OSM via SUMO's `osmGet.py`, runs `netconvert`, and writes a SUMO network. Inspect it in `sumo-gui` and fix wrong lane counts, junctions, connections and turn bans using a reviewed `netconvert` configuration / plain XML edits. Particularly inspect tunnel approaches, Aberdeen Tunnel, flyovers and the Pok Fu Lam / Shek Pai Wan route. Automated OSM conversion cannot establish that a restriction matches reality. The downloaded map is under `sim/work/osm/`; the network is written to `sim/aberdeen.net.xml`. Commit it once it has been inspected and corrected, so the Evaluator and teammates use the same network.
+This downloads OSM via SUMO's `osmGet.py`, runs `netconvert` with left-hand traffic enabled for Hong Kong, and writes a SUMO network. Inspect it in `sumo-gui` and fix wrong lane counts, junctions, connections and turn bans using a reviewed `netconvert` configuration / plain XML edits. Particularly inspect tunnel approaches, Aberdeen Tunnel, flyovers and the Pok Fu Lam / Shek Pai Wan route. Automated OSM conversion cannot establish that a restriction matches reality. The downloaded map is under `sim/work/osm/`; the network is written to `sim/aberdeen.net.xml`. Commit it once it has been inspected and corrected, so the Evaluator and teammates use the same network.
 
 ## Step 4 — Place matching simulated detectors
 
@@ -68,7 +68,7 @@ python -m src.twin.make_routes --config sim/scenarios/scenario.json
 python -m src.twin.fit_demand --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json
 ```
 
-The first command calls SUMO `randomTrips.py`. The fitting command creates candidate origin-destination routes between ordered detectors and estimates nonnegative route weights from pre-incident counts using a transparent iterative least-squares coordinate update. It writes `sim/work/routes/fitted.rou.xml` and a fit summary. This lightweight fitter assumes detector crossing counts are a linear combination of route flows and is not a substitute for SUMO `routeSampler.py` / `dfrouter` when the team's actual detector flow data and full-day route context are available. Check the fit residuals and rerun after correcting routes/network. Do not hide poor fit by changing observations.
+The first command creates directed, detector-to-detector candidate trips within each configured corridor leg. The fitting command estimates nonnegative route weights from pre-incident counts and writes one rate-based `<flow>` per route across the configured simulation horizon. It writes `sim/work/routes/fitted.rou.xml` and a fit summary. This lightweight fitter assumes detector crossing counts are a linear combination of route flows and is not a substitute for SUMO `routeSampler.py` / `dfrouter` when the team's actual detector flow data and full-day route context are available. Check the fit residuals and rerun after correcting routes/network. Do not hide poor fit by changing observations.
 
 ## Step 6 — Run the baseline and compare it with reality
 
@@ -77,7 +77,9 @@ python -m src.twin.run_scenario --config sim/scenarios/scenario.json --label bas
 python -m src.twin.evaluate --observations sim/scenarios/detectors.json --sim sim/work/results --out results/twin/baseline-validation.json
 ```
 
-The baseline replays the incident with no intervention. Compare simulated and real detector values at the same places and times. The evaluation reports GEH for count bins, percentage below 5, and speed MAPE over available 5-minute bins. Your brief's target is GEH < 5 for at least 85% of count bins. Report the measured result even if it misses. The runner's detector output is aggregated into the observation interval; ensure the configured interval matches the data.
+The baseline replays the incident with no intervention and stops at the configured `end` time (or `--max-seconds`) even when vehicles remain. `max_depart_delay` limits vehicles unable to enter; inspect the run summary and SUMO duration statistics because this can discard demand. The run saves sampled FCD trajectories and trip information. Evaluation matches observations by timestamp plus `observation_start_sim_seconds`, aggregates all lane loops per detector, sums counts and computes volume-weighted speed. Configure the horizon to include warm-up and every observation interval. The target is GEH < 5 for at least 85% of count bins; report the measured result, including any missing comparisons.
+
+The evaluator reads SUMO E1's `speed` value in m/s (`-1` means no vehicle was collected) and computes count and speed scores independently, so an absent count does not discard a usable speed observation. It also records missing detector files and unmatched observation intervals; `meets_85_percent_target` stays false when any count observation lacks a comparison. See [SUMO's E1 output fields](https://sumo.dlr.de/userdoc/Simulation/Output/Induction_Loops_Detectors_%28E1%29.html).
 
 ## Step 7 — Run the intervention and sensitivity grid
 

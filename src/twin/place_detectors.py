@@ -1,5 +1,6 @@
 import argparse
 import csv
+import math
 import os
 from pathlib import Path
 
@@ -31,16 +32,41 @@ def main():
                 edges = net.getNeighboringEdges(x, y, r=100)
                 if not edges:
                     raise ValueError(f"No network edge within 100 m of detector {d['id']}; check bbox/network.")
-                edge, distance = min(edges, key=lambda pair: pair[1])
+                direction = d.get("direction", "")
+                words = set(direction.casefold().split())
+                expected_x = float("east" in words) - float("west" in words)
+                expected_y = float("north" in words) - float("south" in words)
+                magnitude = math.hypot(expected_x, expected_y)
+                directed = []
+                if magnitude:
+                    expected_x, expected_y = expected_x / magnitude, expected_y / magnitude
+                    for candidate, distance in edges:
+                        shape = candidate.getShape()
+                        dx, dy = shape[-1][0] - shape[0][0], shape[-1][1] - shape[0][1]
+                        length = math.hypot(dx, dy)
+                        alignment = ((dx * expected_x + dy * expected_y) / length
+                                     if length else -1)
+                        if alignment > 0.3:
+                            directed.append((candidate, distance, alignment))
+                if magnitude and not directed:
+                    raise ValueError(f"No directed edge within 100 m of detector {d['id']} "
+                                     f"matches its {direction!r} direction.")
+                if directed:
+                    edge, distance, _ = min(directed, key=lambda row: (row[1], -row[2]))
+                else:
+                    edge, distance = min(edges, key=lambda pair: pair[1])
                 # Projection to the nearest point along edge shape.
                 pos, _ = edge.getLane(0).getClosestLanePosAndDist((x, y))
             pos = max(0.1, min(float(pos), edge.getLength() - 0.1))
             did = str(d["id"]).replace('"', "")
-            out.write(f'  <inductionLoop id="{did}" lane="{edge.getID()}_0" pos="{pos:.2f}" freq="{int(data.get("interval_seconds",300))}" file="{Path(os.path.relpath(results_dir / f"e1_{did}.xml", xml_path.parent)).as_posix()}"/>\n')
-            rows.append([did, edge.getID(), f"{pos:.2f}", f"{distance:.2f}"])
+            for lane in edge.getLanes():
+                loop_id = f"{did}_{lane.getIndex()}"
+                output = results_dir / f"e1_{did}_{lane.getIndex()}.xml"
+                out.write(f'  <inductionLoop id="{loop_id}" lane="{lane.getID()}" pos="{pos:.2f}" freq="{int(data.get("interval_seconds",300))}" file="{Path(os.path.relpath(output, xml_path.parent)).as_posix()}"/>\n')
+                rows.append([did, loop_id, edge.getID(), lane.getID(), f"{pos:.2f}", f"{distance:.2f}"])
         out.write('</additional>\n')
     with open(xml_path.with_suffix(".csv"), "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f); w.writerow(["detector_id", "edge_id", "position_m", "distance_from_coordinate_m"]); w.writerows(rows)
+        w = csv.writer(f); w.writerow(["detector_id", "loop_id", "edge_id", "lane_id", "position_m", "distance_from_coordinate_m"]); w.writerows(rows)
     print(f"Proposal written: {xml_path}\nMapping table: {xml_path.with_suffix('.csv')}\nReview every location and lane direction before trusting it.")
 
 

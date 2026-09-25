@@ -1,0 +1,512 @@
+{
+  "interval_seconds": 900,
+  "observation_start_sim_seconds": 900,
+  "detectors": [
+    {
+      "id": "AID01101",
+      "leg": "main_eastbound",
+      "lon": 114.152525,
+      "lat": 22.248091,
+      "direction": "South East",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 88,
+          "speed_kmh": 64.8
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 107,
+          "speed_kmh": 69.2
+        }
+      ]
+    },
+    {
+      "id": "AID01102",
+      "leg": "main_eastbound",
+      "lon": 114.1577149,
+      "lat": 22.24712681,
+      "direction": "North East",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 109,
+          "speed_kmh": 69.5
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 88,
+          "speed_kmh": 72.2
+        }
+      ]
+    },
+    {
+      "id": "AID01103",
+      "leg": "main_eastbound",
+      "lon": 114.1621481,
+      "lat": 22.24863539,
+      "direction": "South East",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 171,
+          "speed_kmh": 63.4
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 117,
+          "speed_kmh": 63.1
+        }
+      ]
+    },
+    {
+      "id": "AID01104",
+      "leg": "main_eastbound",
+      "lon": 114.1658151,
+      "lat": 22.24837379,
+      "direction": "North East",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 81,
+          "speed_kmh": 79.6
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 85,
+          "speed_kmh": 81.4
+        }
+      ]
+    },
+    {
+      "id": "AID01105",
+      "leg": "main_eastbound",
+      "lon": 114.1686381,
+      "lat": 22.2496834,
+      "direction": "North East",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 58,
+          "speed_kmh": 104.1
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 55,
+          "speed_kmh": 91.1
+        }
+      ]
+    },
+    {
+      "id": "AID01106",
+      "leg": "main_eastbound",
+      "lon": 114.1718782,
+      "lat": 22.25044211,
+      "direction": "South East",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 124,
+          "speed_kmh": 57.6
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 100,
+          "speed_kmh": 55.1
+        }
+      ]
+    },
+    {
+      "id": "AID01107",
+      "leg": "main_eastbound",
+      "lon": 114.1762923,
+      "lat": 22.24999065,
+      "direction": "South East",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 120,
+          "speed_kmh": 75.4
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 90,
+          "speed_kmh": 75.6
+        }
+      ]
+    },
+    {
+      "id": "AID01108",
+      "leg": "main_eastbound",
+      "lon": 114.1801247,
+      "lat": 22.27186288,
+      "direction": "North West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 47,
+          "speed_kmh": 73.8
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 50,
+          "speed_kmh": 83.0
+        }
+      ]
+    },
+    {
+      "id": "AID01109",
+      "leg": "main_eastbound",
+      "lon": 114.1810758,
+      "lat": 22.27659491,
+      "direction": "North",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 341,
+          "speed_kmh": 62.1
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 242,
+          "speed_kmh": 64.1
+        }
+      ]
+    },
+    {
+      "id": "AID01110",
+      "leg": "main_eastbound",
+      "lon": 114.181217,
+      "lat": 22.279356,
+      "direction": "North West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 469,
+          "speed_kmh": 62.1
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 387,
+          "speed_kmh": 62.2
+        }
+      ]
+    },
+    {
+      "id": "AID01214",
+      "leg": "main_westbound",
+      "lon": 114.180701,
+      "lat": 22.280729,
+      "direction": "South East",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 486,
+          "speed_kmh": 49.5
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 343,
+          "speed_kmh": 50.4
+        }
+      ]
+    },
+    {
+      "id": "AID01215",
+      "leg": "main_westbound",
+      "lon": 114.181221,
+      "lat": 22.278219,
+      "direction": "South",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 276,
+          "speed_kmh": 73.2
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 230,
+          "speed_kmh": 72.2
+        }
+      ]
+    },
+    {
+      "id": "AID01216",
+      "leg": "main_westbound",
+      "lon": 114.1796008,
+      "lat": 22.27331682,
+      "direction": "South East",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 189,
+          "speed_kmh": 85.0
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 153,
+          "speed_kmh": 83.1
+        }
+      ]
+    },
+    {
+      "id": "AID01217",
+      "leg": "main_westbound",
+      "lon": 114.177565,
+      "lat": 22.250597,
+      "direction": "North West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 240,
+          "speed_kmh": 80.7
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 207,
+          "speed_kmh": 79.6
+        }
+      ]
+    },
+    {
+      "id": "AID01218",
+      "leg": "main_westbound",
+      "lon": 114.1737118,
+      "lat": 22.25005384,
+      "direction": "North West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 216,
+          "speed_kmh": 69.4
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 187,
+          "speed_kmh": 71.0
+        }
+      ]
+    },
+    {
+      "id": "AID01219",
+      "leg": "main_westbound",
+      "lon": 114.1694335,
+      "lat": 22.25007176,
+      "direction": "South West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 195,
+          "speed_kmh": 77.4
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 140,
+          "speed_kmh": 76.2
+        }
+      ]
+    },
+    {
+      "id": "AID01220",
+      "leg": "main_westbound",
+      "lon": 114.1650487,
+      "lat": 22.2482744,
+      "direction": "North West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 191,
+          "speed_kmh": 77.3
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 125,
+          "speed_kmh": 80.9
+        }
+      ]
+    },
+    {
+      "id": "AID01221",
+      "leg": "main_westbound",
+      "lon": 114.1617697,
+      "lat": 22.24862632,
+      "direction": "South West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 251,
+          "speed_kmh": 52.4
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 180,
+          "speed_kmh": 56.9
+        }
+      ]
+    },
+    {
+      "id": "AID01222",
+      "leg": "main_westbound",
+      "lon": 114.1590439,
+      "lat": 22.24761461,
+      "direction": "South West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 201,
+          "speed_kmh": 64.7
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 150,
+          "speed_kmh": 66.0
+        }
+      ]
+    },
+    {
+      "id": "AID01223",
+      "leg": "main_westbound",
+      "lon": 114.1546396,
+      "lat": 22.24747861,
+      "direction": "North West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 109,
+          "speed_kmh": 67.5
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 122,
+          "speed_kmh": 64.3
+        }
+      ]
+    },
+    {
+      "id": "TDSSPWR10001",
+      "leg": "western_alternative",
+      "lon": 114.1383205,
+      "lat": 22.25479041,
+      "direction": "South East",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 81,
+          "speed_kmh": 56.5
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 85,
+          "speed_kmh": 58.0
+        }
+      ]
+    },
+    {
+      "id": "TDSSPWR10002",
+      "leg": "western_alternative",
+      "lon": 114.1412418,
+      "lat": 22.25047441,
+      "direction": "South East",
+      "observations": []
+    },
+    {
+      "id": "TDSSPWR10003",
+      "leg": "western_alternative",
+      "lon": 114.1450352,
+      "lat": 22.24939152,
+      "direction": "North East",
+      "observations": [
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 113,
+          "speed_kmh": 48.5
+        }
+      ]
+    },
+    {
+      "id": "TDSSPWR20001",
+      "leg": "western_alternative",
+      "lon": 114.1404555,
+      "lat": 22.25236165,
+      "direction": "North West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 105,
+          "speed_kmh": 57.7
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 82,
+          "speed_kmh": 58.5
+        }
+      ]
+    },
+    {
+      "id": "TDSSPWR20002",
+      "leg": "western_alternative",
+      "lon": 114.1414748,
+      "lat": 22.24993262,
+      "direction": "North West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 131,
+          "speed_kmh": 39.3
+        }
+      ]
+    },
+    {
+      "id": "TDSSPWR20003",
+      "leg": "western_alternative",
+      "lon": 114.1450546,
+      "lat": 22.249238,
+      "direction": "South West",
+      "observations": [
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 107,
+          "speed_kmh": 89.7
+        }
+      ]
+    },
+    {
+      "id": "TDSAPR10001",
+      "leg": "western_alternative",
+      "lon": 114.1497113,
+      "lat": 22.24863379,
+      "direction": "East",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 77,
+          "speed_kmh": 46.9
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 118,
+          "speed_kmh": 41.4
+        }
+      ]
+    },
+    {
+      "id": "TDSAPR20001",
+      "leg": "western_alternative",
+      "lon": 114.1493912,
+      "lat": 22.24840797,
+      "direction": "West",
+      "observations": [
+        {
+          "time": "2026-09-03T22:45:00+08:00",
+          "count": 144,
+          "speed_kmh": 63.2
+        },
+        {
+          "time": "2026-09-03T23:30:00+08:00",
+          "count": 115,
+          "speed_kmh": 61.1
+        }
+      ]
+    }
+  ]
+}
