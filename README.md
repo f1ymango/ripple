@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Thu 24 Sep 2026, 18:00** · Week 1 of 5 (21–27 Sep: setup and pick
+**Last updated: Sat 26 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
 the incident) · Stand-ups: Sunday and Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
@@ -48,7 +48,7 @@ this chain.
 | | Component | Owner | Status |
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines, detector bins with coverage, corridor table, candidate screener and live poller ([src/loaders/](src/loaders/)). Committed output: the 28-detector [data/detectors.csv](data/detectors.csv); shortlist still to generate |
-| B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Parses all 20 dev messages ([src/reader/](src/reader/)). Accuracy: 100 gold messages drawn ([gold_messages.jsonl](data/labelled_incidents/gold_messages.jsonl)), labelling app and scorer ready, labels not started ([LABELLING.md](data/labelled_incidents/LABELLING.md)) |
+| B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
 | C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | ⚪ Nothing in the repo yet |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
@@ -64,23 +64,26 @@ The JSON contracts between modules are in
 | Owner | Task | Done when | Status |
 |---|---|---|---|
 | Lead | Freeze scope; write `CLAUDE.md`; create repo; test the Incident Reader on 20 real messages | repo exists, 20 messages parsed | ✅ 22 Sep |
-| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/candidates.py](src/loaders/candidates.py)); 3-month STN pull and `fetch candidates` still to run |
+| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/candidates.py](src/loaders/candidates.py)); STN archive for 22 Jun–21 Sep cached (24 Sep, Lead's machine) and parseable since #10; `fetch candidates` still to run |
 | Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ✅ 24 Sep — [screenshot](docs/img/week1-corridor-map.png) of the 21 Sep 08:20 bin ([src/console/app.py](src/console/app.py)) |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | ⚪ |
 | Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 evidence drafted; interviews and fact-check outstanding |
 
 ### In review
 
-Work that exists but is not on `main` yet, as of Thu 24 Sep, 18:00. Everything
-merged shows in the rows above; pull requests #1–#10 are all merged.
+Work that exists but is not on `main` yet, as of Sat 26 Sep. Everything
+merged shows in the rows above; pull requests #1–#11 are all merged.
 
 | What | Who | Branch |
 |---|---|---|
-| [#11](https://github.com/f1ymango/ripple/pull/11) Console: headline stats, legend, street basemap, clock-time bin slider, and the week-1 screenshot | Visuals | `visuals/map-improvements` |
+| [#12](https://github.com/f1ymango/ripple/pull/12) Week-1 SUMO setup: starter scripts and a draft Aberdeen network workflow | Simulation | `sumo-week1` |
+| [#13](https://github.com/f1ymango/ripple/pull/13) Interview plan: three target participant profiles, one interview scheduled | Impact | `markwang798369-patch-1` |
+| [#14](https://github.com/f1ymango/ripple/pull/14) Incident Reader accuracy: gold labels, v1 and v2 scores, the `bound` prompt fix | Lead | `reader/gold-labels` |
 
-Six branches whose pull request is already merged are still on the remote
-(`data/loaders`, `docs/impact-workspace`, `docs/readme-tracker`,
-`docs/tracker-data-layer`, `visuals/detector-map`,
+Ten branches whose pull request is already merged are still on the remote
+(`data/loaders`, `data/skip-truncated-snapshots`, `docs/impact-workspace`,
+`docs/readme-tracker`, `docs/tracker-24sep`, `docs/tracker-data-layer`,
+`reader/gold-set`, `visuals/detector-map`, `visuals/map-improvements`,
 `visuals/tracker-role-label`). Deleting them keeps the branch list readable.
 
 ### Open decisions
@@ -117,14 +120,16 @@ Six branches whose pull request is already merged are still on the remote
 
 ### Known issues
 
-- Incident Reader accuracy is not measured yet. The 100 gold messages still
-  need labelling ([data/labelled_incidents/LABELLING.md](data/labelled_incidents/LABELLING.md)).
+- Incident Reader errors left in v2
+  ([LABELLING.md](data/labelled_incidents/LABELLING.md#score-history)): one
+  named lane closed with "only remaining lanes are" (plural) gets
+  `lanes_total` 2, which the message does not say (7 of 100); a road junction
+  ("the junction of X and Y") becomes road X; `near_landmark` filled where the
+  message has no "near" (7 of 100). Found on the gold set, so fixing them in
+  the prompt needs a fresh set to measure the result.
 - `requirements.txt` pins `pandas==2.2.3`, which has no build for Python 3.14,
   so `pip install -r requirements.txt` fails on a 3.14 venv. `pip install
   streamlit==1.40.2` on its own works there (it brings pandas 2.3.3).
-- Lane totals are wrong on 2 of the 20 dev messages.
-- No Aberdeen-corridor message has been through a live model run yet. Scope
-  detection is tested on two real corridor messages, with the model mocked.
 - The historical archive serves only about half the raw detector snapshots it
   lists (39% were a persistent 404 on 21 Sep), so a 5-minute bin usually holds
   1–3 observed minutes. Summing raw volume into a bin would understate flow by
@@ -141,7 +146,7 @@ Six branches whose pull request is already merged are still on the remote
 - [ ] Validation chart: simulated vs observed, with a stated error
 - [ ] Three plans compared on ≥ 4 metrics
 - [ ] Sensitivity: plan still wins across compliance and clearance ranges
-- [ ] Incident Reader accuracy measured on ~100 labelled messages
+- [x] Incident Reader accuracy measured on ~100 labelled messages
 - [ ] One on-screen moment where a real bilingual message goes in and a ranked
       plan + briefing + sign text come out
 - [ ] Operator console with an Approve action and an audit log
@@ -153,6 +158,32 @@ Six branches whose pull request is already merged are still on the remote
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Fri 25 Sep**
+- Incident Reader accuracy measured on the 100 hand-labelled gold messages.
+  **v1, held out:** all fields right on 50% citywide (95% CI 39–61%) and 75%
+  on the corridor (53–89%); by field, 90–99% except direction at 73%.
+  **v2**, after one prompt fix and four label corrections made once v1 had
+  been seen: 75% citywide (65–83%), 85% corridor (64–95%). Quote v2 only next
+  to v1 ([LABELLING.md, Score history](data/labelled_incidents/LABELLING.md#score-history),
+  [results/reader/](results/reader/)).
+- Why v1's direction was low: the 24 Sep prompt's road_name example dropped
+  "(Kowloon bound)" without saying where it goes, and the model learned to
+  drop `bound` from directions. Visible on the dev set (`<place> bound`
+  directions 18/18 → 12/18) and fixed there (back to 18/18); on the gold set
+  the fix alone takes citywide
+  from 40 to 59 of 80 ([src/reader/prompts/system.md](src/reader/prompts/system.md)).
+- Before any score was seen, a rule-based check of every label against its
+  message text and the guide led to 55 approved corrections to 54 labels, 40
+  of them re-opened messages labelled with the lane that had been closed. The
+  first hand-labelled pass is commit 459cfe8; the labels as scored for v1 are
+  in [data/labelled_incidents/history/](data/labelled_incidents/history/).
+  The v1 run started once every message had a first-pass label, while that
+  check was under way; only its summary line was read before the score
+  ([LABELLING.md](data/labelled_incidents/LABELLING.md#score-history) gives
+  the order of events).
+- Every corridor message in the gold set (20) has now been through a live
+  model run; none was flagged.
 
 **Thu 24 Sep**
 - Week-1 Visuals task done: the corridor map, coloured by speed, screenshot
