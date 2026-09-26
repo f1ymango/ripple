@@ -39,7 +39,8 @@ def main():
         raise FileNotFoundError(f"The downloader finished but expected file is missing: {downloaded_osm}")
     cmd = [require_command("netconvert"), "--osm-files", downloaded_osm, "--output-file", net,
            "--junctions.join", "true", "--tls.join", "true", "--roundabouts.guess", "true",
-           "--lefthand", "--keep-edges.by-vclass", "passenger", "--geometry.remove", "true"]
+           "--lefthand", "--keep-edges.by-vclass", "passenger", "--geometry.remove", "true",
+           "--output.street-names", "true"]
     cmd += ["--keep-edges.in-geo-boundary", f"{west},{south},{east},{north}"]
     if cfg.get("netconvert_config"):
         cmd += ["--configuration-file", resolve(cfg["netconvert_config"])]

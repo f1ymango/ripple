@@ -2,10 +2,64 @@ import argparse
 import csv
 import math
 import os
+import re
 from pathlib import Path
 
 import sumolib
+from src.loaders.corridor import CHAIN_EASTBOUND, CHAIN_WESTBOUND
 from src.twin.common import load_json, resolve
+
+
+def _sequence_vector(detector_id, detector_metadata, net):
+    """Return travel direction from the registry's ordered detector chains.
+
+    Compass metadata is rounded and can point across a flyover interchange.
+    For the main corridor and the ordered Pok Fu Lam subchains, the adjacent
+    detector coordinates provide a better local travel tangent.
+    """
+    sequences = [CHAIN_EASTBOUND, CHAIN_WESTBOUND,
+                 ["TDSSPWR10001", "TDSSPWR10002", "TDSSPWR10003"],
+                 ["TDSSPWR20003", "TDSSPWR20002", "TDSSPWR20001"]]
+    for sequence in sequences:
+        if detector_id not in sequence:
+            continue
+        index = sequence.index(detector_id)
+        try:
+            coordinates = {}
+            for adjacent in sequence[max(0, index - 1):min(len(sequence), index + 2)]:
+                row = detector_metadata[adjacent]
+                coordinates[adjacent] = net.convertLonLat2XY(
+                    float(row["longitude"]), float(row["latitude"]))
+        except (KeyError, TypeError, ValueError):
+            return None
+        vectors = []
+        if index > 0:
+            ax, ay = coordinates[sequence[index - 1]]
+            bx, by = coordinates[detector_id]
+            vectors.append((bx - ax, by - ay))
+        if index < len(sequence) - 1:
+            ax, ay = coordinates[detector_id]
+            bx, by = coordinates[sequence[index + 1]]
+            vectors.append((bx - ax, by - ay))
+        unit_vectors = []
+        for dx, dy in vectors:
+            length = math.hypot(dx, dy)
+            if length:
+                unit_vectors.append((dx / length, dy / length))
+        dx = sum(v[0] for v in unit_vectors)
+        dy = sum(v[1] for v in unit_vectors)
+        length = math.hypot(dx, dy)
+        return (dx / length, dy / length) if length else None
+    return None
+
+
+def _road_name_score(expected_name, candidate_name):
+    """Score a candidate edge name against the detector's registry road name."""
+    expected = " ".join(re.findall(r"[a-z0-9]+", expected_name.casefold()))
+    actual = " ".join(re.findall(r"[a-z0-9]+", candidate_name.casefold()))
+    if not expected or expected not in actual:
+        return 0
+    return 2 if actual.endswith(expected) else 1
 
 
 def main():
@@ -51,13 +105,16 @@ def main():
                 if not edges:
                     raise ValueError(f"No network edge within 100 m of detector {d['id']}; check bbox/network.")
                 direction = d.get("direction") or detector_metadata.get(d["id"], {}).get("direction", "")
-                words = set(direction.casefold().split())
-                expected_x = float("east" in words) - float("west" in words)
-                expected_y = float("north" in words) - float("south" in words)
-                magnitude = math.hypot(expected_x, expected_y)
+                expected = _sequence_vector(d["id"], detector_metadata, net)
+                if expected is None:
+                    words = set(direction.casefold().split())
+                    expected_x = float("east" in words) - float("west" in words)
+                    expected_y = float("north" in words) - float("south" in words)
+                    magnitude = math.hypot(expected_x, expected_y)
+                    expected = (expected_x / magnitude, expected_y / magnitude) if magnitude else None
                 directed = []
-                if magnitude:
-                    expected_x, expected_y = expected_x / magnitude, expected_y / magnitude
+                if expected is not None:
+                    expected_x, expected_y = expected
                     for candidate, distance in edges:
                         shape = candidate.getShape()
                         dx, dy = shape[-1][0] - shape[0][0], shape[-1][1] - shape[0][1]
@@ -66,12 +123,28 @@ def main():
                                      if length else -1)
                         if alignment >= args.direction_alignment:
                             directed.append((candidate, distance, alignment))
-                if magnitude and not directed:
+                if expected is not None and not directed:
                     raise ValueError(f"No directed edge within 100 m of detector {d['id']} "
-                                     f"matches its {direction!r} direction at cosine threshold "
+                                     f"matches its corridor travel direction (registry: {direction!r}) "
+                                     f"at cosine threshold "
                                      f"{args.direction_alignment}; set edge_id/position_m only after map review.")
                 if directed:
-                    edge, distance, _ = min(directed, key=lambda row: (row[1], -row[2]))
+                    road_en = detector_metadata.get(d["id"], {}).get("road_en", "")
+                    expected_name = re.split(r"\s+near\s+", road_en, maxsplit=1, flags=re.IGNORECASE)[0]
+                    expected_name = re.sub(r"\s+-\s+[^-]+$", "", expected_name).strip()
+                    named = [(candidate, distance, alignment,
+                              _road_name_score(expected_name, candidate.getName()))
+                             for candidate, distance, alignment in directed]
+                    named = [row for row in named if row[3] > 0]
+                    if expected_name and not named:
+                        nearby = sorted({candidate.getName() for candidate, _, _ in directed})
+                        raise ValueError(f"No directed edge within 100 m of detector {d['id']} "
+                                         f"matches registry road {expected_name!r}; nearby directed OSM names: "
+                                         f"{nearby}. Review the map or set edge_id/position_m by hand.")
+                    if named:
+                        edge, distance, _, _ = min(named, key=lambda row: (-row[3], row[1], -row[2]))
+                    else:
+                        edge, distance, _ = min(directed, key=lambda row: (row[1], -row[2]))
                 else:
                     edge, distance = min(edges, key=lambda pair: pair[1])
                 # Projection to the nearest point along edge shape.
