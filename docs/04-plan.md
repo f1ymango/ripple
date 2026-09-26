@@ -95,7 +95,9 @@ what-if box, live segment, second incident, prettier map — is optional.
 
 ## 4. Cadence
 
-- Two 20-minute stand-ups a week: **Sunday** and **Wednesday**.
+- One 20-minute sync a week: **Wednesday afternoon** — the only slot everyone
+  is free. Anything that cannot wait for it goes to the team chat async, with a
+  stated deadline for objections, rather than pulling people into a meeting.
 - Format: what I finished / what I'm on / what's blocking me. No status essays.
 - Anything that changes a contract in `03-architecture.md` gets said out loud
   and the file updated the same day.
