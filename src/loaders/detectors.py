@@ -29,7 +29,7 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 
 from src.loaders import archive
-from src.loaders.common import HK, write_csv  # noqa: F401  (write_csv re-exported)
+from src.loaders.common import HK, parse_xml, write_csv  # noqa: F401  (write_csv re-exported)
 from src.loaders.corridor import DETECTOR_IDS
 
 # Each <period> is 30 seconds in every file seen so far, but nothing here
@@ -56,7 +56,7 @@ def parse_snapshot(xml_bytes: bytes, keep: set[str] | None = None) -> list[dict]
     `keep` filters to a set of detector IDs; the feed carries all 765 detectors
     in Hong Kong and we want 28 of them.
     """
-    root = ET.fromstring(xml_bytes)
+    root = parse_xml(xml_bytes)
     day = root.findtext("date", "").strip()
     rows: list[dict] = []
     periods = root.find("periods")
@@ -176,9 +176,36 @@ def load_window(start: dt.datetime, end: dt.datetime,
     return rows
 
 
-def bin_window(rows: list[dict], minutes: int = BIN_MINUTES,
-               per_lane: bool = False) -> list[dict]:
+def slot_starts(start: dt.datetime, end: dt.datetime, minutes: int = BIN_MINUTES) -> list[dt.datetime]:
+    """Every bin start from the bin holding `start` up to, not including, `end`."""
+    first = start.replace(minute=start.minute - start.minute % minutes, second=0, microsecond=0)
+    width = dt.timedelta(minutes=minutes)
+    out = []
+    while first < end:
+        out.append(first)
+        first += width
+    return out
+
+
+def _empty_bin(bin_start: dt.datetime, detector_id: str, minutes: int) -> dict:
+    """A slot the archive delivered nothing for: kept, so a series never shifts."""
+    return {"bin_start": bin_start.isoformat(), "detector_id": detector_id,
+            "speed_kmh": "", "flow_veh_h": "", "count_bin": "", "bin_minutes": minutes,
+            "occupancy_pct": "", "volume_observed": 0, "periods_observed": 0,
+            "coverage_pct": 0, "lane_completeness_pct": 0, "lanes_valid": 0, "lanes_offline": 0}
+
+
+def bin_window(rows: list[dict], minutes: int = BIN_MINUTES, per_lane: bool = False,
+               start: dt.datetime | None = None, end: dt.datetime | None = None,
+               detector_ids: list[str] | None = None) -> list[dict]:
     """Aggregate lane readings into fixed-width bins.
+
+    Without `start` and `end`, only slots that received a reading come back.
+    **With them, every slot of every detector comes back**, one row each, in
+    time order: a slot the archive delivered nothing for is a row with
+    periods_observed 0 and blank speed and counts. The twin matches observations
+    by timestamp; the full grid keeps archive gaps explicit rather than
+    shifting later data.
 
     `minutes` trades time resolution against precision, and the right answer
     depends on the job. The archive keeps under half the minutes, so a bin holds
@@ -203,6 +230,10 @@ def bin_window(rows: list[dict], minutes: int = BIN_MINUTES,
     """
     if minutes <= 0 or 60 % minutes:
         raise ValueError(f"bin width must be a positive divisor of 60 minutes, got {minutes}")
+    if (start is None) != (end is None):
+        raise ValueError("give both start and end for a full slot grid, or neither")
+    if start is not None and per_lane:
+        raise ValueError("a full slot grid is per detector; per-lane bins have no fixed lanes")
 
     buckets: dict[tuple, list[dict]] = defaultdict(list)
     for row in rows:
@@ -275,21 +306,48 @@ def bin_window(rows: list[dict], minutes: int = BIN_MINUTES,
         if per_lane:
             row["lane"] = key[2]
         out.append(row)
-    return out
+    if start is None:
+        return out
+
+    # The full grid: every slot x every detector, empty where nothing arrived.
+    have = {(r["bin_start"], r["detector_id"]): r for r in out}
+    ids = list(detector_ids) if detector_ids is not None else list(DETECTOR_IDS)
+    return [have.get((slot.isoformat(), d)) or _empty_bin(slot, d, minutes)
+            for slot in slot_starts(start, end, minutes) for d in ids]
+
+
+def _calibration_ok(b: dict, min_coverage_pct: int) -> bool:
+    return (b["coverage_pct"] >= min_coverage_pct
+            and b["lane_completeness_pct"] >= MIN_LANE_COMPLETENESS_PCT
+            and b["count_bin"] != "")
 
 
 def usable_for_calibration(binned: list[dict],
                            min_coverage_pct: int = MIN_COVERAGE_PCT) -> list[dict]:
     """Bins with enough observed time to put a count against a modelled count.
 
-    Use this for GEH. Do NOT use it for the speed chart -- speed survives low
-    coverage, counts do not, and throwing away sparse bins would leave the
-    chart with holes it does not need.
+    A FILTER: rows are dropped, so never line its output up by position with
+    anything -- use calibration_series() for a series. Do NOT use it for the
+    speed chart either: speed survives low coverage, counts do not.
     """
-    return [b for b in binned
-            if b["coverage_pct"] >= min_coverage_pct
-            and b["lane_completeness_pct"] >= MIN_LANE_COMPLETENESS_PCT
-            and b["count_bin"] != ""]
+    return [b for b in binned if _calibration_ok(b, min_coverage_pct)]
+
+
+def calibration_series(binned: list[dict],
+                       min_coverage_pct: int = MIN_COVERAGE_PCT) -> list[dict]:
+    """Every bin, in order, with its counts blanked where they are not usable.
+
+    Same rows as `binned`, so positions never shift; `calibration_ok` says
+    which counts can go into GEH. Speed is left alone -- it survives low
+    coverage -- and stays blank only where no vehicle was measured.
+    """
+    out = []
+    for b in binned:
+        ok = _calibration_ok(b, min_coverage_pct)
+        out.append({**b, "calibration_ok": ok,
+                    "count_bin": b["count_bin"] if ok else "",
+                    "flow_veh_h": b["flow_veh_h"] if ok else ""})
+    return out
 
 
 def coverage_bias_check(binned: list[dict],
@@ -338,8 +396,10 @@ def coverage_report(binned: list[dict],
         "empty_bins": len([b for b in binned if b["periods_observed"] == 0]),
         "mean_coverage_pct": round(sum(b["coverage_pct"] for b in binned) / len(binned)),
         "bins_with_offline_lanes": len([b for b in binned if b["lanes_offline"]]),
+        # Sensor outages only: an empty bin is an archive gap, already counted above.
         "bins_below_lane_completeness": len(
-            [b for b in binned if b["lane_completeness_pct"] < MIN_LANE_COMPLETENESS_PCT]),
+            [b for b in binned if b["periods_observed"]
+             and b["lane_completeness_pct"] < MIN_LANE_COMPLETENESS_PCT]),
         "min_coverage_pct": min_coverage_pct,
         "usable_for_calibration": len(usable),
         "usable_pct": round(len(usable) / len(binned) * 100),

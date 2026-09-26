@@ -25,15 +25,20 @@ def main():
         for row in csv.DictReader(f): edge_by_id[row["detector_id"]] = row["edge_id"]
     target = defaultdict(float)
     calibration_coverage = {}
+    calibration_seconds = float(cfg.get("calibration_seconds", 3600))
+    interval_seconds = float(data.get("interval_seconds", 300))
+    calibration_slots = max(1, int(round(calibration_seconds / interval_seconds)))
     for d in ordered:
-        observations = d.get("observations", [])
+        # Fit to the initial pre-incident calibration window only. The detector
+        # export is a full, time-ordered grid, so later incident/recovery counts
+        # must not inflate the baseline demand.
+        observations = d.get("observations", [])[:calibration_slots]
         vals = [float(o["count"]) for o in observations if o.get("count") is not None]
         if vals:
             # Missing archive bins are not zero flow. Scale the observed total
             # to the declared calibration span, and retain the observed fraction
             # so a weakly sampled detector is visible in the fit report.
-            observed_seconds = len(vals) * float(data.get("interval_seconds", 300))
-            calibration_seconds = float(cfg.get("calibration_seconds", observed_seconds))
+            observed_seconds = len(vals) * interval_seconds
             target[d["id"]] = sum(vals) * calibration_seconds / observed_seconds
             calibration_coverage[d["id"]] = len(vals) / max(len(observations), 1)
     routes = []
@@ -86,6 +91,7 @@ def main():
     predictions = dict(predicted)
     summary = {"target_counts": dict(target), "predicted_counts": predictions,
                "calibration_coverage_fraction": calibration_coverage,
+               "calibration_window_slots": calibration_slots,
                "calibration_seconds": calibration_seconds,
                "simulation_seconds": simulation_seconds,
                "simulation_to_calibration_scale": scale,

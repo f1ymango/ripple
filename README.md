@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Sat 26 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
+**Last updated: Fri 25 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
 the incident) · Stand-ups: Sunday and Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
@@ -47,7 +47,7 @@ this chain.
 
 | | Component | Owner | Status |
 |---|---|---|---|
-| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines, detector bins with coverage, corridor table, candidate screener and live poller ([src/loaders/](src/loaders/)). Committed output: the 28-detector [data/detectors.csv](data/detectors.csv); shortlist still to generate |
+| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
 | C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Starter scripts and a draft Aberdeen network workflow are in [src/twin/](src/twin/README.md). Runs on Simulation's machine (vehicles moving, reported 26 Sep; no screenshot or video in the repo yet); route teleports, detector calibration, and incident validation still need work. |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
@@ -64,30 +64,32 @@ The JSON contracts between modules are in
 | Owner | Task | Done when | Status |
 |---|---|---|---|
 | Lead | Freeze scope; write `CLAUDE.md`; create repo; test the Incident Reader on 20 real messages | repo exists, 20 messages parsed | ✅ 22 Sep |
-| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | 🟡 loaders and screener built ([src/loaders/candidates.py](src/loaders/candidates.py)); STN archive for 22 Jun–21 Sep cached (24 Sep, Lead's machine) and parseable since #10; `fetch candidates` still to run |
+| Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | ✅ 26 Sep — all 35 corridor accidents of 22 Mar–21 Sep checked against ordinary days ([data/candidates.md](data/candidates.md)); Data's pick of five, headed by IN-26-03365, with reasons and replay windows ([data/demo_shortlist.md](data/demo_shortlist.md)) |
 | Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ✅ 24 Sep — [screenshot](docs/img/week1-corridor-map.png) of the 21 Sep 08:20 bin ([src/console/app.py](src/console/app.py)) |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | 🟡 SUMO and a draft network run locally; record/share evidence and improve route coverage ([guide](src/twin/README.md)) |
 | Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 plan exists and one interview is scheduled, Sat 26 Sep 15:00 ([plan](evidence/interviews/plan.md)); every claim in [05-pitch.md](docs/05-pitch.md) §3 now carries a source and a 25 Sep check date, but 8 of the 15 sources are a homepage or listing rather than the page with the figure |
 
 ### In review
 
-Work that exists but is not on `main` yet, as of Sat 26 Sep. Everything
-merged shows in the rows above; pull requests #1–#11, #13 and #14 are merged.
+Work that exists but is not on `main` yet, as of Fri 25 Sep. Everything
+merged shows in the rows above; pull requests #1–#16 are merged.
 
 | What | Who | Branch |
 |---|---|---|
-| [#12](https://github.com/f1ymango/ripple/pull/12) Week-1 SUMO setup, moved into `src/twin/` and `sim/` | Simulation | `sumo-week1` |
+| Loaders: keep STN CLOSED status flips; read malformed archive snapshots — **pushed, but no pull request is open** | Data | `data/loaders` |
 
 ### Open decisions
 
 - **The demo incident** (🔒 Sun 27 Sep), from Data's shortlist. Corridor
   incidents are rare: 15–21 Sep had only two (IN-26-06874, IN-26-06904), so
-  search a longer window. Only about a quarter of incidents have a captured
-  CLOSED message, so three months should give roughly 5–7 usable candidates.
-  The screener ranks them on archive coverage as well as the speed drop, and
-  the run takes an afternoon, so it has to start before Sunday:
-  `python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21`
-  writes `data/candidates.md`.
+  search a longer window. Over six months (22 Mar–21 Sep) the corridor had 55
+  traffic accidents: 49 have a complete timeline and 35 of those lasted 20
+  minutes or more (all three STN files read, [docs/02-data.md](docs/02-data.md) §2).
+  Data proposes five in [data/demo_shortlist.md](data/demo_shortlist.md),
+  headed by **IN-26-03365** (Fri 15 May, 09:01–10:02: the Wong Chuk Hang Road
+  flyover to the tunnel, "part of the lanes" then "all lanes"; the queue
+  reached Aberdeen Praya Road). The evidence for all 35 is
+  [data/candidates.md](data/candidates.md).
 - **One corridor-road list.** The Reader ([src/reader/reader.py](src/reader/reader.py))
   and the loaders ([src/loaders/corridor.py](src/loaders/corridor.py)) each
   keep their own, and they differ: Stubbs Road and the Chinese road names are
@@ -104,9 +106,11 @@ merged shows in the rows above; pull requests #1–#11, #13 and #14 are merged.
   ≥ 40% archive coverage and ≥ 90% of lane readings valid
   ([docs/02-data.md](docs/02-data.md) §7). Relax them deliberately if too few
   bins survive, and state the values on the validation slide.
-- **`network_state.json` vs component A's CSV output**: the contract promises a
-  shape A does not emit yet. Raised in the PR #2 review; the Lead is taking it to
-  Simulation.
+- **`network_state.json` vs what A hands the twin**: A now writes the twin's
+  own input, `sim/scenarios/detectors.json`, one row per 5-minute slot
+  (`python -m src.loaders.fetch twin-detectors`, as the Lead suggested on
+  26 Sep). The contract in [docs/03-architecture.md](docs/03-architecture.md)
+  still shows `network_state.json`: update it or drop it (Lead + Simulation).
 - **Enter the Best WorkBuddy Award?** If yes, assign one person in week 3
   ([docs/01-hackathon.md](docs/01-hackathon.md) §5).
 
@@ -119,14 +123,19 @@ merged shows in the rows above; pull requests #1–#11, #13 and #14 are merged.
   ("the junction of X and Y") becomes road X; `near_landmark` filled where the
   message has no "near" (7 of 100). Found on the gold set, so fixing them in
   the prompt needs a fresh set to measure the result.
-- The pandas pin is 2.3.3 for Python 3.14 support
-  ([release notes](https://pandas.pydata.org/pandas-docs/version/2.3/whatsnew/v2.3.3.html)).
+- Python 3.14 is supported by the pinned pandas 2.3.3 release; install with
+  `python -m pip install -r requirements.txt`.
 - The historical archive serves only about half the raw detector snapshots it
   lists (39% were a persistent 404 on 21 Sep), so a 5-minute bin usually holds
   1–3 observed minutes. Summing raw volume into a bin would understate flow by
   about half, so the loader reports a flow rate and a `coverage_pct` instead.
   The missing minutes cannot be recovered
   ([docs/02-data.md](docs/02-data.md) §3, §7).
+- For [C], the OSM network and E1 loops are **not reviewed or committed**. The
+  local diagnostic used a generated network and ended early after repeated
+  teleports, with zero scoreable bins. This does not yet isolate network defects
+  from demand/route pressure; keep the ~15-link fallback in scope until a
+  smaller, reviewed replay separates those causes.
 - For [C]: the processed segment-speed feed is fully retrievable. It has no
   volume, so it cannot support GEH, but it is the better series for the speed
   side of validation ([docs/02-data.md](docs/02-data.md) §3).
@@ -151,34 +160,76 @@ merged shows in the rows above; pull requests #1–#11, #13 and #14 are merged.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Sat 26 Sep**
-- Python 3.14 setup fixed: pinned pandas 2.3.3, the first pandas release with
-  Python 3.14 wheels ([release notes](https://pandas.pydata.org/pandas-docs/version/2.3/whatsnew/v2.3.3.html)), removing the known unsupported 2.2.3 pin.
+- Data: demo incident shortlist. The candidate screen was rebuilt: every
+  corridor accident is compared with two ordinary days (same weekday and time,
+  no corridor incident), and a detector counts only if it ran 20+ km/h slower
+  for longer than two ordinary days ever differ. Picking the worst 5-minute
+  bin had let one noisy detector "win" 8 of 22. Five proposed, headed by
+  IN-26-03365, with what each shows and how to replay it
+  ([data/demo_shortlist.md](data/demo_shortlist.md),
+  [data/candidates.md](data/candidates.md)).
+- Data → Simulation hand-over, from the Lead's review: detector bins now come
+  on a full 5-minute grid (an empty slot is a row, never a gap), and
+  `fetch twin-detectors` writes `sim/scenarios/detectors.json` with one
+  observation per slot and `null` where a count or speed is missing or
+  unusable. Checked through the twin's own `evaluate.py` (timestamps keep a
+  missing interval from shifting later comparisons) and `place_detectors.py`.
+  The direction fix reads `data/detectors.csv` because
+  the export intentionally omits map metadata. 266 tests
+  ([src/loaders/twin_export.py](src/loaders/twin_export.py),
+  [tests/test_twin_bridge.py](tests/test_twin_bridge.py)).
+- Component C follow-up: detector direction/leg metadata is used for matching
+  and corridor routes, every lane is measured, demand fits only the first
+  calibration hour, and observed zero-count bins are scored separately from
+  speed. The 15 May scenario uses the measured queue onset at 08:55 (six
+  minutes before TD's NEW report), with 15 minutes of warm-up and a 10,500 s
+  horizon. The OSM network remains an unreviewed local draft; the prior
+  diagnostic cannot distinguish topology from demand pressure
+  ([results/twin/](results/twin/)).
+
+**Fri 25 Sep (afternoon)**
+- Twin validation fix: `evaluate` read `meanSpeed`, which SUMO's loop output does not have, so every
+  simulated speed was 0 and the speed error 100% on every bin. It now reads `speed` (checked against
+  SUMO's own `det_e1_file.xsd`) and leaves out bins where no vehicle was measured
+  ([src/twin/evaluate.py](src/twin/evaluate.py), [tests/test_twin.py](tests/test_twin.py)).
 - The twin (component C) has code: SUMO setup scripts from Simulation (#12),
   moved into the repo layout — scripts in [src/twin/](src/twin/README.md),
-  run from the repo root as `python -m src.twin.<script>`; the reviewed
-  network and loops committed as `sim/aberdeen.net.xml` and
-  `sim/detectors.add.xml`; downloads, routes and SUMO output in the
-  git-ignored `sim/work/`. A review of the move also fixed crashes in
-  `fit_demand` and in `place_detectors` for lon/lat detectors. Not run end to
-  end since the move: SUMO is not installed on the Lead's machine.
+  run from the repo root as `python -m src.twin.<script>`. The network and
+  loops referenced by the old update were not present on this branch; the new
+  OSM build is an unreviewed local draft, and generated files stay under the
+  git-ignored `sim/work/`.
 - Interview plan: three target profiles, first interview scheduled for
   Sat 26 Sep 15:00 ([evidence/interviews/plan.md](evidence/interviews/plan.md), #13).
 - Incident Reader accuracy merged (#14).
 - Evidence fact-check: every claim in [docs/05-pitch.md](docs/05-pitch.md) §3 is tagged with its source and the date it was checked (#15). 8 of the 15 sources are a homepage or listing and should point at the page that holds the figure. Interim report skeleton added ([docs/interim-report.md](docs/interim-report.md), #16).
 - Housekeeping: every branch whose pull request is merged was deleted from
   the remote.
-- Twin evaluation: the baseline checker reads SUMO E1's `speed` attribute,
-  scores count and speed observations independently, and reports missing
-  detector files or unmatched intervals instead of implying a complete fit
-  from partial output ([src/twin/evaluate.py](src/twin/evaluate.py)).
-- Twin simulation follow-up: demand fitting now emits rate flows, corridor
-  candidate routes are built from detector legs, E1 loops cover every mapped
-  lane, and evaluation matches bins by timestamp. The runner has a fixed time
-  horizon and records FCD output. A diagnostic clip and run caveat are in
-  [results/twin/](results/twin/); this excerpt stopped early after repeated
-  teleports and is not a validated baseline.
 
 **Fri 25 Sep**
+- Data layer: the incident loader reads all three Special Traffic News files
+  (English, Traditional and Simplified Chinese). Each archived copy of the
+  feed holds one message, and the archive saves the three files at different
+  moments, so the Chinese files catch messages and closures the English one
+  missed. Over 22 Mar–21 Sep: complete timelines 68% → 85% of incidents;
+  corridor accidents with a complete timeline 35 → 49 of 55, and ≥ 20 min
+  22 → 35. Audited for contradictions: no two copies of a message disagree on
+  incident number or time, no start time moves, and all 22 earlier usable
+  accidents keep the same start and end. Two rules the extra data exposed: the
+  start is the message published as NEW even after TD switches it to CLOSED,
+  and a clearance is read only from an incident's latest message
+  ([src/loaders/incidents.py](src/loaders/incidents.py),
+  [docs/02-data.md](docs/02-data.md) §2).
+- Data layer: incident timelines fixed. TD closes an incident by switching
+  an existing message to CLOSED, and the loader kept each message only as
+  first seen, so most closures were lost; that is where "only a quarter have
+  a CLOSED" came from. Over six months (22 Mar–21 Sep, 18,381 STN snapshots)
+  68% of all incidents now have a complete timeline, and 35 of the 53
+  corridor accidents do. Also: 4 archive snapshots padded with NUL bytes are
+  now read rather than skipped (the 4 truly truncated ones are still skipped,
+  as in #10), and version listings are paged a month at a time to stay under
+  the archive's 10,000-row cap
+  ([src/loaders/incidents.py](src/loaders/incidents.py),
+  [docs/02-data.md](docs/02-data.md) §2, §3).
 - Incident Reader accuracy measured on the 100 hand-labelled gold messages.
   **v1, held out:** all fields right on 50% citywide (95% CI 39–61%) and 75%
   on the corridor (53–89%); by field, 90–99% except direction at 73%.
@@ -332,8 +383,15 @@ python -m pytest                   # 153 tests, no LLM needed
 
 ```bash
 python -m src.loaders.fetch corridor     # writes data/detectors.csv
-python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21
+# incidents come from three STN files (docs/02-data.md §2); fill their cache
+# first -- resumable, about 45 min per file for six months
+python -m src.loaders.fetch prefetch --feed stn    --start 2026-03-22 --end 2026-09-21
+python -m src.loaders.fetch prefetch --feed stn_tc --start 2026-03-22 --end 2026-09-21
+python -m src.loaders.fetch prefetch --feed stn_sc --start 2026-03-22 --end 2026-09-21
+python -m src.loaders.fetch candidates --start 2026-03-22 --end 2026-09-21
 python -m src.loaders.fetch detectors --start 2026-09-21T07:00 --end 2026-09-21T10:00
+# the twin's observed data for one replay; --start is the simulation's time 0
+python -m src.loaders.fetch twin-detectors --start 2026-05-15T07:55 --end 2026-05-15T10:35
 python -m src.loaders.fetch live         # polls the live feeds until stopped
 ```
 

@@ -24,10 +24,12 @@ src/reader/sample.py keeps its own plain-.xml cache under data/raw/stn/.
 We read those files when they are there, so nothing is downloaded twice,
 and we never write into that layout or import from that module.
 
-    python -m src.loaders.fetch prefetch --feed stn --start 2026-06-22 --end 2026-09-21
+    python -m src.loaders.fetch prefetch --feed stn --start 2026-03-22 --end 2026-09-21
+    (and --feed stn_tc, --feed stn_sc: incidents.load reads all three STN files)
 """
 from __future__ import annotations
 
+import datetime as dt
 import gzip
 import io
 import sys
@@ -44,8 +46,16 @@ from urllib3.util.retry import Retry
 ARCHIVE_API = "https://api.data.gov.hk/v1/historical-archive"
 
 FEEDS = {
-    # The /en/ and /tc/ STN feeds are byte-identical: every message carries both languages.
+    # Special Traffic News is published as three files, one per page language.
+    # Every message in each carries both English and Chinese, with the same ID,
+    # times and status; only the Chinese text of /sc/ is in simplified script.
+    # Each file holds ONE message at a time, and the archive saves the three at
+    # different moments -- so /tc/ and /sc/ catch messages /en/ missed
+    # (incidents.collect_messages merges them; docs/02-data.md section 2).
+    # "stn" stays the English file: src/reader/sample.py reads only that one.
     "stn": "https://www.td.gov.hk/en/special_news/trafficnews.xml",
+    "stn_tc": "https://www.td.gov.hk/tc/special_news/trafficnews.xml",
+    "stn_sc": "https://www.td.gov.hk/sc/special_news/trafficnews.xml",
     "detectors": "https://resource.data.one.gov.hk/td/traffic-detectors/rawSpeedVol-all.xml",
     "segments": "https://resource.data.one.gov.hk/td/traffic-detectors/irnAvgSpeed-all.xml",
 }
@@ -65,8 +75,8 @@ RETRY = Retry(total=4, backoff_factor=2, raise_on_status=False,
 
 # The root element each feed's XML must start with. A 200 response that does
 # not start with this -- an HTML error page, say -- is never cached.
-ROOT_TAGS = {"stn": "list", "detectors": "raw_speed_volume_list",
-             "segments": "segment_speed_list"}
+ROOT_TAGS = {"stn": "list", "stn_tc": "list", "stn_sc": "list",
+             "detectors": "raw_speed_volume_list", "segments": "segment_speed_list"}
 
 
 class ArchiveError(RuntimeError):
@@ -107,12 +117,30 @@ def _compact(day: str) -> str:
     return day.replace("-", "")
 
 
+def _as_date(day: str) -> dt.date:
+    """'2026-09-21' or '20260921' -> date."""
+    return dt.datetime.strptime(_compact(day), "%Y%m%d").date()
+
+
 def list_versions(feed: str, start: str, end: str) -> list[str]:
     """Archive timestamps ('YYYYMMDD-HHmm') of every snapshot from start to end, inclusive.
 
-    The archive's latest available day is yesterday; asking for today returns
-    nothing rather than an error, which is why callers should check the count.
+    Asked for one calendar month at a time: the archive returns at most 10,000
+    versions per request, and six months of STN alone is ~18,400. The archive's
+    latest available day is yesterday; asking for today returns nothing rather
+    than an error, which is why callers should check the count.
     """
+    first, last = _as_date(start), _as_date(end)
+    stamps: list[str] = []
+    while first <= last:
+        month_end = (first.replace(day=28) + dt.timedelta(days=4)).replace(day=1) - dt.timedelta(days=1)
+        chunk_end = min(month_end, last)
+        stamps += _list_versions_once(feed, first.strftime("%Y%m%d"), chunk_end.strftime("%Y%m%d"))
+        first = chunk_end + dt.timedelta(days=1)
+    return list(dict.fromkeys(stamps))            # in order, no duplicates
+
+
+def _list_versions_once(feed: str, start: str, end: str) -> list[str]:
     try:
         resp = _session().get(
             f"{ARCHIVE_API}/list-file-versions",

@@ -43,8 +43,9 @@ pip install -r requirements.txt
 
 # data layer (cached in data/raw/): corridor table, incident shortlist, detector bins
 python -m src.loaders.fetch corridor
-python -m src.loaders.fetch candidates --start 2026-06-22 --end 2026-09-21
+python -m src.loaders.fetch candidates --start 2026-03-22 --end 2026-09-21
 python -m src.loaders.fetch detectors --start 2026-09-21T07:00 --end 2026-09-21T10:00
+python -m src.loaders.fetch twin-detectors --start 2026-05-15T07:55 --end 2026-05-15T10:35
 
 # Incident Reader: sample real STN messages, then parse them with a local model
 # (needs Ollama running, https://ollama.com, and `ollama pull qwen3:8b`)

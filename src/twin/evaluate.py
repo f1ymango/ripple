@@ -17,12 +17,15 @@ def main():
     ap.add_argument("--observations", required=True)
     ap.add_argument("--sim", required=True, help="Directory containing E1 detector XML files")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--config", help="Scenario file; supplies observation_start_sim_seconds after warm-up.")
     args = ap.parse_args()
     data = load_json(resolve(args.observations)); sim_dir = resolve(args.sim)
+    scenario = load_json(resolve(args.config)) if args.config else {}
     count_rows, speed_rows, speed_errors = [], [], []
     missing_detectors, unmatched_intervals, speed_unavailable_intervals = [], 0, 0
     expected_count_intervals = 0
     unmatched_count_intervals = 0
+    vehicle_presence_rows = []
     for d in data["detectors"]:
         observations = d.get("observations", [])
         expected_count_intervals += sum(obs.get("count") is not None for obs in observations)
@@ -57,7 +60,8 @@ def main():
             first_dt = datetime.fromisoformat(times[0].replace("Z", "+00:00")) if times else None
         except ValueError:
             first_dt = None
-        first_second = float(data.get("observation_start_sim_seconds", 0))
+        first_second = float(data.get("observation_start_sim_seconds",
+                                      scenario.get("observation_start_sim_seconds", 0)))
         for obs in observations:
             has_count = obs.get("count") is not None
             has_speed = obs.get("speed_kmh") is not None
@@ -84,6 +88,14 @@ def main():
                 count_rows.append({"detector_id": d["id"], "time": obs.get("time"),
                                    "observed": obs["count"], "simulated": measured,
                                    "geh": score, "within_5": score < 5})
+                # A zero observed count is valid closure evidence even though
+                # no mean speed exists. Score empty/non-empty state separately.
+                observed_empty = float(obs["count"]) == 0
+                simulated_empty = measured == 0
+                vehicle_presence_rows.append({"detector_id": d["id"], "time": obs.get("time"),
+                                              "observed_empty": observed_empty,
+                                              "simulated_empty": simulated_empty,
+                                              "matched": observed_empty == simulated_empty})
 
             if has_speed and float(obs["speed_kmh"]) > 0:
                 # SUMO E1 XML writes `speed`; accept the older mock `meanSpeed`
@@ -106,8 +118,17 @@ def main():
 
     pct = (100 * sum(r["within_5"] for r in count_rows) / len(count_rows)
            if count_rows else None)
+    presence_pct = (100 * sum(r["matched"] for r in vehicle_presence_rows) / len(vehicle_presence_rows)
+                    if vehicle_presence_rows else None)
+    observed_empty_rows = [r for r in vehicle_presence_rows if r["observed_empty"]]
+    empty_match_pct = (100 * sum(r["matched"] for r in observed_empty_rows) / len(observed_empty_rows)
+                       if observed_empty_rows else None)
     result = {"count_bins": count_rows, "speed_bins": speed_rows,
+              "vehicle_presence_bins": vehicle_presence_rows,
               "geh_under_5_percent": pct,
+              "vehicle_presence_match_percent": presence_pct,
+              "observed_zero_count_bins": sum(r["observed_empty"] for r in vehicle_presence_rows),
+              "observed_zero_count_match_percent": empty_match_pct,
               "speed_mape_percent": 100 * sum(speed_errors) / len(speed_errors) if speed_errors else None,
               "count_bin_n": len(count_rows), "speed_bin_n": len(speed_errors),
               "missing_detector_ids": missing_detectors,

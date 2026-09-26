@@ -13,6 +13,8 @@ def main():
     ap.add_argument("--detectors", default="sim/scenarios/detectors.json")
     args = ap.parse_args()
     cfg, data = load_json(resolve(args.config)), load_json(resolve(args.detectors))
+    with resolve("data/detectors.csv").open(encoding="utf-8-sig", newline="") as f:
+        metadata = {row["detector_id"]: row for row in csv.DictReader(f)}
     mapping = resolve(cfg.get("detector_additional", "sim/work/detectors.add.xml")).with_suffix(".csv")
     edge_by_id = {}
     with mapping.open(encoding="utf-8") as f:
@@ -22,8 +24,9 @@ def main():
     groups = defaultdict(list)
     for d in data["detectors"]:
         edge_id = edge_by_id.get(d["id"])
-        if edge_id and d.get("leg"):
-            groups[d["leg"]].append((d["id"], net.getEdge(edge_id)))
+        leg = d.get("leg") or metadata.get(d["id"], {}).get("leg")
+        if edge_id and leg:
+            groups[leg].append((d["id"], net.getEdge(edge_id)))
     root = ET.Element("routes")
     ET.SubElement(root, "vType", id="DEFAULT_VEHTYPE", vClass="passenger", length="5", maxSpeed="16.7")
     route_no = 0

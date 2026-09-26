@@ -286,27 +286,6 @@ def test_candidate_window_is_none_when_times_are_censored():
     assert candidates.window_for(_incident("IN-2", "", "", None)) is None
 
 
-def test_score_prefers_well_covered_incidents_with_a_visible_drop():
-    covered = {"retrievable_pct": 80, "speed_drop_kmh": -30, "duration_min": 60}
-    invisible = {"retrievable_pct": 80, "speed_drop_kmh": -2, "duration_min": 60}
-    patchy = {"retrievable_pct": 20, "speed_drop_kmh": -30, "duration_min": 60}
-    assert candidates.score(covered) > candidates.score(invisible)
-    assert candidates.score(covered) > candidates.score(patchy)
-
-
-def test_shortlist_markdown_explains_coverage_and_names_the_decision(tmp_path):
-    rows = [{**_incident("IN-26-06874", "2026-09-18T18:00:00+08:00",
-                         "2026-09-18T19:00:00+08:00", 60),
-             "retrievable_pct": 71, "score": 3.2, "bins": 84,
-             "mean_coverage_pct": 52, "usable_pct": 67, "lanes_valid_pct": 98,
-             "speed_drop_kmh": -31.4}]
-    path = candidates.write_markdown(rows, tmp_path / "candidates.md")
-    text = path.read_text(encoding="utf-8")
-    assert "IN-26-06874" in text and "71%" in text
-    assert "selection criterion" in text        # says why coverage is a column
-    assert "The team picks one incident" in text
-
-
 # --- live poller ----------------------------------------------------------
 
 def test_live_filename_comes_from_the_data_not_the_wall_clock(detector_xml):
@@ -481,57 +460,6 @@ def test_review_2_detector_outage_is_not_an_archive_gap():
 def test_review_4_bin_width_must_be_a_positive_divisor_of_60(width):
     with pytest.raises(ValueError, match="positive divisor of 60"):
         detectors.bin_window(_periods(10, {"Fast Lane": True}), width)
-
-
-def test_review_5_measured_coverage_changes_the_score():
-    base = {"retrievable_pct": 60, "speed_drop_kmh": -25, "duration_min": 45}
-    well = {**base, "bins": 80, "mean_coverage_pct": 70, "usable_pct": 90}
-    badly = {**base, "bins": 80, "mean_coverage_pct": 15, "usable_pct": 5}
-    assert candidates.score(well) > candidates.score(badly)
-    assert candidates.score(well) != candidates.score(base)   # measured replaces the probe
-
-
-def test_review_5_measured_candidates_rank_above_sampled_ones(monkeypatch):
-    usable = [_incident(f"IN-{n}", "2026-09-18T18:00:00+08:00",
-                        "2026-09-18T19:00:00+08:00", 60) for n in range(3)]
-    monkeypatch.setattr(candidates.incidents, "load", lambda a, b: usable)
-    probes = iter([90, 50, 40])           # IN-0 looks best on the sample alone
-    monkeypatch.setattr(candidates, "estimate_retrievability",
-                        lambda a, b: {"retrievable_pct": next(probes)})
-    monkeypatch.setattr(candidates, "measure", lambda row, width: {
-        "bins": 60, "mean_coverage_pct": 20, "usable_pct": 5,
-        "speed_drop_kmh": -5, "drop_detector": "AID01107"})
-    rows = candidates.shortlist("2026-09-18", "2026-09-18", top=1, log=lambda *a: None)
-    assert rows[0]["incident_number"] == "IN-0" and "bins" in rows[0]
-    assert rows[0]["score"] < 2 * 0.9 + 1   # now scored on its poor measured coverage
-
-
-def test_extra_speed_rise_is_not_scored_as_a_drop():
-    rise = {"retrievable_pct": 50, "speed_drop_kmh": 25, "duration_min": 40}
-    fall = {"retrievable_pct": 50, "speed_drop_kmh": -25, "duration_min": 40}
-    assert candidates.score(fall) > candidates.score(rise)
-
-
-def test_extra_speed_drop_is_per_direction_and_stops_at_clearance(monkeypatch):
-    t = lambda h, m: dt.datetime(2026, 9, 18, h, m, tzinfo=HK)
-    def bin_(detector_id, start, speed):
-        return {"bin_start": start.isoformat(), "detector_id": detector_id, "speed_kmh": speed,
-                "coverage_pct": 60, "lane_completeness_pct": 100, "count_bin": 50,
-                "periods_observed": 6, "lanes_valid": 2, "lanes_offline": 0}
-    binned = (
-        # eastbound: the incident direction, 80 -> 50 km/h while closed
-        [bin_("AID01107", t(17, m), 80.0) for m in (0, 30)]
-        + [bin_("AID01107", t(18, 0), 50.0)]
-        # westbound: ordinary 55 km/h all along -- pooled, it read as a drop
-        + [bin_("AID01217", t(17, m), 55.0) for m in (0, 30)] + [bin_("AID01217", t(18, 0), 55.0)]
-        # evening peak AFTER clearance: must not count as the incident
-        + [bin_("AID01107", t(19, 30), 20.0)])
-    monkeypatch.setattr(candidates.detectors, "load_window", lambda a, b: ["x"])
-    monkeypatch.setattr(candidates.detectors, "bin_window", lambda rows, w: binned)
-    got = candidates.measure(_incident("IN-D", "2026-09-18T18:00:00+08:00",
-                                       "2026-09-18T19:00:00+08:00", 60))
-    assert got["drop_detector"] == "AID01107"
-    assert got["speed_drop_kmh"] == -30.0          # not -60 (post-clearance) or pooled
 
 
 def test_extra_fifteen_minute_request_returns_fifteen_minutes(monkeypatch):

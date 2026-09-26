@@ -23,7 +23,13 @@ If the check fails, fix the SUMO PATH / `SUMO_HOME` before continuing. The Pytho
 
 ## Step 2 — Add the team's inputs
 
-Copy `sim/scenarios/detectors.example.json` to `sim/scenarios/detectors.json` and enter the real detector IDs, WGS84 longitude/latitude, observed 5-minute counts, and speeds. One observation row is required per detector per 5-minute interval for the pre-incident calibration hour and incident replay window. Preserve missing values as `null`; do not invent or interpolate observations. The coordinates, detector IDs, times, incident lane list and actual incident duration must come from the team data, not this template. Keep the working `detectors.json` and `scenario.json` local; they are excluded from Git.
+Generate the detector hand-over from the archive cache for the whole replay window; it writes one row per 5-minute slot and preserves unusable counts or unmeasured speeds as `null`:
+
+```powershell
+python -m src.loaders.fetch twin-detectors --start 2026-05-15T07:55 --end 2026-05-15T10:35
+```
+
+The committed `data/detectors.csv` supplies direction and corridor-leg metadata. `place_detectors` and `make_routes` read those fields from the registry, since the hand-over JSON is focused on observations. Existing hand-reviewed `edge_id` and `position_m` values survive regenerating the file. Keep generated `detectors.json` and `scenario.json` local; they are excluded from Git.
 
 Copy `sim/scenarios/scenario.example.json` to `sim/scenarios/scenario.json`. Set incident start, duration, lanes, simulation horizon and route files. Fill `osm_bbox` to cover the complete corridor (including both directions and the western alternative). Coordinate order is west,south,east,north.
 
@@ -59,7 +65,7 @@ This downloads OSM via SUMO's `osmGet.py`, runs `netconvert` with left-hand traf
 python -m src.twin.place_detectors --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json
 ```
 
-The script projects each real coordinate to the nearest network edge and writes `sim/detectors.add.xml` with E1 loops and a mapping CSV (`sim/detectors.add.csv`). Commit both once every location is reviewed. Review the map locations and edge direction carefully. A nearest-edge match is only a proposal: approve/correct each edge and position against the road direction and actual detector location before using the outputs.
+The script matches each real coordinate to a nearby edge whose direction agrees with the detector registry, then writes one E1 loop per lane and a mapping CSV. If no edge meets the bearing threshold, it stops and asks for a map-reviewed `edge_id` / `position_m`; it does not silently select the opposite carriageway. Review all proposed positions and lane indices on a map before using them.
 
 ## Step 5 — Make candidate routes and fit demand
 
@@ -74,10 +80,10 @@ The first command creates directed, detector-to-detector candidate trips within 
 
 ```powershell
 python -m src.twin.run_scenario --config sim/scenarios/scenario.json --label baseline
-python -m src.twin.evaluate --observations sim/scenarios/detectors.json --sim sim/work/results --out results/twin/baseline-validation.json
+python -m src.twin.evaluate --observations sim/scenarios/detectors.json --sim sim/work/results --config sim/scenarios/scenario.json --out results/twin/baseline-validation.json
 ```
 
-The baseline replays the incident with no intervention and stops at the configured `end` time (or `--max-seconds`) even when vehicles remain. `max_depart_delay` limits vehicles unable to enter; inspect the run summary and SUMO duration statistics because this can discard demand. The run saves sampled FCD trajectories and trip information. Evaluation matches observations by timestamp plus `observation_start_sim_seconds`, aggregates all lane loops per detector, sums counts and computes volume-weighted speed. Configure the horizon to include warm-up and every observation interval. The target is GEH < 5 for at least 85% of count bins; report the measured result, including any missing comparisons.
+The baseline replays the incident with no intervention and stops at the configured `end` time (or `--max-seconds`) even when vehicles remain. `max_depart_delay` limits vehicles unable to enter; inspect the run summary and SUMO duration statistics because this can discard demand. The run saves sampled FCD trajectories and trip information. Evaluation matches observations by timestamp plus `observation_start_sim_seconds`, aggregates all lane loops per detector, sums counts, computes volume-weighted speed and scores observed zero-count bins separately even when speed is null. Configure the horizon to include warm-up and every observation interval. The target is GEH < 5 for at least 85% of count bins; report the measured result, including any missing comparisons.
 
 The evaluator reads SUMO E1's `speed` value in m/s (`-1` means no vehicle was collected) and computes count and speed scores independently, so an absent count does not discard a usable speed observation. It also records missing detector files and unmatched observation intervals; `meets_85_percent_target` stays false when any count observation lacks a comparison. See [SUMO's E1 output fields](https://sumo.dlr.de/userdoc/Simulation/Output/Induction_Loops_Detectors_%28E1%29.html).
 
