@@ -1,32 +1,38 @@
 # Interim Report Skeleton — Project Ripple
 
-> **Internal Submission Target:** Saturday 3 October 2026
+> **Internal Submission Target:** Saturday 3 October 2026  
 > **Official Deadline:** Sunday 4 October 2026
 
 ---
 
 ## 1. Executive Summary & Social Problem Statement
-- **Owner:** Teammate 1 (Problem & Context Lead)
+- **Owner:** Impact
+- **Primary Source Alignment:** `docs/00-brief.md` (Section 2), `docs/05-pitch.md` (Sections 1 & 3)
 - **Content:**
   - Clear statement of Hong Kong's non-recurring congestion problem, focusing on critical corridors like Aberdeen.
-  - The limits of individual user-equilibrium routing apps vs. system-optimum corridor management.
-  - Key social and economic impacts (delays to emergency services, public transit, and freight).
+  - Limits of individual user-equilibrium routing apps vs. system-optimum corridor management.
+  - Social and economic impacts (delays to emergency services, public transit, freight).
 
 ## 2. Preliminary Idea & System Architecture
-- **Owner:** Teammate 2 (Data & Tech Lead)
+- **Owner:** Lead
+- **Primary Source Alignment:** `docs/03-architecture.md` (Section 1), `docs/00-brief.md` (Section 4)
 - **Content:**
-  - Overview of Ripple’s data ingestion pipeline (TD open feeds, detector loops, incident reader).
-  - The role of the SUMO digital twin and LLM-driven plan generator.
-  - How human-in-the-loop operator approval guarantees constraint validation and safety.
+  - Overview of Ripple’s architecture, ingestion pipelines (TD open feeds, detector loops), and incident processing.
+  - Human-in-the-loop workflow and real-time candidate plan generation.
 
 ## 3. Feasibility, Preliminary Results & Cost-Benefit Framework
-- **Owner:** Teammate 3 (Impact & Costing Lead / You)
+- **Owner:** Impact
+- **Primary Source Alignment:** `docs/05-pitch.md` (Section 6)
 - **Content:**
-  - Baseline vs. plan simulation comparison methodology.
-  - Costing structure for a single corridor rollout (compute, storage, maintenance hours).
-  - Framework for Benefit-Cost Ratio (BCR) using HK Value of Time benchmarks.
+  - Costing structure and Benefit-Cost Ratio (BCR) framework using HK Value of Time benchmarks.
+  - Note: Unmeasured simulation numbers flagged explicitly as *[not measured yet]* per evaluation guidance.
 
-## 4. Sustainability, Ethics & User Validation Evidence
+## 4. Sustainability, Ethics & User Validation
+- **Owner:** Impact (with Simulation reviewing validation wording)
+- **Primary Source Alignment:** `docs/05-pitch.md` (Section 5), `evidence/interviews/2026-09-26-minibus-driver.md`
+- **Content:**
+  - Distributional fairness, privacy compliance, and system sustainability.
+  - Empirical qualitative evidence from primary research interviews (e.g., minibus driver insights on official alert delays and peer verification).
 - **Owner:** Teammate 4 (Ethics & Evidence Lead)
 - **Content:**
   - Summary of real user interview insights (`evidence/interviews/`).
