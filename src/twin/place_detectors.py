@@ -8,6 +8,10 @@ from pathlib import Path
 import sumolib
 from src.loaders.corridor import CHAIN_EASTBOUND, CHAIN_WESTBOUND
 from src.twin.common import load_json, resolve
+from src.twin.network_sources import (
+    apply_mapping_overrides, cached_lane_evidence, cached_osm_path, edge_names,
+    read_osm_ways, sha256, verify_lane_evidence,
+)
 
 
 def _sequence_vector(detector_id, detector_metadata, net):
@@ -57,22 +61,69 @@ def _road_name_score(expected_name, candidate_name):
     """Score a candidate edge name against the detector's registry road name."""
     expected = " ".join(re.findall(r"[a-z0-9]+", expected_name.casefold()))
     actual = " ".join(re.findall(r"[a-z0-9]+", candidate_name.casefold()))
-    if not expected or expected not in actual:
+    if not expected or f" {expected} " not in f" {actual} ":
         return 0
     return 2 if actual.endswith(expected) else 1
+
+
+def _choose_named_candidate(candidates, observed_lanes=None):
+    """Resolve very close parallel candidates with measured detector lane scope.
+
+    Within one modelled lane width of the nearest equally named edge, a matching
+    TD lane count is stronger evidence than a sub-lane coordinate difference.
+    Never move to a distant road just to make the lane counts agree. This is a
+    placement heuristic, not a change to OSM lanes or to the observed counts.
+    """
+    nearest = min(candidates, key=lambda row: (-row[3], row[1], -row[2]))
+    if observed_lanes is None:
+        return nearest
+    width = max(lane.getWidth() for lane in nearest[0].getLanes())
+    compatible = [row for row in candidates if row[3] == nearest[3]
+                  and row[1] <= nearest[1] + width
+                  and row[0].getLaneNumber() == observed_lanes]
+    return min(compatible, key=lambda row: (row[1], -row[2])) if compatible else nearest
+
+
+def _candidate_name_score(expected_name, candidate, osm_ways, observed_lanes):
+    score = _road_name_score(expected_name, candidate.getName())
+    # A street alias may also name an adjacent ramp. Broaden the primary name
+    # only when the same window's measured TD lane scope corroborates that edge.
+    if observed_lanes is not None and candidate.getLaneNumber() == observed_lanes:
+        score = max([score] + [_road_name_score(expected_name, name)
+                              for name in edge_names(candidate, osm_ways)])
+    return score
 
 
 def main():
     ap = argparse.ArgumentParser(description="Map WGS84 detectors to nearest SUMO edges and write E1 loops.")
     ap.add_argument("--config", required=True)
     ap.add_argument("--detectors", required=True)
+    ap.add_argument("--lane-evidence", help="Offline audit JSON with measured per-detector lane sets; "
+                    "used only to distinguish nearby, equally named candidates.")
+    ap.add_argument("--raw-cache", default="data/raw/detectors",
+                    help="Local TD cache for lane-scope evidence when --lane-evidence is omitted.")
+    ap.add_argument("--overrides", help="Reviewed placement JSON tied to network and registry hashes")
     ap.add_argument("--direction-alignment", type=float, default=0.7,
                     help="Minimum cosine similarity between road bearing and detector direction (default: 0.7).")
     args = ap.parse_args()
     cfg, data = load_json(resolve(args.config)), load_json(resolve(args.detectors))
     net_path = resolve(cfg["network"])
     net = sumolib.net.readNet(str(net_path))
+    osm_path = cached_osm_path(cfg)
+    osm_ways = read_osm_ways(osm_path) if osm_path.exists() else {}
     registry = resolve("data/detectors.csv")
+    lane_evidence = {}
+    if args.lane_evidence:
+        evidence = load_json(resolve(args.lane_evidence))
+        lane_evidence = verify_lane_evidence(
+            evidence, data.get('source', {}).get('window'), resolve(args.detectors), registry)
+    elif data.get('source', {}).get('window'):
+        lane_evidence = cached_lane_evidence(
+            resolve(args.raw_cache), data['source']['window'],
+            [detector['id'] for detector in data['detectors']])['detectors']
+    overrides_path = args.overrides or cfg.get('detector_overrides')
+    if overrides_path:
+        data = apply_mapping_overrides(data, resolve(overrides_path), net_path, registry, lane_evidence)
     detector_metadata = {}
     if registry.exists():
         with registry.open(encoding="utf-8-sig", newline="") as source:
@@ -112,18 +163,20 @@ def main():
                     expected_y = float("north" in words) - float("south" in words)
                     magnitude = math.hypot(expected_x, expected_y)
                     expected = (expected_x / magnitude, expected_y / magnitude) if magnitude else None
+                if expected is None:
+                    raise ValueError(f"No travel direction is available for detector {d['id']}; "
+                                     "provide source direction or ordered corridor coordinates.")
                 directed = []
-                if expected is not None:
-                    expected_x, expected_y = expected
-                    for candidate, distance in edges:
-                        shape = candidate.getShape()
-                        dx, dy = shape[-1][0] - shape[0][0], shape[-1][1] - shape[0][1]
-                        length = math.hypot(dx, dy)
-                        alignment = ((dx * expected_x + dy * expected_y) / length
-                                     if length else -1)
-                        if alignment >= args.direction_alignment:
-                            directed.append((candidate, distance, alignment))
-                if expected is not None and not directed:
+                expected_x, expected_y = expected
+                for candidate, distance in edges:
+                    shape = candidate.getShape()
+                    dx, dy = shape[-1][0] - shape[0][0], shape[-1][1] - shape[0][1]
+                    length = math.hypot(dx, dy)
+                    alignment = ((dx * expected_x + dy * expected_y) / length
+                                 if length else -1)
+                    if alignment >= args.direction_alignment:
+                        directed.append((candidate, distance, alignment))
+                if not directed:
                     raise ValueError(f"No directed edge within 100 m of detector {d['id']} "
                                      f"matches its corridor travel direction (registry: {direction!r}) "
                                      f"at cosine threshold "
@@ -132,8 +185,9 @@ def main():
                     road_en = detector_metadata.get(d["id"], {}).get("road_en", "")
                     expected_name = re.split(r"\s+near\s+", road_en, maxsplit=1, flags=re.IGNORECASE)[0]
                     expected_name = re.sub(r"\s+-\s+[^-]+$", "", expected_name).strip()
+                    observed_lanes = lane_evidence.get(d['id'], {}).get('lane_count')
                     named = [(candidate, distance, alignment,
-                              _road_name_score(expected_name, candidate.getName()))
+                              _candidate_name_score(expected_name, candidate, osm_ways, observed_lanes))
                              for candidate, distance, alignment in directed]
                     named = [row for row in named if row[3] > 0]
                     if expected_name and not named:
@@ -142,11 +196,9 @@ def main():
                                          f"matches registry road {expected_name!r}; nearby directed OSM names: "
                                          f"{nearby}. Review the map or set edge_id/position_m by hand.")
                     if named:
-                        edge, distance, _, _ = min(named, key=lambda row: (-row[3], row[1], -row[2]))
+                        edge, distance, _, _ = _choose_named_candidate(named, observed_lanes)
                     else:
                         edge, distance, _ = min(directed, key=lambda row: (row[1], -row[2]))
-                else:
-                    edge, distance = min(edges, key=lambda pair: pair[1])
                 # Projection to the nearest point along edge shape.
                 pos, _ = edge.getLane(0).getClosestLanePosAndDist((x, y))
                 position_delta = 0.0

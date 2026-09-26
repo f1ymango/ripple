@@ -1,63 +1,33 @@
-# Draft OSM network and detector map review
+# Provisional OSM detector map review
 
-This review uses only the repository's `data/detectors.csv`, cached May 15 raw
-Transport Department XML snapshots, the local cached OSM extract, and the SUMO
-network built from that extract. It does not add or infer road geometry, lane
-counts, or traffic observations. The output is a provisional map review, not a
-validated network.
+This review uses the committed detector registry, the cached May 15 Transport
+Department feed, the cached OSM extract, and the SUMO network built from that
+extract. The full generated evidence, including hashes, lane labels, offsets,
+network positions and consecutive chain paths, is in
+[osm-network-audit.md](osm-network-audit.md) and
+[osm-network-audit.json](osm-network-audit.json).
 
-## Reproducibility
+The network geometry and OSM lane tags were not edited. `place_detectors` now
+reads the cached OSM name aliases. It uses an alias only if the TD lane count
+for the same replay window agrees with the candidate. If two equally named
+candidates are within one SUMO lane width of each other, the measured lane
+count breaks the tie. The observed count and SUMO lanes are never altered.
 
-- Cached OSM extract: `sim/work/osm/aberdeen_bbox.osm.xml`
-- OSM extract SHA-256: `c6d3333d803ef19db9707ae1ac9dc958121d7bd19941a555a8db0ec50e62b09f`
-- Draft SUMO network: `sim/work/aberdeen.net.xml`
-- Draft network SHA-256: `e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e`
-- Conversion includes `--lefthand`, passenger-edge filtering, and street-name
-  output. Street names are used only to choose among nearby, correctly directed
-  OSM edges; they are not used to create or rename roads.
-- Detector matching uses the ordered chains in `src/loaders/corridor.py`, the
-  coordinates and road names in `data/detectors.csv`, and the local OSM edge
-  direction/name. The ten detectors Data flagged were rechecked against these
-  sources. The resulting per-lane loops are in ignored local work files.
+| Detector | Previous candidate | Current candidate | Evidence |
+|---|---|---|---|
+| AID01106 | Wong Chuk Hang surface edge `1198101444` | Aberdeen Tunnel entrance `1198101443` | OSM street-name alias says Wong Chuk Hang Road; the measured TD lane count is 2, matching the tunnel edge. This changes the position-aware route to AID01107 from 1,771.83 m to 441.79 m. The projected detector still sits at the edge endpoint, 20.73 m from lane 0, and needs map inspection. |
+| AID01214 | Canal Road Flyover `46108739` (2 lanes) | Canal Road Flyover `136461565` (3 lanes) | The raw feed reports Fast, Middle, and Slow lanes; the latter edge direction better matches the source bearing. Its projection is close to the edge start, so confirm on the map. |
+| AID01218 | Wong Chuk Hang surface edge `46766843` (3 lanes) | Tunnel exit `1198101430` (2 lanes) | AID01218's coordinates and westbound bearing align with the tunnel edge, the TD feed records two lanes, and it continues from AID01217. This exception is pinned to the exact local network and registry hashes in `sim/scenarios/aberdeen-detector-overrides.json`. |
+| AID01219 | Wong Chuk Hang surface edge `1198059110` | Flyover edge `44419249` | The OSM flyover way also tags Wong Chuk Hang Road as its English street name; its two lanes match the raw TD lane labels. |
 
-## Rechecked detector candidates
+Three lane scopes still differ: AID01221 and AID01222 each have 3 lanes in
+TD but 4 in OSM/SUMO; TDSAPR10001 has 3 in TD but 2 in OSM/SUMO. The cached
+window contains no lane readings for AID01105, AID01220, or TDSSPWR20002, so
+their lane scope cannot be confirmed from these files. Those observations do
+not authorize editing OSM lane counts. The full May 15 interval covers 07:55
+to 10:35; 66 cached snapshots contributed readings.
 
-Offsets are the distance from the registry coordinate to the selected OSM edge.
-They are evidence about placement, not proof of the carriageway. Positions are
-projected from the source coordinate by the matcher.
-
-| Detector | Registry road / direction | Draft edge | OSM name | Position (m) | Offset (m) | Finding |
-|---|---|---:|---|---:|---:|---|
-| AID01104 | Wong Chuk Hang Road Flyover / North East | `44419212` | Wong Chuk Hang Road flyover | 136.31 | 6.25 | Direction and road name select the eastbound flyover, opposite edge is `44419249`. |
-| AID01216 | Wong Nai Chung Gap Flyover / South East | `88718922` | Wong Nai Chung Gap Flyover | 412.69 | 4.29 | Road-name match replaces the former Canal Road Flyover candidate. |
-| AID01217 | Aberdeen Tunnel / North West | `1420680571` | Aberdeen Tunnel | 82.78 | 2.87 | Tunnel edge follows the westbound chain direction. |
-| AID01218 | Wong Chuk Hang Road / North West | `46766843` | Wong Chuk Hang Road | 42.66 | 18.77 | Road name agrees; offset remains high and needs map review. |
-| AID01219 | Wong Chuk Hang Road / South West | `1198059110` | Wong Chuk Hang Road | 25.50 | 6.46 | Road-name match replaces the former flyover candidate. |
-| AID01220 | Wong Chuk Hang Road Flyover / North West | `44419249` | Wong Chuk Hang Road flyover | 497.32 | 5.73 | Westbound flyover candidate. |
-| AID01221 | Wong Chuk Hang Road / South West | `1205891500` | Wong Chuk Hang Road | 21.26 | 12.57 | Near edge endpoint; offset needs map review. |
-| AID01222 | Aberdeen Praya Road / South West | `956602968` | Aberdeen Praya Road | 52.56 | 8.23 | Direction and road name agree. |
-| TDSSPWR10002 | Shek Pai Wan Road / South East | `26560129` | Shek Pai Wan Road | 92.08 | 12.25 | Direction and road name agree; offset needs map review. |
-| TDSSPWR10003 | Shek Pai Wan Road / North East | `26560129` | Shek Pai Wan Road | 539.06 | 4.99 | Same directed OSM edge, downstream of the preceding detector. |
-
-## Network issues still evidenced by source conflicts
-
-- The cached raw detector feed and draft OSM network disagree on lane counts at
-  AID01106, AID01214, AID01218, AID01219, AID01221, AID01222, and TDSAPR10001.
-  The raw feed is authoritative for detector lanes; OSM is the source for road
-  geometry. These observations do not justify changing OSM lane counts, so no
-  lane count was edited to force agreement.
-- In the current passenger network, the shortest network path from AID01106's
-  selected edge to AID01107's selected edge is about 1.64 km, while their
-  detector coordinates are about 0.46 km apart. That 3.6x ratio flags a likely
-  tunnel/approach connectivity problem in this extract. The data establishes
-  that the route is implausible, but does not identify which OSM nodes or links
-  should be changed. Do not use this network for tunnel incident validation.
-- Other chain pairs also have path/direct-distance ratios above 2. They require
-  corridor map inspection before the network can be called reviewed.
-- Netconvert emitted OSM conversion warnings. The generated network and E1
-  loops remain uncommitted because the cached extract has not passed topology,
-  lane-count, and detector-offset review.
-
-The automated matcher fixes direction/name selection where repository evidence
-distinguishes the candidates. It deliberately leaves the remaining OSM topology
-conflicts visible rather than synthesizing a repaired network.
+This is not a reviewed or shared network. The SUMO network and raw cache are
+ignored local files; the source hashes make the audit reproducible only with
+those exact local inputs. No new baseline simulation was run, and the earlier
+teleport result does not validate the updated detector map.

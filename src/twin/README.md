@@ -67,6 +67,14 @@ python -m src.twin.place_detectors --config sim/scenarios/scenario.json --detect
 
 The script matches each real coordinate to a nearby edge whose direction agrees with the detector registry, then writes one E1 loop per lane and a mapping CSV. If no edge meets the bearing threshold, it stops and asks for a map-reviewed `edge_id` / `position_m`; it does not silently select the opposite carriageway. Review all proposed positions and lane indices on a map before using them.
 
+When the hand-over contains a replay window, the mapper reads lane labels from the matching local raw-cache periods. An OSM street-name alias can identify a detector road only when that window's measured lane count also agrees with the candidate; lane count can break ties between nearby, equally named edges. It does not change OSM lanes or detector readings. After placing detectors, generate the offline source and route audit:
+
+```powershell
+python -m src.twin.audit_network --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json --out results/twin/osm-network-audit.json
+```
+
+The audit reads only local files. If the configured scenario names `detector_overrides`, the override file must carry SHA-256 hashes for the exact network and committed detector registry. The matcher rejects it if either source changes; re-review the locations after every network rebuild. Lane-count conflicts and missing raw snapshots remain visible in the audit. A passing map audit does not establish traffic calibration or prove that SUMO teleport warnings are fixed.
+
 ## Step 5 — Make candidate routes and fit demand
 
 ```powershell

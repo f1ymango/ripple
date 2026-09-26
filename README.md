@@ -49,7 +49,7 @@ this chain.
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The branch contains the left-hand OSM build, direction and street-name based detector matching, lane-wide E1 loops, timestamp/zero-count evaluation, and pre-incident demand fit. Map matching corrects flagged wrong-road candidates using repository detector chains and road names. The May 15 hand-over uses 80 cached archive snapshots (28 detectors × 32 bins; 600 bins have both count and speed). The cached OSM network still has unresolved detector-vs-OSM lane-count conflicts and an implausible tunnel approach path, so it remains local, provisional, and unapproved; no complete validation is claimed. Data owns the ~15-link fallback in parallel. ([src/twin/](src/twin/README.md), [calibration window](sim/scenarios/calibration.json), [draft detector map review](results/twin/detector-map-review.md)) |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Offline mapping now uses OSM street aliases only when the cached TD lane set agrees, and its audit compares positions along edges. This resolved the AID01106→AID01107 tunnel approach detour (1,771.83 m to 441.79 m) without changing OSM geometry, and the AID01214 and AID01218 mappings now match their measured three- and two-lane scopes. Three other lane-scope differences and three detectors without usable cached lane evidence remain. The network is local and provisional; no complete validation is claimed. Data owns the ~15-link fallback in parallel. ([src/twin/](src/twin/README.md), [calibration window](sim/scenarios/calibration.json), [generated OSM audit](results/twin/osm-network-audit.md)) |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
@@ -133,18 +133,24 @@ merged shows in the rows above; pull requests #1–#16 are merged.
   ([docs/02-data.md](docs/02-data.md) §3, §7).
 - For [C], the draft network and E1 loops are **not reviewed or committed**.
   The local diagnostic stopped at 6,410 of 30,900 seconds after repeated
-  teleports and has zero scoreable bins; it does not isolate network defects
-  from demand/route pressure. Keep the OSM run diagnostic and the Data-owned
-  ~15-link fallback in parallel until a short reviewed replay separates those
-  causes.
+  teleports and has zero scoreable bins; it used a detector placement now
+  identified as an implausible surface-road detour, so it does not isolate
+  remaining network defects from demand/route pressure. The updated position
+  audit resolves that one path, but no simulation was rerun. Keep the OSM run
+  diagnostic and the Data-owned ~15-link fallback in parallel until a short
+  reviewed replay separates those causes.
 - For [C], the mapper now uses detector chains and source road names to
-  reject opposite-direction and wrong-road nearest-edge matches. AID01104
-  maps to the eastbound flyover, and AID01216/AID01218/AID01219 no longer
-  map to nearby roads with conflicting OSM names. The cached OSM network
-  still has detector-vs-OSM lane-count conflicts and a suspicious tunnel
-  approach path; its geometry and lane counts were not edited. See the
-  evidence and hash in [the draft map review](results/twin/detector-map-review.md).
-  The draft remains unapproved and must not support a validated-baseline claim.
+  reject opposite-direction and wrong-road nearest-edge matches. OSM aliases
+  are accepted only when the cached feed's lane count supports the candidate;
+  nearby same-name edges use lane count only as a tie-break. The old AID01106
+  surface-road selection forced a 1.77 km route to AID01107 despite 458 m
+  between their registry coordinates. The source-matched tunnel approach is
+  442 m along the SUMO route. AID01214 now matches three TD lanes, and
+  AID01218's tunnel-exit edge is pinned to the exact network and registry
+  hashes. Three lane counts still differ between OSM and TD; three more
+  detectors have no lane observations in the cached window. See the generated
+  [OSM audit](results/twin/osm-network-audit.md) and [mapping review](results/twin/detector-map-review.md).
+  The draft remains unapproved and has no new traffic validation.
 - For [C]: the processed segment-speed feed is fully retrievable. It has no
   volume, so it cannot support GEH, but it is the better series for the speed
   side of validation ([docs/02-data.md](docs/02-data.md) §3).
@@ -167,6 +173,19 @@ merged shows in the rows above; pull requests #1–#16 are merged.
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Sun 27 Sep**
+- Component C: audited 28 detector placements against 66 cached May 15 raw
+  snapshots and the exact local OSM/SUMO hashes. Used OSM's English street-name
+  aliases only when the same-window TD lane count corroborates the edge. The
+  AID01106-to-AID01107 position-aware route fell from 1,771.83 m to 441.79 m;
+  AID01214 now maps to a three-lane flyover edge, and AID01218 is pinned to a
+  two-lane tunnel-exit edge for the current network/registry hashes. Three lane
+  mismatches, three detectors without usable lane records, and an endpoint
+  offset at AID01106 remain visible in the audit. No OSM tags or geometry were
+  edited, no simulation was rerun, and the local network remains provisional
+  ([audit](results/twin/osm-network-audit.md),
+  [placement review](results/twin/detector-map-review.md)).
 
 **Sat 26 Sep**
 - Component C: rebuilt the draft SUMO network from the cached OSM extract with left-hand traffic and street names; detector placement now uses repository detector chains, source road names, and edge direction. Rechecked the ten flagged placements and regenerated local per-lane loops. This fixes several wrong-road candidates, including AID01104. Raw-feed/OSM lane-count mismatches and the 3.6x AID01106-to-AID01107 path remain unresolved; no road geometry or lane counts were fabricated or edited, and the network is still provisional ([map review](results/twin/detector-map-review.md)).
