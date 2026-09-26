@@ -33,16 +33,16 @@ academics, industry, NGOs, investors — not traffic engineers.
 Use these verbatim. Do not paraphrase numbers upward.
 
 **Scale of the problem**
-- Hong Kong, 2023: **17,189 road traffic accidents**, 22,269 casualties, 28,808 [Checked: https://www.censtatd.gov.hk, 2026-09-25]
+- Hong Kong, 2023: **17,189 road traffic accidents**, 22,269 casualties, 28,808 [Checked: [https://www.censtatd.gov.hk/en/data/stat_report/product/B1010003/att/B10100032023AN23B0100.pdf](https://www.censtatd.gov.hk/en/data/stat_report/product/B1010003/att/B10100032023AN23B0100.pdf), 2026-09-25]
   vehicles involved. *(C&SD, "Road Traffic Accident Statistics in Hong Kong,
   2014 to 2023", Feb 2025 HKMDS)*
-- Police recorded **18,355 injury accidents in 2024** involving 23,659 people. [Checked: https://www.police.gov.hk, 2026-09-25]
-- TD's **Emergency Traffic Co-ordination Centre handled over 7,700 incidents in [Checked: https://www.td.gov.hk, 2026-09-25]
+- Police recorded **18,355 injury accidents in 2024** involving 23,659 people. [Checked: [https://www.police.gov.hk/ppp_en/09_statistics/ts.html](https://www.police.gov.hk/ppp_en/09_statistics/ts.html), 2026-09-25]
+- TD's **Emergency Traffic Co-ordination Centre handled over 7,700 incidents in [Checked: [https://www.td.gov.hk/en/publication_and_press_releases/press_releases/transport_department/index_id_3780.html](https://www.td.gov.hk/en/publication_and_press_releases/press_releases/transport_department/index_id_3780.html), 2026-09-25]
   2024**, a 17% rise on ~6,600 in 2023; about half road-related, 32% transport
   service disruptions. *(TD, reported Jul 2025)*
 
 **Why incidents specifically**
-- FHWA (US): incidents cause **~25% of non-recurring congestion**; with weather, [Checked: https://ops.fhwa.dot.gov/congestion/index.htm, 2026-09-25]
+- FHWA (US): incidents cause **~25% of non-recurring congestion**; with weather, [Checked: [https://www.td.gov.hk/en/transport_in_hong_kong/transport_strategy_blueprint/index.html](https://www.td.gov.hk/en/transport_in_hong_kong/transport_strategy_blueprint/index.html), 2026-09-25]
   work zones and special events, non-recurring events cause **~60% of
   congestion delay**; **~20% of all incidents are secondary incidents.**
 
