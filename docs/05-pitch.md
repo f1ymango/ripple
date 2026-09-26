@@ -116,6 +116,12 @@ Use these verbatim. Do not paraphrase numbers upward.
 > rejects plans that break our constraints before they're even simulated, and a
 > human approves before anything is published. We also measure the reader: [X]%
 > accuracy on 100 hand-labelled real messages.
+>
+> On repeatability: the simulator is seeded, so its numbers repeat exactly. The
+> model runs locally, and local inference is not bit-identical across different
+> hardware — we checked on two machines, and every scored field came back the
+> same while the model's own free-text note varied. The hand-written labels are
+> the ground truth, so the accuracy figure does not move with the machine.
 
 **"This only works where there are detectors."**
 > Correct, and we say so on the ethics slide. We report a confidence level per

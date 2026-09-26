@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Fri 25 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
+**Last updated: Sat 26 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
 the incident) · Stand-ups: Sunday and Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
@@ -71,12 +71,12 @@ The JSON contracts between modules are in
 
 ### In review
 
-Work that exists but is not on `main` yet, as of Fri 25 Sep. Everything
-merged shows in the rows above; pull requests #1–#16 are merged.
+Work that exists but is not on `main` yet, as of Sat 26 Sep. Everything
+merged shows in the rows above; pull requests #1–#19 are merged.
 
 | What | Who | Branch |
 |---|---|---|
-| Loaders: keep STN CLOSED status flips; read malformed archive snapshots — **pushed, but no pull request is open** | Data | `data/loaders` |
+| Twin: demand fitting, the FCD diagnostic GIF, `calibration.json`, and fixes across the twin scripts — **pushed, but no pull request is open**. It also carries a `data/candidates.md` that Data's 26 Sep table supersedes; drop that file from the pull request | Simulation | `sim/e1-evaluation-correctness` |
 
 ### Open decisions
 
@@ -123,9 +123,6 @@ merged shows in the rows above; pull requests #1–#16 are merged.
   ("the junction of X and Y") becomes road X; `near_landmark` filled where the
   message has no "near" (7 of 100). Found on the gold set, so fixing them in
   the prompt needs a fresh set to measure the result.
-- `requirements.txt` pins `pandas==2.2.3`, which has no build for Python 3.14,
-  so `pip install -r requirements.txt` fails on a 3.14 venv. `pip install
-  streamlit==1.40.2` on its own works there (it brings pandas 2.3.3).
 - The historical archive serves only about half the raw detector snapshots it
   lists (39% were a persistent 404 on 21 Sep), so a 5-minute bin usually holds
   1–3 observed minutes. Summing raw volume into a bin would understate flow by
@@ -193,6 +190,16 @@ Newest first. One line per change that matters, with a link to the proof.
   direction problems are under Known issues). 266 tests
   ([src/loaders/twin_export.py](src/loaders/twin_export.py),
   [tests/test_twin_bridge.py](tests/test_twin_bridge.py)).
+- Lead: repo hygiene and CI. `pandas` moves to 2.3.3, which has a Python 3.14
+  build, so `pip install -r requirements.txt` works on 3.14 and that known
+  issue is gone. A `.gitattributes` decides line endings for everyone instead
+  of leaving them to each machine's Git installer. GitHub Actions runs the
+  suite on every push and pull request, so the Lead is no longer the only
+  thing that runs the tests
+  ([.github/workflows/tests.yml](.github/workflows/tests.yml)). A new
+  [tests/test_repo_hygiene.py](tests/test_repo_hygiene.py) fails if any text
+  file in `src/` is opened without an explicit encoding, which is the cp1252
+  trap the rules below warn about. 268 tests.
 
 **Fri 25 Sep (afternoon)**
 - Twin validation fix: `evaluate` read `meanSpeed`, which SUMO's loop output does not have, so every
@@ -385,7 +392,7 @@ cd ripple
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-python -m pytest                   # 153 tests, no LLM needed
+python -m pytest                   # 268 tests, no LLM needed
 ```
 
 ### Run the data layer
@@ -419,7 +426,7 @@ contract, retried once if it fails, then flagged, never used.
 Install [Ollama](https://ollama.com), then:
 
 ```bash
-ollama pull qwen3:8b               # 5.2 GB, once
+ollama pull qwen3:8b               # about 4.9 GB, once
 python -m src.reader.run           # parses data/labelled_incidents/messages.jsonl
 python -m src.reader.run --model qwen3:4b   # same messages, another model
 ```
