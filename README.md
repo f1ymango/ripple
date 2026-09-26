@@ -49,7 +49,7 @@ this chain.
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The branch contains the left-hand build, lane-wide E1 loops, timestamp/zero-count evaluation, and pre-incident demand fit. The May 15 hand-over is regenerated from 80 cached archive snapshots (28 detectors × 32 bins; 600 bins have both count and speed). AID01104 is manually matched locally to the eastbound flyover edge. Remaining detector map review and a reviewed, shared network are still required; no complete validation is claimed. The ~15-link fallback is being built by Data in parallel. ([src/twin/](src/twin/README.md), [calibration window](sim/scenarios/calibration.json)) |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The branch contains the left-hand build, lane-wide E1 loops, timestamp/zero-count evaluation, and pre-incident demand fit. The May 15 hand-over is regenerated from 80 cached archive snapshots (28 detectors × 32 bins; 600 bins have both count and speed). Ten flagged detectors now have local manual edge/position candidates and per-lane loops regenerated; AID01104 is confirmed, but several other candidates have OSM-name or offset conflicts and remain provisional. The network is not shared or approved; no complete validation is claimed. Data owns the ~15-link fallback in parallel. ([src/twin/](src/twin/README.md), [calibration window](sim/scenarios/calibration.json), [draft detector map review](results/twin/detector-map-review.md)) |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
@@ -137,11 +137,12 @@ merged shows in the rows above; pull requests #1–#16 are merged.
   from demand/route pressure. Keep the OSM run diagnostic and the Data-owned
   ~15-link fallback in parallel until a short reviewed replay separates those
   causes.
-- For [C], map review is still open for AID01216–AID01222 and TDSSPWR10002/
-  TDSSPWR10003. AID01104 is locally pinned to edge `44419212`, position
-  `136.31 m`, after checking the eastbound carriageway in the generated map.
-  This override is local to the ignored detector hand-over and is not a shared
-  reviewed network mapping yet.
+- For [C], ten flagged detector positions were manually set in the local ignored
+  detector hand-over and their lane loops regenerated. AID01104 is confirmed on
+  the eastbound flyover; several other candidates have OSM way-name or offset
+  conflicts that still need a corridor-map check. The full edge/position table
+  and local-network hash are in [the draft map review](results/twin/detector-map-review.md).
+  Do not treat these provisional positions as a validated network mapping.
 - For [C]: the processed segment-speed feed is fully retrievable. It has no
   volume, so it cannot support GEH, but it is the better series for the speed
   side of validation ([docs/02-data.md](docs/02-data.md) §3).
@@ -171,10 +172,12 @@ Newest first. One line per change that matters, with a link to the proof.
   80 snapshots parsed, 896 detector slots, 600 with both count and speed. The
   archive index endpoint was unreachable, so this uses only cached snapshots
   and does not claim complete archive coverage. Replaced the obsolete Sep 3
-  calibration window with the May incident grid. Reviewed the AID01104 flyover
-  carriageway and recorded a local edge/position override. The SUMO topology
-  and the other flagged detector mappings remain unreviewed; no new full
+  calibration window with the May incident grid. Confirmed AID01104 on the
+  eastbound flyover; made provisional local placements for the other nine
+  flagged detectors and regenerated per-lane loops. OSM-name/offset conflicts
+  are documented, and the draft network remains unreviewed; no new full
   simulation validation was run ([sim/scenarios/calibration.json](sim/scenarios/calibration.json),
+  [results/twin/detector-map-review.md](results/twin/detector-map-review.md),
   [src/twin/](src/twin/)).
 - Data: demo incident shortlist. The candidate screen was rebuilt: every
   corridor accident is compared with two ordinary days (same weekday and time,

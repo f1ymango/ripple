@@ -33,8 +33,18 @@ def main():
         for d in data["detectors"]:
             if d.get("edge_id"):
                 edge = net.getEdge(d["edge_id"])
+                if d.get("position_m") is None:
+                    raise ValueError(f"Detector {d['id']} has edge_id but no position_m; set both after map review.")
                 pos = float(d["position_m"])
-                distance = 0.0
+                if not 0 <= pos <= edge.getLength():
+                    raise ValueError(f"Detector {d['id']} position {pos} m is outside edge {edge.getID()} "
+                                     f"(length {edge.getLength():.2f} m).")
+                if d.get("lon") is not None and d.get("lat") is not None:
+                    x, y = net.convertLonLat2XY(float(d["lon"]), float(d["lat"]))
+                    projected_pos, distance = edge.getLane(0).getClosestLanePosAndDist((x, y))
+                    position_delta = abs(projected_pos - pos)
+                else:
+                    distance, position_delta = float("nan"), float("nan")
             else:
                 x, y = net.convertLonLat2XY(float(d["lon"]), float(d["lat"]))
                 edges = net.getNeighboringEdges(x, y, r=100)
@@ -66,17 +76,20 @@ def main():
                     edge, distance = min(edges, key=lambda pair: pair[1])
                 # Projection to the nearest point along edge shape.
                 pos, _ = edge.getLane(0).getClosestLanePosAndDist((x, y))
+                position_delta = 0.0
             pos = max(0.1, min(float(pos), edge.getLength() - 0.1))
             did = str(d["id"]).replace('"', "")
             for lane in edge.getLanes():
                 loop_id = f"{did}_{lane.getIndex()}"
                 output = results_dir / f"e1_{did}_{lane.getIndex()}.xml"
                 out.write(f'  <inductionLoop id="{loop_id}" lane="{lane.getID()}" pos="{pos:.2f}" freq="{int(data.get("interval_seconds",300))}" file="{Path(os.path.relpath(output, xml_path.parent)).as_posix()}"/>\n')
-                rows.append([did, loop_id, edge.getID(), lane.getID(), f"{pos:.2f}", f"{distance:.2f}"])
+                rows.append([did, loop_id, edge.getID(), lane.getID(), f"{pos:.2f}",
+                             f"{distance:.2f}", f"{position_delta:.2f}"])
         out.write('</additional>\n')
     temporary_xml.replace(xml_path)
     with open(xml_path.with_suffix(".csv"), "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f); w.writerow(["detector_id", "loop_id", "edge_id", "lane_id", "position_m", "distance_from_coordinate_m"]); w.writerows(rows)
+        w = csv.writer(f); w.writerow(["detector_id", "loop_id", "edge_id", "lane_id", "position_m",
+                                       "distance_from_coordinate_m", "position_delta_m"]); w.writerows(rows)
     print(f"Proposal written: {xml_path}\nMapping table: {xml_path.with_suffix('.csv')}\nReview every location and lane direction before trusting it.")
 
 
