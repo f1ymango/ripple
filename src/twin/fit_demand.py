@@ -13,6 +13,8 @@ def main():
     ap.add_argument("--iterations", type=int, default=300)
     args = ap.parse_args()
     cfg, data = load_json(resolve(args.config)), load_json(resolve(args.detectors))
+    if args.iterations < 1:
+        raise ValueError("--iterations must be positive")
     candidate = resolve(cfg.get("candidate_routes", "sim/work/routes/candidates.rou.xml"))
     root = ET.parse(candidate).getroot()
     edges = {e.getID() for e in __import__("sumolib").net.readNet(str(resolve(cfg["network"]))).getEdges()}
@@ -26,7 +28,24 @@ def main():
     target = defaultdict(float)
     calibration_coverage = {}
     calibration_seconds = float(cfg.get("calibration_seconds", 3600))
+    if calibration_seconds <= 0:
+        raise ValueError("calibration_seconds must be positive")
     interval_seconds = float(data.get("interval_seconds", 300))
+    if interval_seconds <= 0:
+        raise ValueError("Detector interval_seconds must be positive")
+    slot_count = calibration_seconds / interval_seconds
+    if not slot_count.is_integer():
+        raise ValueError("calibration_seconds must be an exact multiple of detector interval_seconds")
+    incident = cfg.get("incident", {})
+    if incident.get("start") is not None:
+        observed_start = float(cfg.get("observation_start_sim_seconds", cfg.get("warmup_seconds", 0)))
+        available_preincident = float(incident["start"]) - observed_start
+        if available_preincident < 0 or calibration_seconds > available_preincident:
+            raise ValueError(
+                "Demand calibration window overlaps the configured incident: "
+                f"{calibration_seconds:g}s requested, {max(0, available_preincident):g}s available "
+                "before incident.start. Set calibration_seconds to a pre-incident duration."
+            )
     calibration_slots = max(1, int(round(calibration_seconds / interval_seconds)))
     for d in ordered:
         # Fit to the initial pre-incident calibration window only. The detector

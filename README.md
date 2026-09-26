@@ -151,6 +151,13 @@ merged shows in the rows above; pull requests #1–#16 are merged.
   detectors have no lane observations in the cached window. See the generated
   [OSM audit](results/twin/osm-network-audit.md) and [mapping review](results/twin/detector-map-review.md).
   The draft remains unapproved and has no new traffic validation.
+- For [C], the demand fitter now refuses a calibration window that extends
+  into the configured incident, and the SUMO runner checks its edge, selected
+  lane indices, and incident horizon before starting. It can model ordered
+  closure phases, including escalation to all lanes. This prevents an invalid
+  scenario from silently becoming a lane-0 closure. It does not choose a lane
+  for the incident's initial "part of the lanes" period; that remains an
+  explicit scenario decision.
 - For [C]: the processed segment-speed feed is fully retrievable. It has no
   volume, so it cannot support GEH, but it is the better series for the speed
   side of validation ([docs/02-data.md](docs/02-data.md) §3).
@@ -175,6 +182,13 @@ merged shows in the rows above; pull requests #1–#16 are merged.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Sun 27 Sep**
+- Component C: added fail-fast checks before demand fitting and SUMO launch.
+  The fitter verifies its duration fits before incident onset; the runner
+  verifies the closure edge and lane indices against the local network and
+  supports ordered lane-closure phases and requires the full closure to fit
+  the configured run horizon. An unspecified lane selection is never
+  converted to lane 0. No simulation was launched in this change; the initial
+  partial-closure lane still needs an explicit, source-backed scenario choice.
 - Component C: audited 28 detector placements against 66 cached May 15 raw
   snapshots and the exact local OSM/SUMO hashes. Used OSM's English street-name
   aliases only when the same-window TD lane count corroborates the edge. The
