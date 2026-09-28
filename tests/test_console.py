@@ -46,6 +46,7 @@ def data_dir(tmp_path, monkeypatch) -> Path:
     monkeypatch.setattr(app, "DATA_DIR", tmp_path)
     monkeypatch.setattr(app, "DETECTORS_CSV", tmp_path / "detectors.csv")
     monkeypatch.setattr(app, "SPEED_GLOB", str(tmp_path / "detector_5min_*.csv"))
+    monkeypatch.setattr(app, "INCIDENT_GLOB", str(tmp_path / "incidents_*.csv"))
     return tmp_path
 
 
@@ -170,3 +171,163 @@ def test_a_usable_snapshot_still_colours_the_map(data_dir):
     assert not at.exception
     assert at.select_slider[0].label == "5-minute bin"
     assert not at.info
+
+
+# --- what a silent loop means --------------------------------------------
+#
+# The fixture these use is a real archived snapshot from the demo incident
+# (IN-26-03365, Fri 15 May, 09:09:30), trimmed to the corridor detectors the
+# same way the 21 Sep fixture was. Nothing in it is edited: AID01104's loops
+# report that period and count nobody -- the closure -- while AID01103 is
+# crawling at 8 km/h in the queue behind it, and three detectors are absent
+# because the archive served nothing for them.
+
+MAY_FIXTURE = FIXTURES / "detector_snapshot_20260515-0916.xml"
+
+
+def _may_bins(dir_: Path, name: str = "detector_5min_20260515-0905_0910_b5.csv") -> Path:
+    rows = detectors.bin_window(
+        detectors.parse_snapshot(MAY_FIXTURE.read_bytes()), 5)
+    return common.write_csv(rows, dir_ / name)
+
+
+def test_a_loop_reporting_no_vehicle_is_not_a_missing_reading(tmp_path):
+    frame = app.load_bins(str(_may_bins(tmp_path)))
+    states = frame.set_index("detector_id")["state"]
+    assert states["AID01104"] == "no_vehicles"   # reported, counted nobody
+    assert states["AID01103"] == "speed"         # 8 km/h in the queue
+    assert app.state_colour("no_vehicles", None) != app.GREY
+
+
+def test_no_vehicles_is_off_the_speed_ramp_entirely(tmp_path):
+    # Otherwise an empty road reads as a speed we never measured.
+    empty = app.state_colour("no_vehicles", None)
+    ramp = [app.speed_to_colour(s) for s in range(0, 121, 5)]
+    assert empty not in ramp
+
+
+def test_a_detector_the_archive_never_served_is_unknown(tmp_path):
+    frame = app.load_bins(str(_may_bins(tmp_path)))
+    served = set(frame["detector_id"])
+    corridor = set(pd.read_csv(REAL_DETECTORS_CSV)["detector_id"])
+    assert corridor - served, "fixture should be missing some detectors"
+    assert app.state_colour("unknown", None) == app.GREY
+
+
+def test_the_label_says_which_kind_of_silence_it_is():
+    assert app.state_label("speed", 42.0) == "42 km/h"
+    assert app.state_label("no_vehicles", None) == "no vehicle crossed"
+    assert app.state_label("unknown", None) == "no reading"
+
+
+def test_vehicles_without_a_speed_are_unknown_not_an_empty_road():
+    # A loop can count vehicles and still time none of them. That is a gap in
+    # what we know, not an empty road.
+    frame = pd.DataFrame({"speed_kmh": [""], "volume_observed": [7],
+                          "periods_observed": [3]})
+    assert list(app.bin_state(frame)) == ["unknown"]
+
+
+def test_bin_state_survives_a_file_without_the_volume_columns():
+    frame = pd.DataFrame({"speed_kmh": [31.0, ""]})
+    assert list(app.bin_state(frame)) == ["speed", "unknown"]
+
+
+def test_a_bin_showing_only_an_empty_road_is_still_worth_drawing():
+    frame = pd.DataFrame({
+        "bin_start": ["2026-05-15T09:05:00+08:00", "2026-05-15T09:10:00+08:00"],
+        "speed_kmh": ["", ""], "volume_observed": [0, 4], "periods_observed": [2, 0],
+    })
+    frame["state"] = app.bin_state(frame)
+    # The first bin is a closed road; the second is an archive gap.
+    assert app.showable_bins(frame) == ["2026-05-15T09:05:00+08:00"]
+
+
+def test_evidence_says_how_thin_the_reading_is():
+    assert app.evidence_label(1, 40) == "1 vehicle · 40% of the minutes"
+    assert app.evidence_label(19, 20) == "19 vehicles · 20% of the minutes"
+    assert app.evidence_label(None, None) == ""
+
+
+# --- playback -------------------------------------------------------------
+
+def test_playback_stops_at_the_end_rather_than_looping():
+    assert app.next_index(0, 3) == 1
+    assert app.next_index(2, 3) is None
+    assert app.next_index(0, 1) is None
+
+
+def test_the_transport_controls_appear_with_a_window(data_dir):
+    _snapshot(data_dir, "detector_5min_20260921-0800_0900_b5.csv")
+    at = _run()
+    assert not at.exception
+    assert {b.label for b in at.button} == {"◀", "▶", "▶|", "|◀"}
+
+
+def test_pressing_play_on_a_one_bin_window_does_not_hang(data_dir):
+    # There is nowhere to advance to, so playback has to switch itself off
+    # instead of sleeping and rerunning forever.
+    _snapshot(data_dir, "detector_5min_20260921-0800_0900_b5.csv")
+    at = _run()
+    play = next(b for b in at.button if b.label == "▶")
+    at = play.click().run()
+    assert not at.exception
+    assert at.session_state["playing"] is False
+    # And the control says so: it must not still offer to pause a stopped run.
+    assert any(b.label == "▶" for b in at.button)
+
+
+# --- the timeline strip ---------------------------------------------------
+
+def test_the_timeline_tracks_the_slowest_detector_not_the_mean(tmp_path):
+    # The corridor mean barely moves when one link closes: averaged over 28
+    # detectors in both directions, the 15 May queue is a 2 km/h dip. The
+    # slowest detector is the series that shows it.
+    frame = app.load_bins(str(_may_bins(tmp_path)))
+    timeline = app.corridor_timeline(frame)
+    assert len(timeline) == 1
+    row = timeline.iloc[0]
+    assert row["slowest_kmh"] == 8.0 and row["slowest_id"] == "AID01103"
+    assert row["no_vehicles"] == 1
+    assert row["slowest_kmh"] < frame["speed_kmh"].mean()
+
+
+def test_a_bin_with_no_speed_at_all_leaves_a_hole_not_a_zero():
+    frame = pd.DataFrame({
+        "bin_start": ["2026-05-15T09:05:00+08:00"],
+        "speed_kmh": [float("nan")], "state": ["no_vehicles"],
+    })
+    assert pd.isna(app.corridor_timeline(frame).iloc[0]["slowest_kmh"])
+
+
+def test_no_incident_table_means_no_times_on_the_chart(data_dir):
+    assert app.load_incident_markers("2026-05-15T07:55:00+08:00",
+                                     "2026-05-15T10:35:00+08:00").empty
+
+
+def test_incident_markers_are_tds_own_times(data_dir):
+    # The real row the loader wrote for the demo incident:
+    #   python -m src.loaders.fetch incidents --start 2026-05-15 --end 2026-05-15
+    table = pd.DataFrame([{
+        "incident_number": "IN-26-03365", "corridor_road": "aberdeen tunnel",
+        "new_at": "2026-05-15T09:01:00+08:00",
+        "closed_at": "2026-05-15T10:02:00+08:00",
+    }, {
+        "incident_number": "IN-26-03370", "corridor_road": "aberdeen tunnel",
+        "new_at": "2026-05-15T12:40:00+08:00", "closed_at": "",
+    }])
+    table.to_csv(data_dir / "incidents_2026-05-15_2026-05-15.csv", index=False)
+
+    markers = app.load_incident_markers("2026-05-15T07:55:00+08:00",
+                                        "2026-05-15T10:35:00+08:00")
+    assert list(markers["label"]) == ["IN-26-03365 reported", "IN-26-03365 cleared"]
+    # The afternoon incident is outside the replay window and stays off it.
+    assert "IN-26-03370" not in " ".join(markers["label"])
+
+
+def test_the_chart_is_skipped_rather_than_guessed_when_times_will_not_parse():
+    timeline = pd.DataFrame([{"bin_start": "not-a-timestamp", "slowest_kmh": 20.0,
+                              "slowest_id": "AID01101", "reporting": 1,
+                              "no_vehicles": 0}])
+    assert app.timeline_chart(timeline, "not-a-timestamp",
+                              pd.DataFrame(columns=["bin_start", "label"])) is None

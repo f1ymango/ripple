@@ -53,7 +53,7 @@ this chain.
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
-| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, with headline stats and a bin slider ([src/console/app.py](src/console/app.py), [screenshot](docs/img/week1-corridor-map.png)). Plan comparison, Approve and audit log still to build |
+| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, headline stats, and playback of an archived window bin by bin, with TD's own incident times on the timeline ([src/console/app.py](src/console/app.py), [IN-26-03365 at 09:15](docs/img/week2-incident-playback.png)). The map now tells a loop reporting no vehicle apart from a reading the archive never served. Plan comparison, Approve and audit log still to build |
 | H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3; interview plan with three target profiles and the first interview scheduled for Sat 26 Sep ([evidence/interviews/plan.md](evidence/interviews/plan.md)); deck workspace in [deck/](deck/) |
 
 The JSON contracts between modules are in
@@ -65,7 +65,7 @@ The JSON contracts between modules are in
 |---|---|---|
 | Data + Simulation | Baseline replay of IN-26-03365, fitted to detector counts and speeds | Validation chart and stated errors; decide simplified-network fallback on 4 Oct |
 | Lead | Verify the Incident Reader (B) on the selected STN updates and coordinate contract handoffs | Check the 09:01 and 09:36 Reader outputs against `incident.json`; the 100-label accuracy result is already recorded |
-| Visuals | First timeline playback of the selected incident | Playback linked from the console or evidence pack |
+| Visuals | First timeline playback of the selected incident | ✅ 28 Sep — IN-26-03365 plays back in the console from the observed detector bins ([screenshot](docs/img/week2-incident-playback.png)); built on observed data, so it does not wait on the 4 Oct go/no-go |
 | Impact | Interviews and interim report, with one paragraph from each owner | Submit report Sat 3 Oct |
 
 ### Week 1 outcomes (21–27 Sep)
@@ -91,11 +91,12 @@ Keep the fallback active for the Sun 4 Oct go/no-go. See the [diagnostic]
 ### In review
 
 Work that exists but is not on `main` yet, as of Mon 28 Sep. Pull
-requests #1–#20 are merged; PRs #21–#24 remain open.
+requests #1–#28 are all merged; nothing else is open.
 
 | What | Who | Branch |
 |---|---|---|
 | Component C: network locality audit, May 15 pre-incident diagnostic, and calibration/runner fixes — **pushed; PR not yet open**. `data/candidates.md` remains unchanged from main. The local OSM network and E1 loops remain provisional and uncommitted | Simulation | `sim/e1-evaluation-correctness` |
+| Component G: playback of an archived window, and a map that separates an empty road from a missing reading | Visuals | `visuals/incident-playback` |
 
 ### Open decisions
 
@@ -192,6 +193,16 @@ requests #1–#20 are merged; PRs #21–#24 remain open.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Mon 28 Sep**
+- Component G: the console plays an archived window back bin by bin — transport
+  controls, a scrubbable slider, and a timeline strip of the slowest corridor
+  detector with TD's own reported/cleared times on it. The map now has three
+  states rather than two: a loop that reported and counted nobody is the
+  closure, and is no longer drawn in the same grey as a reading the archive
+  never served. On IN-26-03365 (Fri 15 May) AID01101–04 fall from ~65 km/h to
+  3–8 km/h from 08:55 and AID01104's loops report an empty road at 09:15–09:25,
+  while the corridor *mean* moves by about 2 km/h — which is why the strip
+  tracks the slowest detector and not the mean.
+  ([screenshot](docs/img/week2-incident-playback.png), [src/console/app.py](src/console/app.py))
 - Component C: extended the offline source-backed network audit to include all six directed links on the western alternative. The 24 main and alternative links are reachable in the local OSM network, with modeled path distance at most 1.12 times registry-coordinate distance. Centralized the two western travel orders so detector direction matching, route generation, and audit use the same chains. No OSM tags, geometry, lane counts, or traffic observations changed; the local network and E1 files remain unreviewed. Ten focused Component C tests passed. ([audit](results/twin/osm-network-audit.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md))
 
 **Sun 27 Sep**
