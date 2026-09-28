@@ -1,7 +1,25 @@
 # Demo incident shortlist
 
-Data's proposal for the team pick (🔒 Sun 27 Sep). Written 26 Sep 2026 from the
-evidence table in [`candidates.md`](candidates.md) (every corridor traffic
+## Decision — 28 Sep 2026
+
+The Lead selected `IN-26-03365` as the primary demo incident and
+`IN-26-06391` as backup, using Data's five-candidate review below. The backup
+is reserved for a source-evidence or incident-location problem specific to the
+primary; a calibration failure follows the simplified-network go/no-go on 4 Oct
+in `docs/04-plan.md`.
+
+Keep three times separate for the primary: detectors show disruption by 08:55,
+TD's NEW message is timestamped 09:01, and TD reported all lanes closed at 09:36 (cleared
+10:02). The first message's lane is `unspecified`; the Evaluator chooses and
+discloses its physical lane assumption. Zero detector flow does not itself
+prove when every lane physically closed. An operator-facing plan cannot use a
+message before its publication time.
+
+Simulation must review the affected edge, direction, detector placement, and
+pre-incident fit before making a baseline-validation claim. This decision
+selects the real event; it does not declare the current twin validated.
+
+Data prepared this screening on 26 Sep 2026 from the evidence table in [`candidates.md`](candidates.md) (every corridor traffic
 accident 22 Mar – 21 Sep 2026, all three Special Traffic News files) and a
 bin-by-bin read of the detectors around each one. Hand-written: edit freely,
 but regenerate `candidates.md` rather than editing it.

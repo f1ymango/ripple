@@ -1,40 +1,43 @@
 # Interim Report Skeleton — Project Ripple
 
-> **Internal Submission Target:** Saturday 3 October 2026  
-> **Official Deadline:** Sunday 4 October 2026
+> **Internal submission target:** Saturday 3 October 2026
+>
+> **Official deadline:** Sunday 4 October 2026
 
----
+Impact coordinates the report and collects a short, evidence-backed contribution from each component owner. This is an outline, not a claim that the work below is already complete. Any unmeasured result must be labelled as such.
 
-## 1. Executive Summary & Social Problem Statement
+## 1. Executive Summary & Social Problem
+
 - **Owner:** Impact
-- **Primary Source Alignment:** `docs/00-brief.md` (Section 2), `docs/05-pitch.md` (Sections 1 & 3)
-- **Content:**
-  - Clear statement of Hong Kong's non-recurring congestion problem, focusing on critical corridors like Aberdeen.
-  - Limits of individual user-equilibrium routing apps vs. system-optimum corridor management.
-  - Social and economic impacts (delays to emergency services, public transit, freight).
+- **Starting sources:** `docs/00-brief.md` §2 and `docs/05-pitch.md` §§1, 3.
+- Explain the Hong Kong incident-response problem and why the Aberdeen corridor is the initial scope.
+- Explain the limits of individual routing advice and the social and economic effects of disruption, using sourced claims.
 
-## 2. Preliminary Idea & System Architecture
-- **Owner:** Lead
-- **Primary Source Alignment:** `docs/03-architecture.md` (Section 1), `docs/00-brief.md` (Section 4)
-- **Content:**
-  - Overview of Ripple’s architecture, ingestion pipelines (TD open feeds, detector loops), and incident processing.
-  - Human-in-the-loop workflow and real-time candidate plan generation.
+## 2. Data, Incident Reader & System Architecture
 
-## 3. Feasibility, Preliminary Results & Cost-Benefit Framework
+- **Owner:** Lead; Data contributes the data-ingestion paragraph.
+- **Starting sources:** `docs/02-data.md`, `docs/03-architecture.md` §1, and `docs/00-brief.md` §4.
+- Describe the data feeds and their limits (A, Data), incident parsing (B, Lead), candidate plans and validation (D, Lead), briefing (F, Lead), and how a human operator approves advice.
+- Show the pipeline and contracts without implying that the LLM computes simulation metrics.
+
+## 3. Simulation, Evaluation & Preliminary Results
+
+- **Owner:** Simulation; Data contributes evaluator methodology and results when available.
+- **Starting sources:** `docs/03-architecture.md` §4 and `docs/00-brief.md` §6; use actual run artifacts in `results/` for all figures.
+- Describe the SUMO corridor twin (C), calibration against observed detector data, and baseline-versus-plan comparison (E).
+- State validation errors and scenario outcomes only from reproducible runs in `results/`; mark pending figures *not measured yet*.
+
+## 4. Operator Console & Demo Visuals
+
+- **Owner:** Visuals
+- **Starting sources:** `docs/00-brief.md` §4 (G), `src/console/`, and the current map screenshot in `docs/img/`.
+- Show the current console (G) and identify which map, playback, plan-comparison, and approval features are implemented versus planned.
+- Include a screenshot or video link only when the corresponding artifact exists.
+
+## 5. Feasibility, Sustainability, Ethics & Impact
+
 - **Owner:** Impact
-- **Primary Source Alignment:** `docs/05-pitch.md` (Section 6)
-- **Content:**
-  - Costing structure and Benefit-Cost Ratio (BCR) framework using HK Value of Time benchmarks.
-  - Note: Unmeasured simulation numbers flagged explicitly as *[not measured yet]* per evaluation guidance.
-
-## 4. Sustainability, Ethics & User Validation
-- **Owner:** Impact (with Simulation reviewing validation wording)
-- **Primary Source Alignment:** `docs/05-pitch.md` (Section 5), `evidence/interviews/2026-09-26-minibus-driver.md`
-- **Content:**
-  - Distributional fairness, privacy compliance, and system sustainability.
-  - Empirical qualitative evidence from primary research interviews (e.g., minibus driver insights on official alert delays and peer verification).
-- **Owner:** Teammate 4 (Ethics & Evidence Lead)
-- **Content:**
-  - Summary of real user interview insights (`evidence/interviews/`).
-  - Distributional fairness metrics (preventing traffic spillover into residential streets).
-  - Privacy compliance (zero personal data tracking) and per-corridor confidence score rules.
+- **Starting sources:** `docs/05-pitch.md` §§5–6 and `evidence/interviews/2026-09-26-minibus-driver.md` (one qualitative interview).
+- Present the single-corridor rollout costing and benefit-cost framework, with assumptions and sources.
+- Summarise interview evidence as qualitative, including the number and profile of participants; avoid treating one interview as representative.
+- Discuss spillover, privacy, and the limits of the current evidence.

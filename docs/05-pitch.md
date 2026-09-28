@@ -19,7 +19,7 @@ Five minutes, then 5–7 minutes of Q&A. The deck is preloaded by the organisers
 | Time | Beat | Content |
 |---|---|---|
 | 0:00–0:40 | **The story** | 29 Jul 2026, Tsing Yi: an overturned lorry, tunnels to the airport shut intermittently, ~4 km of queues, and one instruction for everybody — "consider alternative routes, including Tsuen Wan Road." |
-| 0:40–1:20 | **Why it's structural** | Wardrop: best-for-me ≠ best-for-us. Circuit analogy. Incidents ≈ a quarter of non-recurring congestion; ~20% of incidents are secondary — the queue itself causes the next crash. TD's centre handled 7,700+ incidents in 2024, up 17%. |
+| 0:40–1:20 | **Why it's structural** | Wardrop: best-for-me ≠ best-for-us. Circuit analogy. Historical US estimates attribute about a quarter of all congestion to incidents; roughly 20% of incidents are secondary. These are context, not Hong Kong measurements. |
 | 1:20–1:50 | **The honest gap** | HK already coordinates (ETCC, TIMS, adaptive signals). What's missing: advice is one-size-fits-all, and the systems that do this properly overseas cost USD 4–75M and took ~5 years. TD is starting a study on an AI Traffic Management Platform now — **Aberdeen first**. |
 | 1:50–3:30 | **Demo** | The video. Real message in → parsed → forecast → three plans compared → briefing and bilingual sign text out → operator approves. |
 | 3:30–4:15 | **Proof** | Validation chart (sim vs observed), the headline number, the sensitivity range. "It still wins at 30% compliance." |
@@ -33,18 +33,18 @@ academics, industry, NGOs, investors — not traffic engineers.
 Use these verbatim. Do not paraphrase numbers upward.
 
 **Scale of the problem**
-- Hong Kong, 2023: **17,189 road traffic accidents**, 22,269 casualties, 28,808 [Checked: https://www.censtatd.gov.hk, 2026-09-25]
-  vehicles involved. *(C&SD, "Road Traffic Accident Statistics in Hong Kong,
-  2014 to 2023", Feb 2025 HKMDS)*
-- Police recorded **18,355 injury accidents in 2024** involving 23,659 people. [Checked: https://www.police.gov.hk, 2026-09-25]
-- TD's **Emergency Traffic Co-ordination Centre handled over 7,700 incidents in [Checked: https://www.td.gov.hk, 2026-09-25]
-  2024**, a 17% rise on ~6,600 in 2023; about half road-related, 32% transport
-  service disruptions. *(TD, reported Jul 2025)*
+- Hong Kong, 2023: **17,189 road traffic accidents**, 22,269 casualties and
+  28,808 vehicles involved. ([C&SD, *Road Traffic Accident Statistics in Hong Kong, 2014 to 2023*, February 2025](https://www.censtatd.gov.hk/en/data/stat_report/product/FA100071/att/B72502FA2025XXXXB0100.pdf); checked 2026-09-28.)
+- TD's December 2024 digest lists **18,355 injury accidents** and **23,659 casualties**
+  for 2024; these figures are marked provisional in that digest.
+  ([TD, *Monthly Traffic and Transport Digest*, December 2024](https://www.td.gov.hk/filemanager/en/content_5278/2412_e.pdf); checked 2026-09-28.)
 
 **Why incidents specifically**
-- FHWA (US): incidents cause **~25% of non-recurring congestion**; with weather, [Checked: https://ops.fhwa.dot.gov/congestion/index.htm, 2026-09-25]
-  work zones and special events, non-recurring events cause **~60% of
-  congestion delay**; **~20% of all incidents are secondary incidents.**
+- Historical FHWA estimates for the **US**, not Hong Kong: incidents account for
+  **about 25% of all congestion** ([FHWA, *Reducing Non-Recurring Congestion*](https://ops-dr.fhwa.dot.gov/program_areas/reduce-non-cong.htm));
+  non-recurring events including incidents, weather, construction and special
+  events account for **nearly 60% of congestion delay**, and **about 20% of
+  incidents are secondary incidents** ([FHWA, *Traffic Incident Management*, 2004](https://rosap.ntl.bts.gov/view/dot/66034)).
 
 **Why coordination beats individual routing**
 - Çolak, Lima & González, *Nature Communications* 7:10793 (2016): with mobile [Checked: https://www.nature.com/articles/ncomms10793, 2026-09-25]
@@ -116,6 +116,12 @@ Use these verbatim. Do not paraphrase numbers upward.
 > rejects plans that break our constraints before they're even simulated, and a
 > human approves before anything is published. We also measure the reader: [X]%
 > accuracy on 100 hand-labelled real messages.
+>
+> On repeatability: the simulator is seeded, so its numbers repeat exactly. The
+> model runs locally, and local inference is not bit-identical across different
+> hardware — we checked on two machines, and every scored field came back the
+> same while the model's own free-text note varied. The hand-written labels are
+> the ground truth, so the accuracy figure does not move with the machine.
 
 **"This only works where there are detectors."**
 > Correct, and we say so on the ethics slide. We report a confidence level per

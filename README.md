@@ -15,12 +15,12 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Fri 25 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
-the incident) · Stand-ups: Sunday and Wednesday
+**Last updated: Mon 28 Sep 2026** · Week 2 of 5 (28 Sep–4 Oct: baseline
+and interim report) · Stand-ups: Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
-**Critical path:** 🟡 demo incident chosen → ⚪ baseline matches reality →
+**Critical path:** ✅ demo incident chosen → ⚪ baseline matches reality →
 ⚪ three plans compared → ⚪ video. If anything slips, cut features and protect
 this chain.
 
@@ -34,7 +34,7 @@ this chain.
 
 | Date | Milestone | Status |
 |---|---|---|
-| Sun 27 Sep | 🔒 Team picks **the** demo incident | ⚪ |
+| Sun 27 Sep | 🔒 Lock the primary demo incident and backup | ✅ 28 Sep — Lead selected [IN-26-03365](data/demo_shortlist.md) as primary; IN-26-06391 as backup |
 | Sat 3 Oct | 📤 Submit interim report (official deadline Sun 4 Oct) | ⚪ |
 | Sun 4 Oct | 🚦 Go / no-go: if the baseline does not roughly match the detectors, switch to the ~15-link network that day | ⚪ |
 | Mon 12 Oct | Pitching workshop, everyone (HKU Innovation Wing 2, 14:00–17:30) | ⚪ |
@@ -59,7 +59,16 @@ this chain.
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
 
-### This week: Week 1 (21–27 Sep)
+### This week: Week 2 (28 Sep–4 Oct)
+
+| Owner | Deliverable | Next evidence |
+|---|---|---|
+| Data + Simulation | Baseline replay of IN-26-03365, fitted to detector counts and speeds | Validation chart and stated errors; decide simplified-network fallback on 4 Oct |
+| Lead | Verify the Incident Reader (B) on the selected STN updates and coordinate contract handoffs | Check the 09:01 and 09:36 Reader outputs against `incident.json`; the 100-label accuracy result is already recorded |
+| Visuals | First timeline playback of the selected incident | Playback linked from the console or evidence pack |
+| Impact | Interviews and interim report, with one paragraph from each owner | Submit report Sat 3 Oct |
+
+### Week 1 outcomes (21–27 Sep)
 
 | Owner | Task | Done when | Status |
 |---|---|---|---|
@@ -71,25 +80,15 @@ The JSON contracts between modules are in
 
 ### In review
 
-Work that exists but is not on `main` yet, as of Fri 25 Sep. Everything
-merged shows in the rows above; pull requests #1–#16 are merged.
+Work that exists but is not on `main` yet, as of Mon 28 Sep. Pull
+requests #1–#20 are merged; PRs #21–#24 remain open.
 
 | What | Who | Branch |
 |---|---|---|
-| Loaders: keep STN CLOSED status flips; read malformed archive snapshots — **pushed, but no pull request is open** | Data | `data/loaders` |
+| Twin: demand fitting, May 15 pre-incident diagnostic, detector-mapping audit, and scenario fixes — **pushed, but no pull request is open**. The network and loop files remain provisional; baseline validation is not complete | Simulation | `sim/e1-evaluation-correctness` |
 
 ### Open decisions
 
-- **The demo incident** (🔒 Sun 27 Sep), from Data's shortlist. Corridor
-  incidents are rare: 15–21 Sep had only two (IN-26-06874, IN-26-06904), so
-  search a longer window. Over six months (22 Mar–21 Sep) the corridor had 55
-  traffic accidents: 49 have a complete timeline and 35 of those lasted 20
-  minutes or more (all three STN files read, [docs/02-data.md](docs/02-data.md) §2).
-  Data proposes five in [data/demo_shortlist.md](data/demo_shortlist.md),
-  headed by **IN-26-03365** (Fri 15 May, 09:01–10:02: the Wong Chuk Hang Road
-  flyover to the tunnel, "part of the lanes" then "all lanes"; the queue
-  reached Aberdeen Praya Road). The evidence for all 35 is
-  [data/candidates.md](data/candidates.md).
 - **One corridor-road list.** The Reader ([src/reader/reader.py](src/reader/reader.py))
   and the loaders ([src/loaders/corridor.py](src/loaders/corridor.py)) each
   keep their own, and they differ: Stubbs Road and the Chinese road names are
@@ -123,9 +122,6 @@ merged shows in the rows above; pull requests #1–#16 are merged.
   ("the junction of X and Y") becomes road X; `near_landmark` filled where the
   message has no "near" (7 of 100). Found on the gold set, so fixing them in
   the prompt needs a fresh set to measure the result.
-- `requirements.txt` pins `pandas==2.2.3`, which has no build for Python 3.14,
-  so `pip install -r requirements.txt` fails on a 3.14 venv. `pip install
-  streamlit==1.40.2` on its own works there (it brings pandas 2.3.3).
 - The historical archive serves only about half the raw detector snapshots it
   lists (39% were a persistent 404 on 21 Sep), so a 5-minute bin usually holds
   1–3 observed minutes. Summing raw volume into a bin would understate flow by
@@ -174,6 +170,17 @@ merged shows in the rows above; pull requests #1–#16 are merged.
 
 Newest first. One line per change that matters, with a link to the proof.
 
+**Mon 28 Sep**
+- Tracker: clarified the Week 2 Lead task as Reader verification and contract
+  handoff; Data/E owns the `unspecified` lane assumption, and Simulation/C
+  owns physical edge mapping ([docs/04-plan.md](docs/04-plan.md),
+  [docs/03-architecture.md](docs/03-architecture.md)).
+- Lead: selected `IN-26-03365` as the primary demo incident and
+  `IN-26-06391` as backup from Data's five-candidate shortlist. The initial
+  lane and affected simulation edge still need an explicit modelling decision;
+  selection is not baseline validation
+  ([data/demo_shortlist.md](data/demo_shortlist.md)).
+
 **Sat 26 Sep**
 - Data: demo incident shortlist. The candidate screen was rebuilt: every
   corridor accident is compared with two ordinary days (same weekday and time,
@@ -193,6 +200,16 @@ Newest first. One line per change that matters, with a link to the proof.
   direction problems are under Known issues). 266 tests
   ([src/loaders/twin_export.py](src/loaders/twin_export.py),
   [tests/test_twin_bridge.py](tests/test_twin_bridge.py)).
+- Lead: repo hygiene and CI. `pandas` moves to 2.3.3, which has a Python 3.14
+  build, so `pip install -r requirements.txt` works on 3.14 and that known
+  issue is gone. A `.gitattributes` decides line endings for everyone instead
+  of leaving them to each machine's Git installer. GitHub Actions runs the
+  suite on every push and pull request, so the Lead is no longer the only
+  thing that runs the tests
+  ([.github/workflows/tests.yml](.github/workflows/tests.yml)). A new
+  [tests/test_repo_hygiene.py](tests/test_repo_hygiene.py) fails if any text
+  file in `src/` is opened without an explicit encoding, which is the cp1252
+  trap the rules below warn about. 268 tests.
 
 **Fri 25 Sep (afternoon)**
 - Twin validation fix: `evaluate` read `meanSpeed`, which SUMO's loop output does not have, so every
@@ -385,7 +402,7 @@ cd ripple
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-python -m pytest                   # 153 tests, no LLM needed
+python -m pytest                   # 268 tests, no LLM needed
 ```
 
 ### Run the data layer
@@ -419,7 +436,7 @@ contract, retried once if it fails, then flagged, never used.
 Install [Ollama](https://ollama.com), then:
 
 ```bash
-ollama pull qwen3:8b               # 5.2 GB, once
+ollama pull qwen3:8b               # about 4.9 GB, once
 python -m src.reader.run           # parses data/labelled_incidents/messages.jsonl
 python -m src.reader.run --model qwen3:4b   # same messages, another model
 ```
