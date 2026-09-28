@@ -10,10 +10,18 @@
   "observation_start_sim_seconds": 900,
   "calibration_seconds": 3600,
   "step_length": 1,
-  "incident": {"start": 4500, "duration_seconds": 4020, "edge_id": "REPLACE_EDGE_ID", "lane_indices": [0]},
+  "incident": {
+    "start": 4500,
+    "duration_seconds": 4020,
+    "edge_id": "REVIEW_REQUIRED",
+    "phases": [
+      {"offset_seconds": 0, "lane_indices": "unspecified"},
+      {"offset_seconds": 2460, "lane_indices": "all"}
+    ]
+  },
   "output_dir": "sim/work/results",
   "candidate_routes": "sim/work/routes/candidates.rou.xml",
-  "max_depart_delay": 60,
+  "max_depart_delay": -1,
   "fcd_output": "sim/work/results/baseline.fcd.xml",
   "fcd_period": 10,
   "osm_output": "sim/work/osm/aberdeen.osm.xml",

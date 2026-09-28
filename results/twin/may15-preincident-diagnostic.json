@@ -1,0 +1,266 @@
+{
+  "status": "preincident_diagnostic_not_validated_baseline",
+  "incident_id": "IN-26-03365",
+  "observed_interval_hkt": [
+    "2026-05-15T07:55:00+08:00",
+    "2026-05-15T08:55:00+08:00"
+  ],
+  "simulated_seconds": [
+    0,
+    4500
+  ],
+  "first_observation_sim_second": 900,
+  "incident_injected": false,
+  "sumo_version": "1.27.1",
+  "demand": {
+    "calibration_seconds": 3600.0,
+    "candidate_routes_used": 97,
+    "vehicles_fitted_for_full_10500_seconds": 41756,
+    "detectors_without_calibration_counts": [
+      "AID01105",
+      "AID01220",
+      "TDSSPWR20002"
+    ]
+  },
+  "score": {
+    "geh_under_5_percent": 66.52892561983471,
+    "count_bin_n": 242,
+    "speed_mape_percent": 36.940292122959804,
+    "speed_bin_n": 296,
+    "missing_detector_ids": [],
+    "unmatched_count_intervals": 0,
+    "meets_85_percent_target": false
+  },
+  "per_detector": {
+    "AID01101": {
+      "count_bins": 9,
+      "geh_under_5_bins": 8,
+      "observed_total": 1194,
+      "simulated_total": 1188.0
+    },
+    "AID01102": {
+      "count_bins": 10,
+      "geh_under_5_bins": 10,
+      "observed_total": 1311,
+      "simulated_total": 1311.0
+    },
+    "AID01103": {
+      "count_bins": 10,
+      "geh_under_5_bins": 6,
+      "observed_total": 1596,
+      "simulated_total": 977.0
+    },
+    "AID01104": {
+      "count_bins": 10,
+      "geh_under_5_bins": 8,
+      "observed_total": 1041,
+      "simulated_total": 781.0
+    },
+    "AID01106": {
+      "count_bins": 10,
+      "geh_under_5_bins": 6,
+      "observed_total": 998,
+      "simulated_total": 476.0
+    },
+    "AID01107": {
+      "count_bins": 10,
+      "geh_under_5_bins": 1,
+      "observed_total": 1276,
+      "simulated_total": 421.0
+    },
+    "AID01108": {
+      "count_bins": 10,
+      "geh_under_5_bins": 10,
+      "observed_total": 1225,
+      "simulated_total": 1072.0
+    },
+    "AID01109": {
+      "count_bins": 10,
+      "geh_under_5_bins": 10,
+      "observed_total": 1976,
+      "simulated_total": 1789.0
+    },
+    "AID01110": {
+      "count_bins": 10,
+      "geh_under_5_bins": 0,
+      "observed_total": 2503,
+      "simulated_total": 1489.0
+    },
+    "AID01214": {
+      "count_bins": 10,
+      "geh_under_5_bins": 1,
+      "observed_total": 2494,
+      "simulated_total": 1519.0
+    },
+    "AID01215": {
+      "count_bins": 10,
+      "geh_under_5_bins": 10,
+      "observed_total": 1911,
+      "simulated_total": 1870.0
+    },
+    "AID01216": {
+      "count_bins": 10,
+      "geh_under_5_bins": 10,
+      "observed_total": 1343,
+      "simulated_total": 1347.0
+    },
+    "AID01217": {
+      "count_bins": 10,
+      "geh_under_5_bins": 0,
+      "observed_total": 1887,
+      "simulated_total": 836.0
+    },
+    "AID01218": {
+      "count_bins": 10,
+      "geh_under_5_bins": 0,
+      "observed_total": 1483,
+      "simulated_total": 713.0
+    },
+    "AID01219": {
+      "count_bins": 10,
+      "geh_under_5_bins": 9,
+      "observed_total": 1325,
+      "simulated_total": 1041.0
+    },
+    "AID01221": {
+      "count_bins": 10,
+      "geh_under_5_bins": 1,
+      "observed_total": 1827,
+      "simulated_total": 1080.0
+    },
+    "AID01222": {
+      "count_bins": 10,
+      "geh_under_5_bins": 7,
+      "observed_total": 1580,
+      "simulated_total": 1099.0
+    },
+    "AID01223": {
+      "count_bins": 10,
+      "geh_under_5_bins": 8,
+      "observed_total": 1197,
+      "simulated_total": 951.0
+    },
+    "TDSAPR10001": {
+      "count_bins": 9,
+      "geh_under_5_bins": 6,
+      "observed_total": 1148,
+      "simulated_total": 976.0
+    },
+    "TDSAPR20001": {
+      "count_bins": 9,
+      "geh_under_5_bins": 9,
+      "observed_total": 1382,
+      "simulated_total": 1259.0
+    },
+    "TDSSPWR10001": {
+      "count_bins": 9,
+      "geh_under_5_bins": 7,
+      "observed_total": 561,
+      "simulated_total": 562.0
+    },
+    "TDSSPWR10002": {
+      "count_bins": 9,
+      "geh_under_5_bins": 9,
+      "observed_total": 923,
+      "simulated_total": 979.0
+    },
+    "TDSSPWR10003": {
+      "count_bins": 9,
+      "geh_under_5_bins": 7,
+      "observed_total": 870,
+      "simulated_total": 975.0
+    },
+    "TDSSPWR20001": {
+      "count_bins": 9,
+      "geh_under_5_bins": 9,
+      "observed_total": 664,
+      "simulated_total": 664.0
+    },
+    "TDSSPWR20003": {
+      "count_bins": 9,
+      "geh_under_5_bins": 9,
+      "observed_total": 1135,
+      "simulated_total": 1259.0
+    }
+  },
+  "run": {
+    "max_depart_delay_seconds": -1,
+    "performance": {
+      "clockBegin": "426198.77",
+      "clockEnd": "426236.22",
+      "clockDuration": "37.45",
+      "traciDuration": "4.58",
+      "realTimeFactor": "120.15",
+      "vehicleUpdatesPerSecond": "118318.91",
+      "personUpdatesPerSecond": "0.00",
+      "begin": "0.00",
+      "end": "4500.00",
+      "duration": "4500.00"
+    },
+    "vehicles": {
+      "loaded": "17922",
+      "inserted": "15517",
+      "running": "1527",
+      "waiting": "2405"
+    },
+    "teleports": {
+      "total": "68",
+      "jam": "57",
+      "yield": "6",
+      "wrongLane": "5"
+    }
+  },
+  "quarter_volume_diagnostic": {
+    "purpose": "Capacity and lane-connectivity sensitivity only; not validation against observations",
+    "fraction_of_fitted_flow": 0.2500478973081713,
+    "max_depart_delay_seconds": -1,
+    "vehicles": {
+      "loaded": "4500",
+      "inserted": "4328",
+      "running": "400",
+      "waiting": "172"
+    },
+    "teleports": {
+      "total": "9",
+      "jam": "8",
+      "yield": "1",
+      "wrongLane": "0"
+    },
+    "vehicles_fitted_for_full_10500_seconds": 10441
+  },
+  "sources": {
+    "network": {
+      "path": "sim/work/aberdeen.net.xml",
+      "sha256": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e"
+    },
+    "osm": {
+      "path": "sim/work/osm/aberdeen_bbox.osm.xml",
+      "sha256": "c6d3333d803ef19db9707ae1ac9dc958121d7bd19941a555a8db0ec50e62b09f"
+    },
+    "registry": {
+      "path": "data/detectors.csv",
+      "sha256": "e71252d69be0bcf6ebcc8c41acc76bda7e16e92408e03f12ccab4706362385ae"
+    },
+    "observations": {
+      "path": "sim/scenarios/calibration.json",
+      "sha256": "547a43002448bc0ca4ac187c24ef3f773d14817603e3037a26a620454dd44d20"
+    },
+    "detector_mapping": {
+      "path": "sim/work/may-diagnostic/detectors.add.csv",
+      "sha256": "f0d2818acf0b71437a58c3bc22aa05cf6591af66a267822dfac3d72d880a63d4"
+    },
+    "fitted_routes": {
+      "path": "sim/work/may-diagnostic/fitted.rou.xml",
+      "sha256": "b75ceee7f84432867e3c94cd5f5037c1ee5f2511fd8d624461312f8b14b69de8"
+    }
+  },
+  "remaining_lane_scope_issues": {
+    "AID01105": "missing_or_variable_feed_scope",
+    "AID01220": "missing_or_variable_feed_scope",
+    "AID01221": "conflict",
+    "AID01222": "conflict",
+    "TDSAPR10001": "conflict",
+    "TDSSPWR20002": "missing_or_variable_feed_scope"
+  },
+  "interpretation": "Pre-incident GEH target 85% is missed. Full-demand waiting and teleports remain; the quarter-volume run still teleports vehicles. The incident edge and unspecified first-phase lane selection are unresolved, so no full incident baseline is claimed."
+}

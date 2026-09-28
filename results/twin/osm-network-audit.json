@@ -2,7 +2,7 @@
   "sources": {
     "config": {
       "path": "sim/scenarios/scenario.json",
-      "sha256": "0d73bc89a0f4ca247d88064189776d906a2c9f341ed1e789b813c2e48ce679f8"
+      "sha256": "ba42896afa9f5a1268d6dcba375f21e2559e746984c5856ccd48c1bfd6da09c4"
     },
     "network": {
       "path": "sim/work/aberdeen.net.xml",
@@ -21,7 +21,7 @@
       "sha256": "9748ce1800146cf78ad7225a103cd233033829c095eaf45617ce77127ed30741"
     },
     "mapping": {
-      "path": "sim/work/detectors.add.csv",
+      "path": "sim/work/may-diagnostic/detectors.add.csv",
       "sha256": "f0d2818acf0b71437a58c3bc22aa05cf6591af66a267822dfac3d72d880a63d4"
     },
     "overrides": {
@@ -1293,6 +1293,7 @@
   ],
   "paths": [
     {
+      "leg": "main_eastbound",
       "from": "AID01101",
       "to": "AID01102",
       "status": "reachable",
@@ -1310,6 +1311,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01102",
       "to": "AID01103",
       "status": "reachable",
@@ -1330,6 +1332,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01103",
       "to": "AID01104",
       "status": "reachable",
@@ -1345,6 +1348,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01104",
       "to": "AID01105",
       "status": "reachable",
@@ -1356,6 +1360,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01105",
       "to": "AID01106",
       "status": "reachable",
@@ -1374,6 +1379,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01106",
       "to": "AID01107",
       "status": "reachable",
@@ -1385,6 +1391,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01107",
       "to": "AID01108",
       "status": "reachable",
@@ -1404,6 +1411,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01108",
       "to": "AID01109",
       "status": "reachable",
@@ -1420,6 +1428,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01109",
       "to": "AID01110",
       "status": "reachable",
@@ -1436,6 +1445,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01214",
       "to": "AID01215",
       "status": "reachable",
@@ -1450,6 +1460,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01215",
       "to": "AID01216",
       "status": "reachable",
@@ -1463,6 +1474,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01216",
       "to": "AID01217",
       "status": "reachable",
@@ -1482,6 +1494,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01217",
       "to": "AID01218",
       "status": "reachable",
@@ -1495,6 +1508,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01218",
       "to": "AID01219",
       "status": "reachable",
@@ -1513,6 +1527,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01219",
       "to": "AID01220",
       "status": "reachable",
@@ -1524,6 +1539,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01220",
       "to": "AID01221",
       "status": "reachable",
@@ -1537,6 +1553,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01221",
       "to": "AID01222",
       "status": "reachable",
@@ -1556,6 +1573,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01222",
       "to": "AID01223",
       "status": "reachable",
@@ -1573,10 +1591,107 @@
         "1197441899",
         "1197441904"
       ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10001",
+      "to": "TDSSPWR10002",
+      "status": "reachable",
+      "direct_hk1980_m": 564.876,
+      "path_m": 582.9,
+      "path_to_direct_ratio": 1.032,
+      "edges": [
+        "946158622",
+        "946158635",
+        "946158606",
+        "485990131#0",
+        "946158603",
+        "250127610#1",
+        "946158588",
+        "347104280#0",
+        "946158587",
+        "946158626",
+        "946158560",
+        "26560129"
+      ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10002",
+      "to": "TDSSPWR10003",
+      "status": "reachable",
+      "direct_hk1980_m": 409.0,
+      "path_m": 446.98,
+      "path_to_direct_ratio": 1.093,
+      "edges": [
+        "26560129"
+      ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10003",
+      "to": "TDSAPR10001",
+      "status": "reachable",
+      "direct_hk1980_m": 489.265,
+      "path_m": 493.27,
+      "path_to_direct_ratio": 1.008,
+      "edges": [
+        "26560129",
+        "946158624",
+        "1197689833",
+        "1197689837",
+        "1197689849#0",
+        "1197689849#1",
+        "245466671"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSAPR20001",
+      "to": "TDSSPWR20003",
+      "status": "reachable",
+      "direct_hk1980_m": 456.369,
+      "path_m": 457.07,
+      "path_to_direct_ratio": 1.002,
+      "edges": [
+        "1197441895",
+        "1197689899",
+        "1197689898",
+        "1197689858",
+        "1197689857",
+        "946158623"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSSPWR20003",
+      "to": "TDSSPWR20002",
+      "status": "reachable",
+      "direct_hk1980_m": 376.948,
+      "path_m": 397.71,
+      "path_to_direct_ratio": 1.055,
+      "edges": [
+        "946158623"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSSPWR20002",
+      "to": "TDSSPWR20001",
+      "status": "reachable",
+      "direct_hk1980_m": 288.766,
+      "path_m": 293.79,
+      "path_to_direct_ratio": 1.017,
+      "edges": [
+        "946158623",
+        "946158571",
+        "260770853"
+      ]
     }
   ],
   "before_paths": [
     {
+      "leg": "main_eastbound",
       "from": "AID01101",
       "to": "AID01102",
       "status": "reachable",
@@ -1594,6 +1709,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01102",
       "to": "AID01103",
       "status": "reachable",
@@ -1614,6 +1730,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01103",
       "to": "AID01104",
       "status": "reachable",
@@ -1629,6 +1746,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01104",
       "to": "AID01105",
       "status": "reachable",
@@ -1640,6 +1758,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01105",
       "to": "AID01106",
       "status": "reachable",
@@ -1658,6 +1777,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01106",
       "to": "AID01107",
       "status": "reachable",
@@ -1697,6 +1817,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01107",
       "to": "AID01108",
       "status": "reachable",
@@ -1716,6 +1837,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01108",
       "to": "AID01109",
       "status": "reachable",
@@ -1732,6 +1854,7 @@
       ]
     },
     {
+      "leg": "main_eastbound",
       "from": "AID01109",
       "to": "AID01110",
       "status": "reachable",
@@ -1748,6 +1871,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01214",
       "to": "AID01215",
       "status": "reachable",
@@ -1763,6 +1887,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01215",
       "to": "AID01216",
       "status": "reachable",
@@ -1776,6 +1901,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01216",
       "to": "AID01217",
       "status": "reachable",
@@ -1795,6 +1921,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01217",
       "to": "AID01218",
       "status": "reachable",
@@ -1816,6 +1943,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01218",
       "to": "AID01219",
       "status": "reachable",
@@ -1833,6 +1961,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01219",
       "to": "AID01220",
       "status": "reachable",
@@ -1845,6 +1974,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01220",
       "to": "AID01221",
       "status": "reachable",
@@ -1858,6 +1988,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01221",
       "to": "AID01222",
       "status": "reachable",
@@ -1877,6 +2008,7 @@
       ]
     },
     {
+      "leg": "main_westbound",
       "from": "AID01222",
       "to": "AID01223",
       "status": "reachable",
@@ -1893,6 +2025,102 @@
         "496142893",
         "1197441899",
         "1197441904"
+      ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10001",
+      "to": "TDSSPWR10002",
+      "status": "reachable",
+      "direct_hk1980_m": 564.876,
+      "path_m": 582.9,
+      "path_to_direct_ratio": 1.032,
+      "edges": [
+        "946158622",
+        "946158635",
+        "946158606",
+        "485990131#0",
+        "946158603",
+        "250127610#1",
+        "946158588",
+        "347104280#0",
+        "946158587",
+        "946158626",
+        "946158560",
+        "26560129"
+      ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10002",
+      "to": "TDSSPWR10003",
+      "status": "reachable",
+      "direct_hk1980_m": 409.0,
+      "path_m": 446.98,
+      "path_to_direct_ratio": 1.093,
+      "edges": [
+        "26560129"
+      ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10003",
+      "to": "TDSAPR10001",
+      "status": "reachable",
+      "direct_hk1980_m": 489.265,
+      "path_m": 493.27,
+      "path_to_direct_ratio": 1.008,
+      "edges": [
+        "26560129",
+        "946158624",
+        "1197689833",
+        "1197689837",
+        "1197689849#0",
+        "1197689849#1",
+        "245466671"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSAPR20001",
+      "to": "TDSSPWR20003",
+      "status": "reachable",
+      "direct_hk1980_m": 456.369,
+      "path_m": 457.07,
+      "path_to_direct_ratio": 1.002,
+      "edges": [
+        "1197441895",
+        "1197689899",
+        "1197689898",
+        "1197689858",
+        "1197689857",
+        "946158623"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSSPWR20003",
+      "to": "TDSSPWR20002",
+      "status": "reachable",
+      "direct_hk1980_m": 376.948,
+      "path_m": 397.71,
+      "path_to_direct_ratio": 1.055,
+      "edges": [
+        "946158623"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSSPWR20002",
+      "to": "TDSSPWR20001",
+      "status": "reachable",
+      "direct_hk1980_m": 288.766,
+      "path_m": 293.79,
+      "path_to_direct_ratio": 1.017,
+      "edges": [
+        "946158623",
+        "946158571",
+        "260770853"
       ]
     }
   ]

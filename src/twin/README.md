@@ -33,6 +33,14 @@ The committed `data/detectors.csv` supplies direction and corridor-leg metadata.
 
 Copy `sim/scenarios/scenario.example.json` to `sim/scenarios/scenario.json`. Set incident start, duration, lanes, simulation horizon and route files. Fill `osm_bbox` to cover the complete corridor (including both directions and the western alternative). Coordinate order is west,south,east,north.
 
+The example carries the May 15 observed queue onset (08:55), TD's all-lanes
+update (09:36), and clearance (10:02), with 15 minutes of warm-up. Its
+`edge_id` and first phase's `lane_indices` are deliberately unresolved. The
+detectors do not identify the initially closed physical lane, so Data/E must
+state a scenario choice before an incident replay can run. The ignored local
+`scenario.json` can be regenerated from this example; do not reuse the old
+September incident timing.
+
 Required observed data shape:
 
 ```json
@@ -73,7 +81,7 @@ When the hand-over contains a replay window, the mapper reads lane labels from t
 python -m src.twin.audit_network --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json --out results/twin/osm-network-audit.json
 ```
 
-The audit reads only local files. If the configured scenario names `detector_overrides`, the override file must carry SHA-256 hashes for the exact network and committed detector registry. The matcher rejects it if either source changes; re-review the locations after every network rebuild. Lane-count conflicts and missing raw snapshots remain visible in the audit. A passing map audit does not establish traffic calibration or prove that SUMO teleport warnings are fixed.
+The audit reads only local files. If the configured scenario names `detector_overrides`, the override file must carry SHA-256 hashes for the exact network and committed detector registry. The matcher rejects it if either source changes; re-review the locations after every network rebuild. Lane-count conflicts and missing raw snapshots remain visible in the audit. The directed connectivity section checks all 24 links across the two main chains and both western-alternative chains against registry coordinates. A passing map audit does not establish traffic calibration or prove that SUMO teleport warnings are fixed.
 
 ## Step 5 — Make candidate routes and fit demand
 
@@ -82,7 +90,7 @@ python -m src.twin.make_routes --config sim/scenarios/scenario.json
 python -m src.twin.fit_demand --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json
 ```
 
-The first command creates directed, detector-to-detector candidate trips within each configured corridor leg. The fitting command estimates nonnegative route weights from pre-incident counts and writes one rate-based `<flow>` per route across the configured simulation horizon. It writes `sim/work/routes/fitted.rou.xml` and a fit summary. It stops if the calibration duration is invalid or would extend beyond `incident.start`, using `observation_start_sim_seconds` (or `warmup_seconds`) to locate the first observation on the simulation clock. This lightweight fitter assumes detector crossing counts are a linear combination of route flows and is not a substitute for SUMO `routeSampler.py` / `dfrouter` when the team's actual detector flow data and full-day route context are available. Check the fit residuals and rerun after correcting routes/network. Do not hide poor fit by changing observations.
+The first command creates directed, detector-to-detector candidate trips within each configured corridor leg. The western alternative uses separate eastbound and westbound detector chains; the registry's inventory order is not travel order. The fitting command estimates nonnegative route weights from pre-incident counts and writes one rate-based `<flow>` per route across the configured simulation horizon. It writes `sim/work/routes/fitted.rou.xml` and a fit summary. Detectors without usable pre-incident counts are excluded from the objective, never treated as zero demand. It stops if the calibration duration is invalid or would extend beyond `incident.start`, using `observation_start_sim_seconds` (or `warmup_seconds`) to locate the first observation on the simulation clock. Flows insert at the beginning of their first edge so loops close to that boundary can see them; [SUMO's default `base` position](https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#departpos) starts a vehicle one length into the edge. This lightweight fitter assumes detector crossing counts are a linear combination of route flows and is not a substitute for SUMO `routeSampler.py` / `dfrouter` when the team's actual detector flow data and full-day route context are available. Check the fit residuals and rerun after correcting routes/network. Do not hide poor fit by changing observations.
 
 ## Step 6 — Run the baseline and compare it with reality
 
@@ -91,9 +99,14 @@ python -m src.twin.run_scenario --config sim/scenarios/scenario.json --label bas
 python -m src.twin.evaluate --observations sim/scenarios/detectors.json --sim sim/work/results --config sim/scenarios/scenario.json --out results/twin/baseline-validation.json
 ```
 
-The baseline replays the incident with no intervention and stops at the configured `end` time (or `--max-seconds`) even when vehicles remain. Before starting SUMO, the runner checks that the incident edge exists, every selected lane index is valid, and the full closure fits within the configured run horizon. Incidents may use ordered `phases`, each with an `offset_seconds` from incident onset and explicit `lane_indices`; use `"all"` to close every lane. The first phase starts at offset zero. An unspecified lane scope must be resolved explicitly before running; the runner will not silently choose lane 0. A deliberate `--max-seconds` diagnostic run may stop before incident end. `max_depart_delay` limits vehicles unable to enter; inspect the run summary and SUMO duration statistics because this can discard demand. The run saves sampled FCD trajectories and trip information. Evaluation matches observations by timestamp plus `observation_start_sim_seconds`, aggregates all lane loops per detector, sums counts, computes volume-weighted speed and scores observed zero-count bins separately even when speed is null. Configure the horizon to include warm-up and every observation interval. The target is GEH < 5 for at least 85% of count bins; report the measured result, including any missing comparisons.
+The baseline replays the incident with no intervention and stops at the configured `end` time (or `--max-seconds`) even when vehicles remain. Before starting SUMO, the runner checks that the incident edge exists, every selected lane index is valid, and the full closure fits within the configured run horizon. Incidents may use ordered `phases`, each with an `offset_seconds` from incident onset and explicit `lane_indices`; use `"all"` to close every lane. The first phase starts at offset zero. An unspecified lane scope must be resolved explicitly before running; the runner will not silently choose lane 0. A deliberate `--max-seconds` diagnostic run may stop before incident end. The default `max_depart_delay` is `-1`, so vehicles that cannot enter remain queued instead of being silently dropped. If a finite delay is configured, inspect the run summary and SUMO duration statistics for dropped vehicles. The run saves sampled FCD trajectories and trip information. Evaluation matches observations by timestamp plus `observation_start_sim_seconds`, aggregates all lane loops per detector, sums counts, computes volume-weighted speed and scores observed zero-count bins separately even when speed is null. Configure the horizon to include warm-up and every observation interval. The target is GEH < 5 for at least 85% of count bins; report the measured result, including any missing comparisons.
 
 The evaluator reads SUMO E1's `speed` value in m/s (`-1` means no vehicle was collected) and computes count and speed scores independently, so an absent count does not discard a usable speed observation. It also records missing detector files and unmatched observation intervals; `meets_85_percent_target` stays false when any count observation lacks a comparison. See [SUMO's E1 output fields](https://sumo.dlr.de/userdoc/Simulation/Output/Induction_Loops_Detectors_%28E1%29.html).
+
+The [May 15 pre-incident diagnostic](../../results/twin/may15-preincident-diagnostic.md)
+is the current measured checkpoint. It reaches only the queue onset and remains
+below the count and speed validation targets. Review the source-boundary loops,
+route connectivity, and OSM lane conflicts before claiming a baseline.
 
 ## Step 7 — Run the intervention and sensitivity grid
 

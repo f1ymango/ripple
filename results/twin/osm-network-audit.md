@@ -47,33 +47,40 @@ and lane offsets identify junctions where placement still needs inspection.
 | TDSSPWR20002 | `946158623` | 432.35 | None | 2 | missing_or_variable_feed_scope | 3.14 | False |
 | TDSSPWR20003 | `946158623` | 34.64 | 2 | 2 | matches | 1.08 | False |
 
-## Directed main-corridor connectivity
+## Directed corridor connectivity
 
 Distances use detector positions and include internal junction connectors.
 Direct distances use the registry's HK1980 coordinates. A ratio is a review
 signal; it does not by itself prove an OSM topology error. Projected positions
 may produce ratios below one because source coordinates lie off modelled lanes.
+The audit covers both main chains and both directed Western Alternative chains.
 
-| From | To | Before m | Current m | Direct m | Current ratio | Status |
-|---|---|---:|---:|---:|---:|---|
-| AID01101 | AID01102 | 556.47 | 556.47 | 545.4 | 1.02 | reachable |
-| AID01102 | AID01103 | 495.45 | 495.45 | 486.557 | 1.018 | reachable |
-| AID01103 | AID01104 | 379.04 | 379.04 | 379.111 | 1.0 | reachable |
-| AID01104 | AID01105 | 324.9 | 324.9 | 325.125 | 0.999 | reachable |
-| AID01105 | AID01106 | 375.81 | 377.45 | 344.401 | 1.096 | reachable |
-| AID01106 | AID01107 | 1771.83 | 441.79 | 457.739 | 0.965 | reachable |
-| AID01107 | AID01108 | 2552.84 | 2552.84 | 2453.999 | 1.04 | reachable |
-| AID01108 | AID01109 | 597.23 | 597.23 | 533.085 | 1.12 | reachable |
-| AID01109 | AID01110 | 301.28 | 301.28 | 305.321 | 0.987 | reachable |
-| AID01214 | AID01215 | 300.12 | 290.12 | 283.007 | 1.025 | reachable |
-| AID01215 | AID01216 | 598.46 | 598.46 | 566.851 | 1.056 | reachable |
-| AID01216 | AID01217 | 2615.75 | 2615.75 | 2524.749 | 1.036 | reachable |
-| AID01217 | AID01218 | 759.19 | 422.92 | 401.508 | 1.053 | reachable |
-| AID01218 | AID01219 | 447.85 | 453.27 | 441.005 | 1.028 | reachable |
-| AID01219 | AID01220 | 502.65 | 497.22 | 493.867 | 1.007 | reachable |
-| AID01220 | AID01221 | 326.23 | 326.23 | 340.243 | 0.959 | reachable |
-| AID01221 | AID01222 | 317.24 | 317.24 | 302.498 | 1.049 | reachable |
-| AID01222 | AID01223 | 482.64 | 482.64 | 454.248 | 1.063 | reachable |
+| Leg | From | To | Before m | Current m | Direct m | Current ratio | Status |
+|---|---|---|---:|---:|---:|---:|---|
+| main_eastbound | AID01101 | AID01102 | 556.47 | 556.47 | 545.4 | 1.02 | reachable |
+| main_eastbound | AID01102 | AID01103 | 495.45 | 495.45 | 486.557 | 1.018 | reachable |
+| main_eastbound | AID01103 | AID01104 | 379.04 | 379.04 | 379.111 | 1.0 | reachable |
+| main_eastbound | AID01104 | AID01105 | 324.9 | 324.9 | 325.125 | 0.999 | reachable |
+| main_eastbound | AID01105 | AID01106 | 375.81 | 377.45 | 344.401 | 1.096 | reachable |
+| main_eastbound | AID01106 | AID01107 | 1771.83 | 441.79 | 457.739 | 0.965 | reachable |
+| main_eastbound | AID01107 | AID01108 | 2552.84 | 2552.84 | 2453.999 | 1.04 | reachable |
+| main_eastbound | AID01108 | AID01109 | 597.23 | 597.23 | 533.085 | 1.12 | reachable |
+| main_eastbound | AID01109 | AID01110 | 301.28 | 301.28 | 305.321 | 0.987 | reachable |
+| main_westbound | AID01214 | AID01215 | 300.12 | 290.12 | 283.007 | 1.025 | reachable |
+| main_westbound | AID01215 | AID01216 | 598.46 | 598.46 | 566.851 | 1.056 | reachable |
+| main_westbound | AID01216 | AID01217 | 2615.75 | 2615.75 | 2524.749 | 1.036 | reachable |
+| main_westbound | AID01217 | AID01218 | 759.19 | 422.92 | 401.508 | 1.053 | reachable |
+| main_westbound | AID01218 | AID01219 | 447.85 | 453.27 | 441.005 | 1.028 | reachable |
+| main_westbound | AID01219 | AID01220 | 502.65 | 497.22 | 493.867 | 1.007 | reachable |
+| main_westbound | AID01220 | AID01221 | 326.23 | 326.23 | 340.243 | 0.959 | reachable |
+| main_westbound | AID01221 | AID01222 | 317.24 | 317.24 | 302.498 | 1.049 | reachable |
+| main_westbound | AID01222 | AID01223 | 482.64 | 482.64 | 454.248 | 1.063 | reachable |
+| western_eastbound | TDSSPWR10001 | TDSSPWR10002 | 582.9 | 582.9 | 564.876 | 1.032 | reachable |
+| western_eastbound | TDSSPWR10002 | TDSSPWR10003 | 446.98 | 446.98 | 409.0 | 1.093 | reachable |
+| western_eastbound | TDSSPWR10003 | TDSAPR10001 | 493.27 | 493.27 | 489.265 | 1.008 | reachable |
+| western_westbound | TDSAPR20001 | TDSSPWR20003 | 457.07 | 457.07 | 456.369 | 1.002 | reachable |
+| western_westbound | TDSSPWR20003 | TDSSPWR20002 | 397.71 | 397.71 | 376.948 | 1.055 | reachable |
+| western_westbound | TDSSPWR20002 | TDSSPWR20001 | 293.79 | 293.79 | 288.766 | 1.017 | reachable |
 
 The companion JSON records file hashes, original OSM name/turn tags,
 observed lane sets and each route's edge sequence. Counts and speeds are

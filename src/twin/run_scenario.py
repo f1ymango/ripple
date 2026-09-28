@@ -3,6 +3,7 @@ import json
 import math
 import os
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from src.twin.common import load_json, require_command, resolve, sumo_tools
@@ -90,9 +91,11 @@ def main():
         raise ValueError("At least one incident phase must close one or more lanes")
     fcd_output = resolve(cfg.get("fcd_output", output / f"{args.label}.fcd.xml"))
     fcd_output.parent.mkdir(parents=True, exist_ok=True)
+    statistics_output = output / f"{args.label}.statistics.xml"
     cmd = [require_command("sumo"), "-n", str(net), "-r", str(routes), "-a", str(add),
            "--begin", str(begin), "--end", str(end), "--duration-log.statistics", "true",
-           "--max-depart-delay", str(cfg.get("max_depart_delay", 60)),
+           "--statistic-output", str(statistics_output),
+           "--max-depart-delay", str(cfg.get("max_depart_delay", -1)),
            "--fcd-output", str(fcd_output), "--device.fcd.period", str(cfg.get("fcd_period", 10)),
            "--tripinfo-output", str(output / f"{args.label}.tripinfo.xml"),
            "--step-length", str(step_length), "--seed", str(cfg.get("seed", 2026)),
@@ -108,6 +111,8 @@ def main():
                    "moped", "bicycle", "pedestrian", "wheelchair", "scooter", "drone",
                    "tram", "rail", "rail_urban", "rail_electric", "rail_fast", "ship", "custom1", "custom2"]
     steps = int(round(step_count))
+    steps_run = 0
+    arrived_total = 0
     active_lanes = set()
     active_phase = -1
     interrupted = False
@@ -139,6 +144,8 @@ def main():
             if args.plan_routes:
                 policies.apply_policy(traci, args.compliance, args.clearance, cfg)
             traci.simulationStep()
+            steps_run += 1
+            arrived_total += traci.simulation.getArrivedNumber()
             if traci.simulation.getTime() >= end:
                 break
     except KeyboardInterrupt:
@@ -146,22 +153,33 @@ def main():
     finally:
         final_time = traci.simulation.getTime()
         remaining = traci.simulation.getMinExpectedNumber()
-        try:
-            teleports = traci.simulation.getStartingTeleportNumber()
-        except (AttributeError, Exception):
-            teleports = None
-        loaded = traci.simulation.getLoadedNumber()
-        departed = traci.simulation.getDepartedNumber()
-        arrived = traci.simulation.getArrivedNumber()
         pending_departures = len(traci.simulation.getPendingVehicles())
-        dropped = max(0, loaded - departed - pending_departures)
         traci.close()
+    try:
+        statistics = ET.parse(statistics_output).getroot()
+        vehicle_stats = statistics.find("vehicles")
+        teleport_stats = statistics.find("teleports")
+        loaded = int(vehicle_stats.get("loaded"))
+        departed = int(vehicle_stats.get("inserted"))
+        waiting = int(vehicle_stats.get("waiting"))
+        teleports = int(teleport_stats.get("total"))
+        teleport_reasons = {reason: int(teleport_stats.get(reason, 0))
+                            for reason in ("jam", "yield", "wrongLane")}
+    except (FileNotFoundError, ET.ParseError, AttributeError, TypeError, ValueError):
+        loaded = departed = teleports = None
+        waiting = pending_departures
+        teleport_reasons = None
+    max_depart_delay = cfg.get("max_depart_delay", -1)
+    dropped = (max(0, loaded - departed - waiting) if max_depart_delay >= 0
+               else 0) if loaded is not None else None
     summary = {"label": args.label, "begin": begin, "requested_end": end, "final_time": final_time,
-               "steps": steps, "unfinished_at_horizon": remaining, "teleports_started": teleports,
+               "steps": steps_run, "step_budget": steps, "unfinished_at_horizon": remaining,
+               "teleports_total": teleports, "teleports_by_reason": teleport_reasons,
                "vehicles_loaded": loaded, "vehicles_departed": departed,
-               "vehicles_arrived": arrived, "pending_departures": pending_departures,
+               "vehicles_arrived": arrived_total, "pending_departures": waiting,
                "estimated_dropped_after_departure_delay": dropped,
-               "max_depart_delay_seconds": cfg.get("max_depart_delay", 60), "fcd_output": str(fcd_output),
+               "max_depart_delay_seconds": max_depart_delay, "fcd_output": str(fcd_output),
+               "statistics_output": str(statistics_output), "statistics_available": loaded is not None,
                "interrupted_by_user": interrupted, "complete": not interrupted and final_time >= end,
                "horizon_capped": end < configured_end,
                "scenario_complete": (not interrupted and end >= configured_end and final_time >= configured_end)}

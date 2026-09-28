@@ -15,8 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Fri 25 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
-the incident) · Stand-ups: Sunday and Wednesday
+**Last updated: Mon 28 Sep 2026** - Week 2 of 5 (28 Sep-4 Oct: baseline and interim report) - Stand-ups: Sunday and Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
@@ -49,7 +48,7 @@ this chain.
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Offline mapping now uses OSM street aliases only when the cached TD lane set agrees, and its audit compares positions along edges. This resolved the AID01106→AID01107 tunnel approach detour (1,771.83 m to 441.79 m) without changing OSM geometry, and the AID01214 and AID01218 mappings now match their measured three- and two-lane scopes. Three other lane-scope differences and three detectors without usable cached lane evidence remain. The network is local and provisional; no complete validation is claimed. Data owns the ~15-link fallback in parallel. ([src/twin/](src/twin/README.md), [calibration window](sim/scenarios/calibration.json), [generated OSM audit](results/twin/osm-network-audit.md)) |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The local OSM map now has audited connectivity for all 24 directed links across the two main roads and western alternative; all 24 directed detector-to-detector links in the audit are reachable, with path distances within 1.12 times their detector-coordinate distances. AID01106 to AID01107 detour fell from 1,771.83 m to 441.79 m without editing OSM geometry. A bounded May 15 pre-incident run scores 66.5% GEH<5 and 36.9% speed MAPE, so the baseline target is not met; lane-scope gaps remain and the local network/E1 files are still provisional. Data's ~15-link fallback remains active. ([src/twin/](src/twin/README.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md), [OSM connectivity audit](results/twin/osm-network-audit.md)) |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
@@ -132,13 +131,16 @@ merged shows in the rows above; pull requests #1–#16 are merged.
   The missing minutes cannot be recovered
   ([docs/02-data.md](docs/02-data.md) §3, §7).
 - For [C], the draft network and E1 loops are **not reviewed or committed**.
-  The local diagnostic stopped at 6,410 of 30,900 seconds after repeated
-  teleports and has zero scoreable bins; it used a detector placement now
-  identified as an implausible surface-road detour, so it does not isolate
-  remaining network defects from demand/route pressure. The updated position
-  audit resolves that one path, but no simulation was rerun. Keep the OSM run
-  diagnostic and the Data-owned ~15-link fallback in parallel until a short
-  reviewed replay separates those causes.
+  The earlier September run stopped at 6,410 of 30,900 seconds with zero
+  scoreable bins. A bounded May 15 pre-incident replay now completes 4,500 s:
+  66.5% of 242 count bins meet GEH<5, speed MAPE is 36.9% over 296 bins, and
+  the run ends with 2,405 waiting vehicles and 68 teleports. Even quarter-volume
+  demand still produced 9 teleports, so demand volume is not the only unresolved
+  factor. The offline audit now checks all 24 directed corridor links: all are
+  reachable, and route distances are 0.959-1.120 times direct distance on the main
+  chains and 1.002-1.093 times on the western alternative. This checks locality; it
+  does not make the network reviewed or validate incident behavior. Keep the
+  Data-owned ~15-link fallback active.
 - For [C], the mapper now uses detector chains and source road names to
   reject opposite-direction and wrong-road nearest-edge matches. OSM aliases
   are accepted only when the cached feed's lane count supports the candidate;
@@ -180,6 +182,9 @@ merged shows in the rows above; pull requests #1–#16 are merged.
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Mon 28 Sep**
+- Component C: extended the offline source-backed network audit to include all six directed links on the western alternative. The 24 main and alternative links are reachable in the local OSM network, with modeled path distance at most 1.12 times registry-coordinate distance. Centralized the two western travel orders so detector direction matching, route generation, and audit use the same chains. No OSM tags, geometry, lane counts, or traffic observations changed; the local network and E1 files remain unreviewed. Ten focused Component C tests passed. ([audit](results/twin/osm-network-audit.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md))
 
 **Sun 27 Sep**
 - Component C: added fail-fast checks before demand fitting and SUMO launch.

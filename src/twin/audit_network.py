@@ -7,7 +7,10 @@ from pathlib import Path
 
 import sumolib
 
-from src.loaders.corridor import CHAIN_EASTBOUND, CHAIN_WESTBOUND
+from src.loaders.corridor import (
+    CHAIN_EASTBOUND, CHAIN_WESTBOUND,
+    CHAIN_WESTERN_EASTBOUND, CHAIN_WESTERN_WESTBOUND,
+)
 from src.twin.common import ROOT, load_json, resolve
 from src.twin.network_sources import cached_lane_evidence, cached_osm_path, read_osm_ways, sha256
 
@@ -31,10 +34,16 @@ def read_mapping(path):
 
 def chain_paths(net, mapping, registry):
     rows = []
-    for sequence in (CHAIN_EASTBOUND, CHAIN_WESTBOUND):
+    chains = (
+        ("main_eastbound", CHAIN_EASTBOUND),
+        ("main_westbound", CHAIN_WESTBOUND),
+        ("western_eastbound", CHAIN_WESTERN_EASTBOUND),
+        ("western_westbound", CHAIN_WESTERN_WESTBOUND),
+    )
+    for leg, sequence in chains:
         for a, b in zip(sequence, sequence[1:]):
             if a not in mapping or b not in mapping:
-                rows.append({"from": a, "to": b, "status": "missing_mapping"})
+                rows.append({"leg": leg, "from": a, "to": b, "status": "missing_mapping"})
                 continue
             source, destination = mapping[a], mapping[b]
             path, cost = net.getShortestPath(
@@ -44,7 +53,8 @@ def chain_paths(net, mapping, registry):
             direct = math.hypot(float(registry[a]["easting"]) - float(registry[b]["easting"]),
                                 float(registry[a]["northing"]) - float(registry[b]["northing"]))
             rows.append({
-                "from": a, "to": b, "status": "reachable" if path else "unreachable",
+                "leg": leg, "from": a, "to": b,
+                "status": "reachable" if path else "unreachable",
                 "direct_hk1980_m": round(direct, 3),
                 "path_m": round(cost, 3) if path else None,
                 "path_to_direct_ratio": round(cost / direct, 3) if path and direct else None,
@@ -98,17 +108,18 @@ def write_markdown(report, path):
         lines.append(f"| {row['detector_id']} | `{row['edge_id']}` | {row['position_m']:.2f} | "
                      f"{row['td_lanes']} | {row['sumo_lanes']} | {row['lane_scope_status']} | "
                      f"{row['lane_0_offset_m']:.2f} | {row['projection_at_lane_endpoint']} |")
-    lines += ["", "## Directed main-corridor connectivity", "",
+    lines += ["", "## Directed corridor connectivity", "",
               "Distances use detector positions and include internal junction connectors.",
               "Direct distances use the registry's HK1980 coordinates. A ratio is a review",
               "signal; it does not by itself prove an OSM topology error. Projected positions",
-              "may produce ratios below one because source coordinates lie off modelled lanes.", "",
-              "| From | To | Before m | Current m | Direct m | Current ratio | Status |",
-              "|---|---|---:|---:|---:|---:|---|"]
-    before = {(r['from'], r['to']): r for r in report.get('before_paths', [])}
+              "may produce ratios below one because source coordinates lie off modelled lanes.",
+              "The audit covers both main chains and both directed Western Alternative chains.", "",
+              "| Leg | From | To | Before m | Current m | Direct m | Current ratio | Status |",
+              "|---|---|---|---:|---:|---:|---:|---|"]
+    before = {(r.get('leg'), r['from'], r['to']): r for r in report.get('before_paths', [])}
     for row in report['paths']:
-        previous = before.get((row['from'], row['to']), {}).get('path_m', '-')
-        lines.append(f"| {row['from']} | {row['to']} | {previous} | {row.get('path_m')} | "
+        previous = before.get((row.get('leg'), row['from'], row['to']), {}).get('path_m', '-')
+        lines.append(f"| {row.get('leg', '-')} | {row['from']} | {row['to']} | {previous} | {row.get('path_m')} | "
                      f"{row.get('direct_hk1980_m')} | {row.get('path_to_direct_ratio')} | {row['status']} |")
     lines += ["", "The companion JSON records file hashes, original OSM name/turn tags,",
               "observed lane sets and each route's edge sequence. Counts and speeds are",

@@ -6,7 +6,10 @@ import re
 from pathlib import Path
 
 import sumolib
-from src.loaders.corridor import CHAIN_EASTBOUND, CHAIN_WESTBOUND
+from src.loaders.corridor import (
+    CHAIN_EASTBOUND, CHAIN_WESTBOUND,
+    CHAIN_WESTERN_EASTBOUND, CHAIN_WESTERN_WESTBOUND,
+)
 from src.twin.common import load_json, resolve
 from src.twin.network_sources import (
     apply_mapping_overrides, cached_lane_evidence, cached_osm_path, edge_names,
@@ -22,8 +25,7 @@ def _sequence_vector(detector_id, detector_metadata, net):
     detector coordinates provide a better local travel tangent.
     """
     sequences = [CHAIN_EASTBOUND, CHAIN_WESTBOUND,
-                 ["TDSSPWR10001", "TDSSPWR10002", "TDSSPWR10003"],
-                 ["TDSSPWR20003", "TDSSPWR20002", "TDSSPWR20001"]]
+                 CHAIN_WESTERN_EASTBOUND, CHAIN_WESTERN_WESTBOUND]
     for sequence in sequences:
         if detector_id not in sequence:
             continue
@@ -131,6 +133,7 @@ def main():
     xml_path = resolve(cfg.get("detector_additional", "sim/detectors.add.xml"))
     xml_path.parent.mkdir(parents=True, exist_ok=True)
     results_dir = resolve(cfg.get("output_dir", "sim/work/results"))
+    results_dir.mkdir(parents=True, exist_ok=True)
     rows = []
     temporary_xml = xml_path.with_suffix(xml_path.suffix + ".tmp")
     with open(temporary_xml, "w", encoding="utf-8") as out:

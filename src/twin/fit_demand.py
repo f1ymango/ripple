@@ -25,7 +25,7 @@ def main():
     edge_by_id = {}
     with open(mapping_path, encoding="utf-8") as f:
         for row in csv.DictReader(f): edge_by_id[row["detector_id"]] = row["edge_id"]
-    target = defaultdict(float)
+    target = {}
     calibration_coverage = {}
     calibration_seconds = float(cfg.get("calibration_seconds", 3600))
     if calibration_seconds <= 0:
@@ -66,7 +66,9 @@ def main():
         if route is None: continue
         rid, path = vehicle.get("id"), route.get("edges", "").split()
         if path and all(e in edges for e in path):
-            crossings = {did for did, de in edge_by_id.items() if de in path}
+            # A detector with no usable calibration counts supplies no target.
+            # Treating its missing value as zero suppresses flow on shared edges.
+            crossings = {did for did, de in edge_by_id.items() if did in target and de in path}
             if crossings: routes.append((rid, path, crossings))
     if not routes or not target:
         raise ValueError("Need candidate routes, detector mappings, and non-null pre-incident observed counts.")
@@ -104,11 +106,13 @@ def main():
             continue
         v = ET.SubElement(fitted_root, "flow", id=f"fit_{serial}", type="DEFAULT_VEHTYPE",
                           begin=f"{simulation_begin:.2f}", end=f"{simulation_begin + simulation_seconds:.2f}",
-                          number=str(count), departLane="random", departSpeed="desired")
+                          number=str(count), departLane="best", departPos="0",
+                          departSpeed="desired")
         ET.SubElement(v, "route", edges=" ".join(path))
     ET.ElementTree(fitted_root).write(out, encoding="utf-8", xml_declaration=True)
     predictions = dict(predicted)
     summary = {"target_counts": dict(target), "predicted_counts": predictions,
+               "detectors_without_calibration_counts": sorted(set(edge_by_id) - set(target)),
                "calibration_coverage_fraction": calibration_coverage,
                "calibration_window_slots": calibration_slots,
                "calibration_seconds": calibration_seconds,
