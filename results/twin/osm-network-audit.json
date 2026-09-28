@@ -18,7 +18,7 @@
     },
     "observations": {
       "path": "sim/scenarios/detectors.json",
-      "sha256": "9748ce1800146cf78ad7225a103cd233033829c095eaf45617ce77127ed30741"
+      "sha256": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605"
     },
     "mapping": {
       "path": "sim/work/may-diagnostic/detectors.add.csv",
