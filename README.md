@@ -15,12 +15,12 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Sat 26 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
-the incident) · Stand-ups: Wednesday
+**Last updated: Mon 28 Sep 2026** · Week 2 of 5 (28 Sep–4 Oct: baseline
+and interim report) · Stand-ups: Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
-**Critical path:** 🟡 demo incident chosen → ⚪ baseline matches reality →
+**Critical path:** ✅ demo incident chosen → ⚪ baseline matches reality →
 ⚪ three plans compared → ⚪ video. If anything slips, cut features and protect
 this chain.
 
@@ -34,7 +34,7 @@ this chain.
 
 | Date | Milestone | Status |
 |---|---|---|
-| Sun 27 Sep | 🔒 Team picks **the** demo incident | ⚪ |
+| Sun 27 Sep | 🔒 Lock the primary demo incident and backup | ✅ 28 Sep — Lead selected [IN-26-03365](data/demo_shortlist.md) as primary; IN-26-06391 as backup |
 | Sat 3 Oct | 📤 Submit interim report (official deadline Sun 4 Oct) | ⚪ |
 | Sun 4 Oct | 🚦 Go / no-go: if the baseline does not roughly match the detectors, switch to the ~15-link network that day | ⚪ |
 | Mon 12 Oct | Pitching workshop, everyone (HKU Innovation Wing 2, 14:00–17:30) | ⚪ |
@@ -59,7 +59,16 @@ this chain.
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
 
-### This week: Week 1 (21–27 Sep)
+### This week: Week 2 (28 Sep–4 Oct)
+
+| Owner | Deliverable | Next evidence |
+|---|---|---|
+| Data + Simulation | Baseline replay of IN-26-03365, fitted to detector counts and speeds | Validation chart and stated errors; decide simplified-network fallback on 4 Oct |
+| Lead | Reader result and incident assumptions ready for integration | Gold-set score already recorded; first-phase `unspecified` lane assumption stated with the scenario |
+| Visuals | First timeline playback of the selected incident | Playback linked from the console or evidence pack |
+| Impact | Interviews and interim report, with one paragraph from each owner | Submit report Sat 3 Oct |
+
+### Week 1 outcomes (21–27 Sep)
 
 | Owner | Task | Done when | Status |
 |---|---|---|---|
@@ -71,25 +80,15 @@ The JSON contracts between modules are in
 
 ### In review
 
-Work that exists but is not on `main` yet, as of Sat 26 Sep. Everything
-merged shows in the rows above; pull requests #1–#19 are merged.
+Work that exists but is not on `main` yet, as of Mon 28 Sep. Pull
+requests #1–#20 are merged; PRs #21–#24 remain open.
 
 | What | Who | Branch |
 |---|---|---|
-| Twin: demand fitting, the FCD diagnostic GIF, `calibration.json`, and fixes across the twin scripts — **pushed, but no pull request is open**. It also carries a `data/candidates.md` that Data's 26 Sep table supersedes; drop that file from the pull request | Simulation | `sim/e1-evaluation-correctness` |
+| Twin: demand fitting, May 15 pre-incident diagnostic, detector-mapping audit, and scenario fixes — **pushed, but no pull request is open**. The network and loop files remain provisional; baseline validation is not complete | Simulation | `sim/e1-evaluation-correctness` |
 
 ### Open decisions
 
-- **The demo incident** (🔒 Sun 27 Sep), from Data's shortlist. Corridor
-  incidents are rare: 15–21 Sep had only two (IN-26-06874, IN-26-06904), so
-  search a longer window. Over six months (22 Mar–21 Sep) the corridor had 55
-  traffic accidents: 49 have a complete timeline and 35 of those lasted 20
-  minutes or more (all three STN files read, [docs/02-data.md](docs/02-data.md) §2).
-  Data proposes five in [data/demo_shortlist.md](data/demo_shortlist.md),
-  headed by **IN-26-03365** (Fri 15 May, 09:01–10:02: the Wong Chuk Hang Road
-  flyover to the tunnel, "part of the lanes" then "all lanes"; the queue
-  reached Aberdeen Praya Road). The evidence for all 35 is
-  [data/candidates.md](data/candidates.md).
 - **One corridor-road list.** The Reader ([src/reader/reader.py](src/reader/reader.py))
   and the loaders ([src/loaders/corridor.py](src/loaders/corridor.py)) each
   keep their own, and they differ: Stubbs Road and the Chinese road names are
@@ -170,6 +169,13 @@ merged shows in the rows above; pull requests #1–#19 are merged.
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Mon 28 Sep**
+- Lead: selected `IN-26-03365` as the primary demo incident and
+  `IN-26-06391` as backup from Data's five-candidate shortlist. The initial
+  lane and affected simulation edge still need an explicit modelling decision;
+  selection is not baseline validation
+  ([data/demo_shortlist.md](data/demo_shortlist.md)).
 
 **Sat 26 Sep**
 - Data: demo incident shortlist. The candidate screen was rebuilt: every
