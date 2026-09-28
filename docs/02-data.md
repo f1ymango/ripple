@@ -437,10 +437,11 @@ Wah Fu → Pok Fu Lam Road · **MTR South Island Line** as a mode shift.
 `src/loaders/detectors.py` emits one row per detector per five minutes —
 **every** five minutes of the window, for every corridor detector, since 26 Sep.
 A slot the archive delivered nothing for is a row with `periods_observed` 0 and
-blank speed and counts, never a missing row: the twin lines series up by
-position, so one missing row shifted every later slot. Because of the partial
-coverage in section 3, every row carries how much of the window was actually
-observed:
+blank speed and counts, never a missing row. The twin matches observations
+by timestamp, so a missing simulated interval remains unmatched without
+shifting later slots. The full grid keeps archive gaps visible. Because of the
+partial coverage in section 3, every row carries how much of the window was
+actually observed:
 
 | Column | Meaning |
 |---|---|

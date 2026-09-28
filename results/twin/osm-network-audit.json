@@ -1,0 +1,2127 @@
+{
+  "sources": {
+    "config": {
+      "path": "sim/scenarios/scenario.json",
+      "sha256": "ba42896afa9f5a1268d6dcba375f21e2559e746984c5856ccd48c1bfd6da09c4"
+    },
+    "network": {
+      "path": "sim/work/aberdeen.net.xml",
+      "sha256": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e"
+    },
+    "osm": {
+      "path": "sim/work/osm/aberdeen_bbox.osm.xml",
+      "sha256": "c6d3333d803ef19db9707ae1ac9dc958121d7bd19941a555a8db0ec50e62b09f"
+    },
+    "registry": {
+      "path": "data/detectors.csv",
+      "sha256": "e71252d69be0bcf6ebcc8c41acc76bda7e16e92408e03f12ccab4706362385ae"
+    },
+    "observations": {
+      "path": "sim/scenarios/detectors.json",
+      "sha256": "9748ce1800146cf78ad7225a103cd233033829c095eaf45617ce77127ed30741"
+    },
+    "mapping": {
+      "path": "sim/work/may-diagnostic/detectors.add.csv",
+      "sha256": "f0d2818acf0b71437a58c3bc22aa05cf6591af66a267822dfac3d72d880a63d4"
+    },
+    "overrides": {
+      "path": "sim/scenarios/aberdeen-detector-overrides.json",
+      "sha256": "542ac66b5cf3a4667bcbf1c7c0393537ee29c102e5b8dd53507198c53aa19c08"
+    },
+    "before_mapping": {
+      "path": "results/twin/osm-mapping-before.csv",
+      "sha256": "f54224143ff29f06e8b77967921d13d09deb101b3dce8afae0ee962a6fe16377"
+    }
+  },
+  "lane_evidence": {
+    "window": [
+      "2026-05-15T07:55:00+08:00",
+      "2026-05-15T10:35:00+08:00"
+    ],
+    "sources": [
+      {
+        "path": "data/raw/detectors/20260515-0802.xml.gz",
+        "sha256": "b7f63e1596ef5d290f06cbc187f96a8847e3b208276569ea7aba40e04475e76e"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0806.xml.gz",
+        "sha256": "7787aec172210ffbb9f1a369dfcd194e13ddb40bbcf0cc3edf9b88a38aa37410"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0807.xml.gz",
+        "sha256": "b4574a014758fcff63a22fc24d15554ef257ac16730ce2856acfd599135be4cf"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0810.xml.gz",
+        "sha256": "3c0f0e65a13dab09a5e7365b50633b4164c9e77988bebf7d1b9cb177fd17bec8"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0811.xml.gz",
+        "sha256": "5c704f7836f7d4c078a443cda0ebc8c2a2a7c07cd09fd7986b5d66ad6445243e"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0813.xml.gz",
+        "sha256": "8040c0e70cf9ecd1a5410c4ef2f043380de121ddfac59dc755f5db52023ef6a6"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0817.xml.gz",
+        "sha256": "6b12255d2cf5539dc1f3cc513deae255095eed1aac7d07e7da06e833d7079b04"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0819.xml.gz",
+        "sha256": "dd8576a9e6ed1d79bb96d7cb15ba27509d853b59fd209e6d6422193e217fc72c"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0821.xml.gz",
+        "sha256": "25d0c304e329a3607c9d3c8c956ec2249ab3ab4da37fa26cdc760a7e142e3d4f"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0825.xml.gz",
+        "sha256": "515c02699330a26eb4b3fec260d097b8070ce9eca1415bef718d10f8de3d4096"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0826.xml.gz",
+        "sha256": "58e9634635a1d4aad8abba7f1eb1d5e005376dcb7c54b5dd5510779f4da7bd53"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0831.xml.gz",
+        "sha256": "5219c30730bf766e1bc9369221114ac414e9e6c692a2a818be918498154d988a"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0835.xml.gz",
+        "sha256": "c3abf33dc76c2c2e9428c59c2115ddc46463356600f04a9ba6a9836784c91e41"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0836.xml.gz",
+        "sha256": "4fe70028cbae5d0171edb5699746fc9217e1c055889dc2f62b7d8516fbd2a689"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0837.xml.gz",
+        "sha256": "e9dc80dda78b74084bbcfa09de560d18bb7b7e9d9659402f137711d744dd33b8"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0841.xml.gz",
+        "sha256": "e036fd6c942a803a07bed74de810f3723d80d24048856ff110ad7bc6dc545073"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0845.xml.gz",
+        "sha256": "c74968c7b8073d125e3b4d84c114c3fa3094cd8581568d47176fb44ec3d22b9f"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0846.xml.gz",
+        "sha256": "9ee51e61d8292af01b59895e53645c4a8f2f25d7ec909dd008820999e88c9b4e"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0849.xml.gz",
+        "sha256": "88929bb92fbb72085b3ad4be516e047109dbbf291a69dda08b73c8a5e3133c96"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0850.xml.gz",
+        "sha256": "cd5fe776ab38987790ae233fd96c9e3e32649171401251495306aa9c810313b1"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0851.xml.gz",
+        "sha256": "36d8be7093b032177a78d44a6a8532ef1fc622c2982a3dbfbf20ba8232fabb42"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0852.xml.gz",
+        "sha256": "58a5a8cf14bbbbccb9093ccb3fe526cdd2757ca3459851cb5ea01dd2b8390efa"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0853.xml.gz",
+        "sha256": "8d173868a879023aa1576d00fca7fec0380629cf809ecfed67dc39d57690c52f"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0856.xml.gz",
+        "sha256": "082f252f613b161036f26d1ce7c0952b73236c41598364c534a103466532f28f"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0857.xml.gz",
+        "sha256": "b094d9e84a716886d22086905a828d30604f43adec2984a09ce7c9d638e4d51d"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0901.xml.gz",
+        "sha256": "cff2497d3d7fc4154b872fc69166b862cd8f8c0347412ee0b67a1d77522a4b14"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0902.xml.gz",
+        "sha256": "c0e8e26b2215112c116a32242c1c84b625dbc5d60d394dd0732cb72a23dcd421"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0907.xml.gz",
+        "sha256": "a4f0c1ef592a90df565c15c2dab9fe2ff864f9e5fe58ccd472a51bffd65dafaa"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0912.xml.gz",
+        "sha256": "0215827d2c1c41cd0bd2156e76180df8d6eac2034dbc2dddff49f227a2a6d9d3"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0916.xml.gz",
+        "sha256": "324392d48343c7dccaa5b46445b81a5885c13fd48ece536cff39165ebe267d56"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0920.xml.gz",
+        "sha256": "24e16846678a0b2fa379109bd2964cc4cef2cc4446d84689481d80107cf398f4"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0921.xml.gz",
+        "sha256": "f987d7547ec24768281946dc56286215d1d63e5f48151e7150c8de1b59158b56"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0925.xml.gz",
+        "sha256": "70d3ea0b437c03befdf33b9f6800da268c77457818b7ebabda96d3f6f9fa26d6"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0927.xml.gz",
+        "sha256": "5261c1dac236fa9d7f45bd475810265e1e62480acb5b2e19bdfffae49fdca88e"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0928.xml.gz",
+        "sha256": "c3055d7a9f4e1e598999c7398598f0b1ec241f778c8f28870eac7b8bec5a36b0"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0930.xml.gz",
+        "sha256": "8dcb6397d85f2a5d92bad7fe7ec4b270b22f7e279dc471f2f4d46f05a0f10d88"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0931.xml.gz",
+        "sha256": "1131d0f1a844b99caccfa5abf4c6540bfefbeb9511739e72c4070a63b226f4a2"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0936.xml.gz",
+        "sha256": "6348e04b210874aa3e97096efd9ceaf3e06a84d87f53904eb8322d6a5c2a0b94"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0937.xml.gz",
+        "sha256": "e4cb63542e9744a601f9d3aff5f9f66498c9556a3b78568a9651246677c1ed5e"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0939.xml.gz",
+        "sha256": "30b89f5bdb500dadd509c221746de8652b669b3a10f6ffc2f95888dfefc8edd6"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0941.xml.gz",
+        "sha256": "388cf5fbaad7c15deb6234db5979e206f0d2ba8dfe880075ead28905e91cb215"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0946.xml.gz",
+        "sha256": "7ee8995376d017a55c31732ca61a94bbb64b73dfe12bb1343f37ab95117db53c"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0950.xml.gz",
+        "sha256": "3f6a95edf1df3494239715096477fcf60e1a5cd7c90a20990651172fa470f795"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0951.xml.gz",
+        "sha256": "161b8c022888ac4aee0e06e0986a2f383b6a64d19a91e068104cb8feb9718e4e"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0952.xml.gz",
+        "sha256": "46f585a6eaf5b5eb4cc130aeb71507987c215f491a65d56579cd9fcf74ab31b9"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0956.xml.gz",
+        "sha256": "b483e57d53d0189a4050eee8b7f39f1b3df6697c736ec634fbd4b9a4efdd6ce7"
+      },
+      {
+        "path": "data/raw/detectors/20260515-0957.xml.gz",
+        "sha256": "f7b621b0eee5db06a7a3dd64a7a75b8d009688a797db7b05abf98cf21caa9f14"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1001.xml.gz",
+        "sha256": "0d7c10d4ae858850250edb35ff17eb4362cdc50f4c2a40fda202033abb28cb37"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1002.xml.gz",
+        "sha256": "51a0c3ca78bcf41d2d585b493a7251821c837e9f21d9d032dc435b9ad729cf32"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1003.xml.gz",
+        "sha256": "e9f05ce39fb4d165eb7709dba01a55ee1d1010d6b8afebea31520314fefdaee8"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1006.xml.gz",
+        "sha256": "63d310114c2e55544879bb9e69ddb5c2820dd858b5c89a0454e3b55047702cd1"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1007.xml.gz",
+        "sha256": "d40e1a58ec73b1bf420b2f6a7abdd098ba5c95665525304ab4eb6cd9c9725d9e"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1010.xml.gz",
+        "sha256": "00c3fd360f72824db6eb479f61f06f258972b45d515f578089377052b32ea2da"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1011.xml.gz",
+        "sha256": "3258b6c5b27ef9ebb1ce6cae73e1a20b921896b852b973d53a5686838626046d"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1012.xml.gz",
+        "sha256": "ebd3acb6650e968a390c1d378105994b2c5728f988b8f18dd6a9669027e68306"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1016.xml.gz",
+        "sha256": "8cbc2654ef175489fc73e0e3f915b2e653e09acd6cbc66ec1e12b4dcd418f2ce"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1017.xml.gz",
+        "sha256": "08f2b3d1d84efa59919daffdb49327d95fc85556ca2817b62ae8f6a27c3a99b7"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1021.xml.gz",
+        "sha256": "b0aaae8d606418a3b7857edfd3ac480933c4b11ac96a5035a5c3c7c1515648eb"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1024.xml.gz",
+        "sha256": "f287dadb589f0d8842949ac0274b85b06fe0e5df9d4d0456d27c3bd76961e763"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1026.xml.gz",
+        "sha256": "993d833e714db3b8055789989035d9adf2d512851e055c8eabb83a31b8d29b84"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1027.xml.gz",
+        "sha256": "3217c4d41c88d7bafb41da4c3f43293c0d424e47d1b656f014a8d8e4e0693633"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1030.xml.gz",
+        "sha256": "c1602a84c2195e9e3d1b8f67575e9b3e80709abc4c42f6009a07a3f4a50fedce"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1031.xml.gz",
+        "sha256": "2c5b358e4f4af100e319fa4d197beb8254213073095214b0f5f70ae05ca8f3a3"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1032.xml.gz",
+        "sha256": "819bb096f4d87382f0c34f1cb44ed664ad08760152016b5a9be750d6418b1e24"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1036.xml.gz",
+        "sha256": "dfd483e84763921d5fb99071f3b1e029c2844af1ec9e74af02f56a756dfbf992"
+      },
+      {
+        "path": "data/raw/detectors/20260515-1039.xml.gz",
+        "sha256": "9e7734b34a2064dfeb7727596ffebfd7f4abe4c149eb996ca43f971d9fac2fdd"
+      }
+    ],
+    "skipped": [],
+    "detectors": {
+      "AID01101": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 3,
+        "observed_periods": 132
+      },
+      "AID01102": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 3,
+        "observed_periods": 132
+      },
+      "AID01103": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 3,
+        "observed_periods": 132
+      },
+      "AID01104": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 132
+      },
+      "AID01105": {
+        "lane_sets": [],
+        "lane_count": null,
+        "observed_periods": 0
+      },
+      "AID01106": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 132
+      },
+      "AID01107": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 132
+      },
+      "AID01108": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 132
+      },
+      "AID01109": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 3,
+        "observed_periods": 132
+      },
+      "AID01110": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 3,
+        "observed_periods": 132
+      },
+      "AID01214": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 3,
+        "observed_periods": 132
+      },
+      "AID01215": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 132
+      },
+      "AID01216": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 132
+      },
+      "AID01217": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane 1",
+            "Middle Lane 2",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 4,
+        "observed_periods": 132
+      },
+      "AID01218": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 132
+      },
+      "AID01219": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 132
+      },
+      "AID01220": {
+        "lane_sets": [],
+        "lane_count": null,
+        "observed_periods": 0
+      },
+      "AID01221": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 3,
+        "observed_periods": 132
+      },
+      "AID01222": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 3,
+        "observed_periods": 132
+      },
+      "AID01223": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 3,
+        "observed_periods": 132
+      },
+      "TDSAPR10001": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 3,
+        "observed_periods": 129
+      },
+      "TDSAPR20001": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 3,
+        "observed_periods": 129
+      },
+      "TDSSPWR10001": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 129
+      },
+      "TDSSPWR10002": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 124
+      },
+      "TDSSPWR10003": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 127
+      },
+      "TDSSPWR20001": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 126
+      },
+      "TDSSPWR20002": {
+        "lane_sets": [],
+        "lane_count": null,
+        "observed_periods": 0
+      },
+      "TDSSPWR20003": {
+        "lane_sets": [
+          [
+            "Fast Lane",
+            "Slow Lane"
+          ]
+        ],
+        "lane_count": 2,
+        "observed_periods": 129
+      }
+    }
+  },
+  "detectors": [
+    {
+      "detector_id": "AID01101",
+      "edge_id": "1197689928",
+      "position_m": 19.8,
+      "registry_road": "Aberdeen Praya Road near Abba House - Eastbound",
+      "osm_name": "香港仔海傍道 Aberdeen Praya Road",
+      "osm_name_tags": {
+        "name:en": "Aberdeen Praya Road"
+      },
+      "osm_lanes_tag": "3",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 3,
+      "td_lanes": 3,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 5.357,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01102",
+      "edge_id": "956602966",
+      "position_m": 52.79,
+      "registry_road": "Aberdeen Praya Road near Hoi Fai Mansion - Eastbound",
+      "osm_name": "香港仔海傍道 Aberdeen Praya Road",
+      "osm_name_tags": {
+        "name:en": "Aberdeen Praya Road"
+      },
+      "osm_lanes_tag": "3",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 3,
+      "td_lanes": 3,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 8.281,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01103",
+      "edge_id": "814979901#0",
+      "position_m": 101.94,
+      "registry_road": "Wong Chuk Hang Road near Aberdeen Technical School - Eastbound",
+      "osm_name": "黃竹坑道 Wong Chuk Hang Road",
+      "osm_name_tags": {
+        "name:en": "Wong Chuk Hang Road",
+        "network:name:en": "Hong Kong Strategic Routes"
+      },
+      "osm_lanes_tag": "3",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 3,
+      "td_lanes": 3,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 8.482,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01104",
+      "edge_id": "44419212",
+      "position_m": 136.31,
+      "registry_road": "Wong Chuk Hang Road Flyover near AXA Southside - Eastbound",
+      "osm_name": "黃竹坑道天橋 Wong Chuk Hang Road flyover",
+      "osm_name_tags": {
+        "bridge:name:en": "Wong Chuk Hang Road flyover",
+        "highway:name:en": "Wong Chuk Hang Road",
+        "name:en": "Wong Chuk Hang Road flyover",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "street:name:en": "Wong Chuk Hang Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 7.754,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01105",
+      "edge_id": "44419212",
+      "position_m": 461.21,
+      "registry_road": "Wong Chuk Hang Road Flyover near Benefit Industrial Factory Building - Eastbound",
+      "osm_name": "黃竹坑道天橋 Wong Chuk Hang Road flyover",
+      "osm_name_tags": {
+        "bridge:name:en": "Wong Chuk Hang Road flyover",
+        "highway:name:en": "Wong Chuk Hang Road",
+        "name:en": "Wong Chuk Hang Road flyover",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "street:name:en": "Wong Chuk Hang Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": null,
+      "lane_scope_status": "missing_or_variable_feed_scope",
+      "td_lane_sets": [],
+      "td_periods": 0,
+      "lane_0_offset_m": 5.745,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01106",
+      "edge_id": "1198101443",
+      "position_m": 0.1,
+      "registry_road": "Wong Chuk Hang Road near Hong Kong Academy of Medicine - Eastbound",
+      "osm_name": "香港仔隧道 Aberdeen Tunnel",
+      "osm_name_tags": {
+        "name:en": "Aberdeen Tunnel",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "street:name:en": "Wong Chuk Hang Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 20.731,
+      "projection_at_lane_endpoint": true
+    },
+    {
+      "detector_id": "AID01107",
+      "edge_id": "1198101443",
+      "position_m": 441.89,
+      "registry_road": "Aberdeen Tunnel near Wong Chuk Hang Hospital - Eastbound",
+      "osm_name": "香港仔隧道 Aberdeen Tunnel",
+      "osm_name_tags": {
+        "name:en": "Aberdeen Tunnel",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "street:name:en": "Wong Chuk Hang Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 6.189,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01108",
+      "edge_id": "1194711687",
+      "position_m": 45.14,
+      "registry_road": "Wong Nai Chung Gap Flyover near Racecourse - Northbound",
+      "osm_name": "黃泥涌峽天橋 Wong Nai Chung Gap Flyover",
+      "osm_name_tags": {
+        "alt_name:en": "Canal Road Flyover",
+        "name:en": "Wong Nai Chung Gap Flyover",
+        "network:name:en": "Hong Kong Strategic Routes"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 3.558,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01109",
+      "edge_id": "261027970",
+      "position_m": 0.1,
+      "registry_road": "Canal Road Flyover near Cricket Club - Northbound",
+      "osm_name": "堅拿道天橋 Canal Road Flyover",
+      "osm_name_tags": {
+        "name:en": "Canal Road Flyover",
+        "network:name:en": "Hong Kong Strategic Routes"
+      },
+      "osm_lanes_tag": "3",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 3,
+      "td_lanes": 3,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 9.321,
+      "projection_at_lane_endpoint": true
+    },
+    {
+      "detector_id": "AID01110",
+      "edge_id": "485146382",
+      "position_m": 8.63,
+      "registry_road": "Canal Road Flyover near Wan Chai Fire Station - Northbound",
+      "osm_name": "堅拿道天橋 Canal Road Flyover",
+      "osm_name_tags": {
+        "name:en": "Canal Road Flyover",
+        "network:name:en": "Hong Kong Strategic Routes"
+      },
+      "osm_lanes_tag": "3",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 3,
+      "td_lanes": 3,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 7.677,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01214",
+      "edge_id": "136461565",
+      "position_m": 0.55,
+      "registry_road": "Canal Road Flyover near Elizabeth House - Southbound",
+      "osm_name": "堅拿道天橋 Canal Road Flyover",
+      "osm_name_tags": {
+        "name:en": "Canal Road Flyover",
+        "network:name:en": "Hong Kong Strategic Routes"
+      },
+      "osm_lanes_tag": "3",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 3,
+      "td_lanes": 3,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 5.217,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01215",
+      "edge_id": "247878776",
+      "position_m": 18.84,
+      "registry_road": "Canal Road Flyover near Wing Tak Building - Southbound",
+      "osm_name": "堅拿道天橋 Canal Road Flyover",
+      "osm_name_tags": {
+        "name:en": "Canal Road Flyover",
+        "network:name:en": "Hong Kong Strategic Routes"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 5.668,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01216",
+      "edge_id": "88718922",
+      "position_m": 412.69,
+      "registry_road": "Wong Nai Chung Gap Flyover near Racecourse - Southbound",
+      "osm_name": "黃泥涌峽天橋 Wong Nai Chung Gap Flyover",
+      "osm_name_tags": {
+        "alt_name:en": "Canal Road Flyover",
+        "name:en": "Wong Nai Chung Gap Flyover",
+        "network:name:en": "Hong Kong Strategic Routes"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 5.892,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01217",
+      "edge_id": "1420680571",
+      "position_m": 82.78,
+      "registry_road": "Aberdeen Tunnel near Toll Plaza - Westbound",
+      "osm_name": "香港仔隧道 Aberdeen Tunnel",
+      "osm_name_tags": {
+        "name:en": "Aberdeen Tunnel",
+        "network:name:en": "Hong Kong Strategic Routes"
+      },
+      "osm_lanes_tag": "4",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 4,
+      "td_lanes": 4,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane 1",
+          "Middle Lane 2",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 1.928,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01218",
+      "edge_id": "1198101430",
+      "position_m": 265.82,
+      "registry_road": "Wong Chuk Hang Road near Wong Chuk Hang Sports Centre - Westbound",
+      "osm_name": "香港仔隧道 Aberdeen Tunnel",
+      "osm_name_tags": {
+        "name:en": "Aberdeen Tunnel",
+        "network:name:en": "Hong Kong Strategic Routes"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 6.687,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01219",
+      "edge_id": "44419249",
+      "position_m": 0.1,
+      "registry_road": "Wong Chuk Hang Road near Wong Chuk Hang Recreation Ground - Westbound",
+      "osm_name": "黃竹坑道天橋 Wong Chuk Hang Road flyover",
+      "osm_name_tags": {
+        "bridge:name:en": "Wong Chuk Hang Road flyover",
+        "highway:name:en": "Wong Chuk Hang Road",
+        "name:en": "Wong Chuk Hang Road flyover",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "street:name:en": "Wong Chuk Hang Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 7.638,
+      "projection_at_lane_endpoint": true
+    },
+    {
+      "detector_id": "AID01220",
+      "edge_id": "44419249",
+      "position_m": 497.32,
+      "registry_road": "Wong Chuk Hang Road Flyover near Cheung Tak Industrial Building - Westbound",
+      "osm_name": "黃竹坑道天橋 Wong Chuk Hang Road flyover",
+      "osm_name_tags": {
+        "bridge:name:en": "Wong Chuk Hang Road flyover",
+        "highway:name:en": "Wong Chuk Hang Road",
+        "name:en": "Wong Chuk Hang Road flyover",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "street:name:en": "Wong Chuk Hang Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": null,
+      "lane_scope_status": "missing_or_variable_feed_scope",
+      "td_lane_sets": [],
+      "td_periods": 0,
+      "lane_0_offset_m": 7.334,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01221",
+      "edge_id": "1205891500",
+      "position_m": 21.26,
+      "registry_road": "Wong Chuk Hang Road near Aberdeen Police Station - Westbound",
+      "osm_name": "黃竹坑道 Wong Chuk Hang Road",
+      "osm_name_tags": {
+        "name:en": "Wong Chuk Hang Road",
+        "network:name:en": "Hong Kong Strategic Routes"
+      },
+      "osm_lanes_tag": "4",
+      "osm_turn_lanes": "left|through|through|through",
+      "sumo_lanes": 4,
+      "td_lanes": 3,
+      "lane_scope_status": "conflict",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 18.988,
+      "projection_at_lane_endpoint": true
+    },
+    {
+      "detector_id": "AID01222",
+      "edge_id": "956602968",
+      "position_m": 52.56,
+      "registry_road": "Aberdeen Praya Road near Ocean Court - Westbound",
+      "osm_name": "香港仔海傍道 Aberdeen Praya Road",
+      "osm_name_tags": {
+        "name:en": "Aberdeen Praya Road"
+      },
+      "osm_lanes_tag": "4",
+      "osm_turn_lanes": "left|through|through|through",
+      "sumo_lanes": 4,
+      "td_lanes": 3,
+      "lane_scope_status": "conflict",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 13.028,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "AID01223",
+      "edge_id": "1197441904",
+      "position_m": 55.87,
+      "registry_road": "Aberdeen Praya Road near Aberdeen Bus Terminus - Westbound",
+      "osm_name": "香港仔海傍道 Aberdeen Praya Road",
+      "osm_name_tags": {
+        "name:en": "Aberdeen Praya Road"
+      },
+      "osm_lanes_tag": "3",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 3,
+      "td_lanes": 3,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 132,
+      "lane_0_offset_m": 8.588,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "TDSAPR10001",
+      "edge_id": "245466671",
+      "position_m": 140.15,
+      "registry_road": "Aberdeen Praya Road near Aberdeen Wholesale Fish Market - Eastbound",
+      "osm_name": "香港仔海傍道 Aberdeen Praya Road",
+      "osm_name_tags": {
+        "name:en": "Aberdeen Praya Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": "slight_left|through|through",
+      "sumo_lanes": 2,
+      "td_lanes": 3,
+      "lane_scope_status": "conflict",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 129,
+      "lane_0_offset_m": 3.957,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "TDSAPR20001",
+      "edge_id": "1197441895",
+      "position_m": 495.16,
+      "registry_road": "Aberdeen Praya Road near Aberdeen Wholesale Fish Market - Westbound",
+      "osm_name": "香港仔海傍道 Aberdeen Praya Road",
+      "osm_name_tags": {
+        "name:en": "Aberdeen Praya Road"
+      },
+      "osm_lanes_tag": "3",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 3,
+      "td_lanes": 3,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 129,
+      "lane_0_offset_m": 4.638,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "TDSSPWR10001",
+      "edge_id": "946158622",
+      "position_m": 0.1,
+      "registry_road": "Pok Fu Lam Road near St. Paul's College Primary School - Eastbound",
+      "osm_name": "薄扶林道 Pok Fu Lam Road",
+      "osm_name_tags": {
+        "alt_name:en": "Pokfulam Road",
+        "name:en": "Pok Fu Lam Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": "through|through;right",
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 129,
+      "lane_0_offset_m": 4.699,
+      "projection_at_lane_endpoint": true
+    },
+    {
+      "detector_id": "TDSSPWR10002",
+      "edge_id": "26560129",
+      "position_m": 92.08,
+      "registry_road": "Shek Pai Wan Road near Wah Kwai Estate - Eastbound",
+      "osm_name": "石排灣道 Shek Pai Wan Road",
+      "osm_name_tags": {
+        "name:en": "Shek Pai Wan Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 124,
+      "lane_0_offset_m": 13.857,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "TDSSPWR10003",
+      "edge_id": "26560129",
+      "position_m": 539.06,
+      "registry_road": "Shek Pai Wan Road near Shek Pai Wan Road Playground - Eastbound",
+      "osm_name": "石排灣道 Shek Pai Wan Road",
+      "osm_name_tags": {
+        "name:en": "Shek Pai Wan Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 127,
+      "lane_0_offset_m": 3.391,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "TDSSPWR20001",
+      "edge_id": "260770853",
+      "position_m": 15.22,
+      "registry_road": "Shek Pai Wan Road near Wah Fu Road - Westbound",
+      "osm_name": "石排灣道 Shek Pai Wan Road",
+      "osm_name_tags": {
+        "name:en": "Shek Pai Wan Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 126,
+      "lane_0_offset_m": 3.86,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "TDSSPWR20002",
+      "edge_id": "946158623",
+      "position_m": 432.35,
+      "registry_road": "Shek Pai Wan Road near Wah Kwai Estate - Westbound",
+      "osm_name": "石排灣道 Shek Pai Wan Road",
+      "osm_name_tags": {
+        "name:en": "Shek Pai Wan Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": null,
+      "lane_scope_status": "missing_or_variable_feed_scope",
+      "td_lane_sets": [],
+      "td_periods": 0,
+      "lane_0_offset_m": 3.142,
+      "projection_at_lane_endpoint": false
+    },
+    {
+      "detector_id": "TDSSPWR20003",
+      "edge_id": "946158623",
+      "position_m": 34.64,
+      "registry_road": "Shek Pai Wan Road near Shek Pai Wan Road Playground - Westbound",
+      "osm_name": "石排灣道 Shek Pai Wan Road",
+      "osm_name_tags": {
+        "name:en": "Shek Pai Wan Road"
+      },
+      "osm_lanes_tag": "2",
+      "osm_turn_lanes": null,
+      "sumo_lanes": 2,
+      "td_lanes": 2,
+      "lane_scope_status": "matches",
+      "td_lane_sets": [
+        [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      ],
+      "td_periods": 129,
+      "lane_0_offset_m": 1.084,
+      "projection_at_lane_endpoint": false
+    }
+  ],
+  "paths": [
+    {
+      "leg": "main_eastbound",
+      "from": "AID01101",
+      "to": "AID01102",
+      "status": "reachable",
+      "direct_hk1980_m": 545.4,
+      "path_m": 556.47,
+      "path_to_direct_ratio": 1.02,
+      "edges": [
+        "1197689928",
+        "40959451",
+        "1197441889",
+        "1197441888",
+        "1197441891",
+        "26560239",
+        "956602966"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01102",
+      "to": "AID01103",
+      "status": "reachable",
+      "direct_hk1980_m": 486.557,
+      "path_m": 495.45,
+      "path_to_direct_ratio": 1.018,
+      "edges": [
+        "956602966",
+        "302998780",
+        "45174709",
+        "310329775",
+        "297373180",
+        "814979896",
+        "23632768",
+        "814979902",
+        "814979900",
+        "814979901#0"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01103",
+      "to": "AID01104",
+      "status": "reachable",
+      "direct_hk1980_m": 379.111,
+      "path_m": 379.04,
+      "path_to_direct_ratio": 1.0,
+      "edges": [
+        "814979901#0",
+        "1198059118",
+        "1198059119",
+        "1198059120",
+        "44419212"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01104",
+      "to": "AID01105",
+      "status": "reachable",
+      "direct_hk1980_m": 325.125,
+      "path_m": 324.9,
+      "path_to_direct_ratio": 0.999,
+      "edges": [
+        "44419212"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01105",
+      "to": "AID01106",
+      "status": "reachable",
+      "direct_hk1980_m": 344.401,
+      "path_m": 377.45,
+      "path_to_direct_ratio": 1.096,
+      "edges": [
+        "44419212",
+        "44419216",
+        "714996652",
+        "1198101500",
+        "1198101498",
+        "86289334",
+        "1198101497",
+        "1198101443"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01106",
+      "to": "AID01107",
+      "status": "reachable",
+      "direct_hk1980_m": 457.739,
+      "path_m": 441.79,
+      "path_to_direct_ratio": 0.965,
+      "edges": [
+        "1198101443"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01107",
+      "to": "AID01108",
+      "status": "reachable",
+      "direct_hk1980_m": 2453.999,
+      "path_m": 2552.84,
+      "path_to_direct_ratio": 1.04,
+      "edges": [
+        "1198101443",
+        "251366297",
+        "1198101424",
+        "1545825139",
+        "1233513875#0",
+        "770641604#0",
+        "681882453",
+        "1194711684",
+        "1194711687"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01108",
+      "to": "AID01109",
+      "status": "reachable",
+      "direct_hk1980_m": 533.085,
+      "path_m": 597.23,
+      "path_to_direct_ratio": 1.12,
+      "edges": [
+        "1194711687",
+        "462275987",
+        "462275986#1",
+        "1194711693",
+        "462275985",
+        "261027970"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01109",
+      "to": "AID01110",
+      "status": "reachable",
+      "direct_hk1980_m": 305.321,
+      "path_m": 301.28,
+      "path_to_direct_ratio": 0.987,
+      "edges": [
+        "261027970",
+        "462275984",
+        "485146385",
+        "87148750",
+        "485146380",
+        "485146382"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01214",
+      "to": "AID01215",
+      "status": "reachable",
+      "direct_hk1980_m": 283.007,
+      "path_m": 290.12,
+      "path_to_direct_ratio": 1.025,
+      "edges": [
+        "136461565",
+        "1194693249",
+        "1194693246",
+        "247878776"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01215",
+      "to": "AID01216",
+      "status": "reachable",
+      "direct_hk1980_m": 566.851,
+      "path_m": 598.46,
+      "path_to_direct_ratio": 1.056,
+      "edges": [
+        "247878776",
+        "673961732",
+        "88718922"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01216",
+      "to": "AID01217",
+      "status": "reachable",
+      "direct_hk1980_m": 2524.749,
+      "path_m": 2615.75,
+      "path_to_direct_ratio": 1.036,
+      "edges": [
+        "88718922",
+        "250567236",
+        "46766450",
+        "155997128",
+        "46766851",
+        "770641603#0",
+        "492608830#0",
+        "1545825141",
+        "1420680571"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01217",
+      "to": "AID01218",
+      "status": "reachable",
+      "direct_hk1980_m": 401.508,
+      "path_m": 422.92,
+      "path_to_direct_ratio": 1.053,
+      "edges": [
+        "1420680571",
+        "1198101426",
+        "1198101430"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01218",
+      "to": "AID01219",
+      "status": "reachable",
+      "direct_hk1980_m": 441.005,
+      "path_m": 453.27,
+      "path_to_direct_ratio": 1.028,
+      "edges": [
+        "1198101430",
+        "1198101439",
+        "97694917",
+        "1198101492",
+        "1198101493",
+        "771218914",
+        "1198059110",
+        "44419249"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01219",
+      "to": "AID01220",
+      "status": "reachable",
+      "direct_hk1980_m": 493.867,
+      "path_m": 497.22,
+      "path_to_direct_ratio": 1.007,
+      "edges": [
+        "44419249"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01220",
+      "to": "AID01221",
+      "status": "reachable",
+      "direct_hk1980_m": 340.243,
+      "path_m": 326.23,
+      "path_to_direct_ratio": 0.959,
+      "edges": [
+        "44419249",
+        "44420013",
+        "1205891500"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01221",
+      "to": "AID01222",
+      "status": "reachable",
+      "direct_hk1980_m": 302.498,
+      "path_m": 317.24,
+      "path_to_direct_ratio": 1.049,
+      "edges": [
+        "1205891500",
+        "814979908",
+        "298333186",
+        "814979905",
+        "44503414",
+        "814979903",
+        "298334423",
+        "814979886",
+        "956602968"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01222",
+      "to": "AID01223",
+      "status": "reachable",
+      "direct_hk1980_m": 454.248,
+      "path_m": 482.64,
+      "path_to_direct_ratio": 1.063,
+      "edges": [
+        "956602968",
+        "956602975",
+        "1197109110",
+        "956602974",
+        "1197441901",
+        "1197441900",
+        "496142893",
+        "1197441899",
+        "1197441904"
+      ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10001",
+      "to": "TDSSPWR10002",
+      "status": "reachable",
+      "direct_hk1980_m": 564.876,
+      "path_m": 582.9,
+      "path_to_direct_ratio": 1.032,
+      "edges": [
+        "946158622",
+        "946158635",
+        "946158606",
+        "485990131#0",
+        "946158603",
+        "250127610#1",
+        "946158588",
+        "347104280#0",
+        "946158587",
+        "946158626",
+        "946158560",
+        "26560129"
+      ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10002",
+      "to": "TDSSPWR10003",
+      "status": "reachable",
+      "direct_hk1980_m": 409.0,
+      "path_m": 446.98,
+      "path_to_direct_ratio": 1.093,
+      "edges": [
+        "26560129"
+      ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10003",
+      "to": "TDSAPR10001",
+      "status": "reachable",
+      "direct_hk1980_m": 489.265,
+      "path_m": 493.27,
+      "path_to_direct_ratio": 1.008,
+      "edges": [
+        "26560129",
+        "946158624",
+        "1197689833",
+        "1197689837",
+        "1197689849#0",
+        "1197689849#1",
+        "245466671"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSAPR20001",
+      "to": "TDSSPWR20003",
+      "status": "reachable",
+      "direct_hk1980_m": 456.369,
+      "path_m": 457.07,
+      "path_to_direct_ratio": 1.002,
+      "edges": [
+        "1197441895",
+        "1197689899",
+        "1197689898",
+        "1197689858",
+        "1197689857",
+        "946158623"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSSPWR20003",
+      "to": "TDSSPWR20002",
+      "status": "reachable",
+      "direct_hk1980_m": 376.948,
+      "path_m": 397.71,
+      "path_to_direct_ratio": 1.055,
+      "edges": [
+        "946158623"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSSPWR20002",
+      "to": "TDSSPWR20001",
+      "status": "reachable",
+      "direct_hk1980_m": 288.766,
+      "path_m": 293.79,
+      "path_to_direct_ratio": 1.017,
+      "edges": [
+        "946158623",
+        "946158571",
+        "260770853"
+      ]
+    }
+  ],
+  "before_paths": [
+    {
+      "leg": "main_eastbound",
+      "from": "AID01101",
+      "to": "AID01102",
+      "status": "reachable",
+      "direct_hk1980_m": 545.4,
+      "path_m": 556.47,
+      "path_to_direct_ratio": 1.02,
+      "edges": [
+        "1197689928",
+        "40959451",
+        "1197441889",
+        "1197441888",
+        "1197441891",
+        "26560239",
+        "956602966"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01102",
+      "to": "AID01103",
+      "status": "reachable",
+      "direct_hk1980_m": 486.557,
+      "path_m": 495.45,
+      "path_to_direct_ratio": 1.018,
+      "edges": [
+        "956602966",
+        "302998780",
+        "45174709",
+        "310329775",
+        "297373180",
+        "814979896",
+        "23632768",
+        "814979902",
+        "814979900",
+        "814979901#0"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01103",
+      "to": "AID01104",
+      "status": "reachable",
+      "direct_hk1980_m": 379.111,
+      "path_m": 379.04,
+      "path_to_direct_ratio": 1.0,
+      "edges": [
+        "814979901#0",
+        "1198059118",
+        "1198059119",
+        "1198059120",
+        "44419212"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01104",
+      "to": "AID01105",
+      "status": "reachable",
+      "direct_hk1980_m": 325.125,
+      "path_m": 324.9,
+      "path_to_direct_ratio": 0.999,
+      "edges": [
+        "44419212"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01105",
+      "to": "AID01106",
+      "status": "reachable",
+      "direct_hk1980_m": 344.401,
+      "path_m": 375.81,
+      "path_to_direct_ratio": 1.091,
+      "edges": [
+        "44419212",
+        "44419216",
+        "714996652",
+        "1198101500",
+        "1198101498",
+        "86289334",
+        "1198101497",
+        "1198101444"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01106",
+      "to": "AID01107",
+      "status": "reachable",
+      "direct_hk1980_m": 457.739,
+      "path_m": 1771.83,
+      "path_to_direct_ratio": 3.871,
+      "edges": [
+        "1198101444",
+        "1207943330",
+        "1198101437",
+        "1207943329",
+        "92167192#1",
+        "46766843",
+        "1207943326",
+        "97694917",
+        "1198101492",
+        "1198101494",
+        "-1198101461",
+        "1198101475",
+        "1198101446",
+        "492614841",
+        "714996651",
+        "187793665",
+        "1198101445",
+        "492610841",
+        "1198101461",
+        "1198101471",
+        "1198101465",
+        "1198101463",
+        "1198101464",
+        "1198101479",
+        "365888442#1",
+        "26560290#0",
+        "86289334",
+        "1198101497",
+        "1198101443"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01107",
+      "to": "AID01108",
+      "status": "reachable",
+      "direct_hk1980_m": 2453.999,
+      "path_m": 2552.84,
+      "path_to_direct_ratio": 1.04,
+      "edges": [
+        "1198101443",
+        "251366297",
+        "1198101424",
+        "1545825139",
+        "1233513875#0",
+        "770641604#0",
+        "681882453",
+        "1194711684",
+        "1194711687"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01108",
+      "to": "AID01109",
+      "status": "reachable",
+      "direct_hk1980_m": 533.085,
+      "path_m": 597.23,
+      "path_to_direct_ratio": 1.12,
+      "edges": [
+        "1194711687",
+        "462275987",
+        "462275986#1",
+        "1194711693",
+        "462275985",
+        "261027970"
+      ]
+    },
+    {
+      "leg": "main_eastbound",
+      "from": "AID01109",
+      "to": "AID01110",
+      "status": "reachable",
+      "direct_hk1980_m": 305.321,
+      "path_m": 301.28,
+      "path_to_direct_ratio": 0.987,
+      "edges": [
+        "261027970",
+        "462275984",
+        "485146385",
+        "87148750",
+        "485146380",
+        "485146382"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01214",
+      "to": "AID01215",
+      "status": "reachable",
+      "direct_hk1980_m": 283.007,
+      "path_m": 300.12,
+      "path_to_direct_ratio": 1.06,
+      "edges": [
+        "46108739",
+        "136461565",
+        "1194693249",
+        "1194693246",
+        "247878776"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01215",
+      "to": "AID01216",
+      "status": "reachable",
+      "direct_hk1980_m": 566.851,
+      "path_m": 598.46,
+      "path_to_direct_ratio": 1.056,
+      "edges": [
+        "247878776",
+        "673961732",
+        "88718922"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01216",
+      "to": "AID01217",
+      "status": "reachable",
+      "direct_hk1980_m": 2524.749,
+      "path_m": 2615.75,
+      "path_to_direct_ratio": 1.036,
+      "edges": [
+        "88718922",
+        "250567236",
+        "46766450",
+        "155997128",
+        "46766851",
+        "770641603#0",
+        "492608830#0",
+        "1545825141",
+        "1420680571"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01217",
+      "to": "AID01218",
+      "status": "reachable",
+      "direct_hk1980_m": 401.508,
+      "path_m": 759.19,
+      "path_to_direct_ratio": 1.891,
+      "edges": [
+        "1420680571",
+        "1198101426",
+        "700536273",
+        "1198101428",
+        "46766841#0",
+        "46766841#2",
+        "251366198#1",
+        "251366198#3",
+        "1207943292",
+        "355456480#2",
+        "46766843"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01218",
+      "to": "AID01219",
+      "status": "reachable",
+      "direct_hk1980_m": 441.005,
+      "path_m": 447.85,
+      "path_to_direct_ratio": 1.016,
+      "edges": [
+        "46766843",
+        "1207943326",
+        "97694917",
+        "1198101492",
+        "1198101493",
+        "771218914",
+        "1198059110"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01219",
+      "to": "AID01220",
+      "status": "reachable",
+      "direct_hk1980_m": 493.867,
+      "path_m": 502.65,
+      "path_to_direct_ratio": 1.018,
+      "edges": [
+        "1198059110",
+        "44419249"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01220",
+      "to": "AID01221",
+      "status": "reachable",
+      "direct_hk1980_m": 340.243,
+      "path_m": 326.23,
+      "path_to_direct_ratio": 0.959,
+      "edges": [
+        "44419249",
+        "44420013",
+        "1205891500"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01221",
+      "to": "AID01222",
+      "status": "reachable",
+      "direct_hk1980_m": 302.498,
+      "path_m": 317.24,
+      "path_to_direct_ratio": 1.049,
+      "edges": [
+        "1205891500",
+        "814979908",
+        "298333186",
+        "814979905",
+        "44503414",
+        "814979903",
+        "298334423",
+        "814979886",
+        "956602968"
+      ]
+    },
+    {
+      "leg": "main_westbound",
+      "from": "AID01222",
+      "to": "AID01223",
+      "status": "reachable",
+      "direct_hk1980_m": 454.248,
+      "path_m": 482.64,
+      "path_to_direct_ratio": 1.063,
+      "edges": [
+        "956602968",
+        "956602975",
+        "1197109110",
+        "956602974",
+        "1197441901",
+        "1197441900",
+        "496142893",
+        "1197441899",
+        "1197441904"
+      ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10001",
+      "to": "TDSSPWR10002",
+      "status": "reachable",
+      "direct_hk1980_m": 564.876,
+      "path_m": 582.9,
+      "path_to_direct_ratio": 1.032,
+      "edges": [
+        "946158622",
+        "946158635",
+        "946158606",
+        "485990131#0",
+        "946158603",
+        "250127610#1",
+        "946158588",
+        "347104280#0",
+        "946158587",
+        "946158626",
+        "946158560",
+        "26560129"
+      ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10002",
+      "to": "TDSSPWR10003",
+      "status": "reachable",
+      "direct_hk1980_m": 409.0,
+      "path_m": 446.98,
+      "path_to_direct_ratio": 1.093,
+      "edges": [
+        "26560129"
+      ]
+    },
+    {
+      "leg": "western_eastbound",
+      "from": "TDSSPWR10003",
+      "to": "TDSAPR10001",
+      "status": "reachable",
+      "direct_hk1980_m": 489.265,
+      "path_m": 493.27,
+      "path_to_direct_ratio": 1.008,
+      "edges": [
+        "26560129",
+        "946158624",
+        "1197689833",
+        "1197689837",
+        "1197689849#0",
+        "1197689849#1",
+        "245466671"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSAPR20001",
+      "to": "TDSSPWR20003",
+      "status": "reachable",
+      "direct_hk1980_m": 456.369,
+      "path_m": 457.07,
+      "path_to_direct_ratio": 1.002,
+      "edges": [
+        "1197441895",
+        "1197689899",
+        "1197689898",
+        "1197689858",
+        "1197689857",
+        "946158623"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSSPWR20003",
+      "to": "TDSSPWR20002",
+      "status": "reachable",
+      "direct_hk1980_m": 376.948,
+      "path_m": 397.71,
+      "path_to_direct_ratio": 1.055,
+      "edges": [
+        "946158623"
+      ]
+    },
+    {
+      "leg": "western_westbound",
+      "from": "TDSSPWR20002",
+      "to": "TDSSPWR20001",
+      "status": "reachable",
+      "direct_hk1980_m": 288.766,
+      "path_m": 293.79,
+      "path_to_direct_ratio": 1.017,
+      "edges": [
+        "946158623",
+        "946158571",
+        "260770853"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "status": "Provisional source-based placement review; not a calibrated or approved network",
+  "network_sha256": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e",
+  "registry_sha256": "e71252d69be0bcf6ebcc8c41acc76bda7e16e92408e03f12ccab4706362385ae",
+  "detectors": {
+    "AID01214": {
+      "edge_id": "136461565",
+      "position_m": 0.55,
+      "evidence": {
+        "registry_road": "Canal Road Flyover near Elizabeth House - Southbound",
+        "registry_bearing_degrees": 130.0,
+        "position_rule": "Nearest projection of registry WGS84 coordinate onto lane 0",
+        "lane_0_offset_m": 5.217,
+        "osm_way_id": "136461565",
+        "osm_name_tags": {
+          "name:en": "Canal Road Flyover",
+          "network:name:en": "Hong Kong Strategic Routes"
+        },
+        "osm_lanes": "3",
+        "sumo_lanes": 3,
+        "reason": "The source TD lane labels show three lanes in the replay window. This nearby Canal Road Flyover edge has three SUMO lanes and its direction aligns better with the source bearing than the previously selected two-lane edge.",
+        "lane_source": "results/twin/osm-network-audit.json: lane_evidence.detectors.AID01214",
+        "td_lanes": [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      }
+    },
+    "AID01218": {
+      "edge_id": "1198101430",
+      "position_m": 265.82,
+      "evidence": {
+        "registry_road": "Wong Chuk Hang Road near Wong Chuk Hang Sports Centre - Westbound",
+        "registry_bearing_degrees": 280.0,
+        "position_rule": "Nearest projection of registry WGS84 coordinate onto lane 0",
+        "lane_0_offset_m": 6.687,
+        "osm_way_id": "1198101430",
+        "osm_name_tags": {
+          "name:en": "Aberdeen Tunnel",
+          "network:name:en": "Hong Kong Strategic Routes"
+        },
+        "osm_lanes": "2",
+        "sumo_lanes": 2,
+        "reason": "The westbound two-lane tunnel-exit edge is at the registry coordinate and connects the westbound detector chain. The TD May feed lists Fast Lane and Slow Lane. The previous exact-name surface-road candidate has three lanes and a larger coordinate offset. OSM and TD use different road-name extents here; no OSM tags or topology were edited.",
+        "lane_source": "results/twin/osm-network-audit.json: lane_evidence.detectors.AID01218",
+        "td_lanes": [
+          "Fast Lane",
+          "Slow Lane"
+        ]
+      }
+    }
+  },
+  "window": [
+    "2026-05-15T07:55:00+08:00",
+    "2026-05-15T10:35:00+08:00"
+  ]
+}

@@ -6,6 +6,8 @@
       "id": "REPLACE_WITH_REAL_TD_ID",
       "lon": 114.0,
       "lat": 22.0,
+      "direction": "east",
+      "leg": "example_corridor",
       "edge_id": null,
       "position_m": null,
       "observations": [

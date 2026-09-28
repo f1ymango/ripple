@@ -154,8 +154,9 @@ def cmd_twin_detectors(args) -> None:
     print(f"  with a count usable for calibration: {s['with_count']} of {s['observations']}")
     print(f"  with a measured speed:               {s['with_speed']} of {s['observations']}")
     print(f"  with both (what the twin compares):  {s['with_both']} of {s['observations']}")
-    print(f"Simulation time 0 is {start:%Y-%m-%d %H:%M}: set the scenario's begin to match, "
-          f"and its incident start in seconds after it.")
+    print(f"Observation grid begins {start:%Y-%m-%d %H:%M}; set "
+          "observation_start_sim_seconds to its offset after any warm-up, and "
+          "time the incident against the detector-observed queue onset.")
 
 
 def cmd_live(args) -> None:

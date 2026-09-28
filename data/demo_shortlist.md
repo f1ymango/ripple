@@ -98,9 +98,10 @@ earlier, 63–81 km/h throughout):
 **Doable.** 38% archive coverage, 600 of 896 slots with both count and speed.
 Weekday, no other incident, timeline complete in all three language files.
 
-**Watch out for.** AID01104 is one of the detectors the twin's
-`place_detectors` currently puts on the opposite carriageway (see the README
-known issues). Fix it before validating on this incident.
+**Watch out for.** Direction-aware map matching now selects a northeast edge
+for AID01104, but the OSM network is still a draft and the tunnel detector
+AID01217 has no nearby edge that passes the direction check. Hand-review the
+edge and position mappings before validating this incident.
 
 ### 2. IN-26-06391 — a named lane in the tunnel
 

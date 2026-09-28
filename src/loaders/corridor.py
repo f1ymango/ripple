@@ -36,6 +36,15 @@ WESTERN_ALTERNATIVE = [
     "TDSSPWR20001", "TDSSPWR20002", "TDSSPWR20003",
     "TDSAPR10001", "TDSAPR20001",
 ]
+# Directed station order for the two Western Alternative carriageways. These
+# orders follow the direction fields and HK1980 coordinates in data/detectors.csv;
+# WESTERN_ALTERNATIVE above remains the loader's inventory of those stations.
+CHAIN_WESTERN_EASTBOUND = [
+    "TDSSPWR10001", "TDSSPWR10002", "TDSSPWR10003", "TDSAPR10001",
+]
+CHAIN_WESTERN_WESTBOUND = [
+    "TDSAPR20001", "TDSSPWR20003", "TDSSPWR20002", "TDSSPWR20001",
+]
 DETECTOR_IDS: list[str] = CHAIN_EASTBOUND + CHAIN_WESTBOUND + WESTERN_ALTERNATIVE
 
 # Which leg each detector belongs to, so results can be reported per leg.

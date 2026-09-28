@@ -203,9 +203,9 @@ def bin_window(rows: list[dict], minutes: int = BIN_MINUTES, per_lane: bool = Fa
     Without `start` and `end`, only slots that received a reading come back.
     **With them, every slot of every detector comes back**, one row each, in
     time order: a slot the archive delivered nothing for is a row with
-    periods_observed 0 and blank speed and counts. Anything that lines series
-    up by position -- the twin's evaluation does -- needs this form; a missing
-    row would shift every later slot by one bin.
+    periods_observed 0 and blank speed and counts. The twin matches observations
+    by timestamp; the full grid keeps archive gaps explicit rather than
+    shifting later data.
 
     `minutes` trades time resolution against precision, and the right answer
     depends on the job. The archive keeps under half the minutes, so a bin holds

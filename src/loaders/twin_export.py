@@ -1,11 +1,9 @@
 """Loader bins -> sim/scenarios/detectors.json, the twin's observed data (A -> C).
 
-The twin (src/twin/) reads one observation per detector per 5-minute slot and
-lines them up with its simulated intervals BY POSITION: observation i is
-compared with the interval starting at i x interval_seconds of simulated time
-(src/twin/evaluate.py). So this file must hold exactly one row per slot, in
-time order, starting at the moment the simulation calls time 0 -- a missing
-row would shift every later comparison by one slot.
+The twin (src/twin/) reads one observation per detector per 5-minute slot.
+`evaluate.py` matches each observation timestamp to the corresponding SUMO
+interval, offset by `observation_start_sim_seconds` when the scenario uses a
+warm-up. The full slot grid keeps missing archive periods explicit and visible.
 
 What goes in each observation:
 
@@ -61,8 +59,8 @@ def build(start: dt.datetime, end: dt.datetime, bin_minutes: int = detectors.BIN
           rows: list[dict] | None = None, keep_from: Path | None = None) -> dict:
     """The twin's observed-data document for [start, end).
 
-    `start` and `end` must sit on slot boundaries: observation 0 is simulated
-    time 0, so a start of 08:03 would silently mean 08:00.
+    `start` and `end` must sit on slot boundaries. The first observation time
+    is explicit in the export; the scenario can map it after a warm-up.
     """
     if start.tzinfo is None or end.tzinfo is None:
         raise ValueError("start and end must carry a timezone (Hong Kong time, +08:00)")
@@ -95,6 +93,8 @@ def build(start: dt.datetime, end: dt.datetime, bin_minutes: int = detectors.BIN
             "id": detector_id,
             "lon": float(where["longitude"]),
             "lat": float(where["latitude"]),
+            "direction": where.get("direction", ""),
+            "leg": where.get("leg", ""),
             "edge_id": kept.get(detector_id, {}).get("edge_id"),
             "position_m": kept.get(detector_id, {}).get("position_m"),
             "observations": [{"time": b["bin_start"],
