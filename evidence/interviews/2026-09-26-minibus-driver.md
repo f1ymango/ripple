@@ -5,6 +5,8 @@
 - **Interviewer:** Component H Lead
 - **Methodology:** 15-minute standard 6-question structured interview followed by a 5-minute system concept user response test.
 
+These are the interviewer's notes from one participant, not a verbatim transcript or a representative survey. The trust levels below are qualitative; no percentages were measured. Check any proposed direct quote against the recording or original notes before using it publicly.
+
 ---
 
 ## Part 1: Core Questions (Current Behavior & Pain Points)
@@ -20,9 +22,9 @@
 3. **Notify Passengers:** Inform passengers briefly ("Road ahead is closed, rerouting will take slightly longer") to manage expectations.
 
 ### Q3: Who tells you anything, and how much do you trust it?
-- **High Trust (~80%+):** Peer driver WhatsApp groups and live photo/video evidence from colleagues on the same corridor.
-- **Absolute Trust (100%):** Direct visual observation (police officers, barriers, queue length).
-- **Low Trust (<50%):** Passenger comments (often inaccurate or hearsay).
+- **High Trust:** Peer driver WhatsApp groups and live photo/video evidence from colleagues on the same corridor.
+- **Direct Observation Trusted Most:** Police officers, barriers, and queue length seen firsthand.
+- **Lower Trust:** Passenger comments, which the participant described as sometimes inaccurate or hearsay.
 - **Lowest Trust:** TD App / Commercial Radio / Official news (notoriously delayed, used only for secondary verification).
 
 ### Q4: When official advice says "use an alternative route", do you take it?
@@ -41,6 +43,9 @@
 ## Part 2: Product Brief & System Response Test
 
 **Prompt Presented to Participant:**
+
+The incident, delay, diversion, and savings figures in this concept prompt were hypothetical interview stimuli. They are not measured Ripple results and must not be reused as evidence of performance.
+
 - Incident: 3:00 PM Aberdeen Tunnel exit accident, 45-min delay.
 - System Advisory: "Aberdeen Tunnel exit accident, queue back to Wong Chuk Hang. Recommend Pok Fu Lam Rd or Nam Fung Rd, saving ~12 mins."
 - System Impact Metric: "30% vehicle diversion avoids 740 hours of cumulative delay."
@@ -60,8 +65,7 @@
 
 ## Key Takeaways for Component H (Pitch & System Design)
 
-1. **Quote for Pitch Deck Section 3 / Q&A:**
-   > *"Official notices tell us to divert when the alternative is already jammed. I won't trust a system saving 12 minutes unless my colleagues confirm the alternative route is moving."*
-2. **HMI & Design Implication:**
-   - Drivers ignore system-level macro benefits (person-hours saved). The interface must lead with **corridor-specific real-time speed/confidence indicators** rather than complex predictions.
-   - Vehicle-class suitability constraints must be added to the LLM plan validator (e.g., Nam Fung Road geometry constraints for commercial fleets/minibuses).
+1. **Internal paraphrase for the pitch / Q&A (not a verified direct quote):** The participant said they would check with other drivers that a suggested route was moving before trusting a time-savings claim. Verify against the source interview before quoting them directly.
+2. **HMI & Design Implications to discuss:**
+   - This participant valued local route conditions more than an aggregate person-hours metric. Consider showing the status and uncertainty of suggested routes; test whether other drivers share this preference.
+   - Check whether candidate routes are suitable for green minibuses before recommending them. Any new vehicle-class constraint or contract change needs a separate decision by the relevant owners.
