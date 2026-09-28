@@ -1,0 +1,11 @@
+# Line endings are decided here, not by each machine's Git installer.
+# Git for Windows ships core.autocrlf=true, which checks text out as CRLF
+# while our code writes LF explicitly (newline="\n"). Pinning it keeps every
+# checkout byte-identical, which rule 7 (reproducible runs) depends on.
+* text=auto eol=lf
+
+# Never rewritten, whatever the contents look like.
+*.png binary
+*.gif binary
+*.jpg binary
+*.pdf binary

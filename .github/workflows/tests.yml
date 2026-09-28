@@ -1,0 +1,26 @@
+name: tests
+
+# Runs the suite that the Lead would otherwise run by hand before every merge.
+# Linux only: the repository is private, so Actions minutes are metered and a
+# Windows runner bills at 2x. The one Windows-specific hazard we know of —
+# Python defaulting to cp1252 — is covered by tests/test_repo_hygiene.py,
+# which runs everywhere.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q

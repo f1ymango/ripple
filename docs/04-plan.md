@@ -8,13 +8,13 @@ and 3 are the heavy ones.
 
 ## 1. Roles
 
-| Person | Role | Owns | Role file |
-|---|---|---|---|
-| **[you]** CSE Y2 | Lead + GenAI pipeline | scope, integration, components **B, D, F** | `roles/lead-genai.md` |
-| CSE Y2 #2 | Data + experiments | components **A, E** — loaders, scenario runner | `roles/data-experiments.md` |
-| CSE Y2 #3 | Visuals + video | component **G** + the demo video | `roles/visuals-video.md` |
-| PHYS Y2 | Simulation + validation | component **C** + calibration + sensitivity | `roles/simulation-validation.md` |
-| CSE/QFin Y1 | Impact + business + pitch | component **H** + interim report + deck | `roles/impact-pitch.md` |
+| Person | Role | Owns |
+|---|---|---|
+| **[you]** CSE Y2 | Lead + GenAI pipeline | scope, integration, components **B, D, F** |
+| CSE Y2 #2 | Data + experiments | components **A, E** — loaders, scenario runner |
+| CSE Y2 #3 | Visuals + video | component **G** + the demo video |
+| PHYS Y2 | Simulation + validation | component **C** + calibration + sensitivity |
+| CSE/QFin Y1 | Impact + business + pitch | component **H** + interim report + deck |
 
 **Why this split:**
 - The physicist owns *validation*, which answers the hardest Q&A question ("how
@@ -95,7 +95,9 @@ what-if box, live segment, second incident, prettier map — is optional.
 
 ## 4. Cadence
 
-- Two 20-minute stand-ups a week: **Sunday** and **Wednesday**.
+- One 20-minute sync a week: **Wednesday afternoon** — the only slot everyone
+  is free. Anything that cannot wait for it goes to the team chat async, with a
+  stated deadline for objections, rather than pulling people into a meeting.
 - Format: what I finished / what I'm on / what's blocking me. No status essays.
 - Anything that changes a contract in `03-architecture.md` gets said out loud
   and the file updated the same day.
