@@ -192,6 +192,7 @@ requests #1–#20 are merged; PRs #21–#24 remain open.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Mon 28 Sep**
+- Component C: reran the offline OSM/TD audit from the local May 15 cache and draft SUMO network; it reproduced the committed result (24/24 directed links reachable, six lane-scope gaps still unresolved). Documented the `--before-mapping` input so future audit reruns retain the before/current route comparison. No OSM geometry, lane tags, observations, or simulation outputs were changed.
 - Component C: extended the offline source-backed network audit to include all six directed links on the western alternative. The 24 main and alternative links are reachable in the local OSM network, with modeled path distance at most 1.12 times registry-coordinate distance. Centralized the two western travel orders so detector direction matching, route generation, and audit use the same chains. No OSM tags, geometry, lane counts, or traffic observations changed; the local network and E1 files remain unreviewed. Ten focused Component C tests passed. ([audit](results/twin/osm-network-audit.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md))
 
 **Sun 27 Sep**

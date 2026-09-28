@@ -78,10 +78,10 @@ The script matches each real coordinate to a nearby edge whose direction agrees 
 When the hand-over contains a replay window, the mapper reads lane labels from the matching local raw-cache periods. An OSM street-name alias can identify a detector road only when that window's measured lane count also agrees with the candidate; lane count can break ties between nearby, equally named edges. It does not change OSM lanes or detector readings. After placing detectors, generate the offline source and route audit:
 
 ```powershell
-python -m src.twin.audit_network --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json --out results/twin/osm-network-audit.json
+python -m src.twin.audit_network --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json --before-mapping results/twin/osm-mapping-before.csv --out results/twin/osm-network-audit.json
 ```
 
-The audit reads only local files. If the configured scenario names `detector_overrides`, the override file must carry SHA-256 hashes for the exact network and committed detector registry. The matcher rejects it if either source changes; re-review the locations after every network rebuild. Lane-count conflicts and missing raw snapshots remain visible in the audit. The directed connectivity section checks all 24 links across the two main chains and both western-alternative chains against registry coordinates. A passing map audit does not establish traffic calibration or prove that SUMO teleport warnings are fixed.
+The audit reads only local files. `--before-mapping` adds a comparison against the earlier placement file; omit it when that source is unavailable or does not belong to the same network. If the configured scenario names `detector_overrides`, the override file must carry SHA-256 hashes for the exact network and committed detector registry. The matcher rejects it if either source changes; re-review the locations after every network rebuild. Lane-count conflicts and missing raw snapshots remain visible in the audit. The directed connectivity section checks all 24 links across the two main chains and both western-alternative chains against registry coordinates. A passing map audit does not establish traffic calibration or prove that SUMO teleport warnings are fixed.
 
 ## Step 5 — Make candidate routes and fit demand
 
