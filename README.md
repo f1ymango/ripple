@@ -16,7 +16,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 ## Tracker
 
 **Last updated: Sat 26 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
-the incident) · Stand-ups: Sunday and Wednesday
+the incident) · Stand-ups: Wednesday
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
