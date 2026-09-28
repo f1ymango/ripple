@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Mon 28 Sep 2026** - Week 2 of 5 (28 Sep-4 Oct: baseline and interim report) - Stand-ups: Sunday and Wednesday
+**Last updated: Mon 28 Sep 2026** - Week 2 of 5 (28 Sep-4 Oct: baseline and interim report) - Weekly sync: Wednesday afternoon
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
@@ -58,7 +58,7 @@ this chain.
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
 
-### This week: Week 1 (21–27 Sep)
+### Week 1 close-out (21-27 Sep)
 
 | Owner | Task | Done when | Status |
 |---|---|---|---|
@@ -68,14 +68,24 @@ The JSON contracts between modules are in
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | 🟡 SUMO and a draft network run locally; record/share evidence and improve route coverage ([guide](src/twin/README.md)) |
 | Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 plan exists and one interview is scheduled, Sat 26 Sep 15:00 ([plan](evidence/interviews/plan.md)); every claim in [05-pitch.md](docs/05-pitch.md) §3 now carries a source and a 25 Sep check date, but 8 of the 15 sources are a homepage or listing rather than the page with the figure |
 
+### This week: Week 2 (28 Sep-4 Oct) - baseline and interim report
+
+Component C: the May 15 OSM pre-incident diagnostic reaches 66.5% GEH<5
+and 36.9% speed MAPE, below the 85% count target. The route audit finds
+all 24 directed detector links locally connected; six lane-scope issues,
+the incident edge, and initial partial-closure lane remain unresolved.
+Keep the fallback active for the Sun 4 Oct go/no-go. See the [diagnostic]
+(results/twin/may15-preincident-diagnostic.md) and [network audit]
+(results/twin/osm-network-audit.md).
+
 ### In review
 
-Work that exists but is not on `main` yet, as of Fri 25 Sep. Everything
-merged shows in the rows above; pull requests #1–#16 are merged.
+Work that exists but is not on `main` yet, as of Mon 28 Sep. Everything
+merged shows in the rows above; pull requests #1-#20 are merged.
 
 | What | Who | Branch |
 |---|---|---|
-| Loaders: keep STN CLOSED status flips; read malformed archive snapshots — **pushed, but no pull request is open** | Data | `data/loaders` |
+| Component C: network locality audit, May 15 pre-incident diagnostic, and calibration/runner fixes - **pushed; PR not yet open**. `data/candidates.md` remains unchanged from main. The local OSM network and E1 loops remain provisional and uncommitted | Simulation | `sim/e1-evaluation-correctness` |
 
 ### Open decisions
 
@@ -122,8 +132,6 @@ merged shows in the rows above; pull requests #1–#16 are merged.
   ("the junction of X and Y") becomes road X; `near_landmark` filled where the
   message has no "near" (7 of 100). Found on the gold set, so fixing them in
   the prompt needs a fresh set to measure the result.
-- Python 3.14 is supported by the pinned pandas 2.3.3 release; install with
-  `python -m pip install -r requirements.txt`.
 - The historical archive serves only about half the raw detector snapshots it
   lists (39% were a persistent 404 on 21 Sep), so a 5-minute bin usually holds
   1–3 observed minutes. Summing raw volume into a bin would understate flow by
@@ -238,14 +246,23 @@ Newest first. One line per change that matters, with a link to the proof.
   the export intentionally omits map metadata. 266 tests
   ([src/loaders/twin_export.py](src/loaders/twin_export.py),
   [tests/test_twin_bridge.py](tests/test_twin_bridge.py)).
-- Component C follow-up: detector direction/leg metadata is used for matching
-  and corridor routes, every lane is measured, demand fits only the first
-  calibration hour, and observed zero-count bins are scored separately from
-  speed. The 15 May scenario uses the measured queue onset at 08:55 (six
-  minutes before TD's NEW report), with 15 minutes of warm-up and a 10,500 s
-  horizon. The OSM network remains an unreviewed local draft; the prior
-  diagnostic cannot distinguish topology from demand pressure
+- Component C follow-up: detector direction and leg metadata drive placement
+  and route chains, all lanes are measured, demand uses the first calibration
+  hour, and zero-count bins remain scoreable without a speed. The 15 May replay
+  begins at the measured 08:55 queue onset with 15 minutes of warm-up. The
+  pre-incident diagnostic records 66.5% GEH<5 and 36.9% speed MAPE; it is not a
+  validated incident baseline. The OSM network remains provisional
   ([results/twin/](results/twin/)).
+- Lead: repo hygiene and CI. `pandas` moves to 2.3.3, which has a Python 3.14
+  build, so `pip install -r requirements.txt` works on 3.14 and that known
+  issue is gone. A `.gitattributes` decides line endings for everyone instead
+  of leaving them to each machine's Git installer. GitHub Actions runs the
+  suite on every push and pull request, so the Lead is no longer the only
+  thing that runs the tests
+  ([.github/workflows/tests.yml](.github/workflows/tests.yml)). A new
+  [tests/test_repo_hygiene.py](tests/test_repo_hygiene.py) fails if any text
+  file in `src/` is opened without an explicit encoding, which is the cp1252
+  trap the rules below warn about. 268 tests.
 
 **Fri 25 Sep (afternoon)**
 - Twin validation fix: `evaluate` read `meanSpeed`, which SUMO's loop output does not have, so every
@@ -436,7 +453,7 @@ cd ripple
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-python -m pytest                   # 153 tests, no LLM needed
+python -m pytest                   # 268 tests, no LLM needed
 ```
 
 ### Run the data layer
@@ -470,7 +487,7 @@ contract, retried once if it fails, then flagged, never used.
 Install [Ollama](https://ollama.com), then:
 
 ```bash
-ollama pull qwen3:8b               # 5.2 GB, once
+ollama pull qwen3:8b               # about 4.9 GB, once
 python -m src.reader.run           # parses data/labelled_incidents/messages.jsonl
 python -m src.reader.run --model qwen3:4b   # same messages, another model
 ```
