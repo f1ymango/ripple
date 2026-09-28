@@ -64,7 +64,7 @@ The JSON contracts between modules are in
 | Owner | Deliverable | Next evidence |
 |---|---|---|
 | Data + Simulation | Baseline replay of IN-26-03365, fitted to detector counts and speeds | Validation chart and stated errors; decide simplified-network fallback on 4 Oct |
-| Lead | Reader result and incident assumptions ready for integration | Gold-set score already recorded; first-phase `unspecified` lane assumption stated with the scenario |
+| Lead | Verify the Incident Reader (B) on the selected STN updates and coordinate contract handoffs | Check the 09:01 and 09:36 Reader outputs against `incident.json`; the 100-label accuracy result is already recorded |
 | Visuals | First timeline playback of the selected incident | Playback linked from the console or evidence pack |
 | Impact | Interviews and interim report, with one paragraph from each owner | Submit report Sat 3 Oct |
 
@@ -171,6 +171,10 @@ requests #1–#20 are merged; PRs #21–#24 remain open.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Mon 28 Sep**
+- Tracker: clarified the Week 2 Lead task as Reader verification and contract
+  handoff; Data/E owns the `unspecified` lane assumption, and Simulation/C
+  owns physical edge mapping ([docs/04-plan.md](docs/04-plan.md),
+  [docs/03-architecture.md](docs/03-architecture.md)).
 - Lead: selected `IN-26-03365` as the primary demo incident and
   `IN-26-06391` as backup from Data's five-candidate shortlist. The initial
   lane and affected simulation edge still need an explicit modelling decision;
