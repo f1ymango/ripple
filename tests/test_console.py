@@ -277,6 +277,55 @@ def test_pressing_play_on_a_one_bin_window_does_not_hang(data_dir):
     assert any(b.label == "▶" for b in at.button)
 
 
+@pytest.mark.parametrize("stop_button", [0, 1, 2, 3])
+def test_stopping_playback_immediately_restores_the_play_button(stop_button):
+    from streamlit.testing.v1 import AppTest
+
+    # Render only the controls, so autoplay cannot add a rerun that hides a
+    # stale button label. Use the real fixture's timestamp, without a timer.
+    bins = sorted({row["bin_start"] for row in _binned(5)})
+    at = AppTest.from_string(
+        "from src.console import app\n"
+        f"app.playback_index({bins!r}, 5)\n"
+    ).run()
+    at = at.button[1].click().run()
+    assert not at.exception
+    assert at.session_state["playing"] is True
+    assert at.button[1].label == "⏸"
+
+    at = at.button[stop_button].click().run()
+    assert not at.exception
+    assert at.session_state["playing"] is False
+    assert at.button[1].label == "▶"
+
+
+def test_step_buttons_follow_the_time_selected_by_scrubbing():
+    from streamlit.testing.v1 import AppTest
+
+    # These timestamps all come from the real archive fixtures. Only the
+    # transport controls are under test; no traffic reading is manufactured.
+    may = detectors.bin_window(detectors.parse_snapshot(MAY_FIXTURE.read_bytes()), 5)
+    bins = sorted({row["bin_start"] for row in may + _binned(5) + _binned(1)})
+    assert len(bins) >= 3
+    at = AppTest.from_string(
+        "from src.console import app\n"
+        f"app.playback_index({bins!r}, None)\n"
+    ).run()
+    at = at.select_slider[0].set_value(bins[1]).run()
+    assert at.session_state["bin_index"] == 1
+
+    at = at.button[2].click().run()
+    assert not at.exception
+    assert at.session_state["bin_index"] == 2
+    assert at.select_slider[0].value == bins[2]
+
+    at = at.select_slider[0].set_value(bins[1]).run()
+    at = at.button[0].click().run()
+    assert not at.exception
+    assert at.session_state["bin_index"] == 0
+    assert at.select_slider[0].value == bins[0]
+
+
 # --- the timeline strip ---------------------------------------------------
 
 def test_the_timeline_tracks_the_slowest_detector_not_the_mean(tmp_path):
