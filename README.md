@@ -91,12 +91,11 @@ Keep the fallback active for the Sun 4 Oct go/no-go. See the [diagnostic]
 ### In review
 
 Work that exists but is not on `main` yet, as of Mon 28 Sep. Pull
-requests #1–#28 are all merged; nothing else is open.
+Pull requests #1 through #29 are merged. The latest Component C follow-up commits remain on the simulation branch and do not have an open pull request.
 
 | What | Who | Branch |
 |---|---|---|
-| Component C: network locality audit, May 15 pre-incident diagnostic, and calibration/runner fixes — **pushed; PR not yet open**. `data/candidates.md` remains unchanged from main. The local OSM network and E1 loops remain provisional and uncommitted | Simulation | `sim/e1-evaluation-correctness` |
-| Component G: playback of an archived window, and a map that separates an empty road from a missing reading | Visuals | `visuals/incident-playback` |
+| Component C follow-up: cross-day lane-scope audit and OSM network locality recheck; six lane-scope gaps remain unresolved. The local OSM network and E1 loops remain provisional and uncommitted | Simulation | `sim/e1-evaluation-correctness` |
 
 ### Open decisions
 
@@ -193,6 +192,9 @@ requests #1–#28 are all merged; nothing else is open.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Mon 28 Sep**
+- Component C: refreshed the May 15 hand-over from the official HK traffic archive (80 of 113 listed snapshots served; 28 detectors, 32 five-minute slots; 600 count-and-speed pairs) and regenerated the source-hashed OSM audit. The observations reproduce the same six unresolved lane scopes; no placement or calibration claim changed ([audit](results/twin/osm-network-audit.json)).
+- Component C: added a source-hashed cross-day lane-scope auditor and checked three OSM/TD lane-count conflicts against six listed May 14 archive snapshots using the TD parser. AID01221 and AID01222 report three lane labels in 12 observed periods; TDSAPR10001 reports three in 8. This separate-day evidence corroborates feed scope but does not establish placement. Three detectors were absent from selected snapshots, so those gaps remain open ([auditor](src/twin/audit_lane_scope.py), [cross-check](results/twin/may14-lane-scope-crosscheck.md)).
+- Component C: reran the offline OSM/TD audit from the local May 15 cache and draft SUMO network; it reproduced 24/24 reachable directed links, with six lane-scope gaps unresolved. No network geometry, lane tags, observations, or simulation outputs changed.
 - Component G: the console plays an archived window back bin by bin — transport
   controls, a scrubbable slider, and a timeline strip of the slowest corridor
   detector with TD's own reported/cleared times on it. The map now has three
