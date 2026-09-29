@@ -1,0 +1,122 @@
+{
+  "target_counts": {
+    "AID01104": 1249.2,
+    "AID01214": 2992.8,
+    "AID01216": 1611.6,
+    "AID01217": 2264.4,
+    "AID01218": 1779.6,
+    "AID01219": 1590.0,
+    "AID01221": 2192.4,
+    "AID01222": 1896.0,
+    "TDSSPWR10002": 1230.6666666666667,
+    "TDSSPWR10003": 1160.0,
+    "AID01101": 1592.0,
+    "AID01102": 1573.2,
+    "AID01103": 1915.2,
+    "AID01106": 1197.6,
+    "AID01107": 1531.2,
+    "AID01108": 1470.0,
+    "AID01109": 2371.2,
+    "AID01110": 3003.6,
+    "AID01215": 2293.2,
+    "AID01223": 1436.4,
+    "TDSAPR10001": 1530.6666666666667,
+    "TDSAPR20001": 1842.6666666666667,
+    "TDSSPWR10001": 748.0,
+    "TDSSPWR20001": 885.3333333333334,
+    "TDSSPWR20003": 1513.3333333333333
+  },
+  "predicted_counts": {
+    "AID01101": 1582.6,
+    "AID01102": 1582.6,
+    "AID01103": 1915.2000000000003,
+    "AID01104": 1249.2,
+    "AID01107": 1364.3999999999999,
+    "AID01106": 1364.3999999999999,
+    "AID01108": 1470.0,
+    "AID01109": 2371.2,
+    "AID01110": 3003.6000000000004,
+    "AID01215": 2293.2,
+    "AID01214": 2992.8,
+    "AID01216": 1611.6,
+    "AID01217": 2264.4000000000005,
+    "AID01218": 1779.6000000000001,
+    "AID01219": 1590.0000000000005,
+    "AID01221": 2192.3999999999996,
+    "AID01222": 1896.0000000000005,
+    "AID01223": 1436.3999999999996,
+    "TDSSPWR10001": 748.0,
+    "TDSSPWR10002": 1307.111111111111,
+    "TDSSPWR10003": 1307.111111111111,
+    "TDSAPR10001": 1307.1111111111115,
+    "TDSAPR20001": 1678.0,
+    "TDSSPWR20003": 1678.0,
+    "TDSSPWR20001": 885.3333333333334
+  },
+  "detectors_without_calibration_counts": [
+    "AID01105",
+    "AID01220",
+    "TDSSPWR20002"
+  ],
+  "calibration_coverage_fraction": {
+    "AID01104": 0.8333333333333334,
+    "AID01214": 0.8333333333333334,
+    "AID01216": 0.8333333333333334,
+    "AID01217": 0.8333333333333334,
+    "AID01218": 0.8333333333333334,
+    "AID01219": 0.8333333333333334,
+    "AID01221": 0.8333333333333334,
+    "AID01222": 0.8333333333333334,
+    "TDSSPWR10002": 0.75,
+    "TDSSPWR10003": 0.75,
+    "AID01101": 0.75,
+    "AID01102": 0.8333333333333334,
+    "AID01103": 0.8333333333333334,
+    "AID01106": 0.8333333333333334,
+    "AID01107": 0.8333333333333334,
+    "AID01108": 0.8333333333333334,
+    "AID01109": 0.8333333333333334,
+    "AID01110": 0.8333333333333334,
+    "AID01215": 0.8333333333333334,
+    "AID01223": 0.8333333333333334,
+    "TDSAPR10001": 0.75,
+    "TDSAPR20001": 0.75,
+    "TDSSPWR10001": 0.75,
+    "TDSSPWR20001": 0.75,
+    "TDSSPWR20003": 0.75
+  },
+  "calibration_window_slots": 12,
+  "calibration_seconds": 3600.0,
+  "simulation_seconds": 10500.0,
+  "simulation_to_calibration_scale": 2.9166666666666665,
+  "candidate_routes_used": 97,
+  "flows_generated": 60,
+  "routes_originating_on_incident_edge_suspended": 2,
+  "vehicles_generated": 41347,
+  "vehicles_before_origin_suspension": 41756,
+  "vehicles_removed_by_origin_suspension_including_rounding": 409,
+  "origin_suspension_is_modelling_assumption": true,
+  "warning": "Simple linear route-weight estimate. Missing calibration bins are scaled using the observed-bin fraction; verify route direction/order and fit against a proper simulation before claiming calibration.",
+  "sources": {
+    "network": {
+      "path": "sim/work/aberdeen.net.xml",
+      "sha256": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e"
+    },
+    "routes": {
+      "path": "sim/work/sept30-diagnosis/fitted.rou.xml",
+      "sha256": "55d84cd5b281f7dc3c4475440550b762cde51d4a8a0f094c701d865e0e8395e5"
+    },
+    "candidate_routes": {
+      "path": "sim/work/may-diagnostic/candidates.rou.xml",
+      "sha256": "0f7d386481e0f89f713169af5b81e9fb2c56aa08d4f94a5441208dd85f90a6b2"
+    },
+    "detector_additional": {
+      "path": "sim/work/may-diagnostic/detectors.add.xml",
+      "sha256": "d0ac843e8ef99b431db28444d2131e4c7e1602aa7683f5ad69c8e7a40742ad6e"
+    },
+    "observations": {
+      "path": "sim/scenarios/detectors.json",
+      "sha256": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605"
+    }
+  }
+}

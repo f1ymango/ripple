@@ -1,5 +1,6 @@
 """Summarize TD lane labels from explicitly selected cached archive snapshots."""
 import argparse
+import gzip
 import json
 import re
 from collections import defaultdict
@@ -21,15 +22,16 @@ def build_report(cache, timestamps, detector_ids, include_lane_readings=False):
     sources = []
     for stamp in timestamps:
         path = cache / f"{stamp}.xml.gz"
-        body = archive.read_cached("detectors", stamp)
-        if body is None:
-            marker = archive.missing_marker("detectors", stamp)
+        source_path = path if path.exists() else cache / f"{stamp}.xml"
+        if not source_path.exists():
+            marker = cache / f"{stamp}.404"
             sources.append({
                 "archive_timestamp": stamp,
                 "status": "archive_404" if marker.exists() else "not_cached",
             })
             continue
-        source_path = path if path.exists() else cache / f"{stamp}.xml"
+        body = (gzip.decompress(source_path.read_bytes())
+                if source_path.suffix == ".gz" else source_path.read_bytes())
         sources.append({"archive_timestamp": stamp, "status": "read",
                         "path": source_path.relative_to(ROOT).as_posix()
                         if source_path.is_relative_to(ROOT) else source_path.as_posix(),
@@ -42,13 +44,19 @@ def build_report(cache, timestamps, detector_ids, include_lane_readings=False):
             record["lanes"].add(row["lane"])
             record["sources"].add(stamp)
             if include_lane_readings:
-                record.setdefault("lane_readings", {})[row["lane"]] = {
+                reading = {
                     "raw_volume": row["volume"],
                     "speed_kmh": row["speed_kmh"],
                     "occupancy_pct": row["occupancy_pct"],
                     "valid": row["valid"],
                     "period_seconds": row["period_s"],
                 }
+                readings = record.setdefault("lane_readings", {})
+                if row["lane"] in readings and readings[row["lane"]] != reading:
+                    raise ValueError(
+                        f"Conflicting cached readings for {row['detector_id']} "
+                        f"{period} {row['lane']}; review sources {sorted(record['sources'])}")
+                readings[row["lane"]] = reading
 
     detector_report = {}
     for detector_id in detector_ids:
@@ -109,7 +117,7 @@ def write_markdown(report, path):
         lines.append(f"| {row['archive_timestamp']} | {row['status']} | {row.get('sha256', '—')} |")
     lines += ["", "## Limits", ""]
     lines.extend(f"- {item}" for item in report["limitations"])
-    if report["includes_raw_lane_readings"]:
+    if report.get("includes_raw_lane_readings", False):
         lines += ["", "## Raw lane readings", "",
                   "Volumes are the feed's raw values for each observed period. Missing archive periods are not filled.",
                   "", "| Detector | Period start | Lane | Raw volume | Valid | Period seconds |",
@@ -147,6 +155,8 @@ def main():
     if not detector_ids or len(set(detector_ids)) != len(detector_ids):
         parser.error("--detectors must contain unique detector IDs")
     if args.fetch:
+        if resolve(args.cache) != resolve(archive.CACHE_ROOT / "detectors"):
+            parser.error("--fetch uses component A's default cache; omit --fetch for a custom cache")
         archive.prefetch("detectors", timestamps)
     report = build_report(resolve(args.cache), timestamps, detector_ids,
                           include_lane_readings=args.include_lane_readings)

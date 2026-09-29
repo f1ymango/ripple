@@ -105,12 +105,14 @@ def main():
     incident_end = incident_start + float(incident.get("duration_seconds", 0))
     incident_overlap = max(simulation_begin, incident_start) < min(simulation_end, incident_end)
     vehicle_total = 0
+    unsuspended_vehicle_total = 0
     flow_serial = 0
     suspended_origin_routes = 0
     for route_serial, ((_, path, _), route_rate) in enumerate(zip(routes, flow)):
         count = int(round(route_rate * scale))
         if count <= 0:
             continue
+        unsuspended_vehicle_total += count
         # Candidate trips start at detector edges, which are synthetic entry
         # points rather than real access roads. Do not inject new vehicles at
         # the blocked incident edge during the closure; upstream routes still
@@ -162,6 +164,9 @@ def main():
                "candidate_routes_used": len(routes), "flows_generated": flow_serial,
                "routes_originating_on_incident_edge_suspended": suspended_origin_routes,
                "vehicles_generated": vehicle_total,
+               "vehicles_before_origin_suspension": unsuspended_vehicle_total,
+               "vehicles_removed_by_origin_suspension_including_rounding": unsuspended_vehicle_total - vehicle_total,
+               "origin_suspension_is_modelling_assumption": bool(suspended_origin_routes),
                "warning": "Simple linear route-weight estimate. Missing calibration bins are scaled using the observed-bin fraction; verify route direction/order and fit against a proper simulation before claiming calibration."}
     summary_path = out.with_name("fit-summary.json"); summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(f"Fitted candidate route weights: {out}\nFit summary: {summary_path}")

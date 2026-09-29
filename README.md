@@ -585,6 +585,16 @@ Traffic detector data and Special Traffic News from
 [DATA.GOV.HK](https://data.gov.hk) and the Transport Department. Attribute both
 wherever the data is shown. Everything we use is aggregate and open: no
 personal data, no vehicle identifiers.
+# Component C diagnosis — 30 September
+
+[Fresh diagnosis](docs/component-c-diagnosis-2026-09-30.md): bounded real-data
+pre-incident replay completed 4,500 simulation seconds in 60.15 wall seconds,
+with no route-loading warnings. Count GEH pass rate is 66.94% (242 bins), speed
+MAPE 36.84% (296 bins), with 123 teleports. Both calibration targets remain
+unmet. Cache provenance and conflicting-reading handling are fixed; demand
+origin suspension now explicitly reports 409 removed vehicles. Full incident
+P0 remains blocked on the reviews and E assumption recorded in the diagnosis.
+
 # Component C sync update — 29 September
 
 The [30 September handoff](docs/component-c-sync-2026-09-30.md) records the
