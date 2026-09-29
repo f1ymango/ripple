@@ -56,6 +56,25 @@ def test_missing_calibration_counts_do_not_become_zero_flow_targets(tmp_path, mo
     assert flow.get("departLane") == "best"
     assert flow.get("departPos") == "0"
 
+    # A reopening flow must not precede another route's time-zero flow.
+    candidate.write_text(
+        '<routes><vehicle id="a"><route edges="E1"/></vehicle>'
+        '<vehicle id="b"><route edges="E2"/></vehicle></routes>', encoding="utf-8")
+    monkeypatch.setattr(Net, "getEdges", lambda self: [
+        type("Edge", (), {"getID": lambda self, value=value: value})()
+        for value in ("E1", "E2")])
+    with additional.with_suffix(".csv").open("a", encoding="utf-8") as stream:
+        stream.write("second,E2\n")
+    data = json.loads(observations.read_text(encoding="utf-8"))
+    data["detectors"].append({"id": "second", "observations": [{"count": 10}] * 12})
+    observations.write_text(json.dumps(data), encoding="utf-8")
+    scenario["incident"].update(edge_id="E1", duration_seconds=600)
+    config.write_text(json.dumps(scenario), encoding="utf-8")
+    fit_demand.main()
+    flows = ET.parse(output).getroot().findall("flow")
+    assert [float(item.get("begin")) for item in flows] == [0, 0, 5100]
+    assert sum(int(item.get("number")) for item in flows) == 460
+
     scenario["incident"]["start"] = 4200
     config.write_text(json.dumps(scenario), encoding="utf-8")
     with pytest.raises(ValueError, match="overlaps the configured incident"):

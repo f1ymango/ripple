@@ -585,3 +585,14 @@ Traffic detector data and Special Traffic News from
 [DATA.GOV.HK](https://data.gov.hk) and the Transport Department. Attribute both
 wherever the data is shown. Everything we use is aggregate and open: no
 personal data, no vehicle identifiers.
+# Component C sync update — 29 September
+
+The [30 September handoff](docs/component-c-sync-2026-09-30.md) records the
+source-checked incident carriageway (`44419212`, towards Aberdeen Tunnel),
+remaining physical placement/lane-scope reviews, Data/E's pending initial-lane
+assumption and the steps to full incident P0 validation. All 70 local loops
+match the audited mapping; that does not establish physical correctness.
+Fixed unsorted fitted-flow departure times that caused SUMO to ignore routes;
+the affected local sensitivity runs must not be used as validation evidence.
+The two focused demand/lane-audit tests pass. No new simulation was run for this
+update; the network remains provisional and the May 15 diagnostic below target.

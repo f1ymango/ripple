@@ -145,6 +145,11 @@ def main():
             ET.SubElement(vehicle, "route", edges=" ".join(path))
             vehicle_total += segment_count
             flow_serial += 1
+    # SUMO loads routes incrementally. A late reopening flow before another
+    # route's early flow makes SUMO ignore that early flow as unsorted.
+    # Stable sorting retains route order for equal departure times.
+    fitted_root[:] = (fitted_root.findall("vType") + sorted(
+        fitted_root.findall("flow"), key=lambda item: float(item.get("begin"))))
     ET.ElementTree(fitted_root).write(out, encoding="utf-8", xml_declaration=True)
     predictions = dict(predicted)
     summary = {"target_counts": dict(target), "predicted_counts": predictions,

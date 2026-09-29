@@ -35,16 +35,26 @@ Copy `sim/scenarios/scenario.example.json` to `sim/scenarios/scenario.json`. Set
 
 The example carries the May 15 observed queue onset (08:55), TD's all-lanes
 update (09:36), and clearance (10:02), with 15 minutes of warm-up. Its
-`edge_id` and first phase's `lane_indices` remain deliberately unresolved.
-For local sensitivity runs, edge `44419212` is the evidence-based candidate:
-the reviewed provisional OSM audit maps AID01104 onto a two-lane Wong Chuk Hang
-Road flyover edge in the detector's northeast direction. This is tied to the
-local audited network and is not yet a shared, reviewed network file. The
-initial physical lane remains unknown; the Transport Department feed reports
-whole-carriageway closure evidence but does not map the text lane labels to
-SUMO lane indices. Do not turn either lane-index sensitivity into a factual
-incident claim. The ignored local `scenario.json` uses the candidate edge and
-keeps its first phase as `unspecified`; do not reuse the old September timing.
+`edge_id` and first phase's `lane_indices` remain unresolved in the shared
+example. For local sensitivity runs, edge `44419212` is the evidence-based
+candidate: the provisional OSM audit maps AID01104 onto a two-lane Wong Chuk
+Hang Road flyover edge in the detector's northeast direction. This is tied to
+the local audited network and is not yet a shared, reviewed network file.
+
+The raw incident-window lane readings are preserved, with archive snapshot
+hashes, in [the AID01104 lane report](../../results/twin/may15-AID01104-lane-readings.md).
+At the sampled periods around 08:54, 08:56 and 09:00, the feed shows zero on
+`Slow Lane` while `Fast Lane` still records vehicles. The detector samples are
+sparse and later periods show both lanes empty or intermittent. In the local
+network, lane `44419212_0` is 1.49 m left of the travel direction at the
+detector position, while lane `44419212_1` is 1.67 m right; with Hong Kong's
+left-hand traffic and the repository's
+Fast/Slow convention, index 0 maps to Slow Lane and index 1 to Fast Lane on
+this specific geometry. Zero flow does not identify the physically closed
+lane. Keep the shared example's initial scope `unspecified` until
+Data/E explicitly selects and labels a modelling assumption. The
+ignored local `scenario.json` uses the candidate edge and keeps its first phase
+as `unspecified`; do not reuse the old September timing.
 
 Required observed data shape:
 
@@ -88,7 +98,7 @@ python -m src.twin.audit_network --config sim/scenarios/scenario.json --detector
 
 The audit reads only local files. `--before-mapping` adds a comparison against the earlier placement file; omit it when that source is unavailable or does not belong to the same network. If the configured scenario names `detector_overrides`, the override file must carry SHA-256 hashes for the exact network and committed detector registry. The matcher rejects it if either source changes; re-review the locations after every network rebuild. Lane-count conflicts and missing raw snapshots remain visible in the audit. The directed connectivity section checks all 24 links across the two main chains and both western-alternative chains against registry coordinates. A passing map audit does not establish traffic calibration or prove that SUMO teleport warnings are fixed.
 
-To check lane labels on explicitly selected snapshots from a separate day, use the lane-scope auditor. It can fetch only the listed official archive versions through component A and records each snapshot hash and each XML period timestamp; this cross-check does not replace the incident-window evidence or change a mapping:
+To inspect lane labels on explicitly selected snapshots, use the lane-scope auditor. It can fetch only the listed official archive versions through component A and records each snapshot hash and XML period timestamp. Add `--include-lane-readings` to retain each raw per-period lane volume, validity flag and duration; sampled values are not scaled or filled across archive gaps:
 
 ```powershell
 python -m src.twin.audit_lane_scope --timestamps 20260514-0731,20260514-0802,20260514-0830,20260514-0900,20260514-0930,20260514-1002,20260514-1030 --fetch

@@ -15,7 +15,7 @@ DEFAULT_DETECTORS = (
 )
 
 
-def build_report(cache, timestamps, detector_ids):
+def build_report(cache, timestamps, detector_ids, include_lane_readings=False):
     """Read only the named cache entries; never fetch or infer missing records."""
     observations = defaultdict(lambda: defaultdict(lambda: {"lanes": set(), "sources": set()}))
     sources = []
@@ -38,8 +38,17 @@ def build_report(cache, timestamps, detector_ids):
             if not row["lane"]:
                 continue
             period = row["timestamp"].isoformat()
-            observations[row["detector_id"]][period]["lanes"].add(row["lane"])
-            observations[row["detector_id"]][period]["sources"].add(stamp)
+            record = observations[row["detector_id"]][period]
+            record["lanes"].add(row["lane"])
+            record["sources"].add(stamp)
+            if include_lane_readings:
+                record.setdefault("lane_readings", {})[row["lane"]] = {
+                    "raw_volume": row["volume"],
+                    "speed_kmh": row["speed_kmh"],
+                    "occupancy_pct": row["occupancy_pct"],
+                    "valid": row["valid"],
+                    "period_seconds": row["period_s"],
+                }
 
     detector_report = {}
     for detector_id in detector_ids:
@@ -58,15 +67,27 @@ def build_report(cache, timestamps, detector_ids):
             "lane_sets": [list(lanes) for lanes in lane_sets],
             "periods": periods,
         }
+        if include_lane_readings:
+            detector_report[detector_id]["lane_readings"] = [
+                {"timestamp": timestamp,
+                 "lanes": [{"lane_id": lane, **record["lane_readings"][lane]}
+                           for lane in sorted(record.get("lane_readings", {}))]}
+                for timestamp, record in sorted(observations[detector_id].items())
+            ]
     return {
         "source": "DATA.GOV.HK historical archive, TD raw detector feed",
-        "purpose": "Cross-check lane labels on a separate day; not incident-window calibration.",
+        "purpose": ("Cross-check lane labels on explicitly selected snapshots; not calibration."
+                    if not include_lane_readings else
+                    "Retain raw per-period lane readings for review; sampled zero flow does not prove a lane closure."),
+        "includes_raw_lane_readings": include_lane_readings,
         "selection_rule": "Only the explicitly listed archive timestamps are read; cached XML internal timestamps are reported.",
         "archive_timestamps": timestamps,
         "snapshots": sources,
         "detectors": detector_report,
         "limitations": [
-            "This sample does not fill missing May 15 incident-window observations.",
+            ("This sample does not fill missing May 15 incident-window observations."
+             if not include_lane_readings else
+             "Archive gaps remain unfilled; a sampled zero is not evidence that the lane stayed empty between readings."),
             "A repeated feed lane count does not prove that a SUMO edge is mapped to the right physical carriageway.",
             "No detector mapping, OSM tag, geometry, lane count, or traffic observation is changed.",
         ],
@@ -88,6 +109,18 @@ def write_markdown(report, path):
         lines.append(f"| {row['archive_timestamp']} | {row['status']} | {row.get('sha256', '—')} |")
     lines += ["", "## Limits", ""]
     lines.extend(f"- {item}" for item in report["limitations"])
+    if report["includes_raw_lane_readings"]:
+        lines += ["", "## Raw lane readings", "",
+                  "Volumes are the feed's raw values for each observed period. Missing archive periods are not filled.",
+                  "", "| Detector | Period start | Lane | Raw volume | Valid | Period seconds |",
+                  "|---|---|---|---:|---|---:|"]
+        for detector_id, detector in report["detectors"].items():
+            for period in detector["lane_readings"]:
+                for lane in period["lanes"]:
+                    lines.append(
+                        f"| {detector_id} | {period['timestamp']} | {lane['lane_id']} | "
+                        f"{lane['raw_volume']} | {lane['valid']} | {lane['period_seconds']} |"
+                    )
     lines.append("")
     path.write_text("\n".join(lines), encoding="utf-8")
 
@@ -102,6 +135,8 @@ def main():
     parser.add_argument("--out", default="results/twin/may14-lane-scope-crosscheck.json")
     parser.add_argument("--fetch", action="store_true",
                         help="fetch only the named archive timestamps through component A's cache client")
+    parser.add_argument("--include-lane-readings", action="store_true",
+                        help="include per-period raw lane volumes, validity, and durations")
     args = parser.parse_args()
     timestamps = [value.strip() for value in args.timestamps.split(",") if value.strip()]
     if not timestamps or any(not re.fullmatch(r"\d{8}-\d{4}", stamp) for stamp in timestamps):
@@ -113,7 +148,8 @@ def main():
         parser.error("--detectors must contain unique detector IDs")
     if args.fetch:
         archive.prefetch("detectors", timestamps)
-    report = build_report(resolve(args.cache), timestamps, detector_ids)
+    report = build_report(resolve(args.cache), timestamps, detector_ids,
+                          include_lane_readings=args.include_lane_readings)
     out = resolve(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
