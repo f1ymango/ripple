@@ -71,8 +71,11 @@ incident's.
 Aberdeen Tunnel, near Yip Kan Street. TD at 09:01: *"part of the lanes ... is
 closed"*. At 09:36: *"all lanes ... are closed"*. Re-opened 10:02.
 
-**What the detectors saw** (5-minute bins against the same Friday 1 and 2 weeks
-earlier, 63–81 km/h throughout):
+**What the detectors saw** (5-minute bins against two ordinary Fridays, 8 May
+and 24 Apr, when AID01101–04 ran 52.5–80.7 km/h). *Re-checked 29 Sep:* this
+first compared with Fri 1 May, which was Labour Day. Under the fixed screen
+(public holidays skipped) the same five detectors are credited with the same
+numbers, score 4.38 ([one-day re-check](../results/data/candidates_2026-05-15.md)):
 
 - AID01104, at the flyover: 7 km/h at 08:55, then **no vehicles in 8 of the 9
   five-minute bins from 09:15 to 09:55** (every lane reporting; one vehicle at
@@ -80,14 +83,23 @@ earlier, 63–81 km/h throughout):
 - The queue grew backwards: AID01103 from 09:05, AID01102 from 09:15, AID01101
   on Aberdeen Praya Road from 09:45 (8–43 km/h).
 - Recovery front 10:05–10:20, detector by detector.
-- 5 detectors credited, none on the noise floor; no other corridor incident.
+- 5 detectors credited; no other corridor incident. One of them, AID01104, also
+  ran 20+ km/h slower on 24 Apr than on 8 May for 15 minutes, so it sits on the
+  noise floor now, but it was credited for a longer run (20 minutes), and its 25
+  minutes with no vehicles are direct evidence of the closure anyway.
+- **Which lane closed first** (Data, 29 Sep): the **slow lane**. At AID01104 the
+  slow lane carried no vehicle in 5 archived readings in a row, 08:54:00–09:00:00,
+  while the fast lane crawled past at 3–9 km/h; on 8 May and 24 Apr it happened
+  in 1 reading of 30 each. From 09:00:30 both lanes carried almost nothing
+  ([lane by lane](../results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
+  AID01105, the other flyover detector, is missing from the feed that morning.
 
 **What it showcases.**
 
 - *Reader*: the hardest real case — `lanes_closed: ["unspecified"]` first, then
   `["all"]` on the update. The Evaluator has to decide what to simulate for
-  "unspecified" (the open decision in the README), and the escalation shows the
-  plan being revised.
+  "unspecified" (the open decision in the README; Data proposes the slow lane,
+  above), and the escalation shows the plan being revised.
 - *Plans*: a full closure of the only road to the tunnel at 9 am — every
   diversion option matters (Nam Fung Road to Wong Nai Chung Gap Road, Pok Fu
   Lam Road, the South Island Line), and doing nothing is visibly costly.

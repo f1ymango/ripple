@@ -1,0 +1,1621 @@
+{
+  "detector_id": "AID01104",
+  "incident": {
+    "start": "2026-05-15T08:40:00+08:00",
+    "end": "2026-05-15T09:20:00+08:00",
+    "archive": "detectors: 43 snapshots listed, 28 read, 15 not served",
+    "readings": [
+      {
+        "time": "2026-05-15T08:40:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 7.0,
+            "speed_kmh": 65.0,
+            "occupancy_pct": 6.0
+          },
+          "Slow Lane": {
+            "volume": 2.0,
+            "speed_kmh": 35.0,
+            "occupancy_pct": 5.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:40:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 9.0,
+            "speed_kmh": 50.0,
+            "occupancy_pct": 7.0
+          },
+          "Slow Lane": {
+            "volume": 3.0,
+            "speed_kmh": 58.0,
+            "occupancy_pct": 3.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:42:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 11.0,
+            "speed_kmh": 55.0,
+            "occupancy_pct": 9.0
+          },
+          "Slow Lane": {
+            "volume": 3.0,
+            "speed_kmh": 43.0,
+            "occupancy_pct": 6.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:42:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 9.0,
+            "speed_kmh": 60.0,
+            "occupancy_pct": 7.0
+          },
+          "Slow Lane": {
+            "volume": 2.0,
+            "speed_kmh": 58.0,
+            "occupancy_pct": 2.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:43:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 3.0,
+            "speed_kmh": 69.0,
+            "occupancy_pct": 2.0
+          },
+          "Slow Lane": {
+            "volume": 5.0,
+            "speed_kmh": 68.0,
+            "occupancy_pct": 5.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:43:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 5.0,
+            "speed_kmh": 67.0,
+            "occupancy_pct": 4.0
+          },
+          "Slow Lane": {
+            "volume": 4.0,
+            "speed_kmh": 52.0,
+            "occupancy_pct": 4.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:44:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 10.0,
+            "speed_kmh": 62.0,
+            "occupancy_pct": 8.0
+          },
+          "Slow Lane": {
+            "volume": 6.0,
+            "speed_kmh": 55.0,
+            "occupancy_pct": 8.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:44:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 3.0,
+            "speed_kmh": 63.0,
+            "occupancy_pct": 4.0
+          },
+          "Slow Lane": {
+            "volume": 3.0,
+            "speed_kmh": 62.0,
+            "occupancy_pct": 3.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:45:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 8.0,
+            "speed_kmh": 67.0,
+            "occupancy_pct": 6.0
+          },
+          "Slow Lane": {
+            "volume": 1.0,
+            "speed_kmh": 61.0,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:45:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 4.0,
+            "speed_kmh": 60.0,
+            "occupancy_pct": 3.0
+          },
+          "Slow Lane": {
+            "volume": 1.0,
+            "speed_kmh": 61.0,
+            "occupancy_pct": 1.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:46:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 4.0,
+            "speed_kmh": 73.0,
+            "occupancy_pct": 4.0
+          },
+          "Slow Lane": {
+            "volume": 2.0,
+            "speed_kmh": 70.0,
+            "occupancy_pct": 1.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:46:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 7.0,
+            "speed_kmh": 61.0,
+            "occupancy_pct": 7.0
+          },
+          "Slow Lane": {
+            "volume": 1.0,
+            "speed_kmh": 67.0,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:49:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 8.0,
+            "speed_kmh": 55.0,
+            "occupancy_pct": 8.0
+          },
+          "Slow Lane": {
+            "volume": 4.0,
+            "speed_kmh": 62.0,
+            "occupancy_pct": 4.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:49:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 6.0,
+            "speed_kmh": 61.0,
+            "occupancy_pct": 5.0
+          },
+          "Slow Lane": {
+            "volume": 3.0,
+            "speed_kmh": 41.0,
+            "occupancy_pct": 9.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:50:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 3.0,
+            "speed_kmh": 70.0,
+            "occupancy_pct": 2.0
+          },
+          "Slow Lane": {
+            "volume": 1.0,
+            "speed_kmh": 59.0,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:50:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 8.0,
+            "speed_kmh": 59.0,
+            "occupancy_pct": 9.0
+          },
+          "Slow Lane": {
+            "volume": 2.0,
+            "speed_kmh": 60.0,
+            "occupancy_pct": 2.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T08:54:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 2.0,
+            "speed_kmh": 4.0,
+            "occupancy_pct": 26.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": [
+          "Slow Lane"
+        ]
+      },
+      {
+        "time": "2026-05-15T08:54:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 1.0,
+            "speed_kmh": 3.0,
+            "occupancy_pct": 6.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": [
+          "Slow Lane"
+        ]
+      },
+      {
+        "time": "2026-05-15T08:56:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 5.0,
+            "speed_kmh": 7.0,
+            "occupancy_pct": 47.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": [
+          "Slow Lane"
+        ]
+      },
+      {
+        "time": "2026-05-15T08:56:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 4.0,
+            "speed_kmh": 6.0,
+            "occupancy_pct": 32.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": [
+          "Slow Lane"
+        ]
+      },
+      {
+        "time": "2026-05-15T09:00:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 7.0,
+            "speed_kmh": 9.0,
+            "occupancy_pct": 35.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": [
+          "Slow Lane"
+        ]
+      },
+      {
+        "time": "2026-05-15T09:00:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T09:05:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T09:05:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T09:09:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          },
+          "Slow Lane": {
+            "volume": 2.0,
+            "speed_kmh": 8.0,
+            "occupancy_pct": 11.0
+          }
+        },
+        "empty_while_moving": [
+          "Fast Lane"
+        ]
+      },
+      {
+        "time": "2026-05-15T09:09:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T09:12:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T09:12:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T09:14:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 2.0,
+            "speed_kmh": 5.0,
+            "occupancy_pct": 24.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": [
+          "Slow Lane"
+        ]
+      },
+      {
+        "time": "2026-05-15T09:14:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 2.0,
+            "speed_kmh": 8.0,
+            "occupancy_pct": 19.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": [
+          "Slow Lane"
+        ]
+      },
+      {
+        "time": "2026-05-15T09:18:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T09:18:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T09:19:00+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      },
+      {
+        "time": "2026-05-15T09:19:30+08:00",
+        "lanes": {
+          "Fast Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          },
+          "Slow Lane": {
+            "volume": 0.0,
+            "speed_kmh": null,
+            "occupancy_pct": 0.0
+          }
+        },
+        "empty_while_moving": []
+      }
+    ],
+    "summary": {
+      "Fast Lane": {
+        "readings": 34,
+        "vehicles": 128,
+        "share_pct": 74,
+        "empty_while_moving": 1,
+        "longest_run": 1,
+        "longest_run_span": [
+          "2026-05-15T09:09:00+08:00",
+          "2026-05-15T09:09:00+08:00"
+        ]
+      },
+      "Slow Lane": {
+        "readings": 34,
+        "vehicles": 45,
+        "share_pct": 26,
+        "empty_while_moving": 7,
+        "longest_run": 5,
+        "longest_run_span": [
+          "2026-05-15T08:54:00+08:00",
+          "2026-05-15T09:00:00+08:00"
+        ]
+      }
+    }
+  },
+  "ordinary": [
+    {
+      "start": "2026-05-08T08:40:00+08:00",
+      "end": "2026-05-08T09:20:00+08:00",
+      "archive": "detectors: 39 snapshots listed, 24 read, 15 not served",
+      "readings": [
+        {
+          "time": "2026-05-08T08:40:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 2.0,
+              "speed_kmh": 84.0,
+              "occupancy_pct": 1.0
+            },
+            "Slow Lane": {
+              "volume": 0.0,
+              "speed_kmh": null,
+              "occupancy_pct": 0.0
+            }
+          },
+          "empty_while_moving": [
+            "Slow Lane"
+          ]
+        },
+        {
+          "time": "2026-05-08T08:40:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 10.0,
+              "speed_kmh": 77.0,
+              "occupancy_pct": 8.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 62.0,
+              "occupancy_pct": 8.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T08:45:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 6.0,
+              "speed_kmh": 68.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 2.0,
+              "speed_kmh": 69.0,
+              "occupancy_pct": 2.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T08:45:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 8.0,
+              "speed_kmh": 68.0,
+              "occupancy_pct": 6.0
+            },
+            "Slow Lane": {
+              "volume": 3.0,
+              "speed_kmh": 69.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T08:48:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 10.0,
+              "speed_kmh": 57.0,
+              "occupancy_pct": 11.0
+            },
+            "Slow Lane": {
+              "volume": 7.0,
+              "speed_kmh": 53.0,
+              "occupancy_pct": 13.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T08:48:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 6.0,
+              "speed_kmh": 73.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 73.0,
+              "occupancy_pct": 5.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T08:52:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 82.0,
+              "occupancy_pct": 4.0
+            },
+            "Slow Lane": {
+              "volume": 6.0,
+              "speed_kmh": 55.0,
+              "occupancy_pct": 16.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T08:52:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 9.0,
+              "speed_kmh": 68.0,
+              "occupancy_pct": 7.0
+            },
+            "Slow Lane": {
+              "volume": 3.0,
+              "speed_kmh": 64.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T08:56:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 9.0,
+              "speed_kmh": 74.0,
+              "occupancy_pct": 6.0
+            },
+            "Slow Lane": {
+              "volume": 6.0,
+              "speed_kmh": 56.0,
+              "occupancy_pct": 11.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T08:56:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 4.0,
+              "speed_kmh": 100.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 3.0,
+              "speed_kmh": 69.0,
+              "occupancy_pct": 2.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:00:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 6.0,
+              "speed_kmh": 72.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 3.0,
+              "speed_kmh": 63.0,
+              "occupancy_pct": 4.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:00:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 12.0,
+              "speed_kmh": 69.0,
+              "occupancy_pct": 8.0
+            },
+            "Slow Lane": {
+              "volume": 2.0,
+              "speed_kmh": 67.0,
+              "occupancy_pct": 2.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:02:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 6.0,
+              "speed_kmh": 73.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 1.0,
+              "speed_kmh": 87.0,
+              "occupancy_pct": 0.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:02:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 12.0,
+              "speed_kmh": 72.0,
+              "occupancy_pct": 8.0
+            },
+            "Slow Lane": {
+              "volume": 9.0,
+              "speed_kmh": 54.0,
+              "occupancy_pct": 13.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:05:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 3.0,
+              "speed_kmh": 90.0,
+              "occupancy_pct": 2.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 68.0,
+              "occupancy_pct": 4.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:05:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 3.0,
+              "speed_kmh": 74.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 72.0,
+              "occupancy_pct": 5.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:06:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 95.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 82.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:06:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 3.0,
+              "speed_kmh": 109.0,
+              "occupancy_pct": 2.0
+            },
+            "Slow Lane": {
+              "volume": 1.0,
+              "speed_kmh": 60.0,
+              "occupancy_pct": 1.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:09:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 77.0,
+              "occupancy_pct": 6.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 84.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:09:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 6.0,
+              "speed_kmh": 78.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 73.0,
+              "occupancy_pct": 4.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:10:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 4.0,
+              "speed_kmh": 78.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 91.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:10:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 2.0,
+              "speed_kmh": 87.0,
+              "occupancy_pct": 2.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 76.0,
+              "occupancy_pct": 4.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:11:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 7.0,
+              "speed_kmh": 75.0,
+              "occupancy_pct": 6.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 68.0,
+              "occupancy_pct": 6.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:11:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 8.0,
+              "speed_kmh": 70.0,
+              "occupancy_pct": 6.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 62.0,
+              "occupancy_pct": 8.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:14:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 8.0,
+              "speed_kmh": 77.0,
+              "occupancy_pct": 8.0
+            },
+            "Slow Lane": {
+              "volume": 3.0,
+              "speed_kmh": 72.0,
+              "occupancy_pct": 2.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:14:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 6.0,
+              "speed_kmh": 85.0,
+              "occupancy_pct": 4.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 80.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:15:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 6.0,
+              "speed_kmh": 82.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 6.0,
+              "speed_kmh": 76.0,
+              "occupancy_pct": 6.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:15:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 6.0,
+              "speed_kmh": 77.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 2.0,
+              "speed_kmh": 67.0,
+              "occupancy_pct": 1.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:18:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 8.0,
+              "speed_kmh": 74.0,
+              "occupancy_pct": 7.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 68.0,
+              "occupancy_pct": 6.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-05-08T09:18:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 7.0,
+              "speed_kmh": 77.0,
+              "occupancy_pct": 7.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 67.0,
+              "occupancy_pct": 6.0
+            }
+          },
+          "empty_while_moving": []
+        }
+      ],
+      "summary": {
+        "Fast Lane": {
+          "readings": 30,
+          "vehicles": 192,
+          "share_pct": 61,
+          "empty_while_moving": 0,
+          "longest_run": 0,
+          "longest_run_span": []
+        },
+        "Slow Lane": {
+          "readings": 30,
+          "vehicles": 123,
+          "share_pct": 39,
+          "empty_while_moving": 1,
+          "longest_run": 1,
+          "longest_run_span": [
+            "2026-05-08T08:40:00+08:00",
+            "2026-05-08T08:40:00+08:00"
+          ]
+        }
+      }
+    },
+    {
+      "start": "2026-04-24T08:40:00+08:00",
+      "end": "2026-04-24T09:20:00+08:00",
+      "archive": "detectors: 44 snapshots listed, 25 read, 19 not served",
+      "readings": [
+        {
+          "time": "2026-04-24T08:40:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 47.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 3.0,
+              "speed_kmh": 71.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:40:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 59.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 3.0,
+              "speed_kmh": 61.0,
+              "occupancy_pct": 4.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:44:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 58.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 61.0,
+              "occupancy_pct": 6.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:44:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 56.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 1.0,
+              "speed_kmh": 39.0,
+              "occupancy_pct": 4.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:46:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 10.0,
+              "speed_kmh": 57.0,
+              "occupancy_pct": 8.0
+            },
+            "Slow Lane": {
+              "volume": 6.0,
+              "speed_kmh": 50.0,
+              "occupancy_pct": 12.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:46:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 10.0,
+              "speed_kmh": 55.0,
+              "occupancy_pct": 8.0
+            },
+            "Slow Lane": {
+              "volume": 1.0,
+              "speed_kmh": 43.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:51:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 9.0,
+              "speed_kmh": 56.0,
+              "occupancy_pct": 10.0
+            },
+            "Slow Lane": {
+              "volume": 1.0,
+              "speed_kmh": 41.0,
+              "occupancy_pct": 2.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:51:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 3.0,
+              "speed_kmh": 68.0,
+              "occupancy_pct": 4.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 65.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:54:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 6.0,
+              "speed_kmh": 65.0,
+              "occupancy_pct": 6.0
+            },
+            "Slow Lane": {
+              "volume": 0.0,
+              "speed_kmh": null,
+              "occupancy_pct": 0.0
+            }
+          },
+          "empty_while_moving": [
+            "Slow Lane"
+          ]
+        },
+        {
+          "time": "2026-04-24T08:54:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 64.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 51.0,
+              "occupancy_pct": 5.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:55:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 3.0,
+              "speed_kmh": 54.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 2.0,
+              "speed_kmh": 45.0,
+              "occupancy_pct": 1.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:55:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 4.0,
+              "speed_kmh": 62.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 57.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:59:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 54.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 49.0,
+              "occupancy_pct": 10.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T08:59:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 4.0,
+              "speed_kmh": 64.0,
+              "occupancy_pct": 2.0
+            },
+            "Slow Lane": {
+              "volume": 3.0,
+              "speed_kmh": 53.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:01:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 0.0,
+              "speed_kmh": null,
+              "occupancy_pct": 0.0
+            },
+            "Slow Lane": {
+              "volume": 1.0,
+              "speed_kmh": 60.0,
+              "occupancy_pct": 1.0
+            }
+          },
+          "empty_while_moving": [
+            "Fast Lane"
+          ]
+        },
+        {
+          "time": "2026-04-24T09:01:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 4.0,
+              "speed_kmh": 60.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 3.0,
+              "speed_kmh": 60.0,
+              "occupancy_pct": 2.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:04:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 3.0,
+              "speed_kmh": 55.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 3.0,
+              "speed_kmh": 53.0,
+              "occupancy_pct": 4.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:04:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 6.0,
+              "speed_kmh": 46.0,
+              "occupancy_pct": 8.0
+            },
+            "Slow Lane": {
+              "volume": 2.0,
+              "speed_kmh": 60.0,
+              "occupancy_pct": 2.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:05:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 4.0,
+              "speed_kmh": 55.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 54.0,
+              "occupancy_pct": 4.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:05:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 4.0,
+              "speed_kmh": 44.0,
+              "occupancy_pct": 6.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 57.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:10:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 49.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 7.0,
+              "speed_kmh": 56.0,
+              "occupancy_pct": 6.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:10:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 55.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 5.0,
+              "speed_kmh": 69.0,
+              "occupancy_pct": 4.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:13:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 4.0,
+              "speed_kmh": 62.0,
+              "occupancy_pct": 3.0
+            },
+            "Slow Lane": {
+              "volume": 2.0,
+              "speed_kmh": 45.0,
+              "occupancy_pct": 2.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:13:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 60.0,
+              "occupancy_pct": 4.0
+            },
+            "Slow Lane": {
+              "volume": 3.0,
+              "speed_kmh": 43.0,
+              "occupancy_pct": 6.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:15:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 4.0,
+              "speed_kmh": 53.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 49.0,
+              "occupancy_pct": 5.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:15:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 8.0,
+              "speed_kmh": 44.0,
+              "occupancy_pct": 10.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 52.0,
+              "occupancy_pct": 3.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:16:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 5.0,
+              "speed_kmh": 55.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 6.0,
+              "speed_kmh": 49.0,
+              "occupancy_pct": 8.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:16:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 7.0,
+              "speed_kmh": 53.0,
+              "occupancy_pct": 10.0
+            },
+            "Slow Lane": {
+              "volume": 4.0,
+              "speed_kmh": 52.0,
+              "occupancy_pct": 5.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:18:00+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 7.0,
+              "speed_kmh": 65.0,
+              "occupancy_pct": 5.0
+            },
+            "Slow Lane": {
+              "volume": 7.0,
+              "speed_kmh": 66.0,
+              "occupancy_pct": 7.0
+            }
+          },
+          "empty_while_moving": []
+        },
+        {
+          "time": "2026-04-24T09:18:30+08:00",
+          "lanes": {
+            "Fast Lane": {
+              "volume": 6.0,
+              "speed_kmh": 56.0,
+              "occupancy_pct": 6.0
+            },
+            "Slow Lane": {
+              "volume": 2.0,
+              "speed_kmh": 47.0,
+              "occupancy_pct": 1.0
+            }
+          },
+          "empty_while_moving": []
+        }
+      ],
+      "summary": {
+        "Fast Lane": {
+          "readings": 30,
+          "vehicles": 156,
+          "share_pct": 60,
+          "empty_while_moving": 1,
+          "longest_run": 1,
+          "longest_run_span": [
+            "2026-04-24T09:01:00+08:00",
+            "2026-04-24T09:01:00+08:00"
+          ]
+        },
+        "Slow Lane": {
+          "readings": 30,
+          "vehicles": 103,
+          "share_pct": 40,
+          "empty_while_moving": 1,
+          "longest_run": 1,
+          "longest_run_span": [
+            "2026-04-24T08:54:00+08:00",
+            "2026-04-24T08:54:00+08:00"
+          ]
+        }
+      }
+    }
+  ]
+}

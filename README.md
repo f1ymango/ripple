@@ -47,7 +47,7 @@ this chain.
 
 | | Component | Owner | Status |
 |---|---|---|---|
-| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md) |
+| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md). Week 2 checks on the demo morning: usable calibration bins per threshold ([bin survival](results/data/bin-survival_20260515-0755_1035.md)), which lane closed first ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)), and IN-26-03365 re-screened after the 29 Sep screen fixes ([re-check](results/data/candidates_2026-05-15.md)) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
 | C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The local OSM map now has audited connectivity for all 24 directed links across the two main roads and western alternative; all 24 directed detector-to-detector links in the audit are reachable, with path distances within 1.12 times their detector-coordinate distances. AID01106 to AID01107 detour fell from 1,771.83 m to 441.79 m without editing OSM geometry. A bounded May 15 pre-incident run scores 66.5% GEH<5 and 36.9% speed MAPE, so the baseline target is not met; lane-scope gaps remain and the local network/E1 files are still provisional. Data's ~15-link fallback remains active. ([src/twin/](src/twin/README.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md), [OSM connectivity audit](results/twin/osm-network-audit.md)) |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
@@ -102,7 +102,10 @@ Pull requests #1 through #29 are merged. The latest Component C follow-up commit
 - **One corridor-road list.** The Reader ([src/reader/reader.py](src/reader/reader.py))
   and the loaders ([src/loaders/corridor.py](src/loaders/corridor.py)) each
   keep their own, and they differ: Stubbs Road and the Chinese road names are
-  only in the Reader's. Pick one and share it.
+  only in the Reader's. Pick one and share it. *29 Sep:* Data's side is in place,
+  `CORRIDOR_ROAD_NAMES` in [src/loaders/corridor.py](src/loaders/corridor.py);
+  switching the Reader to it and deciding on Stubbs Road are the Lead's
+  ([notes](docs/notes-from-data.md)).
 - **Who runs the live poller, and on which machine.** Its data has no gaps,
   but it only records while it runs (`python -m src.loaders.fetch live`).
 - **What the Evaluator (E) simulates for `lanes_closed: ["unspecified"]`**
@@ -110,11 +113,20 @@ Pull requests #1 through #29 are merged. The latest Component C follow-up commit
   message does not say which" instead of "none"; E picks the closure to
   simulate and states that assumption with the results
   ([docs/03-architecture.md](docs/03-architecture.md) §3). 7 of the 20 dev
-  messages are this case.
+  messages are this case. *29 Sep, Data's proposal for IN-26-03365:* close the
+  **slow lane** of the Wong Chuk Hang Road flyover eastbound. At AID01104 it
+  carried no vehicle in 5 readings in a row (08:54–09:00) while the fast lane
+  crawled past; on two ordinary Fridays that happened in 1 reading of 30 each
+  ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
+  To agree at the 30 Sep sync.
 - **Calibration thresholds** (Data + Simulation): a bin is used for GEH only at
   ≥ 40% archive coverage and ≥ 90% of lane readings valid
   ([docs/02-data.md](docs/02-data.md) §7). Relax them deliberately if too few
-  bins survive, and state the values on the validation slide.
+  bins survive, and state the values on the validation slide. *29 Sep, for
+  15 May before 08:55:* 242 of 336 bins at 40% / 90%, 298 at 20% / 90%; 75% instead
+  of 90% for lane readings changes nothing; low- and high-coverage bins differ by
+  0.2 km/h in mean speed, so the filter trades precision, not bias
+  ([bin survival](results/data/bin-survival_20260515-0755_1035.md)).
 - **`network_state.json` vs what A hands the twin**: A now writes the twin's
   own input, `sim/scenarios/detectors.json`, one row per 5-minute slot
   (`python -m src.loaders.fetch twin-detectors`, as the Lead suggested on
@@ -125,6 +137,12 @@ Pull requests #1 through #29 are merged. The latest Component C follow-up commit
 
 ### Known issues
 
+- [data/candidates.md](data/candidates.md) was generated before the 29 Sep
+  screen fixes (public holidays were accepted as ordinary days; control days
+  before `--start` were never checked for incidents). The demo incident is
+  re-checked and unchanged ([re-check](results/data/candidates_2026-05-15.md));
+  the other 34 rows are not. Regenerate the table before using it again
+  ([notes](docs/notes-from-data.md)).
 - Incident Reader errors left in v2
   ([LABELLING.md](data/labelled_incidents/LABELLING.md#score-history)): one
   named lane closed with "only remaining lanes are" (plural) gets
@@ -190,6 +208,20 @@ Pull requests #1 through #29 are merged. The latest Component C follow-up commit
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Tue 29 Sep**
+- Component A: fixed two bugs in the candidate screen: public holidays counted
+  as ordinary days (IN-26-03365 was compared with Labour Day, 1 May), and control
+  days before `--start` were never checked for incidents. IN-26-03365 re-screened
+  under both fixes: ordinary days now 8 May and 24 Apr, same five detectors
+  credited, score 4.38 ([re-check](results/data/candidates_2026-05-15.md)). New
+  demo-morning checks: usable calibration bins per threshold
+  ([bin survival](results/data/bin-survival_20260515-0755_1035.md)) and which
+  lane closed first, the slow lane
+  ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
+  One shared corridor road list, `CORRIDOR_ROAD_NAMES`
+  ([corridor.py](src/loaders/corridor.py)). Notes for the Lead and Simulation:
+  [docs/notes-from-data.md](docs/notes-from-data.md).
 
 **Mon 28 Sep**
 - Component C: refreshed the May 15 hand-over from the official HK traffic archive (80 of 113 listed snapshots served; 28 detectors, 32 five-minute slots; 600 count-and-speed pairs) and regenerated the source-hashed OSM audit. The observations reproduce the same six unresolved lane scopes; no placement or calibration claim changed ([audit](results/twin/osm-network-audit.json)).

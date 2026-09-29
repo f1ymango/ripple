@@ -50,13 +50,59 @@ def _patch_days(monkeypatch, incident_day: dict, control_a: dict | None = None,
 def test_control_days_skip_any_week_with_a_corridor_incident_of_any_kind():
     one_week = _incident("IN-OTHER", NEW - dt.timedelta(weeks=1), CLOSED - dt.timedelta(weeks=1),
                          detail_en="Road Works")
-    assert candidates.control_days(_incident(), [one_week]) == [14, 21]
+    assert candidates.control_days(_incident(), [one_week], {}) == [14, 21]
 
 
 def test_an_incident_without_a_clearance_still_blocks_its_week():
     """Seen only as a NEW message: treated as running for 30 minutes."""
     open_ended = _incident("IN-OPEN", NEW - dt.timedelta(weeks=2, minutes=-10), None)
-    assert candidates.control_days(_incident(), [open_ended]) == [7, 21]
+    assert candidates.control_days(_incident(), [open_ended], {}) == [7, 21]
+
+
+LABOUR_DAY = {dt.date(2026, 5, 1): "Labour Day"}
+
+
+def test_a_public_holiday_is_never_an_ordinary_day():
+    """IN-26-03365 (Fri 15 May) was compared with Fri 1 May, Labour Day, until 29 Sep."""
+    assert candidates.control_days(_incident(), [], LABOUR_DAY) == [7, 21]
+
+
+def test_a_window_that_runs_into_a_holiday_is_not_ordinary_either():
+    late = _incident(new_at=NEW.replace(hour=22), closed_at=NEW.replace(hour=23, minute=30))
+    eve = {dt.date(2026, 5, 2): "a holiday the next day"}         # the window ends past midnight
+    assert candidates.control_days(late, [], eve) == [7, 21]
+
+
+def test_the_incident_day_itself_being_a_holiday_is_recorded():
+    busy = [_incident(f"IN-{w}", NEW - dt.timedelta(weeks=w), CLOSED - dt.timedelta(weeks=w))
+            for w in range(1, 7)]                        # no ordinary day, so no download
+    got = candidates.evidence(_incident(), busy, {NEW.date(): "a holiday"})
+    assert got["holiday"] == "a holiday" and got["control_days"] == []
+
+
+def test_incidents_from_six_weeks_before_the_range_are_loaded(monkeypatch):
+    """Control days before --start used to look clean because nothing before it was loaded."""
+    asked = []
+    monkeypatch.setattr(candidates.incidents, "load", lambda a, b: asked.append((a, b)) or [])
+    candidates.shortlist("2026-03-22", "2026-09-21", log=lambda *a: None)
+    assert asked == [("2026-02-07", "2026-09-21")]
+
+
+def test_incidents_before_the_range_are_checked_but_not_screened(monkeypatch):
+    early = _incident("IN-EARLY", NEW - dt.timedelta(weeks=1), CLOSED - dt.timedelta(weeks=1))
+    monkeypatch.setattr(candidates.incidents, "load", lambda a, b: [early, _incident()])
+    seen = []
+    monkeypatch.setattr(candidates, "evidence",
+                        lambda i, corridor, table, minutes: seen.append(corridor) or {"credited": {}})
+    got = candidates.shortlist("2026-05-15", "2026-05-15", log=lambda *a: None)
+    assert [r["incident_number"] for r in got] == ["IN-X"]          # screened: in range only
+    assert [i["incident_number"] for i in seen[0]] == ["IN-EARLY", "IN-X"]   # checked: both
+
+
+def test_a_year_missing_from_the_holiday_list_stops_the_screen(monkeypatch):
+    monkeypatch.setattr(candidates.holidays, "load", lambda: LABOUR_DAY)
+    with pytest.raises(ValueError, match="2031"):
+        candidates.shortlist("2031-01-10", "2031-02-10", log=lambda *a: None)
 
 
 def test_an_incident_is_not_its_own_contamination():
@@ -67,7 +113,7 @@ def test_an_incident_is_not_its_own_contamination():
 def test_fewer_than_two_clean_days_means_no_verdict(monkeypatch):
     busy = [_incident(f"IN-{w}", NEW - dt.timedelta(weeks=w), CLOSED - dt.timedelta(weeks=w))
             for w in range(1, 7)]
-    got = candidates.evidence(_incident(), busy)
+    got = candidates.evidence(_incident(), busy, {})
     assert got["control_days"] == [] and got["credited"] == {} and got["coverage_pct"] is None
     assert candidates.score({**_incident(), **got}) == 0
 
@@ -77,7 +123,7 @@ def test_fewer_than_two_clean_days_means_no_verdict(monkeypatch):
 def test_a_sustained_slowdown_absent_on_ordinary_days_is_credited(monkeypatch):
     # AID01104 at 8 km/h from 08:55 (offset 85) to 10:00 (offset 150)
     _patch_days(monkeypatch, {"AID01104": {m: 8.0 for m in range(85, 150, 5)}})
-    got = candidates.evidence(_incident(), [])
+    got = candidates.evidence(_incident(), [], {})
     assert list(got["credited"]) == ["AID01104"]
     only = got["credited"]["AID01104"]
     assert only["leg"] == "main_eastbound" and only["longest_min"] == 65
@@ -95,7 +141,7 @@ def test_one_slow_bin_is_not_enough():
 def test_a_detector_that_differs_as_long_between_two_ordinary_days_is_noise(monkeypatch):
     slow = {m: 10.0 for m in range(90, 150, 5)}
     _patch_days(monkeypatch, {"AID01108": slow}, control_b={"AID01108": slow})
-    got = candidates.evidence(_incident(), [])
+    got = candidates.evidence(_incident(), [], {})
     assert got["credited"] == {} and got["noise"] == ["AID01108"]
 
 
@@ -104,14 +150,14 @@ def test_a_short_ordinary_day_dip_does_not_dismiss_a_long_closure(monkeypatch):
     on the day it ran 5-13 km/h for 40 minutes."""
     _patch_days(monkeypatch, {"AID01107": {m: 8.0 for m in range(90, 130, 5)}},
                 control_b={"AID01107": {m: 20.0 for m in (80, 85)}})
-    got = candidates.evidence(_incident(), [])
+    got = candidates.evidence(_incident(), [], {})
     assert got["noise"] == ["AID01107"] and got["credited"]["AID01107"]["longest_min"] == 40
 
 
 def test_missing_bins_neither_credit_nor_break_a_detector(monkeypatch):
     gappy = {m: ("" if m % 10 else 8.0) for m in range(85, 150, 5)}   # every other bin blank
     _patch_days(monkeypatch, {"AID01104": gappy})
-    got = candidates.evidence(_incident(), [])
+    got = candidates.evidence(_incident(), [], {})
     assert "AID01104" not in got["credited"]                        # never two in a row
 
 
@@ -121,7 +167,7 @@ def test_a_closure_is_seen_as_no_traffic_only_when_the_control_had_traffic(monke
                 {"AID01104": {m: empty for m in range(100, 150, 5)},
                  "AID01217": {m: empty for m in range(100, 150, 5)}},
                 control_a={"AID01217": {m: _bin("", flow=0) for m in range(100, 150, 5)}})
-    got = candidates.evidence(_incident(), [])
+    got = candidates.evidence(_incident(), [], {})
     assert got["no_traffic"] == {"AID01104": 50}                   # not AID01217: quiet anyway
 
 
@@ -162,13 +208,16 @@ def test_the_score_penalises_an_overlapping_incident_and_an_early_onset():
 # ---------------------------------------------------------------- the table
 
 def test_the_table_never_prints_none_and_says_what_td_wrote(tmp_path):
-    rows = [_row(no_traffic={"AID01104": 40}),
+    rows = [{**_row(no_traffic={"AID01104": 40}), "control_days": [7, 21], "holiday": ""},
             {**_incident("IN-EMPTY", lane_wording=""), "credited": {}, "no_traffic": {},
-             "control_days": [], "coverage_pct": None, "others_in_window": [], "score": 0}]
+             "control_days": [], "coverage_pct": None, "others_in_window": [], "score": 0,
+             "holiday": "Labour Day"}]
     rows[0]["score"] = candidates.score(rows[0])
     text = candidates.write_markdown(rows, tmp_path / "c.md").read_text(encoding="utf-8")
     assert "None" not in text and "all lanes" in text and "AID01104 40 min" in text
     assert "IN-EMPTY" in text and "data/demo_shortlist.md" in text
+    assert "| 8 May, 24 Apr |" in text                  # which ordinary days, in plain dates
+    assert "09:00 (public holiday) | — |" in text       # flagged, and no days to show
 
 
 def test_an_empty_screen_still_writes_a_readable_table(tmp_path):
@@ -207,6 +256,6 @@ def test_only_accidents_short_enough_to_simulate_are_screened(monkeypatch):
     rows = [_incident("IN-A"), _incident("IN-B", detail_en="Heavy Traffic"),
             {**_incident("IN-C"), "duration_min": 3467}]
     monkeypatch.setattr(candidates.incidents, "load", lambda a, b: rows)
-    monkeypatch.setattr(candidates, "evidence", lambda i, corridor, minutes: {"credited": {}})
+    monkeypatch.setattr(candidates, "evidence", lambda i, corridor, table, minutes: {"credited": {}})
     got = candidates.shortlist("2026-05-15", "2026-05-15", log=lambda *a: None)
     assert [r["incident_number"] for r in got] == ["IN-A"]
