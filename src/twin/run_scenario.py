@@ -20,6 +20,11 @@ def main():
     args = ap.parse_args()
     cfg = load_json(resolve(args.config))
     import traci
+    class MissingFatalTraCIError(Exception):
+        pass
+
+    fatal_traci_error = getattr(
+        getattr(traci, "exceptions", None), "FatalTraCIError", MissingFatalTraCIError)
     from src.twin import policies
     net, routes = resolve(cfg["network"]), resolve(args.plan_routes or cfg["routes"])
     add = resolve(cfg["detector_additional"])
@@ -150,7 +155,7 @@ def main():
                 break
     except KeyboardInterrupt:
         interrupted = True
-    except traci.exceptions.FatalTraCIError as exc:
+    except fatal_traci_error as exc:
         # SUMO can quit on a fatal route/departure error. Preserve the partial
         # outputs and write an incomplete run summary instead of masking the
         # simulator error with a second failed TraCI query during cleanup.
@@ -161,12 +166,12 @@ def main():
             final_time = traci.simulation.getTime()
             remaining = traci.simulation.getMinExpectedNumber()
             pending_departures = len(traci.simulation.getPendingVehicles())
-        except traci.exceptions.FatalTraCIError as exc:
+        except fatal_traci_error as exc:
             connection_error = connection_error or str(exc)
             remaining = pending_departures = None
         try:
             traci.close()
-        except traci.exceptions.FatalTraCIError as exc:
+        except fatal_traci_error as exc:
             connection_error = connection_error or str(exc)
     try:
         statistics = ET.parse(statistics_output).getroot()

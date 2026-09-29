@@ -36,14 +36,13 @@ def test_staged_closure_and_cumulative_statistics(tmp_path, monkeypatch):
     changes = []
     state = {}
 
-    def set_disallowed(lane, classes):
-        changes.append((clock.time, "disallow", lane, bool(classes)))
-        state[lane] = list(classes)
+    def set_max_speed(lane, speed):
+        changes.append((clock.time, "speed", lane, speed))
+        state[lane] = speed
 
     fake_lane = SimpleNamespace(
-        getAllowed=lambda _: [], getDisallowed=lambda lane: state.get(lane, []),
-        setAllowed=lambda lane, allowed: changes.append((clock.time, "restore", lane, allowed)),
-        setDisallowed=set_disallowed,
+        getMaxSpeed=lambda lane: state.setdefault(lane, 13.9 if lane == "E1_0" else 12.5),
+        setMaxSpeed=set_max_speed,
     )
     fake_simulation = SimpleNamespace(
         getTime=lambda: clock.time,
@@ -77,7 +76,7 @@ def test_staged_closure_and_cumulative_statistics(tmp_path, monkeypatch):
     assert summary["pending_departures"] == 2 and summary["vehicles_arrived"] == 5
     assert summary["teleports_total"] == 3
     assert summary["estimated_dropped_after_departure_delay"] == 1
-    assert (1, "disallow", "E1_0", True) in changes
-    assert (3, "disallow", "E1_1", True) in changes
-    assert (4, "restore", "E1_0", []) in changes
-    assert (4, "restore", "E1_1", []) in changes
+    assert (1, "speed", "E1_0", 0.0) in changes
+    assert (3, "speed", "E1_1", 0.0) in changes
+    assert (4, "speed", "E1_0", 13.9) in changes
+    assert (4, "speed", "E1_1", 12.5) in changes
