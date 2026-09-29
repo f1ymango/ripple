@@ -10,6 +10,9 @@ work.
 Branch: `visuals/console-framing-theme`, based on the latest fetched `main`
 (`7927f92`). The earlier incident playback work is already merged in PR #29.
 
+[PR #31](https://github.com/f1ymango/ripple/pull/31) is open for review against
+`main`. The branch and this handover are pushed to GitHub; the Lead owns merging.
+
 - The map now uses the detector bounds to frame the whole corridor. All 28
   detector circles fit at the checked 1280px and 1500px browser widths.
 - `.streamlit/config.toml` pins a light theme with blue controls. The page and

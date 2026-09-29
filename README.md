@@ -80,9 +80,11 @@ The JSON contracts between modules are in
 
 ### Integration status
 
-No open pull requests as of Tue 29 Sep. The console playback (PR #29) and
-Component C source audits (PR #30) are merged. The local OSM network and E1
-loops remain provisional and uncommitted.
+The console framing, theme and playback control fixes are open for review in
+[PR #31](https://github.com/f1ymango/ripple/pull/31), with a
+[Visuals handover](docs/visuals-handover.md) saved for the next session. The
+console playback (PR #29) and Component C source audits (PR #30) are merged.
+The local OSM network and E1 loops remain provisional and uncommitted.
 
 ### Open decisions
 
