@@ -89,6 +89,9 @@ def main():
         raise ValueError("The first incident phase must begin at offset_seconds 0")
     if not any(phase["lane_indices"] for phase in normalized_phases):
         raise ValueError("At least one incident phase must close one or more lanes")
+    closed_lane_speed = float(cfg.get("incident_lane_speed_mps", 0.0))
+    if not math.isfinite(closed_lane_speed) or closed_lane_speed < 0:
+        raise ValueError("incident_lane_speed_mps must be a finite nonnegative speed")
     fcd_output = resolve(cfg.get("fcd_output", output / f"{args.label}.fcd.xml"))
     fcd_output.parent.mkdir(parents=True, exist_ok=True)
     statistics_output = output / f"{args.label}.statistics.xml"
@@ -106,16 +109,14 @@ def main():
     restore_at = start + duration
     edge = incident["edge_id"]
     old = {}
-    all_classes = ["private", "emergency", "authority", "army", "vip", "passenger", "hov",
-                   "taxi", "bus", "coach", "delivery", "truck", "trailer", "motorcycle",
-                   "moped", "bicycle", "pedestrian", "wheelchair", "scooter", "drone",
-                   "tram", "rail", "rail_urban", "rail_electric", "rail_fast", "ship", "custom1", "custom2"]
     steps = int(round(step_count))
     steps_run = 0
     arrived_total = 0
+    final_time = begin
     active_lanes = set()
     active_phase = -1
     interrupted = False
+    connection_error = None
     try:
         for _ in range(steps):
             now = traci.simulation.getTime()
@@ -126,35 +127,47 @@ def main():
                 if due_phase != active_phase:
                     desired_lanes = {f"{edge}_{i}" for i in normalized_phases[due_phase]["lane_indices"]}
                     for lane in active_lanes - desired_lanes:
-                        allowed, disallowed = old[lane]
-                        traci.lane.setAllowed(lane, allowed)
-                        traci.lane.setDisallowed(lane, disallowed)
+                        traci.lane.setMaxSpeed(lane, old[lane])
                     for lane in desired_lanes - active_lanes:
                         if lane not in old:
-                            old[lane] = (traci.lane.getAllowed(lane), traci.lane.getDisallowed(lane))
-                        traci.lane.setDisallowed(lane, all_classes)
+                            old[lane] = traci.lane.getMaxSpeed(lane)
+                        # Keep route connections available so vehicles queue
+                        # before a closed lane instead of losing their route.
+                        traci.lane.setMaxSpeed(lane, closed_lane_speed)
                     active_lanes = desired_lanes
                     active_phase = due_phase
             if now >= restore_at and active_lanes:
                 for lane in active_lanes:
-                    allowed, disallowed = old[lane]
-                    traci.lane.setAllowed(lane, allowed)
-                    traci.lane.setDisallowed(lane, disallowed)
+                    traci.lane.setMaxSpeed(lane, old[lane])
                 active_lanes.clear()
             if args.plan_routes:
                 policies.apply_policy(traci, args.compliance, args.clearance, cfg)
             traci.simulationStep()
             steps_run += 1
+            final_time = traci.simulation.getTime()
             arrived_total += traci.simulation.getArrivedNumber()
             if traci.simulation.getTime() >= end:
                 break
     except KeyboardInterrupt:
         interrupted = True
+    except traci.exceptions.FatalTraCIError as exc:
+        # SUMO can quit on a fatal route/departure error. Preserve the partial
+        # outputs and write an incomplete run summary instead of masking the
+        # simulator error with a second failed TraCI query during cleanup.
+        interrupted = True
+        connection_error = str(exc)
     finally:
-        final_time = traci.simulation.getTime()
-        remaining = traci.simulation.getMinExpectedNumber()
-        pending_departures = len(traci.simulation.getPendingVehicles())
-        traci.close()
+        try:
+            final_time = traci.simulation.getTime()
+            remaining = traci.simulation.getMinExpectedNumber()
+            pending_departures = len(traci.simulation.getPendingVehicles())
+        except traci.exceptions.FatalTraCIError as exc:
+            connection_error = connection_error or str(exc)
+            remaining = pending_departures = None
+        try:
+            traci.close()
+        except traci.exceptions.FatalTraCIError as exc:
+            connection_error = connection_error or str(exc)
     try:
         statistics = ET.parse(statistics_output).getroot()
         vehicle_stats = statistics.find("vehicles")
@@ -180,7 +193,9 @@ def main():
                "estimated_dropped_after_departure_delay": dropped,
                "max_depart_delay_seconds": max_depart_delay, "fcd_output": str(fcd_output),
                "statistics_output": str(statistics_output), "statistics_available": loaded is not None,
-               "interrupted_by_user": interrupted, "complete": not interrupted and final_time >= end,
+               "interrupted_by_user": interrupted and connection_error is None,
+               "simulator_connection_error": connection_error,
+               "complete": not interrupted and final_time >= end,
                "horizon_capped": end < configured_end,
                "scenario_complete": (not interrupted and end >= configured_end and final_time >= configured_end)}
     summary_path = output / f"{args.label}.run-summary.json"

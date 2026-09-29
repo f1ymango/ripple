@@ -98,17 +98,53 @@ def main():
     calibration_seconds = max(1, float(cfg.get("calibration_seconds", 3600)))
     simulation_begin = float(cfg.get("begin", 0))
     simulation_seconds = max(1.0, float(cfg.get("end", 7200)) - simulation_begin)
+    simulation_end = simulation_begin + simulation_seconds
     scale = simulation_seconds / calibration_seconds
-    vehicle_counts = [int(round(value * scale)) for value in flow]
-    vehicle_total = sum(vehicle_counts)
-    for serial, ((_, path, _), count) in enumerate(zip(routes, vehicle_counts)):
+    incident_edge = incident.get("edge_id")
+    incident_start = float(incident.get("start", simulation_end))
+    incident_end = incident_start + float(incident.get("duration_seconds", 0))
+    incident_overlap = max(simulation_begin, incident_start) < min(simulation_end, incident_end)
+    vehicle_total = 0
+    flow_serial = 0
+    suspended_origin_routes = 0
+    for route_serial, ((_, path, _), route_rate) in enumerate(zip(routes, flow)):
+        count = int(round(route_rate * scale))
         if count <= 0:
             continue
-        v = ET.SubElement(fitted_root, "flow", id=f"fit_{serial}", type="DEFAULT_VEHTYPE",
-                          begin=f"{simulation_begin:.2f}", end=f"{simulation_begin + simulation_seconds:.2f}",
-                          number=str(count), departLane="best", departPos="0",
-                          departSpeed="desired")
-        ET.SubElement(v, "route", edges=" ".join(path))
+        # Candidate trips start at detector edges, which are synthetic entry
+        # points rather than real access roads. Do not inject new vehicles at
+        # the blocked incident edge during the closure; upstream routes still
+        # travel into the incident and form the queue. Resume the fitted rate
+        # after reopening so the demand horizon remains consistent.
+        if incident_edge and incident_edge not in {"REVIEW_REQUIRED", ""} \
+                and path[0] == incident_edge and incident_overlap:
+            suspended_origin_routes += 1
+            segments = [
+                (simulation_begin, min(simulation_end, incident_start),
+                 route_rate * max(0, min(simulation_end, incident_start) - simulation_begin)
+                 / calibration_seconds),
+                (max(simulation_begin, incident_end), simulation_end,
+                 route_rate * max(0, simulation_end - max(simulation_begin, incident_end))
+                 / calibration_seconds),
+            ]
+        else:
+            segments = [(simulation_begin, simulation_end, count)]
+        for segment_no, (segment_begin, segment_end, segment_count) in enumerate(segments):
+            segment_count = (int(round(segment_count)) if not isinstance(segment_count, int)
+                             else segment_count)
+            if segment_count <= 0 or segment_end <= segment_begin:
+                continue
+            flow_id = f"fit_{route_serial}"
+            if len(segments) == 2:
+                flow_id += "_pre" if segment_no == 0 else "_post"
+            vehicle = ET.SubElement(
+                fitted_root, "flow", id=flow_id, type="DEFAULT_VEHTYPE",
+                begin=f"{segment_begin:.2f}", end=f"{segment_end:.2f}",
+                number=str(segment_count), departLane="best", departPos="0",
+                departSpeed="desired")
+            ET.SubElement(vehicle, "route", edges=" ".join(path))
+            vehicle_total += segment_count
+            flow_serial += 1
     ET.ElementTree(fitted_root).write(out, encoding="utf-8", xml_declaration=True)
     predictions = dict(predicted)
     summary = {"target_counts": dict(target), "predicted_counts": predictions,
@@ -118,7 +154,9 @@ def main():
                "calibration_seconds": calibration_seconds,
                "simulation_seconds": simulation_seconds,
                "simulation_to_calibration_scale": scale,
-               "candidate_routes_used": len(routes), "vehicles_generated": vehicle_total,
+               "candidate_routes_used": len(routes), "flows_generated": flow_serial,
+               "routes_originating_on_incident_edge_suspended": suspended_origin_routes,
+               "vehicles_generated": vehicle_total,
                "warning": "Simple linear route-weight estimate. Missing calibration bins are scaled using the observed-bin fraction; verify route direction/order and fit against a proper simulation before claiming calibration."}
     summary_path = out.with_name("fit-summary.json"); summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(f"Fitted candidate route weights: {out}\nFit summary: {summary_path}")

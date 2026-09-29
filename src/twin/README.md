@@ -35,11 +35,16 @@ Copy `sim/scenarios/scenario.example.json` to `sim/scenarios/scenario.json`. Set
 
 The example carries the May 15 observed queue onset (08:55), TD's all-lanes
 update (09:36), and clearance (10:02), with 15 minutes of warm-up. Its
-`edge_id` and first phase's `lane_indices` are deliberately unresolved. The
-detectors do not identify the initially closed physical lane, so Data/E must
-state a scenario choice before an incident replay can run. The ignored local
-`scenario.json` can be regenerated from this example; do not reuse the old
-September incident timing.
+`edge_id` and first phase's `lane_indices` remain deliberately unresolved.
+For local sensitivity runs, edge `44419212` is the evidence-based candidate:
+the reviewed provisional OSM audit maps AID01104 onto a two-lane Wong Chuk Hang
+Road flyover edge in the detector's northeast direction. This is tied to the
+local audited network and is not yet a shared, reviewed network file. The
+initial physical lane remains unknown; the Transport Department feed reports
+whole-carriageway closure evidence but does not map the text lane labels to
+SUMO lane indices. Do not turn either lane-index sensitivity into a factual
+incident claim. The ignored local `scenario.json` uses the candidate edge and
+keeps its first phase as `unspecified`; do not reuse the old September timing.
 
 Required observed data shape:
 
@@ -98,7 +103,7 @@ python -m src.twin.make_routes --config sim/scenarios/scenario.json
 python -m src.twin.fit_demand --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json
 ```
 
-The first command creates directed, detector-to-detector candidate trips within each configured corridor leg. The western alternative uses separate eastbound and westbound detector chains; the registry's inventory order is not travel order. The fitting command estimates nonnegative route weights from pre-incident counts and writes one rate-based `<flow>` per route across the configured simulation horizon. It writes `sim/work/routes/fitted.rou.xml` and a fit summary. Detectors without usable pre-incident counts are excluded from the objective, never treated as zero demand. It stops if the calibration duration is invalid or would extend beyond `incident.start`, using `observation_start_sim_seconds` (or `warmup_seconds`) to locate the first observation on the simulation clock. Flows insert at the beginning of their first edge so loops close to that boundary can see them; [SUMO's default `base` position](https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#departpos) starts a vehicle one length into the edge. This lightweight fitter assumes detector crossing counts are a linear combination of route flows and is not a substitute for SUMO `routeSampler.py` / `dfrouter` when the team's actual detector flow data and full-day route context are available. Check the fit residuals and rerun after correcting routes/network. Do not hide poor fit by changing observations.
+The first command creates directed, detector-to-detector candidate trips within each configured corridor leg. The western alternative uses separate eastbound and westbound detector chains; the registry's inventory order is not travel order. The fitting command estimates nonnegative route weights from pre-incident counts and writes rate-based `<flow>` elements across the configured simulation horizon. If a candidate route starts on the configured incident edge, its source flow is split around the closure so the synthetic detector-origin does not inject vehicles onto a closed lane; upstream routes remain active. The fit summary records the split count. It writes `sim/work/routes/fitted.rou.xml` and a fit summary. Detectors without usable pre-incident counts are excluded from the objective, never treated as zero demand. It stops if the calibration duration is invalid or would extend beyond `incident.start`, using `observation_start_sim_seconds` (or `warmup_seconds`) to locate the first observation on the simulation clock. Flows insert at the beginning of their first edge so loops close to that boundary can see them; [SUMO's default `base` position](https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#departpos) starts a vehicle one length into the edge. This lightweight fitter assumes detector crossing counts are a linear combination of route flows and is not a substitute for SUMO `routeSampler.py` / `dfrouter` when the team's actual detector flow data and full-day route context are available. Check the fit residuals and rerun after correcting routes/network. Do not hide poor fit by changing observations.
 
 ## Step 6 — Run the baseline and compare it with reality
 
@@ -128,7 +133,7 @@ The default policy hook is deliberately a no-op until you encode the team's actu
 
 ## Incident and model limitations
 
-The incident runner closes the configured edge/lane indices with TraCI and restores them after the configured duration. SUMO uses zero-based lane indices. Confirm edge IDs and lanes in the network before running. The model does not represent stochastic driver behavior, signal timing, queue spillback, lane changing, bus priority or incident response unless you explicitly add and validate those mechanisms. The network, demand fit, detector map, incident timing and compliance assumptions are the main uncertainty sources.
+The incident runner represents a closure by setting selected lane speeds to zero with TraCI, then restores each lane's prior speed when the phase changes or the incident ends. This keeps SUMO route connections available while vehicles queue; removing all vehicle classes from a lane can invalidate routes already in the network. SUMO uses zero-based lane indices. Confirm edge IDs and lanes in the network before running. Run summaries include teleports, waiting, inserted and pending vehicles, so a completed time horizon does not by itself establish a valid model. The model does not represent stochastic driver behavior, signal timing, queue spillback, lane changing, bus priority or incident response unless you explicitly add and validate those mechanisms. The network, demand fit, detector map, incident timing and compliance assumptions are the main uncertainty sources.
 
 ## 25-second validation answer template
 
