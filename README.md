@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Mon 28 Sep 2026** · Week 2 of 5 (28 Sep–4 Oct: baseline
+**Last updated: Tue 29 Sep 2026** · Week 2 of 5 (28 Sep–4 Oct: baseline
 and interim report) · Weekly sync / stand-up: Wednesday afternoon
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
@@ -49,12 +49,12 @@ this chain.
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The local OSM map now has audited connectivity for all 24 directed links across the two main roads and western alternative; all 24 directed detector-to-detector links in the audit are reachable, with path distances within 1.12 times their detector-coordinate distances. AID01106 to AID01107 detour fell from 1,771.83 m to 441.79 m without editing OSM geometry. A bounded May 15 pre-incident run scores 66.5% GEH<5 and 36.9% speed MAPE, so the baseline target is not met; lane-scope gaps remain and the local network/E1 files are still provisional. Data's ~15-link fallback remains active. ([src/twin/](src/twin/README.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md), [OSM connectivity audit](results/twin/osm-network-audit.md)) |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The local OSM map has audited connectivity for all 24 directed detector links, with path distances within 1.12 times their detector-coordinate distances. AID01106 to AID01107 fell from 1,771.83 m to 441.79 m without editing OSM geometry. A bounded May 15 pre-incident run scores 66.5% GEH<5 and 36.9% speed MAPE, so the baseline target is not met. A separate-day TD lane-scope check corroborates three feed lane counts but does not resolve physical placement, the incident edge, or the initial partial-closure lane. The local network/E1 files remain provisional; Data's ~15-link fallback remains active. ([src/twin/](src/twin/README.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md), [OSM connectivity audit](results/twin/osm-network-audit.md), [lane-scope cross-check](results/twin/may14-lane-scope-crosscheck.md)) |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
 | G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, headline stats, and playback of an archived window bin by bin, with TD's own incident times on the timeline ([src/console/app.py](src/console/app.py), [IN-26-03365 at 09:15](docs/img/week2-incident-playback.png)). The map now tells a loop reporting no vehicle apart from a reading the archive never served. Plan comparison, Approve and audit log still to build |
-| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3; interview plan with three target profiles and the first interview scheduled for Sat 26 Sep ([evidence/interviews/plan.md](evidence/interviews/plan.md)); deck workspace in [deck/](deck/) |
+| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence with direct source links in [docs/05-pitch.md](docs/05-pitch.md) §3; one completed [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md), with two or three interviews targeted; [interim report outline](docs/interim-report.md) awaiting owner contributions; deck workspace in [deck/](deck/) |
 
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
@@ -64,7 +64,7 @@ The JSON contracts between modules are in
 | Owner | Deliverable | Next evidence |
 |---|---|---|
 | Data + Simulation | Baseline replay of IN-26-03365, fitted to detector counts and speeds | Validation chart and stated errors; decide simplified-network fallback on 4 Oct |
-| Lead | Verify the Incident Reader (B) on the selected STN updates and coordinate contract handoffs | Check the 09:01 and 09:36 Reader outputs against `incident.json`; the 100-label accuracy result is already recorded |
+| Lead | Verify the Incident Reader (B) on the selected STN updates and coordinate contract handoffs | ✅ 29 Sep — the [09:01 and 09:36 source messages](data/demo_incident_messages.jsonl) both parsed with core fields matching TD's text and the `incident.json` contract ([run](results/reader/2026-09-29T1608_qwen3-8b.jsonl)); the first `notes` has a misleading direction-bracket sentence. Contract handoffs remain open |
 | Visuals | First timeline playback of the selected incident | ✅ 28 Sep — IN-26-03365 plays back in the console from the observed detector bins ([screenshot](docs/img/week2-incident-playback.png)); built on observed data, so it does not wait on the 4 Oct go/no-go |
 | Impact | Interviews and interim report, with one paragraph from each owner | Submit report Sat 3 Oct |
 
@@ -76,26 +76,13 @@ The JSON contracts between modules are in
 | Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | ✅ 26 Sep — all 35 corridor accidents of 22 Mar–21 Sep checked against ordinary days ([data/candidates.md](data/candidates.md)); Data's pick of five, headed by IN-26-03365, with reasons and replay windows ([data/demo_shortlist.md](data/demo_shortlist.md)) |
 | Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ✅ 24 Sep — [screenshot](docs/img/week1-corridor-map.png) of the 21 Sep 08:20 bin ([src/console/app.py](src/console/app.py)) |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | 🟡 SUMO and a draft network run locally; record/share evidence and improve route coverage ([guide](src/twin/README.md)) |
-| Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 plan exists and one interview is scheduled, Sat 26 Sep 15:00 ([plan](evidence/interviews/plan.md)); every claim in [05-pitch.md](docs/05-pitch.md) §3 now carries a source and a 25 Sep check date, but 8 of the 15 sources are a homepage or listing rather than the page with the figure |
+| Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | Interview notes, sourced problem claims, and an interim report outline | 🟡 one [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md) completed on 26 Sep; problem claims revised with direct sources in [docs/05-pitch.md](docs/05-pitch.md); [interim report](docs/interim-report.md) remains an outline |
 
-### This week: Week 2 (28 Sep-4 Oct) - baseline and interim report
+### Integration status
 
-Component C: the May 15 OSM pre-incident diagnostic reaches 66.5% GEH<5
-and 36.9% speed MAPE, below the 85% count target. The route audit finds
-all 24 directed detector links locally connected; six lane-scope issues,
-the incident edge, and initial partial-closure lane remain unresolved.
-Keep the fallback active for the Sun 4 Oct go/no-go. See the [diagnostic]
-(results/twin/may15-preincident-diagnostic.md) and [network audit]
-(results/twin/osm-network-audit.md).
-
-### In review
-
-Work that exists but is not on `main` yet, as of Mon 28 Sep. Pull
-Pull requests #1 through #29 are merged. The latest Component C follow-up commits remain on the simulation branch and do not have an open pull request.
-
-| What | Who | Branch |
-|---|---|---|
-| Component C follow-up: cross-day lane-scope audit and OSM network locality recheck; six lane-scope gaps remain unresolved. The local OSM network and E1 loops remain provisional and uncommitted | Simulation | `sim/e1-evaluation-correctness` |
+No open pull requests as of Tue 29 Sep. The console playback (PR #29) and
+Component C source audits (PR #30) are merged. The local OSM network and E1
+loops remain provisional and uncommitted.
 
 ### Open decisions
 
@@ -190,6 +177,19 @@ Pull requests #1 through #29 are merged. The latest Component C follow-up commit
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Tue 29 Sep**
+- Lead: checked the two archived messages for `IN-26-03365` with `qwen3:8b`
+  (seed 42). Both parsed and matched the expected road, direction, landmark,
+  incident type, timestamps, and lane scope (`["unspecified"]` then `["all"]`).
+  TD announced them at 09:01 and 09:36; the first archived copies were at
+  09:07 and 09:43. The first `notes` incorrectly says the road name includes
+  the direction bracket, although the structured fields separate them correctly.
+  This two-message check is not a new accuracy score
+  ([source messages](data/demo_incident_messages.jsonl),
+  [run](results/reader/2026-09-29T1608_qwen3-8b.jsonl),
+  [LLM log](evidence/ai-log/2026-09-29.jsonl)).
+- Tracker: reconciled the component, interview, and PR status with the merged console playback and Component C audits. The baseline is still unvalidated and the interim report remains an outline ([playback](docs/img/week2-incident-playback.png), [lane-scope cross-check](results/twin/may14-lane-scope-crosscheck.md), [interim outline](docs/interim-report.md)).
 
 **Mon 28 Sep**
 - Component C: refreshed the May 15 hand-over from the official HK traffic archive (80 of 113 listed snapshots served; 28 detectors, 32 five-minute slots; 600 count-and-speed pairs) and regenerated the source-hashed OSM audit. The observations reproduce the same six unresolved lane scopes; no placement or calibration claim changed ([audit](results/twin/osm-network-audit.json)).
