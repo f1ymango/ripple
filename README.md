@@ -53,7 +53,7 @@ this chain.
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
-| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, headline stats, and playback of an archived window bin by bin, with TD's own incident times on the timeline ([src/console/app.py](src/console/app.py), [IN-26-03365 at 09:15](docs/img/week2-incident-playback.png)). The map now tells a loop reporting no vehicle apart from a reading the archive never served. Plan comparison, Approve and audit log still to build |
+| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, headline stats, and playback of an archived window bin by bin, with TD's own incident times on the timeline ([src/console/app.py](src/console/app.py), [IN-26-03365 at 09:15](docs/img/week2-incident-playback.png)). The map tells a loop reporting no vehicle apart from a reading the archive never served. Follow-up fits all 28 detectors in the map and pins a shared light theme ([screenshot](docs/img/console-framing-theme.png), [.streamlit/config.toml](.streamlit/config.toml)). Plan comparison, Approve and audit log still to build |
 | H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence with direct source links in [docs/05-pitch.md](docs/05-pitch.md) §3; one completed [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md), with two or three interviews targeted; [interim report outline](docs/interim-report.md) awaiting owner contributions; deck workspace in [deck/](deck/) |
 
 The JSON contracts between modules are in
@@ -80,9 +80,11 @@ The JSON contracts between modules are in
 
 ### Integration status
 
-No open pull requests as of Tue 29 Sep. The console playback (PR #29) and
-Component C source audits (PR #30) are merged. The local OSM network and E1
-loops remain provisional and uncommitted.
+The console framing, theme and playback control fixes are open for review in
+[PR #31](https://github.com/f1ymango/ripple/pull/31), with a
+[Visuals handover](docs/visuals-handover.md) saved for the next session. The
+console playback (PR #29) and Component C source audits (PR #30) are merged.
+The local OSM network and E1 loops remain provisional and uncommitted.
 
 ### Open decisions
 
@@ -179,6 +181,19 @@ loops remain provisional and uncommitted.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Tue 29 Sep**
+- Component G: follow-up on `visuals/console-framing-theme` fits the map
+  to the detector bounds, keeping all 28 detector circles inside the frame at
+  1280px and 1500px browser widths. A shared light theme with blue controls makes
+  screenshots consistent under light and dark browser preferences; the tab and
+  page titles now match. Fixed a playback bug found in the browser: pausing,
+  stepping, rewinding or scrubbing now immediately restores the Play button.
+  All 38 console tests passed, including regressions for the button state and
+  stepping after scrubbing. Playwright checked the two widths, the theme,
+  scrubbing to the real 09:15
+  incident bin, and playback advancing and pausing.
+  ([screenshot](docs/img/console-framing-theme.png),
+  [src/console/app.py](src/console/app.py),
+  [.streamlit/config.toml](.streamlit/config.toml))
 - Lead: checked the two archived messages for `IN-26-03365` with `qwen3:8b`
   (seed 42). Both parsed and matched the expected road, direction, landmark,
   incident type, timestamps, and lane scope (`["unspecified"]` then `["all"]`).
