@@ -51,7 +51,7 @@ this chain.
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
 | C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The local OSM map has audited connectivity for all 24 directed detector links, with path distances within 1.12 times their detector-coordinate distances. AID01106 to AID01107 fell from 1,771.83 m to 441.79 m without editing OSM geometry. A bounded May 15 pre-incident run scores 66.5% GEH<5 and 36.9% speed MAPE, so the baseline target is not met. A separate-day TD lane-scope check corroborates three feed lane counts but does not resolve physical placement, the incident edge, or the initial partial-closure lane. The local network/E1 files remain provisional; Data's ~15-link fallback remains active. ([src/twin/](src/twin/README.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md), [OSM connectivity audit](results/twin/osm-network-audit.md), [lane-scope cross-check](results/twin/may14-lane-scope-crosscheck.md)) |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
-| E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
+| E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3. If the 4 Oct go/no-go switches, it runs on the [~15-link fallback](src/fallback/README.md), which is ready apart from diversion |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
 | G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, headline stats, and playback of an archived window bin by bin, with TD's own incident times on the timeline ([src/console/app.py](src/console/app.py), [IN-26-03365 at 09:15](docs/img/week2-incident-playback.png)). The map tells a loop reporting no vehicle apart from a reading the archive never served. Follow-up fits all 28 detectors in the map and pins a shared light theme ([screenshot](docs/img/console-framing-theme.png), [.streamlit/config.toml](.streamlit/config.toml)). Plan comparison, Approve and audit log still to build |
 | H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence with direct source links in [docs/05-pitch.md](docs/05-pitch.md) §3; one completed [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md), with two or three interviews targeted; [interim report outline](docs/interim-report.md) awaiting owner contributions; deck workspace in [deck/](deck/) |
@@ -63,7 +63,7 @@ The JSON contracts between modules are in
 
 | Owner | Deliverable | Next evidence |
 |---|---|---|
-| Data + Simulation | Baseline replay of IN-26-03365, fitted to detector counts and speeds | 🟡 30 Sep, Data: where traffic joins and leaves between detectors ([flow balance](results/data/flow-balance_20260515-0755_0855.md)) and light-traffic speeds per detector ([free-flow](results/data/free-flow_20260508_20260424_0730-1100.md)), the inputs behind the six detectors that hold 57 of the 81 GEH misses and the twin's 60 km/h cap ([notes](docs/notes-from-data.md)). Still to come: validation chart and stated errors; decide simplified-network fallback on 4 Oct |
+| Data + Simulation | Baseline replay of IN-26-03365, fitted to detector counts and speeds | 🟡 30 Sep, Data: the ~15-link fallback replays the pre-incident hour at 97.1% GEH<5 and 16.6% speed error, against 66.5% and 36.9% for the 27 Sep SUMO run; 16.6% is also what the ordinary Fridays alone score, the floor for 5-minute speeds. Its incident queue starts on time but runs too long, because nobody diverts yet ([replay](results/fallback/replay_20260515.md), [how it works](src/fallback/README.md)). Earlier: where traffic joins and leaves between detectors ([flow balance](results/data/flow-balance_20260515-0755_0855.md)) and light-traffic speeds per detector ([free-flow](results/data/free-flow_20260508_20260424_0730-1100.md)), the inputs behind the six detectors that hold 57 of the 81 GEH misses and the twin's 60 km/h cap ([notes](docs/notes-from-data.md)). Still to come: validation chart; decide simplified-network fallback on 4 Oct |
 | Lead | Verify the Incident Reader (B) on the selected STN updates and coordinate contract handoffs | ✅ 29 Sep — the [09:01 and 09:36 source messages](data/demo_incident_messages.jsonl) both parsed with core fields matching TD's text and the `incident.json` contract ([run](results/reader/2026-09-29T1608_qwen3-8b.jsonl)); the first `notes` has a misleading direction-bracket sentence. Contract handoffs remain open |
 | Visuals | First timeline playback of the selected incident | ✅ 28 Sep — IN-26-03365 plays back in the console from the observed detector bins ([screenshot](docs/img/week2-incident-playback.png)); built on observed data, so it does not wait on the 4 Oct go/no-go |
 | Impact | Interviews and interim report, with one paragraph from each owner | Submit report Sat 3 Oct |
@@ -199,6 +199,18 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Wed 30 Sep**
+- Data: the ~15-link fallback for the 4 Oct go/no-go, a cell transmission
+  model of the four detector chains built from two ordinary Fridays
+  ([src/fallback/](src/fallback/README.md)). Scored as the twin is, 07:55–08:55
+  on 15 May: GEH<5 on 97.1% of 242 counts and a 16.6% speed error (27 Sep SUMO
+  run: 66.5%, 36.9%). Predicting 15 May from the ordinary Fridays alone also
+  scores 16.6%, so the ~15% target needs 15 May's own queues at AID01106 and
+  AID01216. The incident queue reaches AID01104–AID01102 within 5 minutes of
+  the detectors, but AID01101 25 minutes early, and has not cleared by 10:35:
+  while the flyover was shut the detectors still counted traffic leaving the
+  corridor, and the fallback has no diversion yet (week 3). 17 tests
+  ([replay](results/fallback/replay_20260515.md),
+  [notes 12–17](docs/notes-from-data.md)).
 - Component A, for the 66.5% GEH / 36.9% MAPE diagnostic: 57 of its 81 failing
   count bins are at six detectors where the twin carries 33–61% of the observed
   traffic, each just after a stretch where traffic joins the corridor. New
@@ -554,6 +566,17 @@ python -m src.loaders.fetch live         # polls the live feeds until stopped
 Downloads are cached in `data/raw/`, so each machine fills its own cache the
 first time. Read [docs/02-data.md](docs/02-data.md) §7 before calibrating on
 the detector bins.
+
+### Run the backup network
+
+```bash
+# the ~15-link fallback: replays a morning and scores it as the twin is scored
+python -m src.fallback.run --day 2026-05-15 --ordinary-day 2026-05-08 2026-04-24
+```
+
+It reads the detector cache that the data layer fills and writes
+`results/fallback/replay_<day>.md` and `.json`
+([src/fallback/README.md](src/fallback/README.md)).
 
 ### Run the Incident Reader
 
