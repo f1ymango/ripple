@@ -99,18 +99,24 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 - **Who runs the live poller, and on which machine.** Its data has no gaps,
   but it only records while it runs (`python -m src.loaders.fetch live`).
 - **What the Evaluator (E) simulates for `lanes_closed: ["unspecified"]`.**
-  For `IN-26-03365`, use the **slow lane** of the Wong Chuk Hang Road flyover
-  eastbound as a provisional, disclosed assumption for TD's 09:01 partial-closure
-  message. Switch to all lanes at TD's 09:36 update and clear at 10:02. These
-  message times define the operator-facing replay; no plan may act on an update
-  before it was published. Five successive archived AID01104 readings from
-  08:54–09:00 show no slow-lane vehicles while the fast lane carried traffic,
-  but they do not prove which physical lane was closed or when it closed
-  ([lane evidence](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
-  The earlier observed slowdown is a validation limitation; if Simulation runs
-  a detector-onset sensitivity case, label it separately from the operator
-  replay. E must state the lane and timing assumptions with its results
-  ([docs/03-architecture.md](docs/03-architecture.md) §3).
+  At the 30 Sep meeting, Data took ownership of proposing a disclosed default
+  for an unspecified lane. The team is also discussing using lane-level detector
+  readings available by the message time to choose a lane for a particular
+  incident when the evidence supports it, instead of relying on that default.
+  Neither the default lane, the evidence rule, nor the no-evidence behaviour
+  has been agreed yet. For `IN-26-03365`, five successive archived AID01104
+  readings from 08:54–09:00
+  show no slow-lane vehicles while the fast lane carried traffic. This supports
+  Data's **slow-lane proposal**, but does not prove which physical lane was
+  closed ([lane evidence](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
+  Keep physical replay timing separate from operator information: Simulation's
+  full incident P0 handoff proposes an 08:55 closure onset, a 09:36 all-lane
+  phase and 10:02 clearance, while TD's first report arrived at 09:01. The team
+  still needs to agree the P0 phase timing; no operator plan can act before
+  the relevant message. E must disclose the lane choice, its basis and the
+  timing assumption with results ([docs/03-architecture.md](docs/03-architecture.md) §3).
+  The pre-incident GEH target ends at 08:55, before TD's `unspecified` message;
+  its current failure needs separate diagnosis.
 - **Calibration thresholds** (Data + Simulation): a bin is used for GEH only at
   ≥ 40% archive coverage and ≥ 90% of lane readings valid
   ([docs/02-data.md](docs/02-data.md) §7). Relax them deliberately if too few
@@ -244,8 +250,8 @@ Newest first. One line per change that matters, with a link to the proof.
   under both fixes: ordinary days now 8 May and 24 Apr, same five detectors
   credited, score 4.38 ([re-check](results/data/candidates_2026-05-15.md)). New
   demo-morning checks: usable calibration bins per threshold
-  ([bin survival](results/data/bin-survival_20260515-0755_1035.md)) and which
-  lane closed first, the slow lane
+  ([bin survival](results/data/bin-survival_20260515-0755_1035.md)) and
+  lane-level evidence supporting Data's slow-lane proposal
   ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
   One shared corridor road list, `CORRIDOR_ROAD_NAMES`
   ([corridor.py](src/loaders/corridor.py)). Notes for the Lead and Simulation:
