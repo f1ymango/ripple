@@ -9,6 +9,9 @@ answers, so both live here:
   * CORRIDOR_ROADS -- road-name fragments, for screening Special Traffic News
     messages, whose LATITUDE/LONGITUDE and DISTRICT fields are usually empty
     (docs/02-data.md section 2).
+  * CORRIDOR_ROAD_NAMES -- the corridor's road names in English and Chinese,
+    one list for the whole repo (the Incident Reader keeps its own copy for
+    now; docs/notes-from-data.md).
 
     python -m src.loaders.fetch corridor      # -> data/detectors.csv
 """
@@ -56,9 +59,24 @@ LEG = ({d: "main_eastbound" for d in CHAIN_EASTBOUND}
 # that does not move these is probably not worth simulating.
 TUNNEL_DETECTORS = ["AID01107", "AID01217"]
 
+# The corridor's roads as TD writes them: the English names of docs/02-data.md
+# section 5 plus Wah Fu Road and Wong Nai Chung Gap Road, and every Chinese
+# name exactly as it appears in TD's detector list (road_tc in
+# data/detectors.csv; tests/test_loaders.py checks that). Stubbs Road is in the
+# Reader's copy only: whether it belongs is the Lead's call, not settled here.
+CORRIDOR_ROAD_NAMES = [
+    "Aberdeen Praya Road", "Wong Chuk Hang Road", "Aberdeen Tunnel",
+    "Wong Nai Chung Gap Flyover", "Wong Nai Chung Gap Road", "Canal Road Flyover",
+    "Pok Fu Lam Road", "Shek Pai Wan Road", "Wah Fu Road",
+    "香港仔海旁道", "香港仔海傍道", "黃竹坑道", "香港仔隧道", "黃泥涌峽天橋",
+    "堅拿道天橋", "薄扶林道", "石排灣道", "華富道",
+]
+
 # Lower-cased fragments matched against an STN message's LOCATION_EN and
-# CONTENT_EN. Deliberately broad: a false positive costs one row in a
-# shortlist, a false negative loses a candidate incident we never see again.
+# CONTENT_EN. Deliberately broader than CORRIDOR_ROAD_NAMES: a false positive
+# costs one row in a shortlist, a false negative loses a candidate incident we
+# never see again. Every English name above is caught (tests/test_loaders.py).
+# The order decides which fragment an incident's corridor_road reports.
 CORRIDOR_ROADS = [
     "aberdeen tunnel",
     "aberdeen praya road",

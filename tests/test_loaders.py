@@ -11,7 +11,7 @@ from pathlib import Path
 import pytest
 
 from src.loaders import candidates, detectors, incidents, lanes, live
-from src.loaders.corridor import DETECTOR_IDS, LEG, on_corridor
+from src.loaders.corridor import CORRIDOR_ROAD_NAMES, DETECTOR_IDS, LEG, on_corridor
 
 FIXTURES = Path(__file__).parent / "fixtures"
 HK = dt.timezone(dt.timedelta(hours=8))
@@ -29,6 +29,20 @@ def test_corridor_has_28_detectors_across_three_legs():
     assert len(set(DETECTOR_IDS)) == 28
     assert {LEG[d] for d in DETECTOR_IDS} == {
         "main_eastbound", "main_westbound", "western_alternative"}
+
+
+def test_screening_catches_every_shared_corridor_road_name():
+    """The loaders' fragments must never miss a road the shared list names."""
+    missed = [n for n in CORRIDOR_ROAD_NAMES if n.isascii() and on_corridor(n) is None]
+    assert missed == []
+
+
+def test_chinese_road_names_are_tds_own_not_ours():
+    """Rule 4: every Chinese name is copied from TD's detector list, never typed from memory."""
+    import csv
+    with open("data/detectors.csv", encoding="utf-8", newline="") as f:
+        td_names = " ".join(row["road_tc"] for row in csv.DictReader(f))
+    assert [n for n in CORRIDOR_ROAD_NAMES if not n.isascii() and n not in td_names] == []
 
 
 def test_on_corridor_matches_location_and_free_text():

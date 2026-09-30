@@ -1,0 +1,834 @@
+{
+  "start": "2026-05-15T07:55:00+08:00",
+  "end": "2026-05-15T08:55:00+08:00",
+  "days": {
+    "2026-05-15": {
+      "archive": "detectors: 59 snapshots listed, 38 read, 21 not served",
+      "flows": {
+        "AID01101": {
+          "veh_h": 1557,
+          "margin_veh_h": 125,
+          "observed_min": 23
+        },
+        "AID01102": {
+          "veh_h": 1548,
+          "margin_veh_h": 117,
+          "observed_min": 26
+        },
+        "AID01103": {
+          "veh_h": 1904,
+          "margin_veh_h": 130,
+          "observed_min": 26
+        },
+        "AID01104": {
+          "veh_h": 1230,
+          "margin_veh_h": 104,
+          "observed_min": 26
+        },
+        "AID01106": {
+          "veh_h": 1202,
+          "margin_veh_h": 103,
+          "observed_min": 26
+        },
+        "AID01107": {
+          "veh_h": 1544,
+          "margin_veh_h": 117,
+          "observed_min": 26
+        },
+        "AID01108": {
+          "veh_h": 1477,
+          "margin_veh_h": 114,
+          "observed_min": 26
+        },
+        "AID01109": {
+          "veh_h": 2361,
+          "margin_veh_h": 145,
+          "observed_min": 26
+        },
+        "AID01110": {
+          "veh_h": 3018,
+          "margin_veh_h": 164,
+          "observed_min": 26
+        },
+        "AID01214": {
+          "veh_h": 3007,
+          "margin_veh_h": 163,
+          "observed_min": 26
+        },
+        "AID01215": {
+          "veh_h": 2317,
+          "margin_veh_h": 143,
+          "observed_min": 26
+        },
+        "AID01216": {
+          "veh_h": 1595,
+          "margin_veh_h": 119,
+          "observed_min": 26
+        },
+        "AID01217": {
+          "veh_h": 2241,
+          "margin_veh_h": 141,
+          "observed_min": 26
+        },
+        "AID01218": {
+          "veh_h": 1745,
+          "margin_veh_h": 124,
+          "observed_min": 26
+        },
+        "AID01219": {
+          "veh_h": 1539,
+          "margin_veh_h": 117,
+          "observed_min": 26
+        },
+        "AID01221": {
+          "veh_h": 2176,
+          "margin_veh_h": 139,
+          "observed_min": 26
+        },
+        "AID01222": {
+          "veh_h": 1885,
+          "margin_veh_h": 129,
+          "observed_min": 26
+        },
+        "AID01223": {
+          "veh_h": 1458,
+          "margin_veh_h": 114,
+          "observed_min": 26
+        },
+        "TDSAPR10001": {
+          "veh_h": 1505,
+          "margin_veh_h": 118,
+          "observed_min": 25
+        },
+        "TDSAPR20001": {
+          "veh_h": 1759,
+          "margin_veh_h": 127,
+          "observed_min": 25
+        },
+        "TDSSPWR10001": {
+          "veh_h": 852,
+          "margin_veh_h": 89,
+          "observed_min": 25
+        },
+        "TDSSPWR10002": {
+          "veh_h": 1277,
+          "margin_veh_h": 108,
+          "observed_min": 25
+        },
+        "TDSSPWR10003": {
+          "veh_h": 1207,
+          "margin_veh_h": 105,
+          "observed_min": 25
+        },
+        "TDSSPWR20001": {
+          "veh_h": 862,
+          "margin_veh_h": 89,
+          "observed_min": 25
+        },
+        "TDSSPWR20003": {
+          "veh_h": 1478,
+          "margin_veh_h": 117,
+          "observed_min": 25
+        }
+      }
+    },
+    "2026-05-08": {
+      "archive": "detectors: 54 snapshots listed, 33 read, 21 not served",
+      "flows": {
+        "AID01101": {
+          "veh_h": 1452,
+          "margin_veh_h": 129,
+          "observed_min": 20
+        },
+        "AID01102": {
+          "veh_h": 1593,
+          "margin_veh_h": 135,
+          "observed_min": 20
+        },
+        "AID01103": {
+          "veh_h": 2088,
+          "margin_veh_h": 155,
+          "observed_min": 20
+        },
+        "AID01104": {
+          "veh_h": 1308,
+          "margin_veh_h": 123,
+          "observed_min": 20
+        },
+        "AID01106": {
+          "veh_h": 1614,
+          "margin_veh_h": 136,
+          "observed_min": 20
+        },
+        "AID01107": {
+          "veh_h": 1623,
+          "margin_veh_h": 137,
+          "observed_min": 20
+        },
+        "AID01108": {
+          "veh_h": 1434,
+          "margin_veh_h": 129,
+          "observed_min": 20
+        },
+        "AID01109": {
+          "veh_h": 1767,
+          "margin_veh_h": 143,
+          "observed_min": 20
+        },
+        "AID01110": {
+          "veh_h": 2853,
+          "margin_veh_h": 181,
+          "observed_min": 20
+        },
+        "AID01214": {
+          "veh_h": 3135,
+          "margin_veh_h": 190,
+          "observed_min": 20
+        },
+        "AID01215": {
+          "veh_h": 2319,
+          "margin_veh_h": 163,
+          "observed_min": 20
+        },
+        "AID01216": {
+          "veh_h": 1533,
+          "margin_veh_h": 133,
+          "observed_min": 20
+        },
+        "AID01217": {
+          "veh_h": 2085,
+          "margin_veh_h": 155,
+          "observed_min": 20
+        },
+        "AID01218": {
+          "veh_h": 1800,
+          "margin_veh_h": 144,
+          "observed_min": 20
+        },
+        "AID01219": {
+          "veh_h": 1617,
+          "margin_veh_h": 137,
+          "observed_min": 20
+        },
+        "AID01221": {
+          "veh_h": 2109,
+          "margin_veh_h": 156,
+          "observed_min": 20
+        },
+        "AID01222": {
+          "veh_h": 2022,
+          "margin_veh_h": 153,
+          "observed_min": 20
+        },
+        "AID01223": {
+          "veh_h": 1521,
+          "margin_veh_h": 132,
+          "observed_min": 20
+        },
+        "TDSAPR10001": {
+          "veh_h": 1500,
+          "margin_veh_h": 152,
+          "observed_min": 15
+        },
+        "TDSAPR20001": {
+          "veh_h": 1828,
+          "margin_veh_h": 168,
+          "observed_min": 15
+        },
+        "TDSSPWR10001": {
+          "veh_h": 940,
+          "margin_veh_h": 120,
+          "observed_min": 15
+        },
+        "TDSSPWR10002": {
+          "veh_h": 1352,
+          "margin_veh_h": 144,
+          "observed_min": 15
+        },
+        "TDSSPWR10003": {
+          "veh_h": 1284,
+          "margin_veh_h": 140,
+          "observed_min": 15
+        },
+        "TDSSPWR20001": {
+          "veh_h": 808,
+          "margin_veh_h": 111,
+          "observed_min": 15
+        },
+        "TDSSPWR20003": {
+          "veh_h": 1504,
+          "margin_veh_h": 152,
+          "observed_min": 15
+        }
+      }
+    },
+    "2026-04-24": {
+      "archive": "detectors: 60 snapshots listed, 33 read, 27 not served",
+      "flows": {
+        "AID01101": {
+          "veh_h": 1552,
+          "margin_veh_h": 128,
+          "observed_min": 22
+        },
+        "AID01102": {
+          "veh_h": 1451,
+          "margin_veh_h": 123,
+          "observed_min": 22
+        },
+        "AID01103": {
+          "veh_h": 1803,
+          "margin_veh_h": 137,
+          "observed_min": 22
+        },
+        "AID01104": {
+          "veh_h": 1233,
+          "margin_veh_h": 114,
+          "observed_min": 22
+        },
+        "AID01106": {
+          "veh_h": 987,
+          "margin_veh_h": 102,
+          "observed_min": 22
+        },
+        "AID01107": {
+          "veh_h": 1347,
+          "margin_veh_h": 119,
+          "observed_min": 22
+        },
+        "AID01108": {
+          "veh_h": 1306,
+          "margin_veh_h": 117,
+          "observed_min": 22
+        },
+        "AID01109": {
+          "veh_h": 2075,
+          "margin_veh_h": 147,
+          "observed_min": 22
+        },
+        "AID01110": {
+          "veh_h": 2790,
+          "margin_veh_h": 171,
+          "observed_min": 22
+        },
+        "AID01214": {
+          "veh_h": 2899,
+          "margin_veh_h": 174,
+          "observed_min": 22
+        },
+        "AID01215": {
+          "veh_h": 1325,
+          "margin_veh_h": 118,
+          "observed_min": 22
+        },
+        "AID01216": {
+          "veh_h": 1205,
+          "margin_veh_h": 112,
+          "observed_min": 22
+        },
+        "AID01217": {
+          "veh_h": 1983,
+          "margin_veh_h": 155,
+          "observed_min": 19
+        },
+        "AID01218": {
+          "veh_h": 1604,
+          "margin_veh_h": 130,
+          "observed_min": 22
+        },
+        "AID01219": {
+          "veh_h": 1454,
+          "margin_veh_h": 123,
+          "observed_min": 22
+        },
+        "AID01221": {
+          "veh_h": 1975,
+          "margin_veh_h": 144,
+          "observed_min": 22
+        },
+        "AID01222": {
+          "veh_h": 1639,
+          "margin_veh_h": 131,
+          "observed_min": 22
+        },
+        "AID01223": {
+          "veh_h": 1312,
+          "margin_veh_h": 117,
+          "observed_min": 22
+        },
+        "TDSAPR10001": {
+          "veh_h": 1219,
+          "margin_veh_h": 113,
+          "observed_min": 22
+        },
+        "TDSAPR20001": {
+          "veh_h": 1740,
+          "margin_veh_h": 135,
+          "observed_min": 22
+        },
+        "TDSSPWR10001": {
+          "veh_h": 807,
+          "margin_veh_h": 92,
+          "observed_min": 22
+        },
+        "TDSSPWR10002": {
+          "veh_h": 1121,
+          "margin_veh_h": 108,
+          "observed_min": 22
+        },
+        "TDSSPWR10003": {
+          "veh_h": 1263,
+          "margin_veh_h": 115,
+          "observed_min": 22
+        },
+        "TDSSPWR20001": {
+          "veh_h": 859,
+          "margin_veh_h": 95,
+          "observed_min": 22
+        },
+        "TDSSPWR20003": {
+          "veh_h": 1298,
+          "margin_veh_h": 117,
+          "observed_min": 22
+        }
+      }
+    }
+  },
+  "chains": {
+    "Main road, eastbound (Aberdeen to Wan Chai)": {
+      "detectors": [
+        "AID01101",
+        "AID01102",
+        "AID01103",
+        "AID01104",
+        "AID01105",
+        "AID01106",
+        "AID01107",
+        "AID01108",
+        "AID01109",
+        "AID01110"
+      ],
+      "steps": [
+        {
+          "from": "AID01101",
+          "to": "AID01102",
+          "skipped": [],
+          "change_veh_h": -9,
+          "margin_veh_h": 171,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": 141,
+              "margin_veh_h": 187
+            },
+            "2026-04-24": {
+              "change_veh_h": -101,
+              "margin_veh_h": 178
+            }
+          },
+          "clear_every_day": false
+        },
+        {
+          "from": "AID01102",
+          "to": "AID01103",
+          "skipped": [],
+          "change_veh_h": 356,
+          "margin_veh_h": 175,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": 495,
+              "margin_veh_h": 206
+            },
+            "2026-04-24": {
+              "change_veh_h": 352,
+              "margin_veh_h": 184
+            }
+          },
+          "clear_every_day": true
+        },
+        {
+          "from": "AID01103",
+          "to": "AID01104",
+          "skipped": [],
+          "change_veh_h": -674,
+          "margin_veh_h": 166,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": -780,
+              "margin_veh_h": 198
+            },
+            "2026-04-24": {
+              "change_veh_h": -570,
+              "margin_veh_h": 178
+            }
+          },
+          "clear_every_day": true
+        },
+        {
+          "from": "AID01104",
+          "to": "AID01106",
+          "skipped": [
+            "AID01105"
+          ],
+          "change_veh_h": -28,
+          "margin_veh_h": 146,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": 306,
+              "margin_veh_h": 183
+            },
+            "2026-04-24": {
+              "change_veh_h": -246,
+              "margin_veh_h": 153
+            }
+          },
+          "clear_every_day": false
+        },
+        {
+          "from": "AID01106",
+          "to": "AID01107",
+          "skipped": [],
+          "change_veh_h": 342,
+          "margin_veh_h": 156,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": 9,
+              "margin_veh_h": 193
+            },
+            "2026-04-24": {
+              "change_veh_h": 360,
+              "margin_veh_h": 157
+            }
+          },
+          "clear_every_day": false
+        },
+        {
+          "from": "AID01107",
+          "to": "AID01108",
+          "skipped": [],
+          "change_veh_h": -67,
+          "margin_veh_h": 163,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": -189,
+              "margin_veh_h": 188
+            },
+            "2026-04-24": {
+              "change_veh_h": -41,
+              "margin_veh_h": 167
+            }
+          },
+          "clear_every_day": false
+        },
+        {
+          "from": "AID01108",
+          "to": "AID01109",
+          "skipped": [],
+          "change_veh_h": 884,
+          "margin_veh_h": 184,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": 333,
+              "margin_veh_h": 193
+            },
+            "2026-04-24": {
+              "change_veh_h": 769,
+              "margin_veh_h": 188
+            }
+          },
+          "clear_every_day": true
+        },
+        {
+          "from": "AID01109",
+          "to": "AID01110",
+          "skipped": [],
+          "change_veh_h": 657,
+          "margin_veh_h": 219,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": 1086,
+              "margin_veh_h": 231
+            },
+            "2026-04-24": {
+              "change_veh_h": 715,
+              "margin_veh_h": 225
+            }
+          },
+          "clear_every_day": true
+        }
+      ]
+    },
+    "Main road, westbound (Wan Chai to Aberdeen)": {
+      "detectors": [
+        "AID01214",
+        "AID01215",
+        "AID01216",
+        "AID01217",
+        "AID01218",
+        "AID01219",
+        "AID01220",
+        "AID01221",
+        "AID01222",
+        "AID01223"
+      ],
+      "steps": [
+        {
+          "from": "AID01214",
+          "to": "AID01215",
+          "skipped": [],
+          "change_veh_h": -690,
+          "margin_veh_h": 217,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": -816,
+              "margin_veh_h": 250
+            },
+            "2026-04-24": {
+              "change_veh_h": -1574,
+              "margin_veh_h": 210
+            }
+          },
+          "clear_every_day": true
+        },
+        {
+          "from": "AID01215",
+          "to": "AID01216",
+          "skipped": [],
+          "change_veh_h": -722,
+          "margin_veh_h": 186,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": -786,
+              "margin_veh_h": 210
+            },
+            "2026-04-24": {
+              "change_veh_h": -120,
+              "margin_veh_h": 163
+            }
+          },
+          "clear_every_day": false
+        },
+        {
+          "from": "AID01216",
+          "to": "AID01217",
+          "skipped": [],
+          "change_veh_h": 646,
+          "margin_veh_h": 185,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": 552,
+              "margin_veh_h": 204
+            },
+            "2026-04-24": {
+              "change_veh_h": 778,
+              "margin_veh_h": 191
+            }
+          },
+          "clear_every_day": true
+        },
+        {
+          "from": "AID01217",
+          "to": "AID01218",
+          "skipped": [],
+          "change_veh_h": -496,
+          "margin_veh_h": 188,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": -285,
+              "margin_veh_h": 212
+            },
+            "2026-04-24": {
+              "change_veh_h": -379,
+              "margin_veh_h": 202
+            }
+          },
+          "clear_every_day": true
+        },
+        {
+          "from": "AID01218",
+          "to": "AID01219",
+          "skipped": [],
+          "change_veh_h": -206,
+          "margin_veh_h": 170,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": -183,
+              "margin_veh_h": 199
+            },
+            "2026-04-24": {
+              "change_veh_h": -150,
+              "margin_veh_h": 179
+            }
+          },
+          "clear_every_day": false
+        },
+        {
+          "from": "AID01219",
+          "to": "AID01221",
+          "skipped": [
+            "AID01220"
+          ],
+          "change_veh_h": 637,
+          "margin_veh_h": 182,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": 492,
+              "margin_veh_h": 208
+            },
+            "2026-04-24": {
+              "change_veh_h": 521,
+              "margin_veh_h": 189
+            }
+          },
+          "clear_every_day": true
+        },
+        {
+          "from": "AID01221",
+          "to": "AID01222",
+          "skipped": [],
+          "change_veh_h": -291,
+          "margin_veh_h": 190,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": -87,
+              "margin_veh_h": 219
+            },
+            "2026-04-24": {
+              "change_veh_h": -336,
+              "margin_veh_h": 195
+            }
+          },
+          "clear_every_day": false
+        },
+        {
+          "from": "AID01222",
+          "to": "AID01223",
+          "skipped": [],
+          "change_veh_h": -427,
+          "margin_veh_h": 172,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": -501,
+              "margin_veh_h": 202
+            },
+            "2026-04-24": {
+              "change_veh_h": -327,
+              "margin_veh_h": 176
+            }
+          },
+          "clear_every_day": true
+        }
+      ]
+    },
+    "Western alternative, eastbound": {
+      "detectors": [
+        "TDSSPWR10001",
+        "TDSSPWR10002",
+        "TDSSPWR10003",
+        "TDSAPR10001"
+      ],
+      "steps": [
+        {
+          "from": "TDSSPWR10001",
+          "to": "TDSSPWR10002",
+          "skipped": [],
+          "change_veh_h": 425,
+          "margin_veh_h": 140,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": 412,
+              "margin_veh_h": 187
+            },
+            "2026-04-24": {
+              "change_veh_h": 314,
+              "margin_veh_h": 142
+            }
+          },
+          "clear_every_day": true
+        },
+        {
+          "from": "TDSSPWR10002",
+          "to": "TDSSPWR10003",
+          "skipped": [],
+          "change_veh_h": -70,
+          "margin_veh_h": 151,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": -68,
+              "margin_veh_h": 201
+            },
+            "2026-04-24": {
+              "change_veh_h": 142,
+              "margin_veh_h": 158
+            }
+          },
+          "clear_every_day": false
+        },
+        {
+          "from": "TDSSPWR10003",
+          "to": "TDSAPR10001",
+          "skipped": [],
+          "change_veh_h": 298,
+          "margin_veh_h": 158,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": 216,
+              "margin_veh_h": 207
+            },
+            "2026-04-24": {
+              "change_veh_h": -44,
+              "margin_veh_h": 161
+            }
+          },
+          "clear_every_day": false
+        }
+      ]
+    },
+    "Western alternative, westbound": {
+      "detectors": [
+        "TDSAPR20001",
+        "TDSSPWR20003",
+        "TDSSPWR20002",
+        "TDSSPWR20001"
+      ],
+      "steps": [
+        {
+          "from": "TDSAPR20001",
+          "to": "TDSSPWR20003",
+          "skipped": [],
+          "change_veh_h": -281,
+          "margin_veh_h": 173,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": -324,
+              "margin_veh_h": 227
+            },
+            "2026-04-24": {
+              "change_veh_h": -442,
+              "margin_veh_h": 179
+            }
+          },
+          "clear_every_day": true
+        },
+        {
+          "from": "TDSSPWR20003",
+          "to": "TDSSPWR20001",
+          "skipped": [
+            "TDSSPWR20002"
+          ],
+          "change_veh_h": -616,
+          "margin_veh_h": 147,
+          "other_days": {
+            "2026-05-08": {
+              "change_veh_h": -696,
+              "margin_veh_h": 188
+            },
+            "2026-04-24": {
+              "change_veh_h": -439,
+              "margin_veh_h": 151
+            }
+          },
+          "clear_every_day": true
+        }
+      ]
+    }
+  }
+}
