@@ -244,6 +244,27 @@ def _window_key(bins: list[str]) -> str:
     return f"{bins[0]}|{bins[-1]}|{len(bins)}"
 
 
+def _pause_playback() -> None:
+    st.session_state.playing = False
+
+
+def _seek_playback(index: int) -> None:
+    st.session_state.bin_index = index
+    _pause_playback()
+
+
+def _toggle_playback(n_bins: int) -> None:
+    playing = not st.session_state.get("playing", False)
+    # Playing from the last bin would have nowhere to go: start again.
+    if playing and st.session_state.bin_index == n_bins - 1:
+        st.session_state.bin_index = 0
+    st.session_state.playing = playing
+
+
+def _scrub_playback(bins: list[str]) -> None:
+    _seek_playback(bins.index(st.session_state.selected_bin))
+
+
 def playback_index(bins: list[str], width: int | None) -> int:
     """Draw the transport controls and return the bin to show.
 
@@ -257,33 +278,26 @@ def playback_index(bins: list[str], width: int | None) -> int:
     index = min(st.session_state.get("bin_index", 0), len(bins) - 1)
     playing = st.session_state.get("playing", False)
 
+    # Callbacks update state before Streamlit draws the page, so stopping by
+    # any control immediately restores Play instead of leaving a stale Pause.
     back, play, forward, rewind, _ = st.columns([1, 1, 1, 1, 6])
-    if back.button("◀", help="one bin back", use_container_width=True):
-        st.session_state.playing = playing = False
-        index = max(0, index - 1)
-    if play.button("⏸" if playing else "▶", help="play the window",
-                   use_container_width=True):
-        playing = not playing
-        # Playing from the last bin would have nowhere to go: start again.
-        if playing and index == len(bins) - 1:
-            index = 0
-        st.session_state.playing = playing
-    if forward.button("▶|", help="one bin on", use_container_width=True):
-        st.session_state.playing = playing = False
-        index = min(len(bins) - 1, index + 1)
-    if rewind.button("|◀", help="back to the start", use_container_width=True):
-        st.session_state.playing = playing = False
-        index = 0
+    back.button("◀", help="one bin back", use_container_width=True,
+                on_click=_seek_playback, args=(max(0, index - 1),))
+    play.button("⏸" if playing else "▶",
+                help="pause playback" if playing else "play the window",
+                use_container_width=True,
+                on_click=_toggle_playback, args=(len(bins),))
+    forward.button("▶|", help="one bin on", use_container_width=True,
+                   on_click=_seek_playback, args=(min(len(bins) - 1, index + 1),))
+    rewind.button("|◀", help="back to the start", use_container_width=True,
+                  on_click=_seek_playback, args=(0,))
 
     st.session_state.bin_index = index
-    chosen = st.select_slider(
+    st.session_state.selected_bin = bins[index]
+    st.select_slider(
         f"{width}-minute bin" if width else "Time bin",
-        options=bins, value=bins[index], format_func=label_bin)
-    if chosen != bins[index]:
-        # Scrubbing by hand takes over from playback.
-        index = bins.index(chosen)
-        st.session_state.bin_index = index
-        st.session_state.playing = False
+        options=bins, key="selected_bin", format_func=label_bin,
+        on_change=_scrub_playback, args=(bins,))
     return index
 
 
@@ -420,6 +434,7 @@ def timeline_chart(timeline: pd.DataFrame, current_bin: str,
 # --- page -----------------------------------------------------------------
 
 def build_map(detectors: pd.DataFrame) -> pdk.Deck:
+    """Frame both ends of the corridor, including detectors with no reading."""
     dots = pdk.Layer(
         "ScatterplotLayer", data=detectors,
         get_position="[longitude, latitude]", get_fill_color="colour",
@@ -427,10 +442,10 @@ def build_map(detectors: pd.DataFrame) -> pdk.Deck:
         pickable=True, opacity=0.9, stroked=True, get_line_color=[255, 255, 255],
         line_width_min_pixels=1,
     )
-    view = pdk.ViewState(
-        latitude=float(detectors["latitude"].mean()),
-        longitude=float(detectors["longitude"].mean()), zoom=13.5, pitch=0,
-    )
+    # Fit the two corners, not every point: the mean of an L-shaped corridor
+    # favours its crowded southern end and crops the northern detectors.
+    bounds = detectors[["longitude", "latitude"]].agg(["min", "max"])
+    view = pdk.data_utils.compute_view(bounds.values.tolist())
     tooltip = {
         "html": "<div style='font-size:13px'><b>{detector_id}</b>"
                 " &mdash; <b>{speed_label}</b></div>"
@@ -482,7 +497,7 @@ def colour_legend() -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title="Ripple — corridor detectors", layout="wide")
+    st.set_page_config(page_title="Ripple — Aberdeen corridor", layout="wide")
     st.title("Ripple — Aberdeen corridor")
     st.caption("Component G · operator console")
 
