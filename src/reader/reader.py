@@ -13,6 +13,7 @@ from pathlib import Path
 import jsonschema
 
 from src import llm
+from src.loaders.corridor import CORRIDOR_ROAD_NAMES
 
 HERE = Path(__file__).parent
 SCHEMA = json.loads((HERE / "incident.schema.json").read_text(encoding="utf-8"))
@@ -42,15 +43,6 @@ REPLY_SCHEMA = {
 }
 
 
-# The Aberdeen corridor (docs/02-data.md section 5). The Chinese names are
-# the ones in TD's detector list; every message so far also has English.
-CORRIDOR_ROADS = [
-    "Aberdeen Praya Road", "Wong Chuk Hang Road", "Aberdeen Tunnel",
-    "Wong Nai Chung Gap Flyover", "Canal Road Flyover", "Pok Fu Lam Road",
-    "Shek Pai Wan Road", "Wah Fu Road", "Wong Nai Chung Gap Road", "Stubbs Road",
-    "香港仔海旁道", "香港仔海傍道", "黃竹坑道", "香港仔隧道", "黃泥涌峽天橋",
-    "堅拿道天橋", "薄扶林道", "石排灣道",
-]
 NOT_ROAD_INCIDENTS = {"public_event", "public_transport_notice"}
 
 
@@ -122,4 +114,4 @@ def names_corridor_road(stn: dict) -> bool:
     """
     text = " ".join((stn["CONTENT_EN"] + " " + stn["CONTENT_CN"]).split()).lower()
     text = re.sub(r"[(（][^)）]*(bound|方向)[)）]", "", text)
-    return any(road.lower() in text for road in CORRIDOR_ROADS)
+    return any(road.lower() in text for road in CORRIDOR_ROAD_NAMES)
