@@ -1,4 +1,4 @@
-"""Render sampled SUMO FCD snapshots as an animated GIF for review/presentation."""
+"""Render recorded SUMO FCD snapshots as GIF or MP4 for review/presentation."""
 import argparse
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -16,7 +16,11 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--incident-edge", required=True)
     ap.add_argument("--every-seconds", type=float, default=60)
+    ap.add_argument("--traffic-only", action="store_true",
+                    help="Label the highlighted edge as a landmark, with no incident simulated")
     args = ap.parse_args()
+    if args.every_seconds <= 0:
+        ap.error('--every-seconds must be positive')
     net = sumolib.net.readNet(str(resolve(args.network)))
     shapes = [edge.getShape() for edge in net.getEdges() if edge.getShape()]
     xs = [pt[0] for shape in shapes for pt in shape]
@@ -57,9 +61,13 @@ def main():
                     draw.ellipse((px - 4, py - 4, px + 4, py + 4), fill=color)
                     n += 1
                 draw.rectangle((0, height - 58, width, height), fill="#17222e")
-                draw.text((pad, height - 48), f"SUMO 1.27.1  |  simulation time {t:,.0f}s  |  vehicles {n}", fill="white", font=font)
+                draw.text((pad, height - 48), f"SUMO recorded replay  |  simulation time {t:,.0f}s  |  vehicles {n}", fill="white", font=font)
                 draw.text((pad, 12), "ABERDEEN CORRIDOR • RECORDED SUMO FCD • DIAGNOSTIC EXCERPT", fill="#dce6ee", font=small)
-                draw.text((width - 280, 12), "Red: incident lane edge", fill="#f28b82", font=small)
+                draw.text((width - 280, 12), "Red: flyover location" if args.traffic_only else "Red: incident lane edge", fill="#f28b82", font=small)
+                draw.text((pad, height - 22),
+                          "PROVISIONAL / UNVALIDATED - NO INCIDENT CLOSURE SIMULATED" if args.traffic_only
+                          else "PROVISIONAL / UNVALIDATED - DIAGNOSTIC SIMULATION",
+                          fill="#f4bf63", font=small)
                 frames.append(frame)
                 times.append(t)
                 last_selected = t
@@ -74,7 +82,19 @@ def main():
     out.parent.mkdir(parents=True, exist_ok=True)
     # A compact overview clip: each frame keeps its actual SUMO timestamp onscreen.
     duration_ms = 250
-    frames[0].save(out, save_all=True, append_images=frames[1:], duration=duration_ms, loop=0, optimize=True)
+    if out.suffix.lower() == '.mp4':
+        import imageio_ffmpeg
+        writer = imageio_ffmpeg.write_frames(str(out), (width, height), fps=4,
+                                             codec='libx264', pix_fmt_in='rgb24',
+                                             pix_fmt_out='yuv420p', macro_block_size=2)
+        writer.send(None)
+        try:
+            for frame in frames:
+                writer.send(frame.tobytes())
+        finally:
+            writer.close()
+    else:
+        frames[0].save(out, save_all=True, append_images=frames[1:], duration=duration_ms, loop=0, optimize=True)
     print(f"Rendered {len(frames)} actual FCD snapshots ({times[0]:.0f}–{times[-1]:.0f}s) to {out}")
 
 

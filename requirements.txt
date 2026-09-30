@@ -9,6 +9,7 @@ urllib3==2.8.0
 sumolib==1.27.1
 traci==1.27.1
 pyproj==3.8.0
+imageio-ffmpeg==0.6.0
 
 # G: Operator console
 streamlit==1.40.2

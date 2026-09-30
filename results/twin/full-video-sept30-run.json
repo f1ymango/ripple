@@ -1,0 +1,100 @@
+{
+  "purpose": "Traffic-only diagnostic; no incident closure simulated; provisional unvalidated network",
+  "command": [
+    "sumo",
+    "-n",
+    "C:\\Users\\Arivan Patar\\.codex\\.chatgpt-projects\\g-p-6ab4b9a96c9c8191af26fc690da5f11f\\work\\team-ripple\\sim\\work\\aberdeen.net.xml",
+    "-r",
+    "C:\\Users\\Arivan Patar\\.codex\\.chatgpt-projects\\g-p-6ab4b9a96c9c8191af26fc690da5f11f\\work\\team-ripple\\sim\\work\\may-diagnostic\\fitted.rou.xml",
+    "-a",
+    "C:\\Users\\Arivan Patar\\.codex\\.chatgpt-projects\\g-p-6ab4b9a96c9c8191af26fc690da5f11f\\work\\team-ripple\\sim\\work\\full-video-sept30\\loops.xml",
+    "--begin",
+    "0",
+    "--end",
+    "10500",
+    "--seed",
+    "2026",
+    "--max-depart-delay",
+    "-1",
+    "--duration-log.statistics",
+    "true",
+    "--statistic-output",
+    "C:\\Users\\Arivan Patar\\.codex\\.chatgpt-projects\\g-p-6ab4b9a96c9c8191af26fc690da5f11f\\work\\team-ripple\\sim\\work\\full-video-sept30\\statistics.xml",
+    "--fcd-output",
+    "C:\\Users\\Arivan Patar\\.codex\\.chatgpt-projects\\g-p-6ab4b9a96c9c8191af26fc690da5f11f\\work\\team-ripple\\sim\\work\\full-video-sept30\\traffic.fcd.xml",
+    "--device.fcd.period",
+    "10",
+    "--no-step-log",
+    "true"
+  ],
+  "returncode": 0,
+  "wall_seconds": 157.5174833999481,
+  "wall_timeout_seconds": 420,
+  "network_sha256": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e",
+  "routes_sha256": "b75ceee7f84432867e3c94cd5f5037c1ee5f2511fd8d624461312f8b14b69de8",
+  "statistics": {
+    "performance": {
+      "clockBegin": "654296.16",
+      "clockEnd": "654443.83",
+      "clockDuration": "147.67",
+      "traciDuration": "52.55",
+      "realTimeFactor": "71.11",
+      "vehicleUpdatesPerSecond": "98228.95",
+      "personUpdatesPerSecond": "0.00",
+      "begin": "0.00",
+      "end": "10500.00",
+      "duration": "10500.00"
+    },
+    "vehicles": {
+      "loaded": "41756",
+      "inserted": "32481",
+      "running": "1686",
+      "waiting": "9275"
+    },
+    "teleports": {
+      "total": "428",
+      "jam": "313",
+      "yield": "59",
+      "wrongLane": "56"
+    },
+    "safety": {
+      "collisions": "0",
+      "emergencyStops": "0",
+      "emergencyBraking": "0"
+    },
+    "persons": {
+      "loaded": "0",
+      "running": "0",
+      "jammed": "0"
+    },
+    "personTeleports": {
+      "total": "0",
+      "abortWait": "0",
+      "wrongDest": "0"
+    },
+    "vehicleTripStatistics": {
+      "count": "30795",
+      "routeLength": "1370.35",
+      "speed": "12.36",
+      "duration": "212.72",
+      "waitingTime": "88.91",
+      "timeLoss": "124.75",
+      "departDelay": "139.13",
+      "departDelayWaiting": "-1.00",
+      "totalTravelTime": "6550605.00",
+      "totalDepartDelay": "4284491.15"
+    },
+    "pedestrianStatistics": {
+      "number": "0",
+      "routeLength": "0.00",
+      "duration": "0.00",
+      "timeLoss": "0.00"
+    },
+    "rideStatistics": {
+      "number": "0"
+    },
+    "transportStatistics": {
+      "number": "0"
+    }
+  }
+}
