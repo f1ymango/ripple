@@ -80,13 +80,14 @@ The JSON contracts between modules are in
 
 ### Integration status
 
-The console framing, theme and playback control fixes are open for review in
+The console framing, theme and playback control fixes are merged in
 [PR #31](https://github.com/f1ymango/ripple/pull/31), with a
 [Visuals handover](docs/visuals-handover.md) saved for the next session. The
-console playback (PR #29) and Component C source audits (PR #30) are merged.
+console playback (PR #29), Component C source audits (PR #30), and Data's
+[week 2 checks (PR #32)](https://github.com/f1ymango/ripple/pull/32) are merged.
 The local OSM network and E1 loops remain provisional and uncommitted.
 
-### Open decisions
+### Current handoffs and open decisions
 
 - **One corridor-road list.** The Reader ([src/reader/reader.py](src/reader/reader.py))
   and the loaders ([src/loaders/corridor.py](src/loaders/corridor.py)) each
@@ -97,17 +98,19 @@ The local OSM network and E1 loops remain provisional and uncommitted.
   ([notes](docs/notes-from-data.md)).
 - **Who runs the live poller, and on which machine.** Its data has no gaps,
   but it only records while it runs (`python -m src.loaders.fetch live`).
-- **What the Evaluator (E) simulates for `lanes_closed: ["unspecified"]`**
-  (Data, before E's first run). The Reader now says "some lanes are closed, the
-  message does not say which" instead of "none"; E picks the closure to
-  simulate and states that assumption with the results
-  ([docs/03-architecture.md](docs/03-architecture.md) §3). 7 of the 20 dev
-  messages are this case. *29 Sep, Data's proposal for IN-26-03365:* close the
-  **slow lane** of the Wong Chuk Hang Road flyover eastbound. At AID01104 it
-  carried no vehicle in 5 readings in a row (08:54–09:00) while the fast lane
-  crawled past; on two ordinary Fridays that happened in 1 reading of 30 each
-  ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
-  To agree at the 30 Sep sync.
+- **What the Evaluator (E) simulates for `lanes_closed: ["unspecified"]`.**
+  For `IN-26-03365`, use the **slow lane** of the Wong Chuk Hang Road flyover
+  eastbound as a provisional, disclosed assumption for TD's 09:01 partial-closure
+  message. Switch to all lanes at TD's 09:36 update and clear at 10:02. These
+  message times define the operator-facing replay; no plan may act on an update
+  before it was published. Five successive archived AID01104 readings from
+  08:54–09:00 show no slow-lane vehicles while the fast lane carried traffic,
+  but they do not prove which physical lane was closed or when it closed
+  ([lane evidence](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
+  The earlier observed slowdown is a validation limitation; if Simulation runs
+  a detector-onset sensitivity case, label it separately from the operator
+  replay. E must state the lane and timing assumptions with its results
+  ([docs/03-architecture.md](docs/03-architecture.md) §3).
 - **Calibration thresholds** (Data + Simulation): a bin is used for GEH only at
   ≥ 40% archive coverage and ≥ 90% of lane readings valid
   ([docs/02-data.md](docs/02-data.md) §7). Relax them deliberately if too few

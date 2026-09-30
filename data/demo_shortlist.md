@@ -9,11 +9,13 @@ primary; a calibration failure follows the simplified-network go/no-go on 4 Oct
 in `docs/04-plan.md`.
 
 Keep three times separate for the primary: detectors show disruption by 08:55,
-TD's NEW message is timestamped 09:01, and TD reported all lanes closed at 09:36 (cleared
-10:02). The first message's lane is `unspecified`; the Evaluator chooses and
-discloses its physical lane assumption. Zero detector flow does not itself
-prove when every lane physically closed. An operator-facing plan cannot use a
-message before its publication time.
+TD's NEW message is timestamped 09:01, and TD reported all lanes closed at
+09:36 (cleared 10:02). For the operator-facing replay, use TD's message times
+for the partial- and all-lane phases, and provisionally simulate the slow lane
+for the first `unspecified` message. Disclose both assumptions with results.
+Zero detector flow does not prove when every lane physically closed. The
+pre-report slowdown is a validation limitation, and an operator-facing plan
+cannot use a message before its publication time.
 
 Simulation must review the affected edge, direction, detector placement, and
 pre-incident fit before making a baseline-validation claim. This decision
@@ -87,19 +89,19 @@ numbers, score 4.38 ([one-day re-check](../results/data/candidates_2026-05-15.md
   ran 20+ km/h slower on 24 Apr than on 8 May for 15 minutes, so it sits on the
   noise floor now, but it was credited for a longer run (20 minutes), and its 25
   minutes with no vehicles are direct evidence of the closure anyway.
-- **Which lane closed first** (Data, 29 Sep): the **slow lane**. At AID01104 the
-  slow lane carried no vehicle in 5 archived readings in a row, 08:54:00–09:00:00,
+- **Provisional slow-lane assumption** (Data evidence, 29 Sep): at AID01104 the
+  slow lane carried no vehicle in 5 successive archived readings, 08:54:00–09:00:00,
   while the fast lane crawled past at 3–9 km/h; on 8 May and 24 Apr it happened
   in 1 reading of 30 each. From 09:00:30 both lanes carried almost nothing
   ([lane by lane](../results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
+  This supports a replay choice but does not establish the physical closure.
   AID01105, the other flyover detector, is missing from the feed that morning.
 
 **What it showcases.**
 
 - *Reader*: the hardest real case — `lanes_closed: ["unspecified"]` first, then
-  `["all"]` on the update. The Evaluator has to decide what to simulate for
-  "unspecified" (the open decision in the README; Data proposes the slow lane,
-  above), and the escalation shows the plan being revised.
+  `["all"]` on the update. The Evaluator uses the disclosed provisional slow-lane
+  assumption above, and the escalation shows the plan being revised.
 - *Plans*: a full closure of the only road to the tunnel at 9 am — every
   diversion option matters (Nam Fung Road to Wong Nai Chung Gap Road, Pok Fu
   Lam Road, the South Island Line), and doing nothing is visibly costly.
@@ -221,6 +223,9 @@ start, which is the simulation's time 0.
 | IN-26-03744 | 11:55 | 14:10 | 12:55 (3600 s) | 13:05 (4200 s) | 13:37 (6120 s) | `... --start 2026-05-29T11:55 --end 2026-05-29T14:10` |
 | IN-26-05951 | 01:25 | 04:30 | 02:25 (3600 s) | 02:53 (5280 s) | 03:56 (9060 s) | `... --start 2026-08-18T01:25 --end 2026-08-18T04:30` |
 
-Inject the closure when the detectors saw the queue, not at TD's NEW:
-TD reports 6–28 minutes after traffic is already affected. The windows run
-past the twin template's 7200 s end, so set `end` to match.
+For the primary operator-facing replay, inject the provisional partial closure
+at TD's 09:01 NEW (3960 s), escalate to all lanes at 09:36 (6060 s), and clear
+at 10:02 (7620 s). The detector slowdown by 08:55 is an observed pre-report
+mismatch, not information the operator could have acted on. If Simulation tests
+an earlier physical onset to understand fit, label that as a separate sensitivity
+run. The windows run past the twin template's 7200 s end, so set `end` to match.
