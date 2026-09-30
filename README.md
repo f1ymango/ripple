@@ -47,7 +47,7 @@ this chain.
 
 | | Component | Owner | Status |
 |---|---|---|---|
-| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md). Week 2 checks on the demo morning: usable calibration bins per threshold ([bin survival](results/data/bin-survival_20260515-0755_1035.md)), which lane closed first ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)), and IN-26-03365 re-screened after the 29 Sep screen fixes ([re-check](results/data/candidates_2026-05-15.md)) |
+| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md). Week 2 checks on the demo morning: usable calibration bins per threshold ([bin survival](results/data/bin-survival_20260515-0755_1035.md)), which lane closed first ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)), and IN-26-03365 re-screened after the 29 Sep screen fixes ([re-check](results/data/candidates_2026-05-15.md)). For the twin: [flow balance](results/data/flow-balance_20260515-0755_0855.md) and [free-flow speeds](results/data/free-flow_20260508_20260424_0730-1100.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
 | C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The local OSM map has audited connectivity for all 24 directed detector links, with path distances within 1.12 times their detector-coordinate distances. AID01106 to AID01107 fell from 1,771.83 m to 441.79 m without editing OSM geometry. A bounded May 15 pre-incident run scores 66.5% GEH<5 and 36.9% speed MAPE, so the baseline target is not met. A separate-day TD lane-scope check corroborates three feed lane counts but does not resolve physical placement, the incident edge, or the initial partial-closure lane. The local network/E1 files remain provisional; Data's ~15-link fallback remains active. ([src/twin/](src/twin/README.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md), [OSM connectivity audit](results/twin/osm-network-audit.md), [lane-scope cross-check](results/twin/may14-lane-scope-crosscheck.md)) |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
@@ -63,7 +63,7 @@ The JSON contracts between modules are in
 
 | Owner | Deliverable | Next evidence |
 |---|---|---|
-| Data + Simulation | Baseline replay of IN-26-03365, fitted to detector counts and speeds | Validation chart and stated errors; decide simplified-network fallback on 4 Oct |
+| Data + Simulation | Baseline replay of IN-26-03365, fitted to detector counts and speeds | 🟡 30 Sep, Data: where traffic joins and leaves between detectors ([flow balance](results/data/flow-balance_20260515-0755_0855.md)) and light-traffic speeds per detector ([free-flow](results/data/free-flow_20260508_20260424_0730-1100.md)), the inputs behind the six detectors that hold 57 of the 81 GEH misses and the twin's 60 km/h cap ([notes](docs/notes-from-data.md)). Still to come: validation chart and stated errors; decide simplified-network fallback on 4 Oct |
 | Lead | Verify the Incident Reader (B) on the selected STN updates and coordinate contract handoffs | ✅ 29 Sep — the [09:01 and 09:36 source messages](data/demo_incident_messages.jsonl) both parsed with core fields matching TD's text and the `incident.json` contract ([run](results/reader/2026-09-29T1608_qwen3-8b.jsonl)); the first `notes` has a misleading direction-bracket sentence. Contract handoffs remain open |
 | Visuals | First timeline playback of the selected incident | ✅ 28 Sep — IN-26-03365 plays back in the console from the observed detector bins ([screenshot](docs/img/week2-incident-playback.png)); built on observed data, so it does not wait on the 4 Oct go/no-go |
 | Impact | Interviews and interim report, with one paragraph from each owner | Submit report Sat 3 Oct |
@@ -197,6 +197,18 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Wed 30 Sep**
+- Component A, for the 66.5% GEH / 36.9% MAPE diagnostic: 57 of its 81 failing
+  count bins are at six detectors where the twin carries 33–61% of the observed
+  traffic, each just after a stretch where traffic joins the corridor. New
+  `fetch flow-balance` measures those joins and exits between neighbouring
+  detectors on 15 May and two ordinary Fridays (e.g. +646 veh/h between AID01216
+  and the westbound tunnel), and `fetch free-flow` measures light-traffic speeds
+  per detector: the median driver beats the twin's 60 km/h cap at 14 of 25
+  ([flow balance](results/data/flow-balance_20260515-0755_0855.md),
+  [free-flow](results/data/free-flow_20260508_20260424_0730-1100.md),
+  suggestions for Simulation in [docs/notes-from-data.md](docs/notes-from-data.md)).
 
 **Tue 29 Sep**
 - Component G: follow-up on `visuals/console-framing-theme` fits the map

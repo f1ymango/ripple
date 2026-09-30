@@ -1,7 +1,7 @@
 """Week 2 data checks: bins each calibration threshold leaves, and lanes reading by reading."""
 import datetime as dt
 
-from src.loaders import bin_survival, common, lane_evidence
+from src.loaders import bin_survival, common, flow_balance, free_flow, lane_evidence
 
 HK = common.HK
 T0 = dt.datetime(2026, 5, 15, 8, 0, tzinfo=HK)
@@ -92,3 +92,60 @@ def test_ordinary_days_are_read_at_the_same_clock_time(monkeypatch):
     week = dt.timedelta(days=7)
     assert sorted(asked) == [(T0 - week, T0 + dt.timedelta(minutes=40) - week),
                              (T0, T0 + dt.timedelta(minutes=40))]
+
+
+# ---------------------------------------------------------------- flow balance
+
+
+def _lane(detector, lane, second, volume, valid=True, speed=60.0, occupancy=5.0, period=30.0):
+    return {"timestamp": T0 + dt.timedelta(seconds=second), "detector_id": detector, "lane": lane,
+            "volume": volume, "valid": valid, "speed_kmh": speed if volume else None,
+            "occupancy_pct": occupancy, "period_s": period}
+
+
+def test_hourly_flow_is_each_lanes_rate_summed_with_a_poisson_margin():
+    rows = [_lane("A", "Fast Lane", 0, 5), _lane("A", "Fast Lane", 30, 7), _lane("A", "Slow Lane", 0, 3)]
+    got = flow_balance.hourly_flows(rows)["A"]
+    assert got["veh_h"] == 720 + 360                  # 12 in 60 s, plus 3 in 30 s
+    assert got["margin_veh_h"] == 576                 # 1.96 * sqrt(12 * 60**2 + 3 * 120**2)
+    assert got["observed_min"] == 1
+
+
+def test_a_detector_with_a_lane_never_valid_has_no_flow():
+    rows = [_lane("A", "Fast Lane", 0, 5), _lane("A", "Slow Lane", 0, 3, valid=False)]
+    assert flow_balance.hourly_flows(rows) == {}
+
+
+def test_a_missing_detector_is_stepped_over_and_named():
+    flows = {"A": {"veh_h": 1000, "margin_veh_h": 30}, "C": {"veh_h": 1600, "margin_veh_h": 40}}
+    assert flow_balance.steps(["A", "B", "C"], flows) == [
+        {"from": "A", "to": "C", "skipped": ["B"], "change_veh_h": 600, "margin_veh_h": 50}]
+
+
+def test_a_junction_is_clear_only_if_every_day_agrees_beyond_its_margin():
+    def c(v, m=100):
+        return {"change_veh_h": v, "margin_veh_h": m}
+    assert flow_balance.clear([c(600), c(500), c(700)]) is True
+    assert flow_balance.clear([c(342), c(9), c(360)]) is False      # one day within its margin
+    assert flow_balance.clear([c(600), c(-500)]) is False           # opposite ways
+    assert flow_balance.clear([c(600), None]) is False              # a day with no data
+
+
+# ---------------------------------------------------------------- free-flow speeds
+
+def test_only_light_valid_readings_with_a_vehicle_count():
+    rows = [_lane("A", "Fast Lane", 0, 4, speed=72.0), _lane("A", "Fast Lane", 30, 4, occupancy=25.0),
+            _lane("A", "Fast Lane", 60, 0), _lane("A", "Fast Lane", 90, 4, valid=False)]
+    assert free_flow.light_readings(rows) == {"A": [(72.0, 4)]}
+
+
+def test_percentiles_weight_each_reading_by_its_vehicles():
+    pairs = [(50.0, 1), (70.0, 3)]
+    assert free_flow.percentile(pairs, 50) == 70.0 and free_flow.percentile(pairs, 20) == 50.0
+
+
+def test_too_few_readings_is_not_reported_as_a_speed():
+    got = free_flow.summary([(70.0, 2)] * (free_flow.MIN_READINGS - 1))
+    assert got["enough"] is False and "median_kmh" not in got
+    got = free_flow.summary([(70.0, 2)] * free_flow.MIN_READINGS)
+    assert got["enough"] is True and got["median_kmh"] == 70.0 and got["above_cap_pct"] == 100

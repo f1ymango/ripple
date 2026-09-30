@@ -5,6 +5,63 @@ touch someone else's. **Nothing in your files has been changed.** Each note
 says what we found, where the proof is, and what we suggest. Pick them up when
 you are next in that code; strike a note through when it is done.
 
+## 30 Sep 2026
+
+### For Simulation: the 27 Sep diagnostic (66.5% GEH < 5, 36.9% speed MAPE)
+
+**8. Six detectors hold most of the GEH misses, and joining traffic has nowhere to start.**
+57 of the 81 failing count bins are at AID01107, AID01110, AID01214, AID01217,
+AID01218 and AID01221, where the twin carries 33–61% of the observed traffic
+([diagnostic](../results/twin/may15-preincident-diagnostic.json)). The other 19
+detectors already pass 158 of 182 bins (87%). Each of the six sits just after
+a stretch where traffic joins the corridor, or (AID01214) at the start of the
+westbound chain. `src/twin/make_routes.py` builds routes only from one
+detector's edge to a later detector's edge, so traffic that really joins from a
+side road has to be inserted at the next detector, in dense traffic. That fits
+the 2,405 vehicles still waiting at 4,500 s.
+
+Where traffic joins and leaves, 07:55–08:55, clear on 15 May, 8 May and 24 Apr
+([flow balance](../results/data/flow-balance_20260515-0755_0855.md)):
+
+- joins: +646 veh/h between AID01216 and AID01217 (tunnel, westbound); +637
+  between AID01219 and AID01221 (AID01220 has no data); +884 between AID01108
+  and AID01109; +657 between AID01109 and AID01110; +356 between AID01102 and
+  AID01103. Also +342 between AID01106 and AID01107 on 15 May and 24 Apr, not
+  on 8 May.
+- exits: −674 between AID01103 and AID01104; −690 between AID01214 and
+  AID01215; −496 just after the tunnel westbound; −427 between AID01222 and
+  AID01223.
+
+Suggestion: add entry routes from the side roads in those stretches, and exit
+routes to them, sized from the 15 May column. The ordinary days are the check
+that each junction is real. If the six detectors reached 9 of 10 bins each, the
+overall score would be about 88% (212 of 242).
+
+**9. Every simulated car is capped at 60 km/h.** The vType in `make_routes.py`
+has `maxSpeed="16.7"` (m/s), and `fit_demand.py` copies it to every fitted
+flow. In light traffic on ordinary Friday mornings the median driver is faster
+than 60 km/h at 14 of 25 detectors, and 90% or more of drivers are at AID01108,
+AID01216, AID01217 and TDSSPWR20003
+([free-flow speeds](../results/data/free-flow_20260508_20260424_0730-1100.md)).
+Suggestion: lift the cap and take desired speeds from that table.
+
+**10. The speed error is likely dominated by a few slow detectors.** MAPE
+averages percentage errors, so one bin where the road ran at 18 km/h and the
+twin at 55 counts as a 200% error, as much as twenty bins that are each 10% off.
+Your own `calibration.json` has AID01106 at 8–40 km/h, AID01110 at 24–44 and
+AID01214 at 28–39 in all twelve pre-incident bins: recurring queues. Sorting the
+`speed_bins` that `evaluate.py` writes by error will show whether these three
+carry the 36.9%. If they do, the fix is the queues (the joins in note 8), not
+speeds in general.
+
+**11. When a run counts (E's side, for the team to agree).** Proposal: a run's
+GEH and MAPE are reported only if, at the end of the scored window, under 1% of
+loaded vehicles are still waiting to enter and there are no wrong-lane
+teleports. The 27 Sep run had 13% waiting (2,405 of 17,922), so its score
+measures the entry queue as much as the road.
+
+The flow-balance table is also the input for Data's ~15-link fallback.
+
 ## 29 Sep 2026
 
 ### For the Lead

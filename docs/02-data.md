@@ -510,6 +510,17 @@ with no vehicles and every lane reporting is `count: 0`, a real measurement.
 `edge_id` / `position_m` already filled in by hand is kept when the file is
 rewritten. Both ends must sit on 5-minute boundaries.
 
+Two more inputs for the twin (30 Sep), both into `results/data/`:
+
+    python -m src.loaders.fetch flow-balance --start 2026-05-15T07:55 --end 2026-05-15T08:55 --ordinary-day 2026-05-08 2026-04-24
+    python -m src.loaders.fetch free-flow --day 2026-05-08 2026-04-24 --start 07:30 --end 11:00
+
+`flow-balance` gives each detector's hourly flow and the change between
+neighbouring detectors: where traffic joins or leaves the corridor, with a 95%
+sampling margin, checked against ordinary days. `free-flow` gives each
+detector's speeds in light traffic (occupancy at or below 10%), the desired
+speeds a model should reproduce before any queue forms.
+
 ### Four ways we offset the missing minutes
 
 The gaps cannot be filled — the files do not exist, on either archive host, at

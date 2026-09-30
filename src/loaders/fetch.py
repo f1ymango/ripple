@@ -12,6 +12,9 @@
         --split 2026-05-15T08:55
     python -m src.loaders.fetch lane-evidence --detector AID01104 --start 2026-05-15T08:40 \
         --end 2026-05-15T09:20 --ordinary-day 2026-05-08
+    python -m src.loaders.fetch flow-balance --start 2026-05-15T07:55 --end 2026-05-15T08:55 \
+        --ordinary-day 2026-05-08 2026-04-24
+    python -m src.loaders.fetch free-flow --day 2026-05-08 2026-04-24 --start 07:30 --end 11:00
 
 `prefetch` is the long one and the only one that needs to run unattended: it
 fills data/raw/ in parallel and is resumable, so a dropped connection costs
@@ -24,8 +27,8 @@ import argparse
 import datetime as dt
 from pathlib import Path
 
-from src.loaders import (archive, bin_survival, candidates, corridor, detectors, holidays,
-                         incidents, lane_evidence, lanes, live, twin_export)
+from src.loaders import (archive, bin_survival, candidates, corridor, detectors, flow_balance,
+                         free_flow, holidays, incidents, lane_evidence, lanes, live, twin_export)
 from src.loaders.common import HK, MIN_DURATION_MIN
 
 
@@ -200,6 +203,31 @@ def cmd_lane_evidence(args) -> None:
     print(f"-> {md}, {js}")
 
 
+def cmd_flow_balance(args) -> None:
+    start, end = _moment(args.start), _moment(args.end)
+    days = [dt.date.fromisoformat(d) for d in args.ordinary_day]
+    doc = flow_balance.build(start, end, days)
+    command = (f"python -m src.loaders.fetch flow-balance --start {args.start} --end {args.end} "
+               f"--ordinary-day {' '.join(args.ordinary_day)}")
+    md, js = flow_balance.write(doc, command)
+    for name, chain in doc["chains"].items():
+        clear = [f"{s['from']}->{s['to']} {s['change_veh_h']:+}" for s in chain["steps"]
+                 if s["clear_every_day"]]
+        print(f"  {name}: {', '.join(clear) or 'no clear joins or exits'}")
+    print(f"-> {md}, {js}")
+
+
+def cmd_free_flow(args) -> None:
+    days = [dt.date.fromisoformat(d) for d in args.day]
+    doc = free_flow.build(days, dt.time.fromisoformat(args.start), dt.time.fromisoformat(args.end))
+    command = (f"python -m src.loaders.fetch free-flow --day {' '.join(args.day)} "
+               f"--start {args.start} --end {args.end}")
+    md, js = free_flow.write(doc, command)
+    enough = {d: s for d, s in doc["detectors"].items() if s["enough"]}
+    print(f"{len(enough)} of {len(doc['detectors'])} detectors with enough light-traffic readings")
+    print(f"-> {md}, {js}")
+
+
 def cmd_live(args) -> None:
     live.run(minutes=args.minutes, poll_seconds=args.poll_seconds)
 
@@ -280,6 +308,21 @@ def main() -> None:
     p.add_argument("--ordinary-day", nargs="+", required=True, dest="ordinary_day",
                    help="YYYY-MM-DD, one or more: same clock times for comparison")
     p.set_defaults(func=cmd_lane_evidence)
+
+    p = sub.add_parser("flow-balance",
+                       help="where traffic joins and leaves between detectors (-> results/data/)")
+    p.add_argument("--start", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
+    p.add_argument("--end", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
+    p.add_argument("--ordinary-day", nargs="+", required=True, dest="ordinary_day",
+                   help="YYYY-MM-DD, one or more: same clock times for comparison")
+    p.set_defaults(func=cmd_flow_balance)
+
+    p = sub.add_parser("free-flow",
+                       help="speeds in light traffic per detector, for the twin (-> results/data/)")
+    p.add_argument("--day", nargs="+", required=True, help="YYYY-MM-DD, one or more ordinary days")
+    p.add_argument("--start", required=True, help="HH:MM, Hong Kong time")
+    p.add_argument("--end", required=True, help="HH:MM, Hong Kong time")
+    p.set_defaults(func=cmd_free_flow)
 
     p = sub.add_parser("lanes", help="evidence on which physical lane Middle Lane 1 is")
     p.add_argument("--detector", default="AID01217",

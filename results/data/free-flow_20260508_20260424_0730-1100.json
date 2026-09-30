@@ -1,0 +1,230 @@
+{
+  "days": [
+    "2026-05-08",
+    "2026-04-24"
+  ],
+  "start": "07:30",
+  "end": "11:00",
+  "light_occupancy_pct": 10,
+  "archive": {
+    "2026-05-08": "detectors: 150 snapshots listed, 98 read, 52 not served",
+    "2026-04-24": "detectors: 156 snapshots listed, 95 read, 60 not served, 1 unparseable and skipped: 20260424-0943"
+  },
+  "detectors": {
+    "AID01101": {
+      "readings": 864,
+      "vehicles": 3386,
+      "enough": true,
+      "median_kmh": 67.0,
+      "p85_kmh": 76.0,
+      "above_cap_pct": 72
+    },
+    "AID01102": {
+      "readings": 938,
+      "vehicles": 3680,
+      "enough": true,
+      "median_kmh": 68.0,
+      "p85_kmh": 76.0,
+      "above_cap_pct": 84
+    },
+    "AID01103": {
+      "readings": 896,
+      "vehicles": 4201,
+      "enough": true,
+      "median_kmh": 67.0,
+      "p85_kmh": 75.0,
+      "above_cap_pct": 78
+    },
+    "AID01104": {
+      "readings": 639,
+      "vehicles": 2926,
+      "enough": true,
+      "median_kmh": 64.0,
+      "p85_kmh": 76.0,
+      "above_cap_pct": 62
+    },
+    "AID01105": {
+      "readings": 0,
+      "vehicles": 0,
+      "enough": false
+    },
+    "AID01106": {
+      "readings": 390,
+      "vehicles": 1535,
+      "enough": true,
+      "median_kmh": 46.0,
+      "p85_kmh": 53.0,
+      "above_cap_pct": 1
+    },
+    "AID01107": {
+      "readings": 384,
+      "vehicles": 1579,
+      "enough": true,
+      "median_kmh": 58.0,
+      "p85_kmh": 66.0,
+      "above_cap_pct": 39
+    },
+    "AID01108": {
+      "readings": 537,
+      "vehicles": 2952,
+      "enough": true,
+      "median_kmh": 77.0,
+      "p85_kmh": 85.0,
+      "above_cap_pct": 90
+    },
+    "AID01109": {
+      "readings": 317,
+      "vehicles": 1534,
+      "enough": true,
+      "median_kmh": 49.0,
+      "p85_kmh": 63.0,
+      "above_cap_pct": 19
+    },
+    "AID01110": {
+      "readings": 294,
+      "vehicles": 1764,
+      "enough": true,
+      "median_kmh": 47.0,
+      "p85_kmh": 56.0,
+      "above_cap_pct": 5
+    },
+    "AID01214": {
+      "readings": 124,
+      "vehicles": 763,
+      "enough": true,
+      "median_kmh": 43.0,
+      "p85_kmh": 49.0,
+      "above_cap_pct": 0
+    },
+    "AID01215": {
+      "readings": 340,
+      "vehicles": 2454,
+      "enough": true,
+      "median_kmh": 61.0,
+      "p85_kmh": 71.0,
+      "above_cap_pct": 52
+    },
+    "AID01216": {
+      "readings": 390,
+      "vehicles": 2076,
+      "enough": true,
+      "median_kmh": 74.0,
+      "p85_kmh": 83.0,
+      "above_cap_pct": 94
+    },
+    "AID01217": {
+      "readings": 842,
+      "vehicles": 4139,
+      "enough": true,
+      "median_kmh": 75.0,
+      "p85_kmh": 85.0,
+      "above_cap_pct": 92
+    },
+    "AID01218": {
+      "readings": 540,
+      "vehicles": 3284,
+      "enough": true,
+      "median_kmh": 57.0,
+      "p85_kmh": 63.0,
+      "above_cap_pct": 27
+    },
+    "AID01219": {
+      "readings": 652,
+      "vehicles": 3866,
+      "enough": true,
+      "median_kmh": 68.0,
+      "p85_kmh": 75.0,
+      "above_cap_pct": 86
+    },
+    "AID01220": {
+      "readings": 0,
+      "vehicles": 0,
+      "enough": false
+    },
+    "AID01221": {
+      "readings": 744,
+      "vehicles": 3272,
+      "enough": true,
+      "median_kmh": 49.0,
+      "p85_kmh": 63.0,
+      "above_cap_pct": 21
+    },
+    "AID01222": {
+      "readings": 926,
+      "vehicles": 3901,
+      "enough": true,
+      "median_kmh": 58.0,
+      "p85_kmh": 68.0,
+      "above_cap_pct": 42
+    },
+    "AID01223": {
+      "readings": 857,
+      "vehicles": 3114,
+      "enough": true,
+      "median_kmh": 65.0,
+      "p85_kmh": 72.0,
+      "above_cap_pct": 68
+    },
+    "TDSSPWR10001": {
+      "readings": 201,
+      "vehicles": 436,
+      "enough": true,
+      "median_kmh": 49.0,
+      "p85_kmh": 59.0,
+      "above_cap_pct": 13
+    },
+    "TDSSPWR10002": {
+      "readings": 190,
+      "vehicles": 573,
+      "enough": true,
+      "median_kmh": 73.0,
+      "p85_kmh": 83.0,
+      "above_cap_pct": 88
+    },
+    "TDSSPWR10003": {
+      "readings": 160,
+      "vehicles": 438,
+      "enough": true,
+      "median_kmh": 51.0,
+      "p85_kmh": 58.0,
+      "above_cap_pct": 11
+    },
+    "TDSSPWR20001": {
+      "readings": 80,
+      "vehicles": 172,
+      "enough": true,
+      "median_kmh": 66.0,
+      "p85_kmh": 75.0,
+      "above_cap_pct": 63
+    },
+    "TDSSPWR20002": {
+      "readings": 0,
+      "vehicles": 0,
+      "enough": false
+    },
+    "TDSSPWR20003": {
+      "readings": 389,
+      "vehicles": 1645,
+      "enough": true,
+      "median_kmh": 80.0,
+      "p85_kmh": 96.0,
+      "above_cap_pct": 98
+    },
+    "TDSAPR10001": {
+      "readings": 421,
+      "vehicles": 1195,
+      "enough": true,
+      "median_kmh": 50.0,
+      "p85_kmh": 58.0,
+      "above_cap_pct": 7
+    },
+    "TDSAPR20001": {
+      "readings": 580,
+      "vehicles": 2053,
+      "enough": true,
+      "median_kmh": 68.0,
+      "p85_kmh": 79.0,
+      "above_cap_pct": 65
+    }
+  }
+}
