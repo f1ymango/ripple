@@ -1,0 +1,88 @@
+{
+  "plans": [
+    {
+      "plan_id": "P0",
+      "label": "Mock no intervention",
+      "rationale": "Synthetic test plan; not a traffic recommendation.",
+      "diversions": [],
+      "signals": [],
+      "vms": [],
+      "pt_nudge": {
+        "mode": "",
+        "intent": ""
+      },
+      "priority_corridor": {
+        "od": "Mock origin->Mock hospital",
+        "keep_clear": [
+          "Mock Hospital Road"
+        ]
+      },
+      "constraints_checked": []
+    },
+    {
+      "plan_id": "P1",
+      "label": "Mock single detour",
+      "rationale": "Synthetic test plan; not a traffic recommendation.",
+      "diversions": [
+        {
+          "od_group": "Mock origin->Mock destination",
+          "via": "Mock Detour",
+          "share": 1
+        }
+      ],
+      "signals": [],
+      "vms": [
+        {
+          "sign_id": "MOCK-VMS",
+          "intent": "Synthetic test advice"
+        }
+      ],
+      "pt_nudge": {
+        "mode": "",
+        "intent": ""
+      },
+      "priority_corridor": {
+        "od": "Mock origin->Mock hospital",
+        "keep_clear": [
+          "Mock Hospital Road"
+        ]
+      },
+      "constraints_checked": []
+    },
+    {
+      "plan_id": "P2",
+      "label": "Mock coordinated split",
+      "rationale": "Synthetic test plan; not a traffic recommendation.",
+      "diversions": [
+        {
+          "od_group": "Mock origin->Mock destination",
+          "via": "Mock Detour",
+          "share": 0.5
+        },
+        {
+          "od_group": "Mock origin->Mock destination",
+          "via": "Mock Alternative",
+          "share": 0.25
+        }
+      ],
+      "signals": [],
+      "vms": [
+        {
+          "sign_id": "MOCK-VMS",
+          "intent": "Synthetic test advice"
+        }
+      ],
+      "pt_nudge": {
+        "mode": "",
+        "intent": ""
+      },
+      "priority_corridor": {
+        "od": "Mock origin->Mock hospital",
+        "keep_clear": [
+          "Mock Hospital Road"
+        ]
+      },
+      "constraints_checked": []
+    }
+  ]
+}
