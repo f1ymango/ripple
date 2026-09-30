@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Tue 29 Sep 2026** · Week 2 of 5 (28 Sep–4 Oct: baseline
+**Last updated: Wed 30 Sep 2026** · Week 2 of 5 (28 Sep–4 Oct: baseline
 and interim report) · Weekly sync / stand-up: Wednesday afternoon
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
@@ -50,9 +50,9 @@ this chain.
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md). Week 2 checks on the demo morning: usable calibration bins per threshold ([bin survival](results/data/bin-survival_20260515-0755_1035.md)), which lane closed first ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)), and IN-26-03365 re-screened after the 29 Sep screen fixes ([re-check](results/data/candidates_2026-05-15.md)). For the twin: [flow balance](results/data/flow-balance_20260515-0755_0855.md) and [free-flow speeds](results/data/free-flow_20260508_20260424_0730-1100.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
 | C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The local OSM map has audited connectivity for all 24 directed detector links, with path distances within 1.12 times their detector-coordinate distances. AID01106 to AID01107 fell from 1,771.83 m to 441.79 m without editing OSM geometry. A bounded May 15 pre-incident run scores 66.5% GEH<5 and 36.9% speed MAPE, so the baseline target is not met. A separate-day TD lane-scope check corroborates three feed lane counts but does not resolve physical placement, the incident edge, or the initial partial-closure lane. The local network/E1 files remain provisional; Data's ~15-link fallback remains active. ([src/twin/](src/twin/README.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md), [OSM connectivity audit](results/twin/osm-network-audit.md), [lane-scope cross-check](results/twin/may14-lane-scope-crosscheck.md)) |
-| D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
+| D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | 🟡 Initial P0/P1/P2 CLI and constraint checks implemented; offline tests only, reviewed C/E route context still needed ([handoff](docs/lead-pipeline-handoff.md)) |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
-| F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
+| F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Initial bilingual draft CLI with saved-result selection and metric insertion; offline tests only, validated E results still needed ([handoff](docs/lead-pipeline-handoff.md)) |
 | G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, headline stats, and playback of an archived window bin by bin, with TD's own incident times on the timeline ([src/console/app.py](src/console/app.py), [IN-26-03365 at 09:15](docs/img/week2-incident-playback.png)). The map tells a loop reporting no vehicle apart from a reading the archive never served. Follow-up fits all 28 detectors in the map and pins a shared light theme ([screenshot](docs/img/console-framing-theme.png), [.streamlit/config.toml](.streamlit/config.toml)). Plan comparison, Approve and audit log still to build |
 | H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence with direct source links in [docs/05-pitch.md](docs/05-pitch.md) §3; one completed [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md), with two or three interviews targeted; [interim report outline](docs/interim-report.md) awaiting owner contributions; deck workspace in [deck/](deck/) |
 
@@ -203,6 +203,9 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Wed 30 Sep**
+- Lead: added the verified Reader contribution to the [interim report](docs/interim-report.md)
+  and the initial D/F command-line path with offline tests and a
+  [C/E handoff guide](docs/lead-pipeline-handoff.md). No real plan benefits are claimed.
 - Lead: the Reader now imports the shared `CORRIDOR_ROAD_NAMES` from
   [src/loaders/corridor.py](src/loaders/corridor.py). Stubbs Road stays in scope
   as the over-hill alternative in [docs/02-data.md](docs/02-data.md) §5, and

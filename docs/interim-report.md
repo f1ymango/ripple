@@ -20,6 +20,57 @@ Impact coordinates the report and collects a short, evidence-backed contribution
 - Describe the data feeds and their limits (A, Data), incident parsing (B, Lead), candidate plans and validation (D, Lead), briefing (F, Lead), and how a human operator approves advice.
 - Show the pipeline and contracts without implying that the LLM computes simulation metrics.
 
+### Lead contribution — 30 September 2026
+
+Ripple uses a modular pipeline: archived bilingual Transport Department Special
+Traffic News enters the Incident Reader, which extracts incident details into a
+validated JSON record. Code copies identifiers, timestamps and source text;
+the language model extracts road, direction, landmark, incident type and lane
+wording. It preserves missing information, including `unspecified` when TD
+does not identify the closed lanes. All model calls are logged, and invalid
+responses are retried once before being flagged for review.
+
+The Reader was evaluated on 100 manually labelled archived messages: 80 in
+the citywide sample and 20 on the corridor. In v1, all scored fields were
+correct for **50% of citywide messages and 75% of corridor messages**. After
+a direction-format prompt correction and four label corrections made after
+the initial results had been seen, v2 scored **75% and 85%**, respectively.
+The v2 figures are development results, not a new held-out evaluation. Against
+the unchanged v1 labels, v2 scored 59/80 citywide and 16/20 corridor. Remaining
+errors include unsupported lane totals, road junctions and inferred landmarks.
+The [score history](../data/labelled_incidents/LABELLING.md#score-history)
+records the label-review chronology and limitations; the scored artifacts are
+[v1](../results/reader/2026-09-25T0026_qwen3-8b_score.json),
+[v2](../results/reader/2026-09-25T0048_qwen3-8b_score.json) and
+[v2 against v1 labels](../results/reader/2026-09-25T0048_qwen3-8b_score_labels-v1.json).
+
+For the selected incident, IN-26-03365, the Reader was also checked on TD's
+actual 09:01 and 09:36 messages. The structured core fields matched the source:
+the first message produced `["unspecified"]`, and the escalation produced
+`["all"]`. One free-text `notes` sentence incorrectly described a direction
+bracket; this remains a known defect. This two-message check demonstrates the
+selected handoff, rather than additional accuracy evidence
+([source messages](../data/demo_incident_messages.jsonl),
+[Reader output](../results/reader/2026-09-29T1608_qwen3-8b.jsonl)).
+
+The planned downstream flow is candidate plans → code-based constraint checks
+→ simulation of each plan → an operator briefing grounded in saved simulator
+results. P0 (no intervention), P1 (a single broadcast detour) and a coordinated
+P2 are required for comparison. The Plan Generator and Briefing Writer are
+implemented as an initial command-line path against the existing contracts,
+with offline tests using mocked model responses. Real-model quality, evaluated
+plan benefits and an accepted full incident baseline are not yet available
+([handoff and limitations](lead-pipeline-handoff.md)). Human approval is
+required before any advice is published or acted upon.
+
+Three unresolved modelling details remain explicit: Simulation proposes an
+08:55 physical onset based on observed queue development; TD's first report
+arrived at 09:01; and Data/E still owns the initial lane choice for
+`unspecified`. These are distinct from the pre-incident calibration problem.
+The Reader does not resolve them by guessing a lane or changing the source
+timestamp. Data's ingestion contribution and Simulation's result contribution
+are still to be added by their owners.
+
 ## 3. Simulation, Evaluation & Preliminary Results
 
 - **Owner:** Simulation; Data contributes evaluator methodology and results when available.
