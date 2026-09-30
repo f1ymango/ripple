@@ -10,8 +10,7 @@ answers, so both live here:
     messages, whose LATITUDE/LONGITUDE and DISTRICT fields are usually empty
     (docs/02-data.md section 2).
   * CORRIDOR_ROAD_NAMES -- the corridor's road names in English and Chinese,
-    one list for the whole repo (the Incident Reader keeps its own copy for
-    now; docs/notes-from-data.md).
+    shared with the Incident Reader.
 
     python -m src.loaders.fetch corridor      # -> data/detectors.csv
 """
@@ -59,15 +58,15 @@ LEG = ({d: "main_eastbound" for d in CHAIN_EASTBOUND}
 # that does not move these is probably not worth simulating.
 TUNNEL_DETECTORS = ["AID01107", "AID01217"]
 
-# The corridor's roads as TD writes them: the English names of docs/02-data.md
-# section 5 plus Wah Fu Road and Wong Nai Chung Gap Road, and every Chinese
+# The corridor and over-hill alternative roads named in docs/02-data.md
+# section 5, in English, plus every Chinese detector-road
 # name exactly as it appears in TD's detector list (road_tc in
-# data/detectors.csv; tests/test_loaders.py checks that). Stubbs Road is in the
-# Reader's copy only: whether it belongs is the Lead's call, not settled here.
+# data/detectors.csv; tests/test_loaders.py checks that). Stubbs Road is an
+# over-hill alternative in docs/02-data.md section 5, so it stays in scope.
 CORRIDOR_ROAD_NAMES = [
     "Aberdeen Praya Road", "Wong Chuk Hang Road", "Aberdeen Tunnel",
     "Wong Nai Chung Gap Flyover", "Wong Nai Chung Gap Road", "Canal Road Flyover",
-    "Pok Fu Lam Road", "Shek Pai Wan Road", "Wah Fu Road",
+    "Pok Fu Lam Road", "Shek Pai Wan Road", "Wah Fu Road", "Stubbs Road",
     "香港仔海旁道", "香港仔海傍道", "黃竹坑道", "香港仔隧道", "黃泥涌峽天橋",
     "堅拿道天橋", "薄扶林道", "石排灣道", "華富道",
 ]
@@ -87,6 +86,7 @@ CORRIDOR_ROADS = [
     "shek pai wan road",
     "aberdeen police station",
     "wah fu",
+    "stubbs road",
 ]
 
 

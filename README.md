@@ -89,13 +89,6 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 
 ### Current handoffs and open decisions
 
-- **One corridor-road list.** The Reader ([src/reader/reader.py](src/reader/reader.py))
-  and the loaders ([src/loaders/corridor.py](src/loaders/corridor.py)) each
-  keep their own, and they differ: Stubbs Road and the Chinese road names are
-  only in the Reader's. Pick one and share it. *29 Sep:* Data's side is in place,
-  `CORRIDOR_ROAD_NAMES` in [src/loaders/corridor.py](src/loaders/corridor.py);
-  switching the Reader to it and deciding on Stubbs Road are the Lead's
-  ([notes](docs/notes-from-data.md)).
 - **Who runs the live poller, and on which machine.** Its data has no gaps,
   but it only records while it runs (`python -m src.loaders.fetch live`).
 - **What the Evaluator (E) simulates for `lanes_closed: ["unspecified"]`.**
@@ -137,9 +130,11 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 
 - [data/candidates.md](data/candidates.md) was generated before the 29 Sep
   screen fixes (public holidays were accepted as ordinary days; control days
-  before `--start` were never checked for incidents). The demo incident is
-  re-checked and unchanged ([re-check](results/data/candidates_2026-05-15.md));
-  the other 34 rows are not. Regenerate the table before using it again
+  before `--start` were never checked for incidents) and the 30 Sep addition
+  of Stubbs Road to corridor screening. The demo incident was re-checked and
+  unchanged under the first two fixes ([re-check](results/data/candidates_2026-05-15.md)),
+  but that one-day re-check also predates the Stubbs Road change. Regenerate
+  the relevant screen before relying on any ranking or control-day claim
   ([notes](docs/notes-from-data.md)).
 - Incident Reader errors left in v2
   ([LABELLING.md](data/labelled_incidents/LABELLING.md#score-history)): one
@@ -208,6 +203,11 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Wed 30 Sep**
+- Lead: the Reader now imports the shared `CORRIDOR_ROAD_NAMES` from
+  [src/loaders/corridor.py](src/loaders/corridor.py). Stubbs Road stays in scope
+  as the over-hill alternative in [docs/02-data.md](docs/02-data.md) §5, and
+  the loaders' incident screen now catches it too. The duplicate road list
+  and its open decision are closed ([Data handoff](docs/notes-from-data.md)).
 - Component A, for the 66.5% GEH / 36.9% MAPE diagnostic: 57 of its 81 failing
   count bins are at six detectors where the twin carries 33–61% of the observed
   traffic, each just after a stretch where traffic joins the corridor. New

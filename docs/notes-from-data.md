@@ -66,21 +66,13 @@ The flow-balance table is also the input for Data's ~15-link fallback.
 
 ### For the Lead
 
-**1. One corridor road list (README open decision).** Data's side is ready:
-`CORRIDOR_ROAD_NAMES` in [src/loaders/corridor.py](../src/loaders/corridor.py),
-English and Chinese. Every Chinese name is copied from TD's own detector list
-(`road_tc` in `data/detectors.csv`), and a test keeps it that way. Suggested
-change in `src/reader/reader.py`: drop its own `CORRIDOR_ROADS` and
-`from src.loaders.corridor import CORRIDOR_ROAD_NAMES`. What changes for the
-Reader if you do:
-
-- **Stubbs Road** drops out. It is in the Reader's list only and is not in the
-  corridor inventory (docs/02-data.md §5). If it belongs, tell Data and we add
-  it to the shared list and to the loaders' screening together.
-- **華富道** (Wah Fu Road) comes in; the Reader's list has the English name only.
-  No effect on messages that carry English, which is all of them so far.
-- Then run `tests/test_reader.py::test_scope_comes_from_the_corridor_road_list`
-  and close the open decision in the README.
+**1. Shared corridor road list — resolved 30 Sep.** The Reader imports
+`CORRIDOR_ROAD_NAMES` from [src/loaders/corridor.py](../src/loaders/corridor.py)
+instead of keeping its own copy. **Stubbs Road stays in scope** because
+docs/02-data.md §5 names it as an over-hill alternative; it was added to the
+shared list and loaders' incident screening together. **華富道** (Wah Fu Road)
+comes into Reader scope from TD's `road_tc` detector name. The Reader scope
+test covers both and the duplicate-list decision is closed in the README.
 
 The loaders' own screening (`CORRIDOR_ROADS`) stays broader on purpose: it
 also matches "wah fu", "wong nai chung gap" and "aberdeen police station", and
