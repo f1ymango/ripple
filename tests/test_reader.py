@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 
 from src import llm
+from src.loaders.corridor import CORRIDOR_ROAD_NAMES
 from src.reader import reader, sample
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -113,7 +114,14 @@ def test_pick_is_prefix_stable():
 ])
 def test_scope_comes_from_the_corridor_road_list(snapshot, on_corridor):
     stn = sample.parse_messages((FIXTURES / snapshot).read_bytes())[0]
+    assert reader.CORRIDOR_ROAD_NAMES is CORRIDOR_ROAD_NAMES
     assert reader.names_corridor_road(stn) is on_corridor
+
+
+def test_alternative_route_and_chinese_road_use_shared_scope():
+    assert "Stubbs Road" in CORRIDOR_ROAD_NAMES
+    assert reader.names_corridor_road({"CONTENT_EN": "Stubbs Road is closed", "CONTENT_CN": ""})
+    assert reader.names_corridor_road({"CONTENT_EN": "", "CONTENT_CN": "華富道封閉"})
 
 
 def test_corridor_road_only_as_destination_does_not_count():

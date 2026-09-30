@@ -80,34 +80,36 @@ The JSON contracts between modules are in
 
 ### Integration status
 
-The console framing, theme and playback control fixes are open for review in
+The console framing, theme and playback control fixes are merged in
 [PR #31](https://github.com/f1ymango/ripple/pull/31), with a
 [Visuals handover](docs/visuals-handover.md) saved for the next session. The
-console playback (PR #29) and Component C source audits (PR #30) are merged.
+console playback (PR #29), Component C source audits (PR #30), and Data's
+[week 2 checks (PR #32)](https://github.com/f1ymango/ripple/pull/32) are merged.
 The local OSM network and E1 loops remain provisional and uncommitted.
 
-### Open decisions
+### Current handoffs and open decisions
 
-- **One corridor-road list.** The Reader ([src/reader/reader.py](src/reader/reader.py))
-  and the loaders ([src/loaders/corridor.py](src/loaders/corridor.py)) each
-  keep their own, and they differ: Stubbs Road and the Chinese road names are
-  only in the Reader's. Pick one and share it. *29 Sep:* Data's side is in place,
-  `CORRIDOR_ROAD_NAMES` in [src/loaders/corridor.py](src/loaders/corridor.py);
-  switching the Reader to it and deciding on Stubbs Road are the Lead's
-  ([notes](docs/notes-from-data.md)).
 - **Who runs the live poller, and on which machine.** Its data has no gaps,
   but it only records while it runs (`python -m src.loaders.fetch live`).
-- **What the Evaluator (E) simulates for `lanes_closed: ["unspecified"]`**
-  (Data, before E's first run). The Reader now says "some lanes are closed, the
-  message does not say which" instead of "none"; E picks the closure to
-  simulate and states that assumption with the results
-  ([docs/03-architecture.md](docs/03-architecture.md) §3). 7 of the 20 dev
-  messages are this case. *29 Sep, Data's proposal for IN-26-03365:* close the
-  **slow lane** of the Wong Chuk Hang Road flyover eastbound. At AID01104 it
-  carried no vehicle in 5 readings in a row (08:54–09:00) while the fast lane
-  crawled past; on two ordinary Fridays that happened in 1 reading of 30 each
-  ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
-  To agree at the 30 Sep sync.
+- **What the Evaluator (E) simulates for `lanes_closed: ["unspecified"]`.**
+  At the 30 Sep meeting, Data took ownership of proposing a disclosed default
+  for an unspecified lane. The team is also discussing using lane-level detector
+  readings available by the message time to choose a lane for a particular
+  incident when the evidence supports it, instead of relying on that default.
+  Neither the default lane, the evidence rule, nor the no-evidence behaviour
+  has been agreed yet. For `IN-26-03365`, five successive archived AID01104
+  readings from 08:54–09:00
+  show no slow-lane vehicles while the fast lane carried traffic. This supports
+  Data's **slow-lane proposal**, but does not prove which physical lane was
+  closed ([lane evidence](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
+  Keep physical replay timing separate from operator information: Simulation's
+  full incident P0 handoff proposes an 08:55 closure onset, a 09:36 all-lane
+  phase and 10:02 clearance, while TD's first report arrived at 09:01. The team
+  still needs to agree the P0 phase timing; no operator plan can act before
+  the relevant message. E must disclose the lane choice, its basis and the
+  timing assumption with results ([docs/03-architecture.md](docs/03-architecture.md) §3).
+  The pre-incident GEH target ends at 08:55, before TD's `unspecified` message;
+  its current failure needs separate diagnosis.
 - **Calibration thresholds** (Data + Simulation): a bin is used for GEH only at
   ≥ 40% archive coverage and ≥ 90% of lane readings valid
   ([docs/02-data.md](docs/02-data.md) §7). Relax them deliberately if too few
@@ -128,9 +130,11 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 
 - [data/candidates.md](data/candidates.md) was generated before the 29 Sep
   screen fixes (public holidays were accepted as ordinary days; control days
-  before `--start` were never checked for incidents). The demo incident is
-  re-checked and unchanged ([re-check](results/data/candidates_2026-05-15.md));
-  the other 34 rows are not. Regenerate the table before using it again
+  before `--start` were never checked for incidents) and the 30 Sep addition
+  of Stubbs Road to corridor screening. The demo incident was re-checked and
+  unchanged under the first two fixes ([re-check](results/data/candidates_2026-05-15.md)),
+  but that one-day re-check also predates the Stubbs Road change. Regenerate
+  the relevant screen before relying on any ranking or control-day claim
   ([notes](docs/notes-from-data.md)).
 - Incident Reader errors left in v2
   ([LABELLING.md](data/labelled_incidents/LABELLING.md#score-history)): one
@@ -199,6 +203,11 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Wed 30 Sep**
+- Lead: the Reader now imports the shared `CORRIDOR_ROAD_NAMES` from
+  [src/loaders/corridor.py](src/loaders/corridor.py). Stubbs Road stays in scope
+  as the over-hill alternative in [docs/02-data.md](docs/02-data.md) §5, and
+  the loaders' incident screen now catches it too. The duplicate road list
+  and its open decision are closed ([Data handoff](docs/notes-from-data.md)).
 - Data: the ~15-link fallback for the 4 Oct go/no-go, a cell transmission
   model of the four detector chains built from two ordinary Fridays
   ([src/fallback/](src/fallback/README.md)). Scored as the twin is, 07:55–08:55
@@ -253,8 +262,8 @@ Newest first. One line per change that matters, with a link to the proof.
   under both fixes: ordinary days now 8 May and 24 Apr, same five detectors
   credited, score 4.38 ([re-check](results/data/candidates_2026-05-15.md)). New
   demo-morning checks: usable calibration bins per threshold
-  ([bin survival](results/data/bin-survival_20260515-0755_1035.md)) and which
-  lane closed first, the slow lane
+  ([bin survival](results/data/bin-survival_20260515-0755_1035.md)) and
+  lane-level evidence supporting Data's slow-lane proposal
   ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
   One shared corridor road list, `CORRIDOR_ROAD_NAMES`
   ([corridor.py](src/loaders/corridor.py)). Notes for the Lead and Simulation:
