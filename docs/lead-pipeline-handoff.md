@@ -60,9 +60,13 @@ parameter. P2 must differ in its intervention. Code supplies `constraints_checke
 
 E must evaluate the exact plans and save one contracted result per plan under
 `results/runs/`, with matching incident, compliance, clearance and seed. P0 must
-report GEH >=85% and speed MAPE <=15%. These checks cannot prove acceptance of
-a full incident replay or matching network, demand and plan contents: the
-result contract lacks those hashes. E must retain and review that provenance.
+report GEH >=85% and speed MAPE <=15%. The approved
+[provenance sidecar](03-architecture.md#result-provenance-sidecar--e--f-approved-by-lead-30-sep)
+is now required. E calls `capture_inputs` from `src/evaluation_provenance.py`
+before simulation and `write_result` afterwards. This binds each result to
+the exact validated plan, saved generation inputs and shared simulator input
+files. Old results without provenance fail closed; never backfill unknown
+input identities. Acceptance of a full incident replay still needs C/E review.
 
 Replace these result placeholders with actual artifacts:
 
@@ -77,7 +81,10 @@ not evidence of robustness across compliance or clearance assumptions.
 
 The model drafts bilingual prose using named evidence tokens. Code inserts
 saved metrics, source paths and character counts. Literal numeric claims and
-unknown tokens fail. VMS limits are checked after rendering: three lines maximum,
+unknown tokens fail. Common worded quantities (English number words, fractions,
+multipliers and Chinese numerals) also fail, including Unicode-obfuscated forms.
+This conservative guard can reject legitimate names containing number words;
+such drafts need revision. VMS limits are checked after rendering: three lines maximum,
 60 characters per line in each language. Operator text requires 3–5 sentences.
 Token checks do not establish semantic correctness or catch every unsupported
 claim written in words. Human review remains required before publication.

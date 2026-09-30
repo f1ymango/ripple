@@ -203,6 +203,10 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Wed 30 Sep**
+- Lead: added approved E/F result-provenance sidecars, rejected zero-second
+  signal actions and common worded numeric claims. Saved copy-ready
+  [team follow-up notes](docs/2026-09-30-lead-follow-up.md), including the
+  fallback PR review and outstanding validation decisions.
 - Lead: added the verified Reader contribution to the [interim report](docs/interim-report.md)
   and the initial D/F command-line path with offline tests and a
   [C/E handoff guide](docs/lead-pipeline-handoff.md). No real plan benefits are claimed.

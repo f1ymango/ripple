@@ -203,6 +203,31 @@ they are the ethics slide.
 
 `validation` is populated only for the **baseline** run (`P0` against reality).
 
+### Result provenance sidecar — E → F (approved by Lead, 30 Sep)
+
+For every `results/runs/<run_id>.json`, E also writes
+`results/runs/<run_id>.provenance.json`. Existing result and plan fields stay
+unchanged. F requires this sidecar and refuses old results without it.
+
+The sidecar contains `version` (1), `plan_id`, `incident_id`, `run_id`,
+`plan_sha256`, `generation_inputs_sha256`, `result_sha256` and
+`simulation_inputs` (stable logical file names mapped to SHA-256 strings).
+JSON hashes use UTF-8, sorted object keys, compact separators, unescaped Unicode
+and finite numbers only. Arrays retain order. Simulation files use raw bytes.
+
+E calls `capture_inputs` in `src/evaluation_provenance.py` before running the
+simulator, passing the exact validated plan, saved `generation-inputs.json`,
+and all shared network, demand, incident configuration and model-version inputs.
+E must use those inputs without modifying them during the run. It then calls
+`write_result` with the captured record and computed result. Do not attach
+current input hashes to an old result whose original inputs are unknown.
+
+F verifies the current plan, generation inputs and result against the hashes,
+and requires identical shared simulation-input hashes across compared runs.
+Sidecar paths are included in briefing `sources`. Hashes detect accidental
+stale/mixed artifacts; they do not authenticate authors or establish that a
+model has passed full incident validation. Data/E retains that responsibility.
+
 ### `briefing.json` — output of [F]
 
 ```json

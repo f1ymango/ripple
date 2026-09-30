@@ -21,7 +21,7 @@ PLAN_SCHEMA = obj({
     "diversions": array(obj({"od_group": NAME, "via": NAME,
                             "share": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}})),
     "signals": array(obj({"junction_id": NAME,
-                         "green_extend_s": {"type": "integer", "minimum": 0}})),
+                         "green_extend_s": {"type": "integer", "minimum": 1}})),
     "vms": array(obj({"sign_id": NAME, "intent": NAME})),
     "pt_nudge": obj({"mode": TEXT, "intent": TEXT}),
     "priority_corridor": PRIORITY,

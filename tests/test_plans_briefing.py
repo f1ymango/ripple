@@ -8,9 +8,10 @@ import jsonschema
 import pytest
 
 from src import llm
+from src.evaluation_provenance import capture_inputs, write_result, verify_result
 from src.briefing import run as briefing_run
 from src.briefing.results import load_results, select
-from src.briefing.writer import assemble, check_vms, write_briefing
+from src.briefing.writer import assemble, check_vms, render_text, write_briefing
 from src.generation import load_json
 from src.plans import run as plans_run
 from src.plans.generator import generate, validate_plans
@@ -143,7 +144,8 @@ def test_writer_rejects_consistently_wrong_incident_before_model(inputs, model, 
         path.write_text(json.dumps(result), encoding="utf-8")
         paths.append(path)
     with pytest.raises(ValueError, match="different incident"):
-        write_briefing(checked(inputs), paths, incident_id=inputs[0]["incident_id"],
+        write_briefing(checked(inputs), paths,
+                       generation_inputs={"incident": inputs[0], "policy_context": inputs[1]},
                        results_root=tmp_path)
     assert logs(tmp_path) == []
 
@@ -272,6 +274,30 @@ def test_vms_line_limits_cover_both_separator_styles():
         check_vms("A//B//C//D")
 
 
+def test_zero_second_signal_does_not_make_a_distinct_plan(inputs):
+    incident, context, value = inputs
+    value["plans"][2] = {**deepcopy(value["plans"][0]), "plan_id": "P2"}
+    value["plans"][2]["signals"] = [{"junction_id": "MOCK-J", "green_extend_s": 0}]
+    with pytest.raises(jsonschema.ValidationError):
+        validate_plans(value, context, incident)
+
+
+@pytest.mark.parametrize("text", [
+    "Delay falls by twenty percent.", "Travel time is halved.",
+    "Capacity doubles.", "A quarter of drivers divert.",
+    "延誤減少百分之二十。", "行車時間減半。", "流量增加兩倍。", "延誤減少半成。",
+    "Delay falls by twen\u200bty percent.", "Delay falls by ｔｗｅｎｔｙ percent.",
+])
+def test_worded_quantities_cannot_bypass_numeric_guard(text):
+    with pytest.raises(ValueError, match="literal numeric"):
+        render_text(text, {})
+
+
+def test_metric_tokens_still_render_with_conservative_word_guard():
+    assert render_text("Delay is {{delay_hours}} vehicle-hours.", {"delay_hours": "80"}) == (
+        "Delay is 80 vehicle-hours.")
+
+
 def test_source_files_must_be_under_results_runs(tmp_path):
     with pytest.raises(ValueError, match="results/runs"):
         load_results([FIXTURES / "mock_evaluator_results.json"], tmp_path / "results/runs")
@@ -290,9 +316,12 @@ def test_cli_path_uses_saved_plans_and_results_and_logs_both_components(
     results_dir = tmp_path / "results" / "runs"
     results_dir.mkdir(parents=True)
     paths = []
+    saved_inputs = load_json(plans_dir / "generation-inputs.json")
     for _, result in artifacts():
         path = results_dir / f"{result['run_id']}.json"
-        path.write_text(json.dumps(result), encoding="utf-8")
+        plan = load_json(plans_dir / f"{result['plan_id']}.json")
+        captured = capture_inputs(plan, saved_inputs, {"mock_context": context_path})
+        write_result(path, result, captured)
         paths.append(str(path))
     model.append((FIXTURES / "mock_briefing_reply.json").read_text(encoding="utf-8"))
     out = tmp_path / "briefing.json"
@@ -303,4 +332,61 @@ def test_cli_path_uses_saved_plans_and_results_and_logs_both_components(
     briefing = load_json(out)
     assert briefing["recommended_plan_id"] == "P2"
     assert [c["component"] for c in logs(tmp_path)] == ["plans", "briefing"]
-    assert set(briefing["sources"]) == {p for p, _ in artifacts()}
+    result_sources = {p for p, _ in artifacts()}
+    assert set(briefing["sources"]) == result_sources | {
+        str(Path(p).with_suffix(".provenance.json")).replace("\\", "/") for p in result_sources}
+
+
+@pytest.mark.parametrize("changed", ["plan", "result", "context", "missing"])
+def test_provenance_rejects_stale_inputs_and_results(inputs, tmp_path, changed):
+    plans = checked(inputs)
+    saved = {"incident": inputs[0], "policy_context": inputs[1]}
+    result = artifacts()[2][1]
+    path = tmp_path / "mock_result.json"
+    captured = capture_inputs(plans[2], saved, {"mock_network": FIXTURES / "mock_plan_context.json"})
+    if changed != "missing":
+        write_result(path, result, captured)
+        verify_result(path, result, plans[2], saved)
+    if changed == "plan":
+        plans[2]["diversions"][0]["share"] = 0.4
+    elif changed == "result":
+        result["metrics"]["total_vehicle_hours_delay"] = 70
+    elif changed == "context":
+        saved["policy_context"]["active_until"] = "2026-05-15T11:00:00+08:00"
+    with pytest.raises((ValueError, FileNotFoundError)):
+        verify_result(path, result, plans[2], saved)
+
+
+@pytest.mark.parametrize("problem", ["stale_plan", "mixed_network", "missing_sidecar"])
+def test_writer_checks_provenance_before_any_model_call(inputs, model, tmp_path, problem):
+    plans = checked(inputs)
+    saved = {"incident": inputs[0], "policy_context": inputs[1]}
+    paths = []
+    for plan, (_, result) in zip(plans, artifacts()):
+        path = tmp_path / f"{result['run_id']}.json"
+        if problem == "missing_sidecar":
+            path.write_text(json.dumps(result), encoding="utf-8")
+        else:
+            fixture = "mock_plan_set.json" if problem == "mixed_network" and plan["plan_id"] == "P2" else "mock_plan_context.json"
+            captured = capture_inputs(plan, saved, {"mock_network": FIXTURES / fixture})
+            write_result(path, result, captured)
+        paths.append(path)
+    if problem == "stale_plan":
+        plans[2]["diversions"][0]["share"] = 0.4
+    with pytest.raises((ValueError, FileNotFoundError)):
+        write_briefing(plans, paths, generation_inputs=saved, results_root=tmp_path)
+    assert logs(tmp_path) == []
+
+
+def test_provenance_does_not_overwrite_previous_run(inputs, tmp_path):
+    plan = checked(inputs)[2]
+    saved = {"incident": inputs[0], "policy_context": inputs[1]}
+    result = artifacts()[2][1]
+    path = tmp_path / "mock_result.json"
+    captured = capture_inputs(plan, saved, {"mock_network": FIXTURES / "mock_plan_context.json"})
+    write_result(path, result, captured)
+    original = path.read_bytes()
+    result["metrics"]["total_vehicle_hours_delay"] = 70
+    with pytest.raises(ValueError, match="already exists"):
+        write_result(path, result, captured)
+    assert path.read_bytes() == original

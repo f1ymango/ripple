@@ -2,13 +2,25 @@
 from copy import deepcopy
 from pathlib import Path
 import re
+import unicodedata
 
 from src.briefing.results import load_results, select
 from src.briefing.schema import BRIEFING_SCHEMA, DRAFT_SCHEMA
 from src.generation import generate_checked, validate
+from src.evaluation_provenance import verify_result
 
 HERE = Path(__file__).parent
 TOKEN = re.compile(r"\{\{([a-z_][a-z_0-9]*)\}\}")
+# Deliberately conservative: quantitative wording must use evidence tokens.
+# This detects common worded quantities; it is not a semantic proof of prose.
+WORD_QUANTITY = re.compile(
+    r"\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|"
+    r"thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|"
+    r"thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|"
+    r"billion|half|halves|halved|halving|quarter|quarters|twice|thrice|"
+    r"double|doubles|doubled|doubling|triple|triples|tripled|tripling|"
+    r"dozen|dozens|couple|first|second|third|fourth|fifth)\b|[半倍]",
+    re.IGNORECASE)
 
 
 def evidence_tokens(result, baseline):
@@ -36,8 +48,10 @@ def render_text(text, tokens):
         if name not in tokens:
             raise ValueError(f"Unknown evidence token: {name}")
         return tokens[name]
-    residue = TOKEN.sub("", text)
-    if any(c.isnumeric() for c in residue) or "{" in residue or "}" in residue:
+    residue = unicodedata.normalize("NFKC", TOKEN.sub("", text))
+    residue = "".join(c for c in residue if unicodedata.category(c) != "Cf")
+    if (any(c.isnumeric() for c in residue) or WORD_QUANTITY.search(residue)
+            or "{" in residue or "}" in residue):
         raise ValueError("Use evidence tokens for numbers; no literal numeric claims")
     return TOKEN.sub(replace, text)
 
@@ -78,15 +92,23 @@ def assemble(draft, plan, result, baseline, sources):
     return output
 
 
-def write_briefing(plans, result_paths, model="qwen3:8b", *, incident_id,
+def write_briefing(plans, result_paths, model="qwen3:8b", *, generation_inputs,
                    results_root=Path("results/runs")):
-    plan, result, baseline, sources = select(plans, load_results(result_paths, results_root))
-    if result["incident_id"] != incident_id:
+    artifacts = load_results(result_paths, results_root)
+    plan, result, baseline, sources = select(plans, artifacts)
+    if result["incident_id"] != generation_inputs["incident"]["incident_id"]:
         raise ValueError("Saved results belong to a different incident from the plan input")
+    by_plan = {p["plan_id"]: p for p in plans}
+    shared_inputs = []
+    for path, (source, record) in zip(result_paths, artifacts):
+        shared_inputs.append(verify_result(path, record, by_plan[record["plan_id"]], generation_inputs))
+        sources.append(str(Path(source).with_suffix(".provenance.json")).replace("\\", "/"))
+    if any(inputs != shared_inputs[0] for inputs in shared_inputs[1:]):
+        raise ValueError("Compared runs used different simulation inputs")
     return generate_checked(
         component="briefing", prompt=HERE / "prompts" / "system.md",
         payload={"selected_plan": plan, "selected_result": result, "baseline_result": baseline,
                  "evidence_tokens": evidence_tokens(result, baseline)},
         schema=DRAFT_SCHEMA,
-        check=lambda draft: assemble(draft, plan, result, baseline, sources),
+        check=lambda draft: assemble(draft, plan, result, baseline, sorted(sources)),
         model=model, temperature=0.0)

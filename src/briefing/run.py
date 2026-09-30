@@ -21,7 +21,7 @@ def main():
     plans = validate_plans({"plans": [load_json(directory / f"P{i}.json") for i in range(3)]},
                            inputs["policy_context"], inputs["incident"])
     briefing = write_briefing(plans, args.results, args.model,
-                              incident_id=inputs["incident"]["incident_id"])
+                              generation_inputs=inputs)
     save_json(args.out, briefing)
     print(f"Operator draft saved to {args.out}; human approval is required.")
 
