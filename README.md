@@ -585,6 +585,15 @@ Traffic detector data and Special Traffic News from
 [DATA.GOV.HK](https://data.gov.hk) and the Transport Department. Attribute both
 wherever the data is shown. Everything we use is aggregate and open: no
 personal data, no vehicle identifiers.
+# Component C calibration progress — 2 October
+
+[Controlled replay results](docs/calibration-progress-2026-10-02.md): removing
+the unsupported vehicle speed cap reduced teleports from 68 to 53, but speed
+MAPE worsened (36.94% to 41.36% on common bins). GEH improved only from 66.53%
+to 66.94%. Both calibration targets remain unmet. Source audit now records
+inconsistent tunnel lane-access tags and a passenger lane without an onward
+connection. No unsupported geometry repair was made; three focused tests passed.
+
 # Component C handoff — 1 October
 
 Published the [Data/E handoff and next no-closure calibration plan](docs/simulation-handoff-2026-10-01.md)

@@ -1,0 +1,530 @@
+{
+  "purpose": "Review evidence only; not proof of a topology defect",
+  "sources": {
+    "network": {
+      "path": "sim/work/aberdeen.net.xml",
+      "sha256": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e"
+    },
+    "osm": {
+      "path": "sim/work/osm/aberdeen_bbox.osm.xml",
+      "sha256": "c6d3333d803ef19db9707ae1ac9dc958121d7bd19941a555a8db0ec50e62b09f"
+    },
+    "diagnostic": {
+      "path": "results/twin/sept30-preincident-diagnosis.json",
+      "sha256": "c7e3bf3574d3b9980fc88db09e13f6c8ad84ab5aac5514f276cbca60b474a8ca"
+    }
+  },
+  "edges": [
+    {
+      "id": "1198101443",
+      "name": "香港仔隧道 Aberdeen Tunnel",
+      "length_m": 538.92,
+      "osm_tags": {
+        "bicycle": "no",
+        "buffer:left": "transition",
+        "buffer:left:marking": "chevrons",
+        "buffer:left:marking:colour": "white",
+        "charge": "8 HKD",
+        "charge:start_date": "2025-09-21",
+        "destination": "Wan Chai;Kawloon",
+        "destination:motorroad:tunnel": "yes",
+        "destination:symbol": "tunnel",
+        "foot": "no",
+        "hazmat:HK:1": "no",
+        "hazmat:HK:2": "no",
+        "hazmat:HK:3": "no",
+        "hazmat:HK:3A": "no",
+        "hazmat:HK:5": "no",
+        "highway": "trunk",
+        "lanes": "2",
+        "marking:left": "solid_line",
+        "marking:left:colour": "white",
+        "maxheight": "4.6",
+        "maxspeed": "50",
+        "motor_vehicle:conditional": "no @ (hazmat:HK:1; hazmat:HK:2; hazmat:HK:3; hazmat:HK:3A; hazmat:HK:5); no @ (learner)",
+        "motorroad": "yes",
+        "motorway": "no",
+        "name": "香港仔隧道 Aberdeen Tunnel",
+        "name:en": "Aberdeen Tunnel",
+        "name:zh": "香港仔隧道",
+        "network": "HK",
+        "network:area": "national",
+        "network:guid": "HK",
+        "network:name": "香港主要幹線 Hong Kong Strategic Routes",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "network:name:zh": "香港主要幹線",
+        "network:wikidata": "Q115916223",
+        "oneway": "yes",
+        "placement": "transition",
+        "ref": "1",
+        "separation:left": "no",
+        "share_taxi": "no",
+        "shoulder": "no",
+        "street:name": "黃竹坑道 Wong Chuk Hang Road",
+        "street:name:en": "Wong Chuk Hang Road",
+        "street:name:zh": "黃竹坑道",
+        "supervised": "yes",
+        "surface": "asphalt",
+        "surveillance": "yes",
+        "toll": "yes",
+        "toll:bus:conditional": "no @ (franchised)",
+        "traffic_mode:left": "vehicle",
+        "traffic_signals": "lane"
+      },
+      "osm_motor_vehicle_lane_tag_count": null,
+      "lanes": [
+        {
+          "id": "1198101443_0",
+          "speed_mps": 13.89,
+          "allows_passenger": true,
+          "outgoing_lanes": [
+            "251366297_0"
+          ],
+          "outgoing_passenger_lanes": [
+            "251366297_0"
+          ]
+        },
+        {
+          "id": "1198101443_1",
+          "speed_mps": 13.89,
+          "allows_passenger": true,
+          "outgoing_lanes": [
+            "251366297_1"
+          ],
+          "outgoing_passenger_lanes": [
+            "251366297_1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "251366297",
+      "name": "香港仔隧道 Aberdeen Tunnel",
+      "length_m": 10.67,
+      "osm_tags": {
+        "bicycle": "no",
+        "bus:lanes": "private|yes|yes|yes",
+        "bus:lanes:conditional": "designated|yes|yes|yes @ (franchised)",
+        "charge": "8 HKD",
+        "charge:start_date": "2025-09-21",
+        "foot": "no",
+        "hazmat:HK:1": "no",
+        "hazmat:HK:2": "no",
+        "hazmat:HK:3": "no",
+        "hazmat:HK:3A": "no",
+        "hazmat:HK:5": "no",
+        "highway": "trunk",
+        "lanes": "2",
+        "maxheight": "4.6",
+        "maxspeed": "50",
+        "motor_vehicle:conditional": "no @ (hazmat:HK:1; hazmat:HK:2; hazmat:HK:3; hazmat:HK:3A; hazmat:HK:5); no @ (learner)",
+        "motor_vehicle:lanes": "no|yes|yes|yes",
+        "motor_vehicle:lanes:conditional": "no|no|no|no @ (hazmat:HK:1; hazmat:HK:2; hazmat:HK:3; hazmat:HK:3A; hazmat:HK:5; learner)",
+        "motorroad": "yes",
+        "motorway": "no",
+        "name": "香港仔隧道 Aberdeen Tunnel",
+        "name:en": "Aberdeen Tunnel",
+        "name:zh": "香港仔隧道",
+        "network": "HK",
+        "network:area": "national",
+        "network:guid": "HK",
+        "network:name": "香港主要幹線 Hong Kong Strategic Routes",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "network:name:zh": "香港主要幹線",
+        "network:wikidata": "Q115916223",
+        "oneway": "yes",
+        "ref": "1",
+        "shoulder": "no",
+        "supervised": "yes",
+        "surface": "concrete",
+        "surveillance": "yes",
+        "toll": "yes",
+        "toll:bus:conditional": "no @ (franchised)",
+        "traffic_signals": "lane",
+        "was:bus:lanes:conditional": "designated|yes|yes|yes @ (07:00-09:00; PH off)",
+        "was:motor_vehicle:lanes:conditional": "no|yes|yes|yes @ (07:00-09:00; PH off);no|no|no|no @ (hazmat:HK:1; hazmat:HK:2; hazmat:HK:3; hazmat:HK:3A; hazmat:HK:5; learner)"
+      },
+      "osm_motor_vehicle_lane_tag_count": 4,
+      "lanes": [
+        {
+          "id": "251366297_0",
+          "speed_mps": 13.89,
+          "allows_passenger": true,
+          "outgoing_lanes": [
+            "1198101424_0",
+            "1198101424_1"
+          ],
+          "outgoing_passenger_lanes": [
+            "1198101424_0",
+            "1198101424_1"
+          ]
+        },
+        {
+          "id": "251366297_1",
+          "speed_mps": 13.89,
+          "allows_passenger": true,
+          "outgoing_lanes": [
+            "1198101424_2",
+            "1198101424_3"
+          ],
+          "outgoing_passenger_lanes": [
+            "1198101424_2",
+            "1198101424_3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1198101424",
+      "name": "香港仔隧道 Aberdeen Tunnel",
+      "length_m": 87.97,
+      "osm_tags": {
+        "bicycle": "no",
+        "bus:lanes": "private|yes|yes|yes",
+        "bus:lanes:conditional": "designated|yes|yes|yes @ (franchised)",
+        "charge": "8 HKD",
+        "charge:start_date": "2025-09-21",
+        "foot": "no",
+        "hazmat:HK:1": "no",
+        "hazmat:HK:2": "no",
+        "hazmat:HK:3": "no",
+        "hazmat:HK:3A": "no",
+        "hazmat:HK:5": "no",
+        "highway": "trunk",
+        "lanes": "4",
+        "maxheight": "4.6",
+        "maxspeed": "50",
+        "motor_vehicle:conditional": "no @ (hazmat:HK:1; hazmat:HK:2; hazmat:HK:3; hazmat:HK:3A; hazmat:HK:5); no @ (learner)",
+        "motor_vehicle:lanes": "no|yes|yes|yes",
+        "motor_vehicle:lanes:conditional": "no|no|no|no @ (hazmat:HK:1; hazmat:HK:2; hazmat:HK:3; hazmat:HK:3A; hazmat:HK:5; learner)",
+        "motorroad": "yes",
+        "motorway": "no",
+        "name": "香港仔隧道 Aberdeen Tunnel",
+        "name:en": "Aberdeen Tunnel",
+        "name:zh": "香港仔隧道",
+        "network": "HK",
+        "network:area": "national",
+        "network:guid": "HK",
+        "network:name": "香港主要幹線 Hong Kong Strategic Routes",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "network:name:zh": "香港主要幹線",
+        "network:wikidata": "Q115916223",
+        "oneway": "yes",
+        "ref": "1",
+        "shoulder": "no",
+        "supervised": "yes",
+        "surface": "concrete",
+        "surveillance": "yes",
+        "toll": "yes",
+        "toll:bus:conditional": "no @ (franchised)",
+        "traffic_signals": "lane"
+      },
+      "osm_motor_vehicle_lane_tag_count": 4,
+      "lanes": [
+        {
+          "id": "1198101424_0",
+          "speed_mps": 13.89,
+          "allows_passenger": true,
+          "outgoing_lanes": [],
+          "outgoing_passenger_lanes": []
+        },
+        {
+          "id": "1198101424_1",
+          "speed_mps": 13.89,
+          "allows_passenger": true,
+          "outgoing_lanes": [
+            "1545825139_0"
+          ],
+          "outgoing_passenger_lanes": [
+            "1545825139_0"
+          ]
+        },
+        {
+          "id": "1198101424_2",
+          "speed_mps": 13.89,
+          "allows_passenger": true,
+          "outgoing_lanes": [
+            "1545825139_1"
+          ],
+          "outgoing_passenger_lanes": [
+            "1545825139_1"
+          ]
+        },
+        {
+          "id": "1198101424_3",
+          "speed_mps": 13.89,
+          "allows_passenger": true,
+          "outgoing_lanes": [
+            "1545825139_2"
+          ],
+          "outgoing_passenger_lanes": [
+            "1545825139_2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1545825139",
+      "name": "香港仔隧道 Aberdeen Tunnel",
+      "length_m": 49.48,
+      "osm_tags": {
+        "bicycle": "no",
+        "buffer:left": "gore",
+        "buffer:left:marking": "chevrons",
+        "charge": "8 HKD",
+        "charge:start_date": "2025-09-21",
+        "foot": "no",
+        "hazmat:HK:1": "no",
+        "hazmat:HK:2": "no",
+        "hazmat:HK:3": "no",
+        "hazmat:HK:3A": "no",
+        "hazmat:HK:5": "no",
+        "highway": "trunk",
+        "lanes": "3",
+        "marking:left": "solid_line",
+        "maxheight": "4.6",
+        "maxspeed": "50",
+        "motor_vehicle:conditional": "no @ (hazmat:HK:1; hazmat:HK:2; hazmat:HK:3; hazmat:HK:3A; hazmat:HK:5); no @ (learner)",
+        "motorroad": "yes",
+        "motorway": "no",
+        "name": "香港仔隧道 Aberdeen Tunnel",
+        "name:en": "Aberdeen Tunnel",
+        "name:zh": "香港仔隧道",
+        "network": "HK",
+        "network:area": "national",
+        "network:guid": "HK",
+        "network:name": "香港主要幹線 Hong Kong Strategic Routes",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "network:name:zh": "香港主要幹線",
+        "network:wikidata": "Q115916223",
+        "oneway": "yes",
+        "placement": "transition",
+        "ref": "1",
+        "separation:left": "no",
+        "shoulder": "no",
+        "supervised": "yes",
+        "surface": "concrete",
+        "surveillance": "yes",
+        "toll": "yes",
+        "toll:bus:conditional": "no @ (franchised)",
+        "traffic_mode:left": "motor_vehicle",
+        "traffic_signals": "lane"
+      },
+      "osm_motor_vehicle_lane_tag_count": null,
+      "lanes": [
+        {
+          "id": "1545825139_0",
+          "speed_mps": 13.89,
+          "allows_passenger": true,
+          "outgoing_lanes": [
+            "1233513875#0_0",
+            "1233513875#0_1"
+          ],
+          "outgoing_passenger_lanes": [
+            "1233513875#0_0",
+            "1233513875#0_1"
+          ]
+        },
+        {
+          "id": "1545825139_1",
+          "speed_mps": 13.89,
+          "allows_passenger": true,
+          "outgoing_lanes": [
+            "1233513875#0_2"
+          ],
+          "outgoing_passenger_lanes": [
+            "1233513875#0_2"
+          ]
+        },
+        {
+          "id": "1545825139_2",
+          "speed_mps": 13.89,
+          "allows_passenger": true,
+          "outgoing_lanes": [
+            "1233513875#0_3"
+          ],
+          "outgoing_passenger_lanes": [
+            "1233513875#0_3"
+          ]
+        }
+      ]
+    }
+  ],
+  "detector_counts": [
+    {
+      "id": "AID01110",
+      "bins": 10,
+      "passing_bins": 0,
+      "observed_sum": 2503,
+      "simulated_sum": 1486.0
+    },
+    {
+      "id": "AID01217",
+      "bins": 10,
+      "passing_bins": 0,
+      "observed_sum": 1887,
+      "simulated_sum": 838.0
+    },
+    {
+      "id": "AID01107",
+      "bins": 10,
+      "passing_bins": 1,
+      "observed_sum": 1276,
+      "simulated_sum": 440.0
+    },
+    {
+      "id": "AID01214",
+      "bins": 10,
+      "passing_bins": 1,
+      "observed_sum": 2494,
+      "simulated_sum": 1519.0
+    },
+    {
+      "id": "AID01218",
+      "bins": 10,
+      "passing_bins": 1,
+      "observed_sum": 1483,
+      "simulated_sum": 720.0
+    },
+    {
+      "id": "AID01221",
+      "bins": 10,
+      "passing_bins": 1,
+      "observed_sum": 1827,
+      "simulated_sum": 1082.0
+    },
+    {
+      "id": "AID01103",
+      "bins": 10,
+      "passing_bins": 6,
+      "observed_sum": 1596,
+      "simulated_sum": 998.0
+    },
+    {
+      "id": "AID01106",
+      "bins": 10,
+      "passing_bins": 6,
+      "observed_sum": 998,
+      "simulated_sum": 537.0
+    },
+    {
+      "id": "TDSAPR10001",
+      "bins": 9,
+      "passing_bins": 6,
+      "observed_sum": 1148,
+      "simulated_sum": 978.0
+    },
+    {
+      "id": "AID01222",
+      "bins": 10,
+      "passing_bins": 7,
+      "observed_sum": 1580,
+      "simulated_sum": 1113.0
+    },
+    {
+      "id": "TDSSPWR10001",
+      "bins": 9,
+      "passing_bins": 7,
+      "observed_sum": 561,
+      "simulated_sum": 562.0
+    },
+    {
+      "id": "TDSSPWR10003",
+      "bins": 9,
+      "passing_bins": 7,
+      "observed_sum": 870,
+      "simulated_sum": 979.0
+    },
+    {
+      "id": "AID01104",
+      "bins": 10,
+      "passing_bins": 8,
+      "observed_sum": 1041,
+      "simulated_sum": 810.0
+    },
+    {
+      "id": "AID01223",
+      "bins": 10,
+      "passing_bins": 8,
+      "observed_sum": 1197,
+      "simulated_sum": 966.0
+    },
+    {
+      "id": "AID01101",
+      "bins": 9,
+      "passing_bins": 8,
+      "observed_sum": 1194,
+      "simulated_sum": 1188.0
+    },
+    {
+      "id": "AID01219",
+      "bins": 10,
+      "passing_bins": 9,
+      "observed_sum": 1325,
+      "simulated_sum": 1041.0
+    },
+    {
+      "id": "AID01102",
+      "bins": 10,
+      "passing_bins": 10,
+      "observed_sum": 1311,
+      "simulated_sum": 1319.0
+    },
+    {
+      "id": "AID01108",
+      "bins": 10,
+      "passing_bins": 10,
+      "observed_sum": 1225,
+      "simulated_sum": 1076.0
+    },
+    {
+      "id": "AID01109",
+      "bins": 10,
+      "passing_bins": 10,
+      "observed_sum": 1976,
+      "simulated_sum": 1791.0
+    },
+    {
+      "id": "AID01215",
+      "bins": 10,
+      "passing_bins": 10,
+      "observed_sum": 1911,
+      "simulated_sum": 1864.0
+    },
+    {
+      "id": "AID01216",
+      "bins": 10,
+      "passing_bins": 10,
+      "observed_sum": 1343,
+      "simulated_sum": 1345.0
+    },
+    {
+      "id": "TDSSPWR10002",
+      "bins": 9,
+      "passing_bins": 9,
+      "observed_sum": 923,
+      "simulated_sum": 979.0
+    },
+    {
+      "id": "TDSSPWR20001",
+      "bins": 9,
+      "passing_bins": 9,
+      "observed_sum": 664,
+      "simulated_sum": 665.0
+    },
+    {
+      "id": "TDSSPWR20003",
+      "bins": 9,
+      "passing_bins": 9,
+      "observed_sum": 1135,
+      "simulated_sum": 1260.0
+    },
+    {
+      "id": "TDSAPR20001",
+      "bins": 9,
+      "passing_bins": 9,
+      "observed_sum": 1382,
+      "simulated_sum": 1259.0
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "purpose": "Controlled no-closure comparison; removing only the global vType speed cap",
+  "common_speed_bins": 296,
+  "common_speed_mape_percent": {
+    "reference": 36.940292122959804,
+    "network-speed": 41.35582040483169
+  },
+  "sources": {
+    "reference": {
+      "path": "results/twin/oct02-reference.json",
+      "sha256": "bc7b86576051cb4b63ec9449ab8ee7bc5b39ec5c6f98c4269d30cc8035c0359d"
+    },
+    "network-speed": {
+      "path": "results/twin/oct02-network-speed.json",
+      "sha256": "445d9fb063f29629dbe246bc19ff58be746eac58c745b0e323e0bfc4573dd013"
+    }
+  }
+}

@@ -32,7 +32,9 @@ def main():
         "western_westbound": CHAIN_WESTERN_WESTBOUND,
     }
     root = ET.Element("routes")
-    ET.SubElement(root, "vType", id="DEFAULT_VEHTYPE", vClass="passenger", length="5", maxSpeed="16.7")
+    # Follow the network's source-derived speed limits. The previous global
+    # 16.7 m/s ceiling also capped traffic on 70 km/h roads without evidence.
+    ET.SubElement(root, "vType", id="DEFAULT_VEHTYPE", vClass="passenger", length="5")
     route_no = 0
     for leg, ordered_ids in chains.items():
         sensors = [(did, net.getEdge(edge_by_id[did])) for did in ordered_ids
