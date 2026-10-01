@@ -585,6 +585,14 @@ Traffic detector data and Special Traffic News from
 [DATA.GOV.HK](https://data.gov.hk) and the Transport Department. Attribute both
 wherever the data is shown. Everything we use is aggregate and open: no
 personal data, no vehicle identifiers.
+# Component C handoff — 1 October
+
+Published the [Data/E handoff and next no-closure calibration plan](docs/simulation-handoff-2026-10-01.md)
+and [Simulation's interim paragraph for Impact](docs/simulation-interim-2026-10-02.md).
+Edge `44419212` maps Slow Lane to index 0 and Fast Lane to index 1 on the
+audited local network. Full P0 timing remains a proposal awaiting Data/E
+agreement. The 66.94% pre-incident GEH result is a separate calibration blocker.
+
 # Component C diagnosis — 30 September
 
 [Fresh diagnosis](docs/component-c-diagnosis-2026-09-30.md): bounded real-data
