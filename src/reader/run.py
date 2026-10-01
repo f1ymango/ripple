@@ -27,15 +27,17 @@ def main() -> None:
         sys.exit("No model given: pass --model (e.g. qwen3:8b) or pin MODEL in src/reader/reader.py.")
 
     lines = Path(args.messages).read_text(encoding="utf-8").splitlines()
+    messages = [json.loads(line)["stn"] for line in lines if line.strip()]
+    if not messages:
+        parser.error("the messages file is empty")
     safe_model = re.sub(r"[^\w.-]", "-", args.model)  # "qwen3:8b" is not a valid Windows file name
-    run_id = f"{datetime.now(llm.HKT):%Y-%m-%dT%H%M}_{safe_model}"
+    run_id = f"{datetime.now(llm.HKT):%Y-%m-%dT%H%M%S%f}_{safe_model}"
     out_path = Path("results/reader") / f"{run_id}.jsonl"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     parsed = flagged = 0
     started = time.perf_counter()
-    with out_path.open("w", encoding="utf-8", newline="\n") as out:
-        for line in lines:
-            stn = json.loads(line)["stn"]
+    with out_path.open("x", encoding="utf-8", newline="\n") as out:
+        for stn in messages:
             row = {"message_id": stn["ID"], "incident_id": stn["INCIDENT_NUMBER"]}
             try:
                 row["incident"] = reader.read_message(stn, model=args.model)
@@ -46,7 +48,7 @@ def main() -> None:
             out.write(json.dumps(row, ensure_ascii=False) + "\n")
     seconds = time.perf_counter() - started
     print(f"{parsed} parsed, {flagged} flagged in {seconds:.0f}s "
-          f"({seconds / len(lines):.1f}s per message) -> {out_path}")
+          f"({seconds / len(messages):.1f}s per message) -> {out_path}")
 
 
 if __name__ == "__main__":

@@ -53,6 +53,12 @@ scope.
 
 **📤 Submit interim report Sat 3 Oct** (deadline is Sun 4 Oct).
 
+**Everyone contributes; Impact coordinates and assembles.** Each owner adds a
+short paragraph with evidence links and limitations to the
+[working draft and contribution checklist](interim-report.md). The Lead's §2
+contribution is already drafted. Impact confirms the collection cutoff; Lead
+and Impact review the complete report and confirm the uploader before submission.
+
 ### 🚦 Go / no-go — Sun 4 Oct
 > If the baseline does **not** roughly match what the detectors recorded, switch
 > to the simplified ~15-link network (`03-architecture.md` §5) **that day**.
