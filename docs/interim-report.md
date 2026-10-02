@@ -78,6 +78,67 @@ are still to be added by their owners.
 - Describe the SUMO corridor twin (C), calibration against observed detector data, and baseline-versus-plan comparison (E).
 - State validation errors and scenario outcomes only from reproducible runs in `results/`; mark pending figures *not measured yet*.
 
+### Simulation contribution — 2 October 2026
+
+Component C runs a provisional SUMO model of the Aberdeen corridor using
+OpenStreetMap and archived Transport Department detector observations. Work
+completed includes left-hand conversion, direction-aware detector placement,
+measurement across modelled lanes, timestamp matching, pre-incident demand
+fitting and corrected route departure ordering. Runs record source hashes,
+seeds and completion status and use bounded execution. The generated network
+and loops remain local and under review; the current artifacts do not yet
+constitute a portable, reviewed network release.
+
+Calibration uses the selected incident's **15 May 2026, 07:55–08:55 HKT**
+observations after a 15-minute warm-up. No incident closure is applied in this
+window. Counts are scored only where archive coverage is at least 40% and
+at least 90% of lane readings are valid. The 2 October controlled comparison
+kept network, demand, routes and seed fixed, changing only an unsupported
+16.7 m/s vehicle speed ceiling so vehicles could follow network limits.
+
+| Pre-incident metric | Reference | Speed-ceiling removal | Target |
+|---|---:|---:|---:|
+| Count bins with GEH < 5 (242 bins) | 66.53% | 66.94% | At least 85% |
+| Speed MAPE (296 common bins) | 36.94% | 41.36% | Approximately 15% or lower |
+| Teleports | 68 | 53 | Review required |
+| Vehicles waiting to enter at run end | 2,405 | 2,390 | Review required |
+
+Both runs completed all 4,500 simulation seconds without route-loading errors.
+Although teleports decreased, speed error worsened and both calibration
+targets remain unmet. These are calibration results against the fitted hour,
+not independent validation. The earlier 30 September result of 66.94% GEH
+also covered the pre-incident hour; it used different flow scheduling and is
+not the reference for this paired comparison. Evidence:
+[reference run](https://github.com/f1ymango/ripple/blob/be7bd65/results/twin/oct02-reference.json),
+[modified run](https://github.com/f1ymango/ripple/blob/be7bd65/results/twin/oct02-network-speed.json),
+[common-bin comparison](https://github.com/f1ymango/ripple/blob/be7bd65/results/twin/oct02-comparison.json).
+Links are pinned to the simulation commit because those artifacts are awaiting merge.
+
+The source audit found inconsistent lane-access tags at a tunnel transition
+and a model lane permitting passenger cars with no onward connection. Further
+review is needed to distinguish source/conversion errors from legitimate lane
+drops. Three detector lane-count conflicts and three missing May-window lane
+scopes also remain unresolved. Teleports and insertion queues can distort
+physical queue development, travel times and plan rankings; they cannot be
+treated as cosmetic warnings. See the
+[diagnosis and source audit](https://github.com/f1ymango/ripple/blob/be7bd65/docs/calibration-progress-2026-10-02.md).
+
+**Full incident P0-versus-observed validation and P0/P1/P2 benefit comparisons
+are not measured yet in an accepted run.** P0 represents the incident with no
+response intervention. Simulation proposes an 08:55 physical onset, 09:36
+all-lanes phase and 10:02 reopening, pending agreement with Data/E. TD's first
+message was at 09:01; operator actions must respect information availability.
+Data/E's initial `unspecified` lane default remains a disclosed modelling
+decision to agree. It cannot explain the earlier no-closure calibration failure.
+
+A separate full-horizon
+[traffic-only diagnostic video](https://github.com/f1ymango/ripple/blob/be7bd65/results/twin/aberdeen-full-traffic-sept30.mp4)
+demonstrates execution with no assumed closure, not validated incident
+reproduction. Next work prioritises tunnel connections, route contributions
+and detector placement at the worst count locations. Data's simplified-network
+fallback should remain active for the 4 October decision; its methodology and
+evaluation status are for Data to report.
+
 ## 4. Operator Console & Demo Visuals
 
 - **Owner:** Visuals
