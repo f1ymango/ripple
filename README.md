@@ -587,6 +587,12 @@ wherever the data is shown. Everything we use is aggregate and open: no
 personal data, no vehicle identifiers.
 # Component C calibration progress — 2 October
 
+[Further experiments](docs/calibration-experiments-2026-10-02.md) tested adaptive
+entry speed and one OSM-derived lane-access correction independently. Both
+worsened teleports versus the 53-teleport reference (71 and 73 respectively)
+and remain experimental. A new audit distinguishes linear fit from actual
+detector passage; neither experiment is adopted as the calibrated baseline.
+
 [Controlled replay results](docs/calibration-progress-2026-10-02.md): removing
 the unsupported vehicle speed cap reduced teleports from 68 to 53, but speed
 MAPE worsened (36.94% to 41.36% on common bins). GEH improved only from 66.53%

@@ -1,0 +1,240 @@
+{
+  "purpose": "Compare linear route-fit predictions with actual simulated passage over scoreable slots; hourly equivalents are derived estimates, not additional observations",
+  "sources": {
+    "fit": {
+      "path": "sim/work/may-diagnostic/fit-summary.json",
+      "sha256": "d126e32b61b61d7a55fb4d40f7a0f7e2ccb9548e5c07fe208bb497dc20239870"
+    },
+    "diagnostic": {
+      "path": "results/twin/oct02-reference.json",
+      "sha256": "bc7b86576051cb4b63ec9449ab8ee7bc5b39ec5c6f98c4269d30cc8035c0359d"
+    }
+  },
+  "detectors": [
+    {
+      "id": "AID01101",
+      "scored_5min_bins": 9,
+      "passing_bins": 8,
+      "fit_hour_target": 1592.0,
+      "linear_fit_hour_prediction": 1582.6,
+      "simulated_count_over_scored_slots": 1188.0,
+      "simulated_hour_equivalent_from_scored_slots": 1584.0
+    },
+    {
+      "id": "AID01102",
+      "scored_5min_bins": 10,
+      "passing_bins": 10,
+      "fit_hour_target": 1573.2,
+      "linear_fit_hour_prediction": 1582.6,
+      "simulated_count_over_scored_slots": 1311.0,
+      "simulated_hour_equivalent_from_scored_slots": 1573.2
+    },
+    {
+      "id": "AID01103",
+      "scored_5min_bins": 10,
+      "passing_bins": 6,
+      "fit_hour_target": 1915.2,
+      "linear_fit_hour_prediction": 1915.2000000000003,
+      "simulated_count_over_scored_slots": 977.0,
+      "simulated_hour_equivalent_from_scored_slots": 1172.4
+    },
+    {
+      "id": "AID01104",
+      "scored_5min_bins": 10,
+      "passing_bins": 8,
+      "fit_hour_target": 1249.2,
+      "linear_fit_hour_prediction": 1249.2,
+      "simulated_count_over_scored_slots": 781.0,
+      "simulated_hour_equivalent_from_scored_slots": 937.2
+    },
+    {
+      "id": "AID01106",
+      "scored_5min_bins": 10,
+      "passing_bins": 6,
+      "fit_hour_target": 1197.6,
+      "linear_fit_hour_prediction": 1364.3999999999999,
+      "simulated_count_over_scored_slots": 476.0,
+      "simulated_hour_equivalent_from_scored_slots": 571.2
+    },
+    {
+      "id": "AID01107",
+      "scored_5min_bins": 10,
+      "passing_bins": 1,
+      "fit_hour_target": 1531.2,
+      "linear_fit_hour_prediction": 1364.3999999999999,
+      "simulated_count_over_scored_slots": 421.0,
+      "simulated_hour_equivalent_from_scored_slots": 505.2
+    },
+    {
+      "id": "AID01108",
+      "scored_5min_bins": 10,
+      "passing_bins": 10,
+      "fit_hour_target": 1470.0,
+      "linear_fit_hour_prediction": 1470.0,
+      "simulated_count_over_scored_slots": 1072.0,
+      "simulated_hour_equivalent_from_scored_slots": 1286.4
+    },
+    {
+      "id": "AID01109",
+      "scored_5min_bins": 10,
+      "passing_bins": 10,
+      "fit_hour_target": 2371.2,
+      "linear_fit_hour_prediction": 2371.2,
+      "simulated_count_over_scored_slots": 1789.0,
+      "simulated_hour_equivalent_from_scored_slots": 2146.8
+    },
+    {
+      "id": "AID01110",
+      "scored_5min_bins": 10,
+      "passing_bins": 0,
+      "fit_hour_target": 3003.6,
+      "linear_fit_hour_prediction": 3003.6000000000004,
+      "simulated_count_over_scored_slots": 1489.0,
+      "simulated_hour_equivalent_from_scored_slots": 1786.8
+    },
+    {
+      "id": "AID01214",
+      "scored_5min_bins": 10,
+      "passing_bins": 1,
+      "fit_hour_target": 2992.8,
+      "linear_fit_hour_prediction": 2992.8,
+      "simulated_count_over_scored_slots": 1519.0,
+      "simulated_hour_equivalent_from_scored_slots": 1822.8
+    },
+    {
+      "id": "AID01215",
+      "scored_5min_bins": 10,
+      "passing_bins": 10,
+      "fit_hour_target": 2293.2,
+      "linear_fit_hour_prediction": 2293.2,
+      "simulated_count_over_scored_slots": 1870.0,
+      "simulated_hour_equivalent_from_scored_slots": 2244.0
+    },
+    {
+      "id": "AID01216",
+      "scored_5min_bins": 10,
+      "passing_bins": 10,
+      "fit_hour_target": 1611.6,
+      "linear_fit_hour_prediction": 1611.6,
+      "simulated_count_over_scored_slots": 1347.0,
+      "simulated_hour_equivalent_from_scored_slots": 1616.4
+    },
+    {
+      "id": "AID01217",
+      "scored_5min_bins": 10,
+      "passing_bins": 0,
+      "fit_hour_target": 2264.4,
+      "linear_fit_hour_prediction": 2264.4000000000005,
+      "simulated_count_over_scored_slots": 836.0,
+      "simulated_hour_equivalent_from_scored_slots": 1003.2
+    },
+    {
+      "id": "AID01218",
+      "scored_5min_bins": 10,
+      "passing_bins": 0,
+      "fit_hour_target": 1779.6,
+      "linear_fit_hour_prediction": 1779.6000000000001,
+      "simulated_count_over_scored_slots": 713.0,
+      "simulated_hour_equivalent_from_scored_slots": 855.6
+    },
+    {
+      "id": "AID01219",
+      "scored_5min_bins": 10,
+      "passing_bins": 9,
+      "fit_hour_target": 1590.0,
+      "linear_fit_hour_prediction": 1590.0000000000005,
+      "simulated_count_over_scored_slots": 1041.0,
+      "simulated_hour_equivalent_from_scored_slots": 1249.2
+    },
+    {
+      "id": "AID01221",
+      "scored_5min_bins": 10,
+      "passing_bins": 1,
+      "fit_hour_target": 2192.4,
+      "linear_fit_hour_prediction": 2192.3999999999996,
+      "simulated_count_over_scored_slots": 1080.0,
+      "simulated_hour_equivalent_from_scored_slots": 1296.0
+    },
+    {
+      "id": "AID01222",
+      "scored_5min_bins": 10,
+      "passing_bins": 7,
+      "fit_hour_target": 1896.0,
+      "linear_fit_hour_prediction": 1896.0000000000005,
+      "simulated_count_over_scored_slots": 1099.0,
+      "simulated_hour_equivalent_from_scored_slots": 1318.8
+    },
+    {
+      "id": "AID01223",
+      "scored_5min_bins": 10,
+      "passing_bins": 8,
+      "fit_hour_target": 1436.4,
+      "linear_fit_hour_prediction": 1436.3999999999996,
+      "simulated_count_over_scored_slots": 951.0,
+      "simulated_hour_equivalent_from_scored_slots": 1141.2
+    },
+    {
+      "id": "TDSSPWR10001",
+      "scored_5min_bins": 9,
+      "passing_bins": 7,
+      "fit_hour_target": 748.0,
+      "linear_fit_hour_prediction": 748.0,
+      "simulated_count_over_scored_slots": 562.0,
+      "simulated_hour_equivalent_from_scored_slots": 749.3333333333334
+    },
+    {
+      "id": "TDSSPWR10002",
+      "scored_5min_bins": 9,
+      "passing_bins": 9,
+      "fit_hour_target": 1230.6666666666667,
+      "linear_fit_hour_prediction": 1307.111111111111,
+      "simulated_count_over_scored_slots": 979.0,
+      "simulated_hour_equivalent_from_scored_slots": 1305.3333333333333
+    },
+    {
+      "id": "TDSSPWR10003",
+      "scored_5min_bins": 9,
+      "passing_bins": 7,
+      "fit_hour_target": 1160.0,
+      "linear_fit_hour_prediction": 1307.111111111111,
+      "simulated_count_over_scored_slots": 975.0,
+      "simulated_hour_equivalent_from_scored_slots": 1300.0
+    },
+    {
+      "id": "TDSSPWR20001",
+      "scored_5min_bins": 9,
+      "passing_bins": 9,
+      "fit_hour_target": 885.3333333333334,
+      "linear_fit_hour_prediction": 885.3333333333334,
+      "simulated_count_over_scored_slots": 664.0,
+      "simulated_hour_equivalent_from_scored_slots": 885.3333333333334
+    },
+    {
+      "id": "TDSSPWR20003",
+      "scored_5min_bins": 9,
+      "passing_bins": 9,
+      "fit_hour_target": 1513.3333333333333,
+      "linear_fit_hour_prediction": 1678.0,
+      "simulated_count_over_scored_slots": 1259.0,
+      "simulated_hour_equivalent_from_scored_slots": 1678.6666666666667
+    },
+    {
+      "id": "TDSAPR10001",
+      "scored_5min_bins": 9,
+      "passing_bins": 6,
+      "fit_hour_target": 1530.6666666666667,
+      "linear_fit_hour_prediction": 1307.1111111111115,
+      "simulated_count_over_scored_slots": 976.0,
+      "simulated_hour_equivalent_from_scored_slots": 1301.3333333333333
+    },
+    {
+      "id": "TDSAPR20001",
+      "scored_5min_bins": 9,
+      "passing_bins": 9,
+      "fit_hour_target": 1842.6666666666667,
+      "linear_fit_hour_prediction": 1678.0,
+      "simulated_count_over_scored_slots": 1259.0,
+      "simulated_hour_equivalent_from_scored_slots": 1678.6666666666667
+    }
+  ]
+}
