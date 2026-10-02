@@ -71,12 +71,51 @@ The Reader does not resolve them by guessing a lane or changing the source
 timestamp. Data's ingestion contribution and Simulation's result contribution
 are still to be added by their owners.
 
-## 3. Simulation, Evaluation & Preliminary Results
+## 3. Simulation Evaluation & Preliminary Results
 
-- **Owner:** Simulation; Data contributes evaluator methodology and results when available.
-- **Starting sources:** `docs/03-architecture.md` §4 and `docs/00-brief.md` §6; use actual run artifacts in `results/` for all figures.
-- Describe the SUMO corridor twin (C), calibration against observed detector data, and baseline-versus-plan comparison (E).
-- State validation errors and scenario outcomes only from reproducible runs in `results/`; mark pending figures *not measured yet*.
+**Owner:** Simulation (Data contributes evaluator methodology and results)  
+**Status:** Contribution Integrated (2 October 2026)
+
+Component C runs a provisional SUMO model of the Aberdeen corridor using OpenStreetMap and archived Transport Department detector observations. Work completed includes left-hand conversion, direction-aware detector placement, measurement across modelled lanes, timestamp matching, pre-incident demand fitting, and corrected route departure ordering.
+
+---
+
+### 📊 Pre-Incident Calibration Performance
+
+Calibration uses the selected incident's **15 May 2026, 07:55–08:55 HKT** observations after a 15-minute warm-up. Counts are scored only where archive coverage is at least 40% and at least 90% of lane readings are valid. 
+
+The 2 October controlled comparison kept network, demand, routes, and seed fixed, changing only an unsupported 16.7 m/s vehicle speed ceiling so vehicles could follow network limits:
+
+| Pre-incident Metric | Reference | Speed-Ceiling Removal | Target / Benchmark | Status |
+| :--- | ---: | ---: | ---: | :---: |
+| **Count bins with GEH < 5** (242 bins) | 66.53% | **66.94%** | At least 85.00% | ⚠️ Unmet |
+| **Speed MAPE** (296 common bins) | 36.94% | **41.36%** | $\le 15.00\%$ | ⚠️ Unmet |
+| **Teleports** | 68 | **53** | Review required | 🔄 Improved |
+| **Vehicles waiting to enter at run end** | 2,405 | **2,390** | Review required | 🔄 Improved |
+
+> **Key Finding:** Both runs completed all 4,500 simulation seconds without route-loading errors. Although teleports decreased (68 → 53), speed error (MAPE) worsened, meaning both calibration targets remain unmet for independent validation.
+
+#### Reproducible Artifacts & Evidence
+* 📄 **Reference Run JSON:** [`results/twin/oct02-reference.json`](https://github.com/f1ymango/ripple/blob/be7bd65/results/twin/oct02-reference.json)
+* 📄 **Modified Run JSON:** [`results/twin/oct02-network-speed.json`](https://github.com/f1ymango/ripple/blob/be7bd65/results/twin/oct02-network-speed.json)
+* 📊 **Paired Comparison:** [`results/twin/oct02-comparison.json`](https://github.com/f1ymango/ripple/blob/be7bd65/results/twin/oct02-comparison.json)
+
+---
+
+### 🔍 Source Audit & Diagnostic Findings
+
+1. **Lane-Access Discrepancies:** Inconsistent lane-access tags were identified at a critical tunnel transition, allowing passenger cars onto a lane with no onward connection.
+2. **Unresolved Scopes:** Three detector lane-count conflicts and three missing May-window lane scopes remain unresolved.
+3. **Physical Queue Distortion:** Teleports and insertion queue delays directly distort travel times and plan rankings; they are treated as operational bottlenecks rather than cosmetic warnings. See full [Diagnosis and Source Audit](https://github.com/f1ymango/ripple/blob/be7bd65/docs/calibration-progress-2026-10-02.md).
+
+---
+
+### ⚠️ Pending Evaluation & Limitations
+
+* **Full incident P0-versus-observed validation and P0/P1/P2 benefit comparisons are `[not measured yet]` in an accepted run.**
+* **Timeline Assumptions:** Simulation proposes an 08:55 physical onset, 09:36 all-lanes phase, and 10:02 reopening (pending alignment with Data/E). TD's first public alert arrived at 09:01.
+* **Fallback Strategy:** Data's simplified-network fallback remains active for the 4 October submission decision.
+* 🎥 **Diagnostic Video:** [Full-horizon traffic-only diagnostic video](https://github.com/f1ymango/ripple/blob/be7bd65/results/twin/aberdeen-full-traffic-sept30.mp4) (Demonstrates flow execution with no assumed closure).
 
 ## 4. Operator Console & Demo Visuals
 
