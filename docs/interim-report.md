@@ -1,5 +1,10 @@
 # Interim Report Working Draft — Project Ripple
 
+> **Submission update, 3 October 2026:** The Lead confirmed that the online
+> interim report was submitted. The exact submitted form answers and receipt
+> have not been archived here. The preparation checklist below is historical;
+> this repository draft must not be treated as a verified copy of the submission.
+
 The [23-question submission text](interim-report-submission.md) follows the
 organiser's questions supplied on 3 October. This file retains the technical
 evidence and contribution checklist supporting those answers.

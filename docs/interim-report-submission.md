@@ -2,8 +2,10 @@
 
 **Prepared:** 3 October 2026 · **Track:** Green Transport & Smart Mobility
 
-Finalization candidate aligned to the 23 questions supplied from the organiser's
-website. Team approval, form length limits and submission receipt remain pending.
+Answer bank aligned to the 23 questions supplied from the organiser's website.
+On 3 October the Lead confirmed online submission. Some answers were revised in
+chat while completing the form; this file is not a verified submitted snapshot.
+The exact form answers and receipt have not been archived in the repository.
 The [technical evidence report](interim-report.md) preserves the detailed results.
 
 ## Problem and Scope
