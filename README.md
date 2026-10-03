@@ -15,15 +15,16 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Wed 30 Sep 2026** · Week 2 of 5 (28 Sep–4 Oct: baseline
+**Last updated: Sat 3 Oct 2026** · Week 2 of 5 (28 Sep–4 Oct: baseline
 and interim report) · Weekly sync / stand-up: Wednesday afternoon
 
-> **Interim report — action for every owner:** Impact coordinates and assembles
-> the report; each component owner supplies a short progress paragraph with
-> evidence links and remaining limitations. The Lead's contribution is already
-> in the [working draft and contribution checklist](docs/interim-report.md).
-> Please add your contribution and flag missing evidence to Impact promptly.
-> **Internal submission target: Sat 3 Oct; official deadline: Sun 4 Oct.**
+> **Immediate decision — Data + Simulation, Sun 4 Oct:** bring comparable
+> no-closure diagnostics for SUMO and the simplified fallback, including scoring
+> windows, filters, denominators, reproducible inputs and remaining flow/queue
+> problems. If SUMO is still not credible enough for Week 3, switch to the
+> fallback; the fallback must also pass a clean no-closure check before use.
+> Keep calibration separate from incident lane/timing assumptions and queue
+> recovery. Lead reviews the evidence and records the decision.
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
@@ -42,8 +43,8 @@ this chain.
 | Date | Milestone | Status |
 |---|---|---|
 | Sun 27 Sep | 🔒 Lock the primary demo incident and backup | ✅ 28 Sep — Lead selected [IN-26-03365](data/demo_shortlist.md) as primary; IN-26-06391 as backup |
-| Sat 3 Oct | 📤 Submit interim report (official deadline Sun 4 Oct) | 🟡 Lead contribution drafted; Impact collecting owner contributions and assembling the [report](docs/interim-report.md) |
-| Sun 4 Oct | 🚦 Go / no-go: if the baseline does not roughly match the detectors, switch to the ~15-link network that day | ⚪ |
+| Sat 3 Oct | 📤 Submit interim report (official deadline Sun 4 Oct) | ✅ Lead confirmed the online form was submitted. The repository keeps the [technical draft](docs/interim-report.md) and [23-question answer bank](docs/interim-report-submission.md); the exact submitted answers and receipt are not archived |
+| Sun 4 Oct | 🚦 Go / no-go: if SUMO is not credible enough for Week 3, switch to the ~15-link fallback after a clean no-closure check | 🟡 SUMO and fallback evidence exist but are not yet comparable or accepted; Data + Simulation review due 4 Oct ([status review](docs/project-status-2026-10-03.md)) |
 | Mon 12 Oct | Pitching workshop, everyone (HKU Innovation Wing 2, 14:00–17:30) | ⚪ |
 | Wed 14 Oct | 🔒 **Results freeze**: bug fixes only after this, every number locked | ⚪ |
 | Sat 17 Oct | 📤 Submit deck + prototype (official deadline Sun 18 Oct) | ⚪ |
@@ -55,13 +56,13 @@ this chain.
 | | Component | Owner | Status |
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md). Week 2 checks on the demo morning: usable calibration bins per threshold ([bin survival](results/data/bin-survival_20260515-0755_1035.md)), which lane closed first ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)), and IN-26-03365 re-screened after the 29 Sep screen fixes ([re-check](results/data/candidates_2026-05-15.md)). For the twin: [flow balance](results/data/flow-balance_20260515-0755_0855.md) and [free-flow speeds](results/data/free-flow_20260508_20260424_0730-1100.md) |
-| B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The local OSM map has audited connectivity for all 24 directed detector links, with path distances within 1.12 times their detector-coordinate distances. AID01106 to AID01107 fell from 1,771.83 m to 441.79 m without editing OSM geometry. A bounded May 15 pre-incident run scores 66.5% GEH<5 and 36.9% speed MAPE, so the baseline target is not met. A separate-day TD lane-scope check corroborates three feed lane counts but does not resolve physical placement, the incident edge, or the initial partial-closure lane. The local network/E1 files remain provisional; Data's ~15-link fallback remains active. ([src/twin/](src/twin/README.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md), [OSM connectivity audit](results/twin/osm-network-audit.md), [lane-scope cross-check](results/twin/may14-lane-scope-crosscheck.md)) |
-| D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | 🟡 Initial P0/P1/P2 CLI and constraint checks implemented; offline tests only, reviewed C/E route context still needed ([handoff](docs/lead-pipeline-handoff.md)) |
-| E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
-| F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Initial bilingual draft CLI with saved-result selection and metric insertion; offline tests only, validated E results still needed ([handoff](docs/lead-pipeline-handoff.md)) |
-| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, headline stats, and playback of an archived window bin by bin, with TD's own incident times on the timeline ([src/console/app.py](src/console/app.py), [IN-26-03365 at 09:15](docs/img/week2-incident-playback.png)). The map tells a loop reporting no vehicle apart from a reading the archive never served. Follow-up fits all 28 detectors in the map and pins a shared light theme ([screenshot](docs/img/console-framing-theme.png), [.streamlit/config.toml](.streamlit/config.toml)). Plan comparison, Approve and audit log still to build |
-| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence with direct source links in [docs/05-pitch.md](docs/05-pitch.md) §3; one completed [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md), with two or three interviews targeted; [interim report outline](docs/interim-report.md) awaiting owner contributions; deck workspace in [deck/](deck/) |
+| B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Week 2 evaluation complete on 100 hand-labelled messages. Initial held-out all-field accuracy: citywide **50%**, corridor **75%**. After prompt and label corrections informed by those results, development scores reached 75% and 85%; these are not fresh held-out results. An October prompt experiment performed worse and was not adopted. Output preservation regressions protect evidence ([score history](data/labelled_incidents/LABELLING.md#score-history), [Lead work](docs/2026-10-01-lead-work.md)) |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 SUMO runs and has connectivity, detector-placement, lane-scope and demand diagnostics, but validation remains below target. In the controlled 2 Oct comparison, removing the global speed ceiling changed GEH<5 from 66.53% to **66.94%** and speed MAPE from 36.94% to **41.36%**; teleports fell from 68 to 53. The ≥85% GEH and ~15% MAPE targets remain unmet. The network and inputs remain provisional; the 4 Oct SUMO/fallback decision needs comparable no-closure evidence ([interim evidence](docs/interim-report.md#3-simulation-evaluation--preliminary-results), [status review](docs/project-status-2026-10-03.md)) |
+| D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | 🟡 P0/P1/P2 generation, schema checks and all five documented constraints are implemented with offline tests. A model-free `--check-only` path now validates the incident/context handoff before generation. Real-model quality and reviewed C/E routes, demand and controls remain outstanding ([handoff](docs/lead-pipeline-handoff.md)) |
+| E | Evaluator: runs every plan, writes metrics to `results/` | Data | 🟡 Fallback evaluation work exists on open PR #35, but its current calibration overlaps an injected closure and is not accepted. Comparable P0/P1/P2 runs, required provenance sidecars and compliance/clearance sensitivity remain outstanding ([status review](docs/project-status-2026-10-03.md)) |
+| F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Bilingual drafting, saved-result selection, metric-token insertion, provenance verification and VMS limits are implemented with offline tests. A model-free handoff check revalidates plans and comparable results before an LLM call. Real validated E results and human language review remain outstanding ([handoff](docs/lead-pipeline-handoff.md), [Lead next steps](docs/2026-10-03-lead-next-steps.md)) |
+| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Accepted console features cover the 28-detector map, speed indicators and archived incident playback ([2 Oct capture](docs/img/interim-console-2026-10-02.png)). The proposed comparison, briefing and operator-decision workflow is under review in PR #41; Windows audit locking and replay-to-result provenance must be corrected before merge. Retain observed playback until accepted plan outputs exist ([status review](docs/project-status-2026-10-03.md)) |
+| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Interim form submitted. Repository evidence includes sourced problem research, one qualitative [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md), the [technical draft](docs/interim-report.md) and [answer bank](docs/interim-report-submission.md). Additional interviews, accepted validation/results, deck and video evidence remain outstanding |
 
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
@@ -70,10 +71,10 @@ The JSON contracts between modules are in
 
 | Owner | Deliverable | Next evidence |
 |---|---|---|
-| Data + Simulation | Baseline replay of IN-26-03365, fitted to detector counts and speeds | 🟡 30 Sep, Data: where traffic joins and leaves between detectors ([flow balance](results/data/flow-balance_20260515-0755_0855.md)) and light-traffic speeds per detector ([free-flow](results/data/free-flow_20260508_20260424_0730-1100.md)), the inputs behind the six detectors that hold 57 of the 81 GEH misses and the twin's 60 km/h cap ([notes](docs/notes-from-data.md)). Still to come: validation chart and stated errors; decide simplified-network fallback on 4 Oct |
-| Lead | Verify the Incident Reader (B) on the selected STN updates and coordinate contract handoffs | ✅ 29 Sep — the [09:01 and 09:36 source messages](data/demo_incident_messages.jsonl) both parsed with core fields matching TD's text and the `incident.json` contract ([run](results/reader/2026-09-29T1608_qwen3-8b.jsonl)); the first `notes` has a misleading direction-bracket sentence. Contract handoffs remain open |
+| Data + Simulation | Baseline evidence and 4 Oct SUMO/fallback decision | 🟡 Bring separate no-closure diagnostics with matching windows/filters where possible, denominators, reproducible inputs and remaining queue/flow issues. Neither model is accepted yet; incident timing/lane assumptions and queue recovery are a separate decision ([status review](docs/project-status-2026-10-03.md)) |
+| Lead | Verify Reader evidence, prepare D/F integration and review the model decision | ✅ Reader evaluation and interim submission complete; model-free D/F handoff checks added and the full suite passes 383 tests. Next: review Data/Simulation evidence on 4 Oct, then validate real C/E context and results ([next steps](docs/2026-10-03-lead-next-steps.md)) |
 | Visuals | First timeline playback of the selected incident | ✅ 28 Sep — IN-26-03365 plays back in the console from the observed detector bins ([screenshot](docs/img/week2-incident-playback.png)); built on observed data, so it does not wait on the 4 Oct go/no-go |
-| Impact | Interviews and interim report, with one paragraph from each owner | Submit report Sat 3 Oct |
+| Impact | Interviews and interim report, with one paragraph from each owner | ✅ Online form submitted 3 Oct; exact submitted answers and receipt are not archived. Additional interviews and final evidence pack remain open |
 
 ### Week 1 outcomes (21–27 Sep)
 
@@ -208,6 +209,21 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Sat 3 Oct**
+- Lead confirmed the interim form was submitted. The repository retains the
+  [technical draft](docs/interim-report.md) and
+  [23-question answer bank](docs/interim-report-submission.md), but not the exact
+  submitted answers or receipt.
+- Lead completed the evidence review of merged and open contributions. The
+  4 October priority is a SUMO/fallback decision using comparable no-closure
+  diagnostics; neither model is accepted yet
+  ([status review](docs/project-status-2026-10-03.md)).
+- Lead added model-free checks for the D/F handoffs, revalidation of plans before
+  briefing, and the binary-open hygiene-check correction. The full Windows
+  Python 3.13 suite passed: 383 tests, with one Altair deprecation warning
+  ([handoff](docs/lead-pipeline-handoff.md),
+  [next steps](docs/2026-10-03-lead-next-steps.md)).
 
 **Wed 30 Sep**
 - Lead: added approved E/F result-provenance sidecars, rejected zero-second
