@@ -8,6 +8,7 @@ from src.briefing.results import load_results, select
 from src.briefing.schema import BRIEFING_SCHEMA, DRAFT_SCHEMA
 from src.generation import generate_checked, validate
 from src.evaluation_provenance import verify_result
+from src.plans.generator import validate_plans
 
 HERE = Path(__file__).parent
 TOKEN = re.compile(r"\{\{([a-z_][a-z_0-9]*)\}\}")
@@ -92,8 +93,12 @@ def assemble(draft, plan, result, baseline, sources):
     return output
 
 
-def write_briefing(plans, result_paths, model="qwen3:8b", *, generation_inputs,
-                   results_root=Path("results/runs")):
+def prepare_comparison(plans, result_paths, *, generation_inputs,
+                       results_root=Path("results/runs")):
+    """Validate the complete handoff without invoking a model or writing files."""
+    plans = validate_plans({"plans": plans}, generation_inputs["policy_context"],
+                           generation_inputs["incident"])
+    result_paths = list(result_paths)
     artifacts = load_results(result_paths, results_root)
     plan, result, baseline, sources = select(plans, artifacts)
     if result["incident_id"] != generation_inputs["incident"]["incident_id"]:
@@ -105,6 +110,13 @@ def write_briefing(plans, result_paths, model="qwen3:8b", *, generation_inputs,
         sources.append(str(Path(source).with_suffix(".provenance.json")).replace("\\", "/"))
     if any(inputs != shared_inputs[0] for inputs in shared_inputs[1:]):
         raise ValueError("Compared runs used different simulation inputs")
+    return plan, result, baseline, sorted(sources)
+
+
+def write_briefing(plans, result_paths, model="qwen3:8b", *, generation_inputs,
+                   results_root=Path("results/runs")):
+    plan, result, baseline, sources = prepare_comparison(
+        plans, result_paths, generation_inputs=generation_inputs, results_root=results_root)
     return generate_checked(
         component="briefing", prompt=HERE / "prompts" / "system.md",
         payload={"selected_plan": plan, "selected_result": result, "baseline_result": baseline,

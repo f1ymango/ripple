@@ -38,6 +38,18 @@ A new incident update needs another reviewed context; D does not schedule phases
 
 ## Generate plans
 
+Before starting the model, C/E can check their incident/context handoff locally:
+
+```bash
+python -m src.plans.run --incident results/reader/2026-09-29T1608_qwen3-8b.jsonl --message-id 138270 --context PATH_TO_REVIEWED_CONTEXT.json --check-only
+```
+
+This runs the same incident/context checks as generation. It does not call a
+model, create outputs, verify source documents, or prove route feasibility. The
+context must already have been reviewed; `reviewed: true` is a caller assertion.
+Candidate constraints are checked once actual plans exist. `--check-only` cannot
+be combined with `--out-dir`.
+
 With Ollama and `qwen3:8b` available, supply an actual reviewed context:
 
 ```bash
@@ -78,6 +90,22 @@ Do not manufacture results to unblock this step. The current unvalidated
 baseline cannot pass. Code selects the lowest total vehicle-hours delay,
 including P0; ties prefer the lower plan ID. This is a single-scenario comparison,
 not evidence of robustness across compliance or clearance assumptions.
+
+Use the same briefing command with `--check-only` instead of `--out` to check
+the saved handoff without generating prose:
+
+```bash
+python -m src.briefing.run --plans data/generated-plans/IN-26-03365-first --results results/runs/P0_RUN.json results/runs/P1_RUN.json results/runs/P2_RUN.json --check-only
+```
+
+This revalidates plans against their saved incident/context, checks result
+comparability and baseline targets, and verifies every provenance sidecar and
+shared input hash. It reports the lowest-delay candidate without writing files
+or calling the model. The direct `write_briefing` API now uses this same gate;
+copying `constraints_checked` into an unsafe plan cannot bypass revalidation.
+Python integrations can call `src.briefing.writer.prepare_comparison` for the
+validated plan, selected result, baseline and source paths. Passing this gate
+does not establish full incident validation or operator approval.
 
 The model drafts bilingual prose using named evidence tokens. Code inserts
 saved metrics, source paths and character counts. Literal numeric claims and

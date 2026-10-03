@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 from src.generation import load_json, save_json
-from src.plans.generator import generate
+from src.plans.generator import check_inputs, generate
 
 
 def read_incident(path, message_id=None):
@@ -25,14 +25,25 @@ def main():
     parser.add_argument("--incident", required=True)
     parser.add_argument("--message-id")
     parser.add_argument("--context", required=True)
-    parser.add_argument("--out-dir", required=True)
+    parser.add_argument("--out-dir")
+    parser.add_argument("--check-only", action="store_true",
+                        help="Validate incident and reviewed context without calling a model")
     parser.add_argument("--model", default="qwen3:8b")
     args = parser.parse_args()
-    out = Path(args.out_dir)
-    if out.exists():
+    if args.check_only and args.out_dir:
+        parser.error("--check-only cannot be combined with --out-dir")
+    if not args.check_only and not args.out_dir:
+        parser.error("--out-dir is required unless --check-only is used")
+    out = Path(args.out_dir) if args.out_dir else None
+    if out is not None and out.exists():
         raise ValueError("Use a new output directory to preserve earlier handoffs")
     context = load_json(args.context)
     incident = read_incident(args.incident, args.message_id)
+    if args.check_only:
+        check_inputs(incident, context)
+        print("Incident and reviewed context checks passed. No model called or output written; "
+              "route evidence and generated plans still require review and validation.")
+        return
     plans = generate(incident, context, args.model)
     out.mkdir(parents=True)
     for plan in plans:

@@ -470,9 +470,9 @@ can come out at 200 vehicles when the truth is 90.
   high-coverage bins for GEH.
 - **Calibrate on `coverage_pct >= 40` *and* `lane_completeness_pct >= 90`**
   (the loader's defaults, exported as a separate `_cov40.csv`). The two are
-  different failures and must not be merged: archive gaps are unrelated to
-  traffic, detector outages are not — sensors fail in exactly the conditions an
-  incident creates. Before 23 Sep an offline lane was counted as an empty one,
+  different failures and must not be merged. Neither mechanism has been shown
+  to be independent of traffic conditions; sensor outages and archive gaps can
+  both limit representativeness. Before 23 Sep an offline lane was counted as an empty one,
   halving a two-lane road's count while coverage still read 100%. If that leaves too few points, relax the threshold
   deliberately and **state the threshold on the validation slide**. What each
   choice leaves for the demo morning, before and after the incident, with the
@@ -490,10 +490,10 @@ can come out at 200 vehicles when the truth is 90.
   thresholds, so it must never be lined up by position with anything. For a
   series with unusable counts blanked but every row kept, use
   `detectors.calibration_series()` — or, for the twin, the file below.
-- Run the loader's coverage-versus-speed check before filtering. If low- and
-  high-coverage bins show similar mean speeds, the filter is a precision filter
-  and nothing more. If they differ, filtering would bias the calibration and
-  that has to be said out loud.
+- Run the loader's coverage-versus-speed check before filtering. Similar mean
+  speeds are a limited diagnostic, not proof of random gaps or unbiased counts.
+  Differences warrant investigating selection effects. Report the thresholds
+  and sensitivity results alongside the calibration.
 
 
 ### Handing the bins to the twin

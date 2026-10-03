@@ -10,11 +10,17 @@ HERE = Path(__file__).parent
 INCIDENT_SCHEMA = load_json(HERE.parent / "reader" / "incident.schema.json")
 
 
-def validate_plans(value, context, incident):
+def check_inputs(incident, context):
+    """Check the incident and policy context before any model call."""
     validate(incident, INCIDENT_SCHEMA)
     check_lanes(incident["lanes_closed"])
     if not incident["in_scope"] or incident["status"] == "CLOSED":
         raise ValueError("Only an active in-scope incident can start plan generation")
+    validate_context(context, incident)
+
+
+def validate_plans(value, context, incident):
+    check_inputs(incident, context)
     validate(value, PLANS_SCHEMA)
     plans = value["plans"]
     if {p["plan_id"] for p in plans} != {"P0", "P1", "P2"}:
@@ -32,11 +38,7 @@ def validate_plans(value, context, incident):
 
 
 def generate(incident, context, model="qwen3:8b"):
-    validate(incident, INCIDENT_SCHEMA)
-    check_lanes(incident["lanes_closed"])
-    if not incident["in_scope"] or incident["status"] == "CLOSED":
-        raise ValueError("Only an active in-scope incident can start plan generation")
-    validate_context(context, incident)
+    check_inputs(incident, context)
     return generate_checked(
         component="plans", prompt=HERE / "prompts" / "system.md",
         payload={"incident": incident, "policy_context": context}, schema=PLANS_SCHEMA,
