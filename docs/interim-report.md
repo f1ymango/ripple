@@ -1,5 +1,9 @@
 # Interim Report Working Draft — Project Ripple
 
+The [23-question submission text](interim-report-submission.md) follows the
+organiser's questions supplied on 3 October. This file retains the technical
+evidence and contribution checklist supporting those answers.
+
 > **Internal submission target:** Saturday 3 October 2026
 >
 > **Official deadline:** Sunday 4 October 2026
@@ -276,6 +280,23 @@ visible. Sustainability benefits, including lower CO₂, remain evaluation goals
 they have not been demonstrated by the current prototype.
 
 ## Submission readiness — pending Lead and Impact confirmation
+
+### Contribution provenance checked on 3 October
+
+| Submitted material | Repository status | Treatment in the questionnaire |
+|---|---|---|
+| Mark (`markwang798369`), broader report revision [#37](https://github.com/f1ymango/ripple/pull/37) | Open; author labels Sections 1 and 5 draft complete | Problem framing and interview themes retained with corrected evidence limits; unsupported causal and benefit claims excluded |
+| Mark, simulation-section revision [#38](https://github.com/f1ymango/ripple/pull/38) | Merged | Saved calibration figures and unmet targets retained |
+| Lead, Reader evidence [#36](https://github.com/f1ymango/ripple/pull/36) | Merged | Held-out and development results distinguished |
+| Data, report contribution [#39](https://github.com/f1ymango/ripple/pull/39) | Open | Established ingestion findings used; fallback acceptance and unbiased-missingness claims excluded |
+| Visuals, report and screenshot [#40](https://github.com/f1ymango/ripple/pull/40) | Merged | Observed playback described separately from pending simulated plan benefits |
+| Visuals, operator workflow [#41](https://github.com/f1ymango/ripple/pull/41) | Open implementation PR | Reported as pending work, not an accepted feature |
+
+These PRs establish submission of material to the repository. They do not
+establish submission to the organiser, approval of this assembled questionnaire,
+or endorsement by each contributor of the subsequent editorial changes.
+
+### Final checks
 
 - [ ] Review the assembled narrative and evidence links, including the screenshot's disclosed clipped right edge.
 - [ ] Confirm the required submission format and any length limits against organiser instructions.
