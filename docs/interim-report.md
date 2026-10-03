@@ -4,10 +4,10 @@
 >
 > **Official deadline:** Sunday 4 October 2026
 
-Impact coordinates and assembles the report, collecting a short, evidence-backed
-contribution from each component owner. The Lead contribution below is drafted;
-the other sections remain outlines pending contributions. Any unmeasured result
-must be labelled as such.
+Impact coordinates and assembles the report. This 3 October revision integrates
+the available component evidence and drafts the remaining narrative sections.
+It remains a working draft awaiting Lead and Impact review, uploader confirmation
+and a submission receipt. No accepted end-to-end plan benefit has been measured.
 
 **Reminder to all owners:** add your paragraph with evidence links and remaining
 limitations, and flag missing inputs to Impact promptly. Do not wait for a
@@ -15,21 +15,41 @@ successful simulation to report current progress and blockers. Impact should
 confirm a collection cutoff that leaves time for Lead review before the internal
 submission target on Saturday 3 October. No collection cutoff is agreed yet.
 
-### Contribution checklist — 30 September
+### Contribution checklist — 3 October
 
 - [x] Lead: Reader results, architecture and D/F progress drafted in §2; final review pending.
-- [ ] Data: ingestion and data limitations in §2; evaluator methodology/status in §3.
-- [ ] Simulation: calibration and validation evidence, limitations and next steps in §3.
-- [ ] Visuals: console progress and a supported screenshot in §4.
-- [ ] Impact: problem framing and summary in §1; feasibility, ethics and interview evidence in §5; assemble all sections.
+- [x] Data: evidence-based ingestion summary in §2 and evaluator status in §3; owner review pending.
+- [x] Simulation: calibration evidence and unmet targets integrated in §3.
+- [x] Visuals: console progress and supported screenshot integrated in §4.
+- [x] Sections 1 and 5: narrative drafted from repository evidence; Impact review pending.
 - [ ] Lead + Impact: review the complete draft, confirm who uploads it, and record submission confirmation.
 
 ## 1. Executive Summary & Social Problem
 
 - **Owner:** Impact
-- **Starting sources:** `docs/00-brief.md` §2 and `docs/05-pitch.md` §§1, 3.
-- Explain the Hong Kong incident-response problem and why the Aberdeen corridor is the initial scope.
-- Explain the limits of individual routing advice and the social and economic effects of disruption, using sourced claims.
+
+Ripple is a prototype incident co-pilot for traffic operators on Hong Kong's
+Aberdeen corridor. It combines public detector observations and bilingual
+incident messages with a planned comparison of response options. The intended
+benefit is to help an operator assess whether a diversion reduces total delay
+without transferring excessive disruption to neighbouring streets. This is a
+hypothesis to test, not a demonstrated outcome or a replacement for existing
+traffic-management operations.
+
+The prototype now includes data ingestion, an evaluated Incident Reader,
+observed-data console playback, and initial plan-generation and briefing
+components. The principal remaining dependency is an accepted traffic baseline
+and comparable evaluator outputs. No validated reduction in delay, emissions
+or emergency travel time is available at this checkpoint. Aberdeen provides a
+bounded demonstration corridor with public detector coverage; the project
+excludes city-wide control and a consumer navigation application
+([scope](00-brief.md), [architecture](03-architecture.md)).
+
+The evaluation will distinguish observed traffic, an incident simulation with
+no intervention, and simulations with response plans. Observations assess model
+credibility; plan-versus-baseline comparisons assess potential benefit. The
+4 October model decision and 14 October results freeze protect time for this
+evaluation and the final demonstration ([schedule](04-plan.md)).
 
 ## 2. Data, Incident Reader & System Architecture
 
@@ -86,8 +106,28 @@ Three unresolved modelling details remain explicit: Simulation proposes an
 arrived at 09:01; and Data/E still owns the initial lane choice for
 `unspecified`. These are distinct from the pre-incident calibration problem.
 The Reader does not resolve them by guessing a lane or changing the source
-timestamp. Data's ingestion contribution and Simulation's result contribution
-are still to be added by their owners.
+timestamp. These retrospective onset and lane choices remain hypotheses until
+the scenario owners agree and document them.
+
+### Data contribution — evidence synthesis, 3 October 2026
+
+The loaders ingest public Transport Department detector readings and archived
+Special Traffic News for the corridor. They preserve missing readings, exclude
+zero-vehicle speed placeholders, and distinguish archive coverage from valid
+lane readings. Merging the three archived news feeds improved complete incident
+timelines from 68% to 85% in the documented March–September sample
+([data methods and sample](02-data.md)). This describes archive reconstruction,
+not incident-detection accuracy or proof that missing observations are random.
+
+The selected incident is IN-26-03365 on 15 May; its screening was refreshed after
+holiday and control-day checks changed
+([refreshed incident screen](../results/data/candidates_2026-05-15.md)).
+The full ranking and backup require refreshed screening before further use.
+Count calibration retains bins with at least 40% archive coverage and 90% valid
+lane readings. The saved [coverage diagnostic](../results/data/bin-survival_20260515-0755_1035.md)
+supports sensitivity analysis, but similar average speeds across coverage groups
+do not establish unbiased missingness. Low or zero flow alone cannot establish
+a physical closure or its exact onset.
 
 ## 3. Simulation Evaluation & Preliminary Results
 
@@ -135,6 +175,23 @@ The 2 October controlled comparison kept network, demand, routes, and seed fixed
 * **Fallback Strategy:** Data's simplified-network fallback remains active for the 4 October submission decision.
 * 🎥 **Diagnostic Video:** [Full-horizon traffic-only diagnostic video](https://github.com/f1ymango/ripple/blob/be7bd65/results/twin/aberdeen-full-traffic-sept30.mp4) (Demonstrates flow execution with no assumed closure).
 
+### Evaluator and model decision — 3 October 2026
+
+Comparable P0/P1/P2 runs are still pending. Each comparison must share the
+incident, network and demand inputs, compliance, clearance duration and seed,
+and preserve provenance linking plans and metrics to those inputs. Sensitivity
+across compliance and clearance assumptions follows the first accepted
+comparison; common assumptions alone do not guarantee a reliable ranking.
+
+The simplified fallback remains under review. Its saved replay injects a closure
+at 08:54 while scoring a nominal pre-incident window ending at 08:55, so those
+scores cannot establish no-closure calibration. The next model decision requires
+a separate no-closure run, clearly separated demand-input and internal scoring
+detectors, and comparable observation windows and filters. An ordinary-day
+speed reference is a comparator, not a mathematical error floor. Incident queue
+formation and recovery and diversion behaviour require separate validation
+([review and evidence links](project-status-2026-10-03.md)).
+
 ## 4. Operator Console & Demo Visuals
 
 - **Owner:** Visuals
@@ -157,7 +214,8 @@ captured from the local console on 2 October 2026. The plan-comparison panel
 reports that completed simulation runs are still pending.
 This screenshot documents the current console; it provides no evidence of
 simulated rerouting or a measured plan benefit. Data: DATA.GOV.HK / Hong Kong
-Transport Department. Basemap: CARTO / OpenStreetMap contributors.*
+Transport Department. Basemap: CARTO / OpenStreetMap contributors. The capture
+has a clipped right edge.*
 
 [Original console PDF export](img/interim-console-2026-10-02.pdf).
 
@@ -165,10 +223,10 @@ Transport Department. Basemap: CARTO / OpenStreetMap contributors.*
 |---|---|
 | Detector map, speed indicators, incident timeline and playback controls | Implemented in the console. |
 | Corridor framing and light theme | Implemented in the console. |
-| P0/P1/coordinated-plan comparison and recommendation | Local, uncommitted draft. Compares saved simulator results for the same incident, compliance, clearance and seed; withholds a recommendation until the baseline passes the project's validation targets. |
-| Paired simulation replay | Local, uncommitted renderer draft, tested with clearly named mock fixtures. The May incident replay awaits matching real SUMO trajectories. |
-| Operator approval and audit logging | Pending implementation in the console. |
-| Briefing/message panel and what-if interaction | Pending console integration. |
+| P0/P1/coordinated-plan comparison and recommendation | Proposed workflow under review in PR #41; not integrated into the accepted console. |
+| Paired simulation replay | Proposed renderer under review. Real trajectories must be bound to the evaluated simulation inputs; file hashes alone do not establish this relationship. |
+| Operator approval and audit logging | Proposed implementation under review; Windows startup and audit locking require correction and testing. |
+| Briefing/message panel and what-if interaction | Accepted end-to-end console integration remains pending. |
 | Final demo video | Pending validated simulation outputs and completion of the operator workflow. |
 
 The focused console and recommendation checks passed all 46 tests on 2 October.
@@ -181,7 +239,49 @@ plan-benefit figures will come from simulator artifacts in `results/`.
 ## 5. Feasibility, Sustainability, Ethics & Impact
 
 - **Owner:** Impact
-- **Starting sources:** `docs/05-pitch.md` §§5–6 and `evidence/interviews/2026-09-26-minibus-driver.md` (one qualitative interview).
-- Present the single-corridor rollout costing and benefit-cost framework, with assumptions and sources.
-- Summarise interview evidence as qualitative, including the number and profile of participants; avoid treating one interview as representative.
-- Discuss spillover, privacy, and the limits of the current evidence.
+
+The intended user is a traffic operator evaluating options before approving
+public advice. The initial feasibility test is a bounded corridor demonstration
+using open aggregate detector observations and public incident notices. A
+deployment budget has not been established. A future costing should separately
+record network preparation and calibration effort, compute and model inference,
+hosting, maintenance, operator training and integration. Potential benefits must
+first be measured as plan-versus-baseline simulator outcomes. Monetary valuation
+would additionally require sourced local values of time, occupancy assumptions
+and explicit operating costs; no benefit-cost ratio is claimed here.
+
+One anonymous experienced green-minibus driver was interviewed on 26 September.
+The interviewer's notes describe reliance on peer verification, concern about
+alternative-route conditions, and interest in clear local and bilingual wording.
+These are qualitative findings from one participant, not representative driver
+preferences or measured compliance. Numerical savings presented in the concept
+prompt were hypothetical stimuli, not Ripple results. Further interviews should
+test these themes with operators and other road users
+([interview notes and limitations](../evidence/interviews/2026-09-26-minibus-driver.md)).
+
+The constraint validator checks residential diversion shares, school-time
+restrictions, blocked roads and the emergency priority corridor. Its initial
+offline implementation does not establish real route suitability: reviewed
+route/context inputs and simulated distributional outcomes remain prerequisites
+([D/F handoff](lead-pipeline-handoff.md)). Vehicle-class restrictions need a
+separate design decision. Reduced corridor delay must not conceal additional
+delay on residential streets or emergency routes.
+
+The intended operating policy requires human review before advice is acted on,
+with an audit trail for operator decisions; the console implementation remains
+under review. Traffic inputs are aggregate observations and public notices,
+without individual vehicle tracking. Interview evidence is anonymised. Uneven
+detector coverage and archive gaps limit confidence, and missing data must remain
+visible. Sustainability benefits, including lower CO₂, remain evaluation goals;
+they have not been demonstrated by the current prototype.
+
+## Submission readiness — pending Lead and Impact confirmation
+
+- [ ] Review the assembled narrative and evidence links, including the screenshot's disclosed clipped right edge.
+- [ ] Confirm the required submission format and any length limits against organiser instructions.
+- [ ] Confirm the uploader and final approved report version.
+- [ ] Upload by the official 4 October deadline and retain the timestamp and receipt.
+
+No uploader or submission receipt is recorded in the reviewed repository
+evidence. This checklist is preparation for submission, not confirmation that
+submission has occurred.

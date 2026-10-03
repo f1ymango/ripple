@@ -127,8 +127,9 @@ reproduces your 242 usable count bins before 08:55 at 40% / 90%.
 - Coverage comes in steps (a bin holds whole archived minutes): 30% adds 7 bins,
   20% adds 56 (298 of 336), 75% instead of 90% for lane readings adds none.
 - Low- and high-coverage bins differ by 0.2 km/h in mean speed before the
-  incident, so the 20% bins are the same traffic measured less precisely
-  (one sampled minute, scaled up five times), not different traffic.
+  incident. This limited comparison does not establish random gaps or unbiased
+  traffic estimates. A 20% bin scales one sampled minute up five times, so count
+  precision and possible selection effects still require sensitivity checks.
 - Suggestion: keep 40% / 90% for the headline GEH figure, and show GEH at
   20% / 90% next to it as the sensitivity check. The validation slide then
   states both.
