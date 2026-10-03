@@ -1,10 +1,28 @@
-# Interim Report Skeleton — Project Ripple
+# Interim Report Working Draft — Project Ripple
 
 > **Internal submission target:** Saturday 3 October 2026
 >
 > **Official deadline:** Sunday 4 October 2026
 
-Impact coordinates the report and collects a short, evidence-backed contribution from each component owner. This is an outline, not a claim that the work below is already complete. Any unmeasured result must be labelled as such.
+Impact coordinates and assembles the report, collecting a short, evidence-backed
+contribution from each component owner. The Lead contribution below is drafted;
+the other sections remain outlines pending contributions. Any unmeasured result
+must be labelled as such.
+
+**Reminder to all owners:** add your paragraph with evidence links and remaining
+limitations, and flag missing inputs to Impact promptly. Do not wait for a
+successful simulation to report current progress and blockers. Impact should
+confirm a collection cutoff that leaves time for Lead review before the internal
+submission target on Saturday 3 October. No collection cutoff is agreed yet.
+
+### Contribution checklist — 30 September
+
+- [x] Lead: Reader results, architecture and D/F progress drafted in §2; final review pending.
+- [ ] Data: ingestion and data limitations in §2; evaluator methodology/status in §3.
+- [ ] Simulation: calibration and validation evidence, limitations and next steps in §3.
+- [ ] Visuals: console progress and a supported screenshot in §4.
+- [ ] Impact: problem framing and summary in §1; feasibility, ethics and interview evidence in §5; assemble all sections.
+- [ ] Lead + Impact: review the complete draft, confirm who uploads it, and record submission confirmation.
 
 ## 1. Executive Summary & Social Problem
 

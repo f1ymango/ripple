@@ -197,6 +197,18 @@ has no "near" (7 of 100).
 **Gaps to settle before labelling another set**: road junctions; a traffic
 advisory that also announces extra public transport service.
 
+### 1 October development experiment (not adopted)
+
+The candidate in `src/reader/prompts/experiment-2026-10-01.md` clarified
+remaining-lane plurals, explicit proximity and consistency of notes. It was
+tested on this existing set with unchanged labels: 50/80 citywide and 12/20
+corridor all-field matches, with no flagged outputs. The saved score is
+`results/reader/2026-10-01T190919941153_qwen3-8b_score.json`. This is a
+development result, not a held-out evaluation. It was below saved v2, so
+`system.md` was restored; no same-session v2 control was run to isolate the
+cause. Full context and demo-check artifacts are in
+`docs/2026-10-01-lead-work.md`. Existing gold labels remain unchanged.
+
 ## Decided cases
 
 When the rules above do not settle a message, choose the reading an operator

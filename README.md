@@ -18,6 +18,13 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 **Last updated: Wed 30 Sep 2026** · Week 2 of 5 (28 Sep–4 Oct: baseline
 and interim report) · Weekly sync / stand-up: Wednesday afternoon
 
+> **Interim report — action for every owner:** Impact coordinates and assembles
+> the report; each component owner supplies a short progress paragraph with
+> evidence links and remaining limitations. The Lead's contribution is already
+> in the [working draft and contribution checklist](docs/interim-report.md).
+> Please add your contribution and flag missing evidence to Impact promptly.
+> **Internal submission target: Sat 3 Oct; official deadline: Sun 4 Oct.**
+
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
 **Critical path:** ✅ demo incident chosen → ⚪ baseline matches reality →
@@ -35,7 +42,7 @@ this chain.
 | Date | Milestone | Status |
 |---|---|---|
 | Sun 27 Sep | 🔒 Lock the primary demo incident and backup | ✅ 28 Sep — Lead selected [IN-26-03365](data/demo_shortlist.md) as primary; IN-26-06391 as backup |
-| Sat 3 Oct | 📤 Submit interim report (official deadline Sun 4 Oct) | ⚪ |
+| Sat 3 Oct | 📤 Submit interim report (official deadline Sun 4 Oct) | 🟡 Lead contribution drafted; Impact collecting owner contributions and assembling the [report](docs/interim-report.md) |
 | Sun 4 Oct | 🚦 Go / no-go: if the baseline does not roughly match the detectors, switch to the ~15-link network that day | ⚪ |
 | Mon 12 Oct | Pitching workshop, everyone (HKU Innovation Wing 2, 14:00–17:30) | ⚪ |
 | Wed 14 Oct | 🔒 **Results freeze**: bug fixes only after this, every number locked | ⚪ |
