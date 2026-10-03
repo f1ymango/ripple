@@ -1,0 +1,4 @@
+<net>
+  <edge id="mock_incident"><lane id="mock_incident_0" shape="0,0 100,0"/></edge>
+  <edge id="mock_alternative"><lane id="mock_alternative_0" shape="0,50 100,50"/></edge>
+</net>

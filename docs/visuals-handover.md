@@ -53,3 +53,30 @@ code or theme changes if it continues displaying the old version.
 
 Metrics must come from simulator outputs in `results/`. Test mocks must be
 clearly named `mock_*` and kept in `tests/fixtures/`.
+
+## Local operator workflow — 3 Oct 2026
+
+Integration branch: `visuals/operator-workflow-oct03`, based on fetched main
+`1f17b4f`. The working checkout is `/tmp/ripple-operator-workflow-oct03`; if
+that temporary directory is cleared, recreate a worktree from the saved branch.
+The original checkout and its earlier replay draft remain separate.
+
+- Plan comparison now reuses D/F validation and requires E's original
+  provenance sidecars and saved generation inputs. Mixed or changed inputs
+  withhold the recommendation.
+- The operator panel reads the matching saved bilingual briefing, checks
+  result/sidecar sources and sign limits, and records identified views and
+  approvals/rejections with the existing audit fields. Inputs are re-read at
+  each decision; a changed draft requires another review. Delivery is manual.
+- The replay renderer uses the same provenance checks. Integration commands
+  and environment variables are in `src/console/REPLAY.md`.
+- Verification: 112 focused console, recommendation, operator-workflow and
+  D/F tests passed; `git diff --check` and compile checks passed. The live
+  1500px preview rendered its waiting state with disabled decisions and no
+  browser errors. Fixtures remain clearly named `mock_*`; there are no real
+  accepted plan runs or May rerouting evidence in this checkpoint.
+
+Preview: `http://127.0.0.1:8502`. It uses the original checkout's recorded
+detector bins via `RIPPLE_DATA_DIR`. The 2 Oct report contribution is already
+pushed in PR #40 and was still open when checked today. This console
+integration is local until Rorath approves its own push and PR.

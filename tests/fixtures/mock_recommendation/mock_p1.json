@@ -1,0 +1,36 @@
+{
+  "plan_id": "P1",
+  "label": "Mock single detour",
+  "rationale": "Synthetic test plan; not a traffic recommendation.",
+  "diversions": [
+    {
+      "od_group": "Mock origin->Mock destination",
+      "via": "Mock Detour",
+      "share": 1
+    }
+  ],
+  "signals": [],
+  "vms": [
+    {
+      "sign_id": "MOCK-VMS",
+      "intent": "Synthetic test advice"
+    }
+  ],
+  "pt_nudge": {
+    "mode": "",
+    "intent": ""
+  },
+  "priority_corridor": {
+    "od": "Mock origin->Mock hospital",
+    "keep_clear": [
+      "Mock Hospital Road"
+    ]
+  },
+  "constraints_checked": [
+    "residential_share_under_15pct",
+    "no_school_street_peak",
+    "emergency_corridor_clear",
+    "od_shares_at_most_one",
+    "no_blocked_road"
+  ]
+}

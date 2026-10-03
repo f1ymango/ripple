@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "plan_id": "P0",
+  "incident_id": "MOCK-INCIDENT",
+  "plan_sha256": "815786e7b1dcbbdb3bb574d5a9949bcf7924fcbc5c49d56bef5a28fcc3028a6c",
+  "generation_inputs_sha256": "b8556d72404dd891a50de225113c991bfad8d6e2a79f54d0d80a25ba8683e021",
+  "simulation_inputs": {
+    "mock_network": "4b759507110c2cc5e36d3fa743d321c8d9fbeb4f92f84b896cb0e8ee544004d3"
+  },
+  "run_id": "mock_P0_c50_t60",
+  "result_sha256": "bd9524d28b2ed02c097e87c6760ac1cb1616538406e3697cce4d032ca6d5eb02"
+}
