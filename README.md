@@ -15,12 +15,19 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Sat 26 Sep 2026** · Week 1 of 5 (21–27 Sep: setup and pick
-the incident) · Stand-ups: Sunday and Wednesday
+**Last updated: Wed 30 Sep 2026** · Week 2 of 5 (28 Sep–4 Oct: baseline
+and interim report) · Weekly sync / stand-up: Wednesday afternoon
+
+> **Interim report — action for every owner:** Impact coordinates and assembles
+> the report; each component owner supplies a short progress paragraph with
+> evidence links and remaining limitations. The Lead's contribution is already
+> in the [working draft and contribution checklist](docs/interim-report.md).
+> Please add your contribution and flag missing evidence to Impact promptly.
+> **Internal submission target: Sat 3 Oct; official deadline: Sun 4 Oct.**
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
-**Critical path:** 🟡 demo incident chosen → ⚪ baseline matches reality →
+**Critical path:** ✅ demo incident chosen → ⚪ baseline matches reality →
 ⚪ three plans compared → ⚪ video. If anything slips, cut features and protect
 this chain.
 
@@ -34,8 +41,8 @@ this chain.
 
 | Date | Milestone | Status |
 |---|---|---|
-| Sun 27 Sep | 🔒 Team picks **the** demo incident | ⚪ |
-| Sat 3 Oct | 📤 Submit interim report (official deadline Sun 4 Oct) | ⚪ |
+| Sun 27 Sep | 🔒 Lock the primary demo incident and backup | ✅ 28 Sep — Lead selected [IN-26-03365](data/demo_shortlist.md) as primary; IN-26-06391 as backup |
+| Sat 3 Oct | 📤 Submit interim report (official deadline Sun 4 Oct) | 🟡 Lead contribution drafted; Impact collecting owner contributions and assembling the [report](docs/interim-report.md) |
 | Sun 4 Oct | 🚦 Go / no-go: if the baseline does not roughly match the detectors, switch to the ~15-link network that day | ⚪ |
 | Mon 12 Oct | Pitching workshop, everyone (HKU Innovation Wing 2, 14:00–17:30) | ⚪ |
 | Wed 14 Oct | 🔒 **Results freeze**: bug fixes only after this, every number locked | ⚪ |
@@ -47,19 +54,28 @@ this chain.
 
 | | Component | Owner | Status |
 |---|---|---|---|
-| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md) |
+| A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md). Week 2 checks on the demo morning: usable calibration bins per threshold ([bin survival](results/data/bin-survival_20260515-0755_1035.md)), which lane closed first ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)), and IN-26-03365 re-screened after the 29 Sep screen fixes ([re-check](results/data/candidates_2026-05-15.md)). For the twin: [flow balance](results/data/flow-balance_20260515-0755_0855.md) and [free-flow speeds](results/data/free-flow_20260508_20260424_0730-1100.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Starter scripts and a draft Aberdeen network workflow are in [src/twin/](src/twin/README.md). Runs on Simulation's machine (vehicles moving, reported 26 Sep; no screenshot or video in the repo yet); route teleports, detector calibration, and incident validation still need work. |
-| D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The local OSM map has audited connectivity for all 24 directed detector links, with path distances within 1.12 times their detector-coordinate distances. AID01106 to AID01107 fell from 1,771.83 m to 441.79 m without editing OSM geometry. A bounded May 15 pre-incident run scores 66.5% GEH<5 and 36.9% speed MAPE, so the baseline target is not met. A separate-day TD lane-scope check corroborates three feed lane counts but does not resolve physical placement, the incident edge, or the initial partial-closure lane. The local network/E1 files remain provisional; Data's ~15-link fallback remains active. ([src/twin/](src/twin/README.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md), [OSM connectivity audit](results/twin/osm-network-audit.md), [lane-scope cross-check](results/twin/may14-lane-scope-crosscheck.md)) |
+| D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | 🟡 Initial P0/P1/P2 CLI and constraint checks implemented; offline tests only, reviewed C/E route context still needed ([handoff](docs/lead-pipeline-handoff.md)) |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
-| F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
-| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, with headline stats and a bin slider ([src/console/app.py](src/console/app.py), [screenshot](docs/img/week1-corridor-map.png)). Plan comparison, Approve and audit log still to build |
-| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence drafted in [docs/05-pitch.md](docs/05-pitch.md) §3; interview plan with three target profiles and the first interview scheduled for Sat 26 Sep ([evidence/interviews/plan.md](evidence/interviews/plan.md)); deck workspace in [deck/](deck/) |
+| F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Initial bilingual draft CLI with saved-result selection and metric insertion; offline tests only, validated E results still needed ([handoff](docs/lead-pipeline-handoff.md)) |
+| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Streamlit console with the corridor detector map, coloured by speed, headline stats, and playback of an archived window bin by bin, with TD's own incident times on the timeline ([src/console/app.py](src/console/app.py), [IN-26-03365 at 09:15](docs/img/week2-incident-playback.png)). The map tells a loop reporting no vehicle apart from a reading the archive never served. Follow-up fits all 28 detectors in the map and pins a shared light theme ([screenshot](docs/img/console-framing-theme.png), [.streamlit/config.toml](.streamlit/config.toml)). Plan comparison, Approve and audit log still to build |
+| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Problem evidence with direct source links in [docs/05-pitch.md](docs/05-pitch.md) §3; one completed [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md), with two or three interviews targeted; [interim report outline](docs/interim-report.md) awaiting owner contributions; deck workspace in [deck/](deck/) |
 
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
 
-### This week: Week 1 (21–27 Sep)
+### This week: Week 2 (28 Sep–4 Oct)
+
+| Owner | Deliverable | Next evidence |
+|---|---|---|
+| Data + Simulation | Baseline replay of IN-26-03365, fitted to detector counts and speeds | 🟡 30 Sep, Data: where traffic joins and leaves between detectors ([flow balance](results/data/flow-balance_20260515-0755_0855.md)) and light-traffic speeds per detector ([free-flow](results/data/free-flow_20260508_20260424_0730-1100.md)), the inputs behind the six detectors that hold 57 of the 81 GEH misses and the twin's 60 km/h cap ([notes](docs/notes-from-data.md)). Still to come: validation chart and stated errors; decide simplified-network fallback on 4 Oct |
+| Lead | Verify the Incident Reader (B) on the selected STN updates and coordinate contract handoffs | ✅ 29 Sep — the [09:01 and 09:36 source messages](data/demo_incident_messages.jsonl) both parsed with core fields matching TD's text and the `incident.json` contract ([run](results/reader/2026-09-29T1608_qwen3-8b.jsonl)); the first `notes` has a misleading direction-bracket sentence. Contract handoffs remain open |
+| Visuals | First timeline playback of the selected incident | ✅ 28 Sep — IN-26-03365 plays back in the console from the observed detector bins ([screenshot](docs/img/week2-incident-playback.png)); built on observed data, so it does not wait on the 4 Oct go/no-go |
+| Impact | Interviews and interim report, with one paragraph from each owner | Submit report Sat 3 Oct |
+
+### Week 1 outcomes (21–27 Sep)
 
 | Owner | Task | Done when | Status |
 |---|---|---|---|
@@ -67,45 +83,48 @@ The JSON contracts between modules are in
 | Data | Pull Aberdeen detector + incident archives; shortlist 3–5 corridor incidents with good detector coverage | shortlist in `data/candidates.md` | ✅ 26 Sep — all 35 corridor accidents of 22 Mar–21 Sep checked against ordinary days ([data/candidates.md](data/candidates.md)); Data's pick of five, headed by IN-26-03365, with reasons and replay windows ([data/demo_shortlist.md](data/demo_shortlist.md)) |
 | Visuals | Map of corridor detectors coloured by speed, from a static file | screenshot posted | ✅ 24 Sep — [screenshot](docs/img/week1-corridor-map.png) of the 21 Sep 08:20 bin ([src/console/app.py](src/console/app.py)) |
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | 🟡 SUMO and a draft network run locally; record/share evidence and improve route coverage ([guide](src/twin/README.md)) |
-| Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | `evidence/interviews/plan.md` exists with one interview scheduled; every claim in `05-pitch.md` §3 carries a source and the date it was checked | 🟡 plan exists and one interview is scheduled, Sat 26 Sep 15:00 ([plan](evidence/interviews/plan.md)); every claim in [05-pitch.md](docs/05-pitch.md) §3 now carries a source and a 25 Sep check date, but 8 of the 15 sources are a homepage or listing rather than the page with the figure |
+| Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | Interview notes, sourced problem claims, and an interim report outline | 🟡 one [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md) completed on 26 Sep; problem claims revised with direct sources in [docs/05-pitch.md](docs/05-pitch.md); [interim report](docs/interim-report.md) remains an outline |
 
-### In review
+### Integration status
 
-Work that exists but is not on `main` yet, as of Sat 26 Sep. Everything
-merged shows in the rows above; pull requests #1–#19 are merged.
+The console framing, theme and playback control fixes are merged in
+[PR #31](https://github.com/f1ymango/ripple/pull/31), with a
+[Visuals handover](docs/visuals-handover.md) saved for the next session. The
+console playback (PR #29), Component C source audits (PR #30), and Data's
+[week 2 checks (PR #32)](https://github.com/f1ymango/ripple/pull/32) are merged.
+The local OSM network and E1 loops remain provisional and uncommitted.
 
-| What | Who | Branch |
-|---|---|---|
-| Twin: demand fitting, the FCD diagnostic GIF, `calibration.json`, and fixes across the twin scripts — **pushed, but no pull request is open**. It also carries a `data/candidates.md` that Data's 26 Sep table supersedes; drop that file from the pull request | Simulation | `sim/e1-evaluation-correctness` |
+### Current handoffs and open decisions
 
-### Open decisions
-
-- **The demo incident** (🔒 Sun 27 Sep), from Data's shortlist. Corridor
-  incidents are rare: 15–21 Sep had only two (IN-26-06874, IN-26-06904), so
-  search a longer window. Over six months (22 Mar–21 Sep) the corridor had 55
-  traffic accidents: 49 have a complete timeline and 35 of those lasted 20
-  minutes or more (all three STN files read, [docs/02-data.md](docs/02-data.md) §2).
-  Data proposes five in [data/demo_shortlist.md](data/demo_shortlist.md),
-  headed by **IN-26-03365** (Fri 15 May, 09:01–10:02: the Wong Chuk Hang Road
-  flyover to the tunnel, "part of the lanes" then "all lanes"; the queue
-  reached Aberdeen Praya Road). The evidence for all 35 is
-  [data/candidates.md](data/candidates.md).
-- **One corridor-road list.** The Reader ([src/reader/reader.py](src/reader/reader.py))
-  and the loaders ([src/loaders/corridor.py](src/loaders/corridor.py)) each
-  keep their own, and they differ: Stubbs Road and the Chinese road names are
-  only in the Reader's. Pick one and share it.
 - **Who runs the live poller, and on which machine.** Its data has no gaps,
   but it only records while it runs (`python -m src.loaders.fetch live`).
-- **What the Evaluator (E) simulates for `lanes_closed: ["unspecified"]`**
-  (Data, before E's first run). The Reader now says "some lanes are closed, the
-  message does not say which" instead of "none"; E picks the closure to
-  simulate and states that assumption with the results
-  ([docs/03-architecture.md](docs/03-architecture.md) §3). 7 of the 20 dev
-  messages are this case.
+- **What the Evaluator (E) simulates for `lanes_closed: ["unspecified"]`.**
+  At the 30 Sep meeting, Data took ownership of proposing a disclosed default
+  for an unspecified lane. The team is also discussing using lane-level detector
+  readings available by the message time to choose a lane for a particular
+  incident when the evidence supports it, instead of relying on that default.
+  Neither the default lane, the evidence rule, nor the no-evidence behaviour
+  has been agreed yet. For `IN-26-03365`, five successive archived AID01104
+  readings from 08:54–09:00
+  show no slow-lane vehicles while the fast lane carried traffic. This supports
+  Data's **slow-lane proposal**, but does not prove which physical lane was
+  closed ([lane evidence](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
+  Keep physical replay timing separate from operator information: Simulation's
+  full incident P0 handoff proposes an 08:55 closure onset, a 09:36 all-lane
+  phase and 10:02 clearance, while TD's first report arrived at 09:01. The team
+  still needs to agree the P0 phase timing; no operator plan can act before
+  the relevant message. E must disclose the lane choice, its basis and the
+  timing assumption with results ([docs/03-architecture.md](docs/03-architecture.md) §3).
+  The pre-incident GEH target ends at 08:55, before TD's `unspecified` message;
+  its current failure needs separate diagnosis.
 - **Calibration thresholds** (Data + Simulation): a bin is used for GEH only at
   ≥ 40% archive coverage and ≥ 90% of lane readings valid
   ([docs/02-data.md](docs/02-data.md) §7). Relax them deliberately if too few
-  bins survive, and state the values on the validation slide.
+  bins survive, and state the values on the validation slide. *29 Sep, for
+  15 May before 08:55:* 242 of 336 bins at 40% / 90%, 298 at 20% / 90%; 75% instead
+  of 90% for lane readings changes nothing; low- and high-coverage bins differ by
+  0.2 km/h in mean speed, so the filter trades precision, not bias
+  ([bin survival](results/data/bin-survival_20260515-0755_1035.md)).
 - **`network_state.json` vs what A hands the twin**: A now writes the twin's
   own input, `sim/scenarios/detectors.json`, one row per 5-minute slot
   (`python -m src.loaders.fetch twin-detectors`, as the Lead suggested on
@@ -116,6 +135,14 @@ merged shows in the rows above; pull requests #1–#19 are merged.
 
 ### Known issues
 
+- [data/candidates.md](data/candidates.md) was generated before the 29 Sep
+  screen fixes (public holidays were accepted as ordinary days; control days
+  before `--start` were never checked for incidents) and the 30 Sep addition
+  of Stubbs Road to corridor screening. The demo incident was re-checked and
+  unchanged under the first two fixes ([re-check](results/data/candidates_2026-05-15.md)),
+  but that one-day re-check also predates the Stubbs Road change. Regenerate
+  the relevant screen before relying on any ranking or control-day claim
+  ([notes](docs/notes-from-data.md)).
 - Incident Reader errors left in v2
   ([LABELLING.md](data/labelled_incidents/LABELLING.md#score-history)): one
   named lane closed with "only remaining lanes are" (plural) gets
@@ -129,25 +156,36 @@ merged shows in the rows above; pull requests #1–#19 are merged.
   about half, so the loader reports a flow rate and a `coverage_pct` instead.
   The missing minutes cannot be recovered
   ([docs/02-data.md](docs/02-data.md) §3, §7).
-- For [C], found by running the twin's scripts on Data's output (26 Sep, on a
-  network built from OpenStreetMap with `build_network`'s netconvert flags):
-  - `place_detectors` takes the nearest edge whatever its direction. 10 of the
-    28 loops landed on a carriageway heading the other way (AID01104, AID01216,
-    AID01217, AID01218–AID01222, TDSSPWR10002, TDSSPWR10003) — AID01104 is the
-    key detector for the proposed demo incident. Fix the matching, or set
-    `edge_id` / `position_m` by hand: `twin-detectors` keeps them on rewrite.
-  - Each loop sits on lane `_0` only, while A's counts cover the whole road,
-    so GEH compares one lane with all of them.
-  - `fit_demand` sums every non-null count in the file and spreads it over one
-    hour: for IN-26-03365's 2 h 40 min window that is 2,702 vehicles at
-    AID01107 against about 1,531 in the pre-incident hour (×1.8).
-  - `evaluate` skips any slot whose speed is null, so the slots with no
-    vehicles at all — the closure itself — are never compared.
-  - `build_network` does not pass netconvert's `--lefthand`; Hong Kong drives
-    on the left, so lane 0 and turns come out mirrored, which matters for
-    which lane an incident closes.
-  - The update log says `sim/aberdeen.net.xml` and `sim/detectors.add.xml`
-    were committed; neither is in the repository.
+- For [C], the draft network and E1 loops are **not reviewed or committed**.
+  The earlier September run stopped at 6,410 of 30,900 seconds with zero
+  scoreable bins. A bounded May 15 pre-incident replay now completes 4,500 s:
+  66.5% of 242 count bins meet GEH<5, speed MAPE is 36.9% over 296 bins, and
+  the run ends with 2,405 waiting vehicles and 68 teleports. Even quarter-volume
+  demand still produced 9 teleports, so demand volume is not the only unresolved
+  factor. The offline audit now checks all 24 directed corridor links: all are
+  reachable, and route distances are 0.959-1.120 times direct distance on the main
+  chains and 1.002-1.093 times on the western alternative. This checks locality; it
+  does not make the network reviewed or validate incident behavior. Keep the
+  Data-owned ~15-link fallback active.
+- For [C], the mapper now uses detector chains and source road names to
+  reject opposite-direction and wrong-road nearest-edge matches. OSM aliases
+  are accepted only when the cached feed's lane count supports the candidate;
+  nearby same-name edges use lane count only as a tie-break. The old AID01106
+  surface-road selection forced a 1.77 km route to AID01107 despite 458 m
+  between their registry coordinates. The source-matched tunnel approach is
+  442 m along the SUMO route. AID01214 now matches three TD lanes, and
+  AID01218's tunnel-exit edge is pinned to the exact network and registry
+  hashes. Three lane counts still differ between OSM and TD; three more
+  detectors have no lane observations in the cached window. See the generated
+  [OSM audit](results/twin/osm-network-audit.md) and [mapping review](results/twin/detector-map-review.md).
+  The draft remains unapproved and has no new traffic validation.
+- For [C], the demand fitter now refuses a calibration window that extends
+  into the configured incident, and the SUMO runner checks its edge, selected
+  lane indices, and incident horizon before starting. It can model ordered
+  closure phases, including escalation to all lanes. This prevents an invalid
+  scenario from silently becoming a lane-0 closure. It does not choose a lane
+  for the incident's initial "part of the lanes" period; that remains an
+  explicit scenario decision.
 - For [C]: the processed segment-speed feed is fully retrievable. It has no
   volume, so it cannot support GEH, but it is the better series for the speed
   side of validation ([docs/02-data.md](docs/02-data.md) §3).
@@ -171,7 +209,127 @@ merged shows in the rows above; pull requests #1–#19 are merged.
 
 Newest first. One line per change that matters, with a link to the proof.
 
+**Wed 30 Sep**
+- Lead: added approved E/F result-provenance sidecars, rejected zero-second
+  signal actions and common worded numeric claims. Saved copy-ready
+  [team follow-up notes](docs/2026-09-30-lead-follow-up.md), including the
+  fallback PR review and outstanding validation decisions.
+- Lead: added the verified Reader contribution to the [interim report](docs/interim-report.md)
+  and the initial D/F command-line path with offline tests and a
+  [C/E handoff guide](docs/lead-pipeline-handoff.md). No real plan benefits are claimed.
+- Lead: the Reader now imports the shared `CORRIDOR_ROAD_NAMES` from
+  [src/loaders/corridor.py](src/loaders/corridor.py). Stubbs Road stays in scope
+  as the over-hill alternative in [docs/02-data.md](docs/02-data.md) §5, and
+  the loaders' incident screen now catches it too. The duplicate road list
+  and its open decision are closed ([Data handoff](docs/notes-from-data.md)).
+- Component A, for the 66.5% GEH / 36.9% MAPE diagnostic: 57 of its 81 failing
+  count bins are at six detectors where the twin carries 33–61% of the observed
+  traffic, each just after a stretch where traffic joins the corridor. New
+  `fetch flow-balance` measures those joins and exits between neighbouring
+  detectors on 15 May and two ordinary Fridays (e.g. +646 veh/h between AID01216
+  and the westbound tunnel), and `fetch free-flow` measures light-traffic speeds
+  per detector: the median driver beats the twin's 60 km/h cap at 14 of 25
+  ([flow balance](results/data/flow-balance_20260515-0755_0855.md),
+  [free-flow](results/data/free-flow_20260508_20260424_0730-1100.md),
+  suggestions for Simulation in [docs/notes-from-data.md](docs/notes-from-data.md)).
+
+**Tue 29 Sep**
+- Component G: follow-up on `visuals/console-framing-theme` fits the map
+  to the detector bounds, keeping all 28 detector circles inside the frame at
+  1280px and 1500px browser widths. A shared light theme with blue controls makes
+  screenshots consistent under light and dark browser preferences; the tab and
+  page titles now match. Fixed a playback bug found in the browser: pausing,
+  stepping, rewinding or scrubbing now immediately restores the Play button.
+  All 38 console tests passed, including regressions for the button state and
+  stepping after scrubbing. Playwright checked the two widths, the theme,
+  scrubbing to the real 09:15
+  incident bin, and playback advancing and pausing.
+  ([screenshot](docs/img/console-framing-theme.png),
+  [src/console/app.py](src/console/app.py),
+  [.streamlit/config.toml](.streamlit/config.toml))
+- Lead: checked the two archived messages for `IN-26-03365` with `qwen3:8b`
+  (seed 42). Both parsed and matched the expected road, direction, landmark,
+  incident type, timestamps, and lane scope (`["unspecified"]` then `["all"]`).
+  TD announced them at 09:01 and 09:36; the first archived copies were at
+  09:07 and 09:43. The first `notes` incorrectly says the road name includes
+  the direction bracket, although the structured fields separate them correctly.
+  This two-message check is not a new accuracy score
+  ([source messages](data/demo_incident_messages.jsonl),
+  [run](results/reader/2026-09-29T1608_qwen3-8b.jsonl),
+  [LLM log](evidence/ai-log/2026-09-29.jsonl)).
+- Tracker: reconciled the component, interview, and PR status with the merged console playback and Component C audits. The baseline is still unvalidated and the interim report remains an outline ([playback](docs/img/week2-incident-playback.png), [lane-scope cross-check](results/twin/may14-lane-scope-crosscheck.md), [interim outline](docs/interim-report.md)).
+- Component A: fixed two bugs in the candidate screen: public holidays counted
+  as ordinary days (IN-26-03365 was compared with Labour Day, 1 May), and control
+  days before `--start` were never checked for incidents. IN-26-03365 re-screened
+  under both fixes: ordinary days now 8 May and 24 Apr, same five detectors
+  credited, score 4.38 ([re-check](results/data/candidates_2026-05-15.md)). New
+  demo-morning checks: usable calibration bins per threshold
+  ([bin survival](results/data/bin-survival_20260515-0755_1035.md)) and
+  lane-level evidence supporting Data's slow-lane proposal
+  ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
+  One shared corridor road list, `CORRIDOR_ROAD_NAMES`
+  ([corridor.py](src/loaders/corridor.py)). Notes for the Lead and Simulation:
+  [docs/notes-from-data.md](docs/notes-from-data.md).
+
+**Mon 28 Sep**
+- Component C: refreshed the May 15 hand-over from the official HK traffic archive (80 of 113 listed snapshots served; 28 detectors, 32 five-minute slots; 600 count-and-speed pairs) and regenerated the source-hashed OSM audit. The observations reproduce the same six unresolved lane scopes; no placement or calibration claim changed ([audit](results/twin/osm-network-audit.json)).
+- Component C: added a source-hashed cross-day lane-scope auditor and checked three OSM/TD lane-count conflicts against six listed May 14 archive snapshots using the TD parser. AID01221 and AID01222 report three lane labels in 12 observed periods; TDSAPR10001 reports three in 8. This separate-day evidence corroborates feed scope but does not establish placement. Three detectors were absent from selected snapshots, so those gaps remain open ([auditor](src/twin/audit_lane_scope.py), [cross-check](results/twin/may14-lane-scope-crosscheck.md)).
+- Component C: reran the offline OSM/TD audit from the local May 15 cache and draft SUMO network; it reproduced 24/24 reachable directed links, with six lane-scope gaps unresolved. No network geometry, lane tags, observations, or simulation outputs changed.
+- Component G: the console plays an archived window back bin by bin — transport
+  controls, a scrubbable slider, and a timeline strip of the slowest corridor
+  detector with TD's own reported/cleared times on it. The map now has three
+  states rather than two: a loop that reported and counted nobody is the
+  closure, and is no longer drawn in the same grey as a reading the archive
+  never served. On IN-26-03365 (Fri 15 May) AID01101–04 fall from ~65 km/h to
+  3–8 km/h from 08:55 and AID01104's loops report an empty road at 09:15–09:25,
+  while the corridor *mean* moves by about 2 km/h — which is why the strip
+  tracks the slowest detector and not the mean.
+  ([screenshot](docs/img/week2-incident-playback.png), [src/console/app.py](src/console/app.py))
+- Component C: extended the offline source-backed network audit to include all six directed links on the western alternative. The 24 main and alternative links are reachable in the local OSM network, with modeled path distance at most 1.12 times registry-coordinate distance. Centralized the two western travel orders so detector direction matching, route generation, and audit use the same chains. No OSM tags, geometry, lane counts, or traffic observations changed; the local network and E1 files remain unreviewed. Ten focused Component C tests passed. ([audit](results/twin/osm-network-audit.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md))
+
+**Sun 27 Sep**
+- Component C: added fail-fast checks before demand fitting and SUMO launch.
+  The fitter verifies its duration fits before incident onset; the runner
+  verifies the closure edge and lane indices against the local network and
+  supports ordered lane-closure phases and requires the full closure to fit
+  the configured run horizon. An unspecified lane selection is never
+  converted to lane 0. No simulation was launched in this change; the initial
+  partial-closure lane still needs an explicit, source-backed scenario choice.
+- Component C: audited 28 detector placements against 66 cached May 15 raw
+  snapshots and the exact local OSM/SUMO hashes. Used OSM's English street-name
+  aliases only when the same-window TD lane count corroborates the edge. The
+  AID01106-to-AID01107 position-aware route fell from 1,771.83 m to 441.79 m;
+  AID01214 now maps to a three-lane flyover edge, and AID01218 is pinned to a
+  two-lane tunnel-exit edge for the current network/registry hashes. Three lane
+  mismatches, three detectors without usable lane records, and an endpoint
+  offset at AID01106 remain visible in the audit. No OSM tags or geometry were
+  edited, no simulation was rerun, and the local network remains provisional
+  ([audit](results/twin/osm-network-audit.md),
+  [placement review](results/twin/detector-map-review.md)).
+- Tracker: clarified the Week 2 Lead task as Reader verification and contract
+  handoff; Data/E owns the `unspecified` lane assumption, and Simulation/C
+  owns physical edge mapping ([docs/04-plan.md](docs/04-plan.md),
+  [docs/03-architecture.md](docs/03-architecture.md)).
+- Lead: selected `IN-26-03365` as the primary demo incident and
+  `IN-26-06391` as backup from Data's five-candidate shortlist. The initial
+  lane and affected simulation edge still need an explicit modelling decision;
+  selection is not baseline validation
+  ([data/demo_shortlist.md](data/demo_shortlist.md)).
+
 **Sat 26 Sep**
+- Component C: rebuilt the draft SUMO network from the cached OSM extract with left-hand traffic and street names; detector placement now uses repository detector chains, source road names, and edge direction. Rechecked the ten flagged placements and regenerated local per-lane loops. This fixes several wrong-road candidates, including AID01104. Raw-feed/OSM lane-count mismatches and the 3.6x AID01106-to-AID01107 path remain unresolved; no road geometry or lane counts were fabricated or edited, and the network is still provisional ([map review](results/twin/detector-map-review.md)).
+- Component C: pulled the latest `main` (PR #19 was already an ancestor of this
+  branch). Rebuilt the May 15 07:55–10:35 detector hand-over from the raw cache:
+  80 snapshots parsed, 896 detector slots, 600 with both count and speed. The
+  archive index endpoint was unreachable, so this uses only cached snapshots
+  and does not claim complete archive coverage. Replaced the obsolete Sep 3
+  calibration window with the May incident grid. Confirmed AID01104 on the
+  eastbound flyover; made provisional local placements for the other nine
+  flagged detectors and regenerated per-lane loops. OSM-name/offset conflicts
+  are documented, and the draft network remains unreviewed; no new full
+  simulation validation was run ([sim/scenarios/calibration.json](sim/scenarios/calibration.json),
+  [results/twin/detector-map-review.md](results/twin/detector-map-review.md),
+  [src/twin/](src/twin/)).
 - Data: demo incident shortlist. The candidate screen was rebuilt: every
   corridor accident is compared with two ordinary days (same weekday and time,
   no corridor incident), and a detector counts only if it ran 20+ km/h slower
@@ -184,12 +342,19 @@ Newest first. One line per change that matters, with a link to the proof.
   on a full 5-minute grid (an empty slot is a row, never a gap), and
   `fetch twin-detectors` writes `sim/scenarios/detectors.json` with one
   observation per slot and `null` where a count or speed is missing or
-  unusable. Checked through the twin's own `evaluate.py` (a perfect simulation
-  scores GEH 0 everywhere; one missing row mis-aligns the rest) and
-  `place_detectors.py` (all 28 detectors within 6.3 m of an edge; the
-  direction problems are under Known issues). 266 tests
+  unusable. Checked through the twin's own `evaluate.py` (timestamps keep a
+  missing interval from shifting later comparisons) and `place_detectors.py`.
+  The direction fix reads `data/detectors.csv` because
+  the export intentionally omits map metadata. 266 tests
   ([src/loaders/twin_export.py](src/loaders/twin_export.py),
   [tests/test_twin_bridge.py](tests/test_twin_bridge.py)).
+- Component C follow-up: detector direction and leg metadata drive placement
+  and route chains, all lanes are measured, demand uses the first calibration
+  hour, and zero-count bins remain scoreable without a speed. The 15 May replay
+  begins at the measured 08:55 queue onset with 15 minutes of warm-up. The
+  pre-incident diagnostic records 66.5% GEH<5 and 36.9% speed MAPE; it is not a
+  validated incident baseline. The OSM network remains provisional
+  ([results/twin/](results/twin/)).
 - Lead: repo hygiene and CI. `pandas` moves to 2.3.3, which has a Python 3.14
   build, so `pip install -r requirements.txt` works on 3.14 and that known
   issue is gone. A `.gitattributes` decides line endings for everyone instead
@@ -208,12 +373,10 @@ Newest first. One line per change that matters, with a link to the proof.
   ([src/twin/evaluate.py](src/twin/evaluate.py), [tests/test_twin.py](tests/test_twin.py)).
 - The twin (component C) has code: SUMO setup scripts from Simulation (#12),
   moved into the repo layout — scripts in [src/twin/](src/twin/README.md),
-  run from the repo root as `python -m src.twin.<script>`; the reviewed
-  network and loops committed as `sim/aberdeen.net.xml` and
-  `sim/detectors.add.xml`; downloads, routes and SUMO output in the
-  git-ignored `sim/work/`. A review of the move also fixed crashes in
-  `fit_demand` and in `place_detectors` for lon/lat detectors. Not run end to
-  end since the move: SUMO is not installed on the Lead's machine.
+  run from the repo root as `python -m src.twin.<script>`. The network and
+  loops referenced by the old update were not present on this branch; the new
+  OSM build is an unreviewed local draft, and generated files stay under the
+  git-ignored `sim/work/`.
 - Interview plan: three target profiles, first interview scheduled for
   Sat 26 Sep 15:00 ([evidence/interviews/plan.md](evidence/interviews/plan.md), #13).
 - Incident Reader accuracy merged (#14).

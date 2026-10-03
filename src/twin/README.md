@@ -5,7 +5,7 @@ This is component C of Ripple, the twin: `src/twin/` holds the scripts, `sim/` t
 ## What the pieces mean
 
 - **Network (`.net.xml`)**: roads, lanes, junctions and legal connections. `netconvert` builds the first draft from OpenStreetMap; OSM is not a ground-truth engineering map, so inspect and edit the result.
-- **Route (`.rou.xml`)**: each vehicle's trip and departure time. `randomTrips.py` creates candidate trips; the included fitting script adjusts detector-to-detector route weights against observed counts.
+- **Route (`.rou.xml`)**: each vehicle's trip and departure time. the route builder creates detector-to-detector corridor trips; the fitter adjusts route weights against observed counts and emits rate-based flows across the configured horizon.
 - **E1 loop (`.add.xml`)**: a simulated induction loop on an edge. This measures vehicles and speed over a configured interval. Positions are metres along an edge, not latitude/longitude.
 - **TraCI**: Python control of a running SUMO simulation. The runner closes selected lanes for the incident duration, then reopens them.
 - **GEH and MAPE**: GEH compares count totals; speed MAPE compares 5-minute mean speeds. Keep reality vs baseline separate from plan vs baseline.
@@ -23,9 +23,23 @@ If the check fails, fix the SUMO PATH / `SUMO_HOME` before continuing. The Pytho
 
 ## Step 2 — Add the team's inputs
 
-Copy `sim/scenarios/detectors.example.json` to `sim/scenarios/detectors.json` and enter the real detector IDs, WGS84 longitude/latitude, observed 5-minute counts, and speeds. One observation row is required per detector per 5-minute interval for the pre-incident calibration hour and incident replay window. Preserve missing values as `null`; do not invent or interpolate observations. The coordinates, detector IDs, times, incident lane list and actual incident duration must come from the team data, not this template. Keep the working `detectors.json` and `scenario.json` local; they are excluded from Git.
+Generate the detector hand-over from the archive cache for the whole replay window; it writes one row per 5-minute slot and preserves unusable counts or unmeasured speeds as `null`:
+
+```powershell
+python -m src.loaders.fetch twin-detectors --start 2026-05-15T07:55 --end 2026-05-15T10:35
+```
+
+The committed `data/detectors.csv` supplies direction and corridor-leg metadata. `place_detectors` and `make_routes` read those fields from the registry, since the hand-over JSON is focused on observations. Existing hand-reviewed `edge_id` and `position_m` values survive regenerating the file. Keep generated `detectors.json` and `scenario.json` local; they are excluded from Git.
 
 Copy `sim/scenarios/scenario.example.json` to `sim/scenarios/scenario.json`. Set incident start, duration, lanes, simulation horizon and route files. Fill `osm_bbox` to cover the complete corridor (including both directions and the western alternative). Coordinate order is west,south,east,north.
+
+The example carries the May 15 observed queue onset (08:55), TD's all-lanes
+update (09:36), and clearance (10:02), with 15 minutes of warm-up. Its
+`edge_id` and first phase's `lane_indices` are deliberately unresolved. The
+detectors do not identify the initially closed physical lane, so Data/E must
+state a scenario choice before an incident replay can run. The ignored local
+`scenario.json` can be regenerated from this example; do not reuse the old
+September incident timing.
 
 Required observed data shape:
 
@@ -51,7 +65,7 @@ After checking the bounding box, run:
 python -m src.twin.build_network --config sim/scenarios/scenario.json
 ```
 
-This downloads OSM via SUMO's `osmGet.py`, runs `netconvert`, and writes a SUMO network. Inspect it in `sumo-gui` and fix wrong lane counts, junctions, connections and turn bans using a reviewed `netconvert` configuration / plain XML edits. Particularly inspect tunnel approaches, Aberdeen Tunnel, flyovers and the Pok Fu Lam / Shek Pai Wan route. Automated OSM conversion cannot establish that a restriction matches reality. The downloaded map is under `sim/work/osm/`; the network is written to `sim/aberdeen.net.xml`. Commit it once it has been inspected and corrected, so the Evaluator and teammates use the same network.
+This downloads OSM via SUMO's `osmGet.py`, runs `netconvert` with left-hand traffic enabled for Hong Kong, and writes a SUMO network. Inspect it in `sumo-gui` and fix wrong lane counts, junctions, connections and turn bans using a reviewed `netconvert` configuration / plain XML edits. Particularly inspect tunnel approaches, Aberdeen Tunnel, flyovers and the Pok Fu Lam / Shek Pai Wan route. Automated OSM conversion cannot establish that a restriction matches reality. The downloaded map is under `sim/work/osm/`; the network is written to `sim/aberdeen.net.xml`. Commit it once it has been inspected and corrected, so the Evaluator and teammates use the same network.
 
 ## Step 4 — Place matching simulated detectors
 
@@ -59,7 +73,23 @@ This downloads OSM via SUMO's `osmGet.py`, runs `netconvert`, and writes a SUMO 
 python -m src.twin.place_detectors --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json
 ```
 
-The script projects each real coordinate to the nearest network edge and writes `sim/detectors.add.xml` with E1 loops and a mapping CSV (`sim/detectors.add.csv`). Commit both once every location is reviewed. Review the map locations and edge direction carefully. A nearest-edge match is only a proposal: approve/correct each edge and position against the road direction and actual detector location before using the outputs.
+The script matches each real coordinate to a nearby edge whose direction agrees with the detector registry, then writes one E1 loop per lane and a mapping CSV. If no edge meets the bearing threshold, it stops and asks for a map-reviewed `edge_id` / `position_m`; it does not silently select the opposite carriageway. Review all proposed positions and lane indices on a map before using them.
+
+When the hand-over contains a replay window, the mapper reads lane labels from the matching local raw-cache periods. An OSM street-name alias can identify a detector road only when that window's measured lane count also agrees with the candidate; lane count can break ties between nearby, equally named edges. It does not change OSM lanes or detector readings. After placing detectors, generate the offline source and route audit:
+
+```powershell
+python -m src.twin.audit_network --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json --before-mapping results/twin/osm-mapping-before.csv --out results/twin/osm-network-audit.json
+```
+
+The audit reads only local files. `--before-mapping` adds a comparison against the earlier placement file; omit it when that source is unavailable or does not belong to the same network. If the configured scenario names `detector_overrides`, the override file must carry SHA-256 hashes for the exact network and committed detector registry. The matcher rejects it if either source changes; re-review the locations after every network rebuild. Lane-count conflicts and missing raw snapshots remain visible in the audit. The directed connectivity section checks all 24 links across the two main chains and both western-alternative chains against registry coordinates. A passing map audit does not establish traffic calibration or prove that SUMO teleport warnings are fixed.
+
+To check lane labels on explicitly selected snapshots from a separate day, use the lane-scope auditor. It can fetch only the listed official archive versions through component A and records each snapshot hash and each XML period timestamp; this cross-check does not replace the incident-window evidence or change a mapping:
+
+```powershell
+python -m src.twin.audit_lane_scope --timestamps 20260514-0731,20260514-0802,20260514-0830,20260514-0900,20260514-0930,20260514-1002,20260514-1030 --fetch
+```
+
+Omit `--fetch` to read only snapshots already present in `data/raw/detectors/`.
 
 ## Step 5 — Make candidate routes and fit demand
 
@@ -68,16 +98,23 @@ python -m src.twin.make_routes --config sim/scenarios/scenario.json
 python -m src.twin.fit_demand --config sim/scenarios/scenario.json --detectors sim/scenarios/detectors.json
 ```
 
-The first command calls SUMO `randomTrips.py`. The fitting command creates candidate origin-destination routes between ordered detectors and estimates nonnegative route weights from pre-incident counts using a transparent iterative least-squares coordinate update. It writes `sim/work/routes/fitted.rou.xml` and a fit summary. This lightweight fitter assumes detector crossing counts are a linear combination of route flows and is not a substitute for SUMO `routeSampler.py` / `dfrouter` when the team's actual detector flow data and full-day route context are available. Check the fit residuals and rerun after correcting routes/network. Do not hide poor fit by changing observations.
+The first command creates directed, detector-to-detector candidate trips within each configured corridor leg. The western alternative uses separate eastbound and westbound detector chains; the registry's inventory order is not travel order. The fitting command estimates nonnegative route weights from pre-incident counts and writes one rate-based `<flow>` per route across the configured simulation horizon. It writes `sim/work/routes/fitted.rou.xml` and a fit summary. Detectors without usable pre-incident counts are excluded from the objective, never treated as zero demand. It stops if the calibration duration is invalid or would extend beyond `incident.start`, using `observation_start_sim_seconds` (or `warmup_seconds`) to locate the first observation on the simulation clock. Flows insert at the beginning of their first edge so loops close to that boundary can see them; [SUMO's default `base` position](https://sumo.dlr.de/docs/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#departpos) starts a vehicle one length into the edge. This lightweight fitter assumes detector crossing counts are a linear combination of route flows and is not a substitute for SUMO `routeSampler.py` / `dfrouter` when the team's actual detector flow data and full-day route context are available. Check the fit residuals and rerun after correcting routes/network. Do not hide poor fit by changing observations.
 
 ## Step 6 — Run the baseline and compare it with reality
 
 ```powershell
 python -m src.twin.run_scenario --config sim/scenarios/scenario.json --label baseline
-python -m src.twin.evaluate --observations sim/scenarios/detectors.json --sim sim/work/results --out results/twin/baseline-validation.json
+python -m src.twin.evaluate --observations sim/scenarios/detectors.json --sim sim/work/results --config sim/scenarios/scenario.json --out results/twin/baseline-validation.json
 ```
 
-The baseline replays the incident with no intervention. Compare simulated and real detector values at the same places and times. The evaluation reports GEH for count bins, percentage below 5, and speed MAPE over available 5-minute bins. Your brief's target is GEH < 5 for at least 85% of count bins. Report the measured result even if it misses. The runner's detector output is aggregated into the observation interval; ensure the configured interval matches the data.
+The baseline replays the incident with no intervention and stops at the configured `end` time (or `--max-seconds`) even when vehicles remain. Before starting SUMO, the runner checks that the incident edge exists, every selected lane index is valid, and the full closure fits within the configured run horizon. Incidents may use ordered `phases`, each with an `offset_seconds` from incident onset and explicit `lane_indices`; use `"all"` to close every lane. The first phase starts at offset zero. An unspecified lane scope must be resolved explicitly before running; the runner will not silently choose lane 0. A deliberate `--max-seconds` diagnostic run may stop before incident end. The default `max_depart_delay` is `-1`, so vehicles that cannot enter remain queued instead of being silently dropped. If a finite delay is configured, inspect the run summary and SUMO duration statistics for dropped vehicles. The run saves sampled FCD trajectories and trip information. Evaluation matches observations by timestamp plus `observation_start_sim_seconds`, aggregates all lane loops per detector, sums counts, computes volume-weighted speed and scores observed zero-count bins separately even when speed is null. Configure the horizon to include warm-up and every observation interval. The target is GEH < 5 for at least 85% of count bins; report the measured result, including any missing comparisons.
+
+The evaluator reads SUMO E1's `speed` value in m/s (`-1` means no vehicle was collected) and computes count and speed scores independently, so an absent count does not discard a usable speed observation. It also records missing detector files and unmatched observation intervals; `meets_85_percent_target` stays false when any count observation lacks a comparison. See [SUMO's E1 output fields](https://sumo.dlr.de/userdoc/Simulation/Output/Induction_Loops_Detectors_%28E1%29.html).
+
+The [May 15 pre-incident diagnostic](../../results/twin/may15-preincident-diagnostic.md)
+is the current measured checkpoint. It reaches only the queue onset and remains
+below the count and speed validation targets. Review the source-boundary loops,
+route connectivity, and OSM lane conflicts before claiming a baseline.
 
 ## Step 7 — Run the intervention and sensitivity grid
 

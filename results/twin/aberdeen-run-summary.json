@@ -1,0 +1,11 @@
+{
+  "label": "aberdeen-baseline",
+  "complete": false,
+  "requested_end_seconds": 30900,
+  "last_complete_fcd_second": 6410.0,
+  "vehicles_present_in_last_complete_fcd_frame": 1376,
+  "stopped_after_repeated_sumo_teleport_warnings": true,
+  "teleport_total": null,
+  "unfinished_or_dropped_vehicle_total": null,
+  "note": "Diagnostic excerpt only; the interrupted output cannot support a full validation score."
+}

@@ -1,0 +1,13 @@
+{
+  "count_bins": [],
+  "speed_bins": [],
+  "geh_under_5_percent": null,
+  "speed_mape_percent": null,
+  "count_bin_n": 0,
+  "speed_bin_n": 0,
+  "missing_detector_ids": [],
+  "unmatched_observation_intervals": 2738,
+  "unmatched_count_intervals": 2135,
+  "speed_unavailable_intervals": 0,
+  "meets_85_percent_target": false
+}

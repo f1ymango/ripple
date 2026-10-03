@@ -1,7 +1,32 @@
 # Demo incident shortlist
 
-Data's proposal for the team pick (🔒 Sun 27 Sep). Written 26 Sep 2026 from the
-evidence table in [`candidates.md`](candidates.md) (every corridor traffic
+## Decision — 28 Sep 2026
+
+The Lead selected `IN-26-03365` as the primary demo incident and
+`IN-26-06391` as backup, using Data's five-candidate review below. The backup
+is reserved for a source-evidence or incident-location problem specific to the
+primary; a calibration failure follows the simplified-network go/no-go on 4 Oct
+in `docs/04-plan.md`.
+
+Keep three times separate for the primary: detectors show disruption by 08:55,
+TD's NEW message is timestamped 09:01, and TD reported all lanes closed at
+09:36 (cleared 10:02). Simulation's full incident P0 handoff proposes injecting
+the first closure at the 08:55 observed queue onset; the team still needs to
+agree that physical replay timing. Operator-facing plans can use the first TD
+message only from 09:01. Data will propose a disclosed default for
+`unspecified`, then an evidence rule for using
+lane-level detector readings available by the message time when they can
+identify a lane for a particular incident. The default, the evidence rule and
+what to do when evidence is insufficient are still open. Zero detector flow
+does not prove when every lane
+physically closed. The pre-report slowdown is a validation limitation, and an
+operator-facing plan cannot use a message before its publication time.
+
+Simulation must review the affected edge, direction, detector placement, and
+pre-incident fit before making a baseline-validation claim. This decision
+selects the real event; it does not declare the current twin validated.
+
+Data prepared this screening on 26 Sep 2026 from the evidence table in [`candidates.md`](candidates.md) (every corridor traffic
 accident 22 Mar – 21 Sep 2026, all three Special Traffic News files) and a
 bin-by-bin read of the detectors around each one. Hand-written: edit freely,
 but regenerate `candidates.md` rather than editing it.
@@ -53,8 +78,11 @@ incident's.
 Aberdeen Tunnel, near Yip Kan Street. TD at 09:01: *"part of the lanes ... is
 closed"*. At 09:36: *"all lanes ... are closed"*. Re-opened 10:02.
 
-**What the detectors saw** (5-minute bins against the same Friday 1 and 2 weeks
-earlier, 63–81 km/h throughout):
+**What the detectors saw** (5-minute bins against two ordinary Fridays, 8 May
+and 24 Apr, when AID01101–04 ran 52.5–80.7 km/h). *Re-checked 29 Sep:* this
+first compared with Fri 1 May, which was Labour Day. Under the fixed screen
+(public holidays skipped) the same five detectors are credited with the same
+numbers, score 4.38 ([one-day re-check](../results/data/candidates_2026-05-15.md)):
 
 - AID01104, at the flyover: 7 km/h at 08:55, then **no vehicles in 8 of the 9
   five-minute bins from 09:15 to 09:55** (every lane reporting; one vehicle at
@@ -62,14 +90,24 @@ earlier, 63–81 km/h throughout):
 - The queue grew backwards: AID01103 from 09:05, AID01102 from 09:15, AID01101
   on Aberdeen Praya Road from 09:45 (8–43 km/h).
 - Recovery front 10:05–10:20, detector by detector.
-- 5 detectors credited, none on the noise floor; no other corridor incident.
+- 5 detectors credited; no other corridor incident. One of them, AID01104, also
+  ran 20+ km/h slower on 24 Apr than on 8 May for 15 minutes, so it sits on the
+  noise floor now, but it was credited for a longer run (20 minutes), and its 25
+  minutes with no vehicles are direct evidence of the closure anyway.
+- **Slow-lane proposal, not yet adopted** (Data evidence, 29 Sep): at AID01104 the
+  slow lane carried no vehicle in 5 successive archived readings, 08:54:00–09:00:00,
+  while the fast lane crawled past at 3–9 km/h; on 8 May and 24 Apr it happened
+  in 1 reading of 30 each. From 09:00:30 both lanes carried almost nothing
+  ([lane by lane](../results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
+  This supports a possible case-specific replay choice but does not establish
+  the physical closure or a general default for `unspecified`.
+  AID01105, the other flyover detector, is missing from the feed that morning.
 
 **What it showcases.**
 
 - *Reader*: the hardest real case — `lanes_closed: ["unspecified"]` first, then
-  `["all"]` on the update. The Evaluator has to decide what to simulate for
-  "unspecified" (the open decision in the README), and the escalation shows the
-  plan being revised.
+  `["all"]` on the update. The Evaluator must resolve and disclose the initial
+  lane assumption; the escalation shows the plan being revised.
 - *Plans*: a full closure of the only road to the tunnel at 9 am — every
   diversion option matters (Nam Fung Road to Wong Nai Chung Gap Road, Pok Fu
   Lam Road, the South Island Line), and doing nothing is visibly costly.
@@ -80,9 +118,10 @@ earlier, 63–81 km/h throughout):
 **Doable.** 38% archive coverage, 600 of 896 slots with both count and speed.
 Weekday, no other incident, timeline complete in all three language files.
 
-**Watch out for.** AID01104 is one of the detectors the twin's
-`place_detectors` currently puts on the opposite carriageway (see the README
-known issues). Fix it before validating on this incident.
+**Watch out for.** Direction-aware map matching now selects a northeast edge
+for AID01104, but the OSM network is still a draft and the tunnel detector
+AID01217 has no nearby edge that passes the direction check. Hand-review the
+edge and position mappings before validating this incident.
 
 ### 2. IN-26-06391 — a named lane in the tunnel
 
@@ -190,6 +229,10 @@ start, which is the simulation's time 0.
 | IN-26-03744 | 11:55 | 14:10 | 12:55 (3600 s) | 13:05 (4200 s) | 13:37 (6120 s) | `... --start 2026-05-29T11:55 --end 2026-05-29T14:10` |
 | IN-26-05951 | 01:25 | 04:30 | 02:25 (3600 s) | 02:53 (5280 s) | 03:56 (9060 s) | `... --start 2026-08-18T01:25 --end 2026-08-18T04:30` |
 
-Inject the closure when the detectors saw the queue, not at TD's NEW:
-TD reports 6–28 minutes after traffic is already affected. The windows run
+For the full incident P0, Simulation proposes first closure at the observed
+08:55 onset (3600 s), all lanes at TD's 09:36 update (6060 s), and clearance
+at 10:02 (7620 s). Data's initial lane choice and the P0 timing still need
+agreement before a validation run. The operator's first TD message arrives at
+09:01 (3960 s); a plan must not act on it earlier. Keep the physical replay
+clock and information available to the operator distinct. The windows run
 past the twin template's 7200 s end, so set `end` to match.

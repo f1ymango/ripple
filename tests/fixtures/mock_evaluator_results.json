@@ -1,0 +1,72 @@
+[
+  {
+    "run_id": "mock-run-P0",
+    "plan_id": "P0",
+    "incident_id": "IN-26-03365",
+    "scenario": {
+      "compliance": 0.5,
+      "clearance_min": 60,
+      "seed": 42
+    },
+    "metrics": {
+      "total_vehicle_hours_delay": 100,
+      "delay_vs_do_nothing_pct": 0,
+      "max_queue_m": {
+        "MOCK-DETECTOR": 100
+      },
+      "corridor_tt_p95_min": 20,
+      "emergency_tt_min": 10,
+      "co2_kg": 1000,
+      "residential_delay_share_pct": 5,
+      "vehicles_completed": 100
+    },
+    "validation": {
+      "geh_under_5_pct": 90,
+      "speed_mape_pct": 10
+    }
+  },
+  {
+    "run_id": "mock-run-P1",
+    "plan_id": "P1",
+    "incident_id": "IN-26-03365",
+    "scenario": {
+      "compliance": 0.5,
+      "clearance_min": 60,
+      "seed": 42
+    },
+    "metrics": {
+      "total_vehicle_hours_delay": 90,
+      "delay_vs_do_nothing_pct": -10,
+      "max_queue_m": {
+        "MOCK-DETECTOR": 100
+      },
+      "corridor_tt_p95_min": 20,
+      "emergency_tt_min": 10,
+      "co2_kg": 1000,
+      "residential_delay_share_pct": 5,
+      "vehicles_completed": 100
+    }
+  },
+  {
+    "run_id": "mock-run-P2",
+    "plan_id": "P2",
+    "incident_id": "IN-26-03365",
+    "scenario": {
+      "compliance": 0.5,
+      "clearance_min": 60,
+      "seed": 42
+    },
+    "metrics": {
+      "total_vehicle_hours_delay": 80,
+      "delay_vs_do_nothing_pct": -20,
+      "max_queue_m": {
+        "MOCK-DETECTOR": 100
+      },
+      "corridor_tt_p95_min": 20,
+      "emergency_tt_min": 10,
+      "co2_kg": 1000,
+      "residential_delay_share_pct": 5,
+      "vehicles_completed": 100
+    }
+  }
+]

@@ -1,12 +1,20 @@
 """Command line for the data layer (component A).
 
     python -m src.loaders.fetch corridor
+    python -m src.loaders.fetch holidays
     python -m src.loaders.fetch prefetch  --feed stn --start 2026-03-22 --end 2026-09-21
     python -m src.loaders.fetch prefetch  --feed stn_tc --start 2026-03-22 --end 2026-09-21
     python -m src.loaders.fetch prefetch  --feed stn_sc --start 2026-03-22 --end 2026-09-21
     python -m src.loaders.fetch incidents --start 2026-03-22 --end 2026-09-21
     python -m src.loaders.fetch detectors --start 2026-09-21T07:00 --end 2026-09-21T10:00
     python -m src.loaders.fetch twin-detectors --start 2026-05-15T08:00 --end 2026-05-15T10:30
+    python -m src.loaders.fetch bin-survival --start 2026-05-15T07:55 --end 2026-05-15T10:35 \
+        --split 2026-05-15T08:55
+    python -m src.loaders.fetch lane-evidence --detector AID01104 --start 2026-05-15T08:40 \
+        --end 2026-05-15T09:20 --ordinary-day 2026-05-08
+    python -m src.loaders.fetch flow-balance --start 2026-05-15T07:55 --end 2026-05-15T08:55 \
+        --ordinary-day 2026-05-08 2026-04-24
+    python -m src.loaders.fetch free-flow --day 2026-05-08 2026-04-24 --start 07:30 --end 11:00
 
 `prefetch` is the long one and the only one that needs to run unattended: it
 fills data/raw/ in parallel and is resumable, so a dropped connection costs
@@ -19,8 +27,8 @@ import argparse
 import datetime as dt
 from pathlib import Path
 
-from src.loaders import (archive, candidates, corridor, detectors, incidents, lanes, live,
-                         twin_export)
+from src.loaders import (archive, bin_survival, candidates, corridor, detectors, flow_balance,
+                         free_flow, holidays, incidents, lane_evidence, lanes, live, twin_export)
 from src.loaders.common import HK, MIN_DURATION_MIN
 
 
@@ -46,6 +54,12 @@ def cmd_corridor(args) -> None:
     print(f"wrote {len(rows)} corridor detectors to {corridor.OUT_PATH}")
     for leg in ("main_eastbound", "main_westbound", "western_alternative"):
         print(f"  {leg:22} {len([r for r in rows if r['leg'] == leg])}")
+
+
+def cmd_holidays(args) -> None:
+    rows = holidays.download()
+    years = sorted({r["date"][:4] for r in rows})
+    print(f"wrote {len(rows)} general holidays ({', '.join(years)}) to {holidays.OUT_PATH}")
 
 
 def cmd_prefetch(args) -> None:
@@ -120,7 +134,7 @@ def cmd_candidates(args) -> None:
     if not rows:
         print("no usable corridor incidents in that window -- widen the dates")
         return
-    path = candidates.write_markdown(rows)
+    path = candidates.write_markdown(rows, Path(args.out))
     print(f"\n{len(rows)} candidates -> {path}")
     print("Top of the list (the team picks from the whole table):")
     for row in rows[:args.top]:
@@ -154,8 +168,64 @@ def cmd_twin_detectors(args) -> None:
     print(f"  with a count usable for calibration: {s['with_count']} of {s['observations']}")
     print(f"  with a measured speed:               {s['with_speed']} of {s['observations']}")
     print(f"  with both (what the twin compares):  {s['with_both']} of {s['observations']}")
-    print(f"Simulation time 0 is {start:%Y-%m-%d %H:%M}: set the scenario's begin to match, "
-          f"and its incident start in seconds after it.")
+    print(f"Observation grid begins {start:%Y-%m-%d %H:%M}; set "
+          "observation_start_sim_seconds to its offset after any warm-up, and "
+          "time the incident against the detector-observed queue onset.")
+
+
+def cmd_bin_survival(args) -> None:
+    start, end, split = _moment(args.start), _moment(args.end), _moment(args.split)
+    if not start < split < end:
+        raise SystemExit("error: --split must fall inside the window")
+    doc = bin_survival.build(start, end, split)
+    command = (f"python -m src.loaders.fetch bin-survival --start {args.start} "
+               f"--end {args.end} --split {args.split}")
+    md, js = bin_survival.write(doc, command)
+    default = doc["thresholds"][0]
+    print(f"{doc['archive']}")
+    print(f"usable at {default['min_coverage_pct']}% / {default['min_lane_completeness_pct']}%: "
+          f"{default['before']} of {doc['slots']['before']} before the split, "
+          f"{default['after']} of {doc['slots']['after']} from it -> {md}, {js}")
+
+
+def cmd_lane_evidence(args) -> None:
+    start, end = _moment(args.start), _moment(args.end)
+    days = [dt.date.fromisoformat(d) for d in args.ordinary_day]
+    doc = lane_evidence.build(args.detector, start, end, days)
+    if not doc["incident"]["readings"]:
+        raise SystemExit(f"error: no complete readings for {args.detector} in that window")
+    command = (f"python -m src.loaders.fetch lane-evidence --detector {args.detector} "
+               f"--start {args.start} --end {args.end} --ordinary-day {' '.join(args.ordinary_day)}")
+    md, js = lane_evidence.write(doc, command)
+    for lane, s in doc["incident"]["summary"].items():
+        print(f"  {lane:14} empty while another moved in {s['empty_while_moving']} of "
+              f"{s['readings']} readings, longest run {s['longest_run']}")
+    print(f"-> {md}, {js}")
+
+
+def cmd_flow_balance(args) -> None:
+    start, end = _moment(args.start), _moment(args.end)
+    days = [dt.date.fromisoformat(d) for d in args.ordinary_day]
+    doc = flow_balance.build(start, end, days)
+    command = (f"python -m src.loaders.fetch flow-balance --start {args.start} --end {args.end} "
+               f"--ordinary-day {' '.join(args.ordinary_day)}")
+    md, js = flow_balance.write(doc, command)
+    for name, chain in doc["chains"].items():
+        clear = [f"{s['from']}->{s['to']} {s['change_veh_h']:+}" for s in chain["steps"]
+                 if s["clear_every_day"]]
+        print(f"  {name}: {', '.join(clear) or 'no clear joins or exits'}")
+    print(f"-> {md}, {js}")
+
+
+def cmd_free_flow(args) -> None:
+    days = [dt.date.fromisoformat(d) for d in args.day]
+    doc = free_flow.build(days, dt.time.fromisoformat(args.start), dt.time.fromisoformat(args.end))
+    command = (f"python -m src.loaders.fetch free-flow --day {' '.join(args.day)} "
+               f"--start {args.start} --end {args.end}")
+    md, js = free_flow.write(doc, command)
+    enough = {d: s for d, s in doc["detectors"].items() if s["enough"]}
+    print(f"{len(enough)} of {len(doc['detectors'])} detectors with enough light-traffic readings")
+    print(f"-> {md}, {js}")
 
 
 def cmd_live(args) -> None:
@@ -167,6 +237,8 @@ def main() -> None:
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("corridor", help="write data/detectors.csv").set_defaults(func=cmd_corridor)
+    sub.add_parser("holidays", help="write data/hk_holidays.csv, the official list the "
+                                    "candidate screen skips").set_defaults(func=cmd_holidays)
 
     p = sub.add_parser("prefetch", help="fill the archive cache in parallel (resumable)")
     p.add_argument("--feed", choices=sorted(archive.FEEDS), required=True)
@@ -200,6 +272,9 @@ def main() -> None:
     p.add_argument("--end", required=True)
     p.add_argument("--top", type=int, default=6,
                    help="how many to print; the table has them all (default %(default)s)")
+    p.add_argument("--out", default=str(candidates.OUT_PATH),
+                   help="where the table goes (default %(default)s); point a one-day "
+                        "re-check elsewhere so it never replaces the full table")
     p.add_argument("--bin-minutes", type=_bin_width, default=detectors.BIN_MINUTES,
                    dest="bin_minutes")
     p.set_defaults(func=cmd_candidates)
@@ -215,6 +290,39 @@ def main() -> None:
                    dest="min_coverage")
     p.add_argument("--out", default=str(twin_export.OUT_PATH))
     p.set_defaults(func=cmd_twin_detectors)
+
+    p = sub.add_parser("bin-survival",
+                       help="how many bins each calibration threshold leaves (-> results/data/)")
+    p.add_argument("--start", required=True, help="YYYY-MM-DDTHH:MM on a slot boundary")
+    p.add_argument("--end", required=True, help="YYYY-MM-DDTHH:MM on a slot boundary")
+    p.add_argument("--split", required=True,
+                   help="YYYY-MM-DDTHH:MM: pre-incident before it, incident from it")
+    p.set_defaults(func=cmd_bin_survival)
+
+    p = sub.add_parser("lane-evidence",
+                       help="one detector lane by lane, incident day vs ordinary days "
+                            "(-> results/data/)")
+    p.add_argument("--detector", required=True)
+    p.add_argument("--start", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
+    p.add_argument("--end", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
+    p.add_argument("--ordinary-day", nargs="+", required=True, dest="ordinary_day",
+                   help="YYYY-MM-DD, one or more: same clock times for comparison")
+    p.set_defaults(func=cmd_lane_evidence)
+
+    p = sub.add_parser("flow-balance",
+                       help="where traffic joins and leaves between detectors (-> results/data/)")
+    p.add_argument("--start", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
+    p.add_argument("--end", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
+    p.add_argument("--ordinary-day", nargs="+", required=True, dest="ordinary_day",
+                   help="YYYY-MM-DD, one or more: same clock times for comparison")
+    p.set_defaults(func=cmd_flow_balance)
+
+    p = sub.add_parser("free-flow",
+                       help="speeds in light traffic per detector, for the twin (-> results/data/)")
+    p.add_argument("--day", nargs="+", required=True, help="YYYY-MM-DD, one or more ordinary days")
+    p.add_argument("--start", required=True, help="HH:MM, Hong Kong time")
+    p.add_argument("--end", required=True, help="HH:MM, Hong Kong time")
+    p.set_defaults(func=cmd_free_flow)
 
     p = sub.add_parser("lanes", help="evidence on which physical lane Middle Lane 1 is")
     p.add_argument("--detector", default="AID01217",

@@ -1,0 +1,288 @@
+{
+  "start": "2026-05-15T07:55:00+08:00",
+  "end": "2026-05-15T10:35:00+08:00",
+  "archive": "detectors: 113 snapshots listed, 80 read, 33 not served",
+  "split": "2026-05-15T08:55:00+08:00",
+  "slots": {
+    "before": 336,
+    "after": 560,
+    "all": 896
+  },
+  "coverage_pct_counts": {
+    "0": 96,
+    "10": 1,
+    "20": 174,
+    "30": 17,
+    "40": 409,
+    "50": 4,
+    "60": 170,
+    "70": 7,
+    "80": 18
+  },
+  "absent_detectors": [
+    "AID01105",
+    "AID01220",
+    "TDSSPWR20002"
+  ],
+  "thresholds": [
+    {
+      "min_coverage_pct": 40,
+      "min_lane_completeness_pct": 90,
+      "before": 242,
+      "after": 365,
+      "all": 607
+    },
+    {
+      "min_coverage_pct": 30,
+      "min_lane_completeness_pct": 90,
+      "before": 249,
+      "after": 375,
+      "all": 624
+    },
+    {
+      "min_coverage_pct": 20,
+      "min_lane_completeness_pct": 90,
+      "before": 298,
+      "after": 499,
+      "all": 797
+    },
+    {
+      "min_coverage_pct": 40,
+      "min_lane_completeness_pct": 75,
+      "before": 242,
+      "after": 365,
+      "all": 607
+    },
+    {
+      "min_coverage_pct": 20,
+      "min_lane_completeness_pct": 75,
+      "before": 298,
+      "after": 499,
+      "all": 797
+    }
+  ],
+  "speed_bins": {
+    "before": 299,
+    "after": 491
+  },
+  "bias": {
+    "before_cov40": {
+      "low_coverage_bins": 57,
+      "low_coverage_mean_speed": 54.9,
+      "high_coverage_bins": 243,
+      "high_coverage_mean_speed": 54.7,
+      "mean_speed_gap_kmh": 0.2,
+      "looks_unbiased": true
+    },
+    "before_cov30": {
+      "low_coverage_bins": 50,
+      "low_coverage_mean_speed": 54.1,
+      "high_coverage_bins": 250,
+      "high_coverage_mean_speed": 54.9,
+      "mean_speed_gap_kmh": 0.8,
+      "looks_unbiased": true
+    },
+    "before_cov20": {
+      "low_coverage_bins": 0,
+      "low_coverage_mean_speed": null,
+      "high_coverage_bins": 300,
+      "high_coverage_mean_speed": 54.7,
+      "mean_speed_gap_kmh": null,
+      "looks_unbiased": false
+    },
+    "all_cov40": {
+      "low_coverage_bins": 192,
+      "low_coverage_mean_speed": 55.9,
+      "high_coverage_bins": 608,
+      "high_coverage_mean_speed": 54.1,
+      "mean_speed_gap_kmh": 1.8,
+      "looks_unbiased": true
+    },
+    "all_cov30": {
+      "low_coverage_bins": 175,
+      "low_coverage_mean_speed": 55.7,
+      "high_coverage_bins": 625,
+      "high_coverage_mean_speed": 54.2,
+      "mean_speed_gap_kmh": 1.5,
+      "looks_unbiased": true
+    },
+    "all_cov20": {
+      "low_coverage_bins": 1,
+      "low_coverage_mean_speed": 40.5,
+      "high_coverage_bins": 799,
+      "high_coverage_mean_speed": 54.6,
+      "mean_speed_gap_kmh": 14.1,
+      "looks_unbiased": false
+    }
+  },
+  "per_detector": [
+    {
+      "detector_id": "AID01101",
+      "before": 9,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01102",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01103",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01104",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01105",
+      "before": 0,
+      "after": 0,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01106",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01107",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01108",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01109",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01110",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01214",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01215",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01216",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01217",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01218",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01219",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01220",
+      "before": 0,
+      "after": 0,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01221",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01222",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "AID01223",
+      "before": 10,
+      "after": 15,
+      "slots": 32
+    },
+    {
+      "detector_id": "TDSSPWR10001",
+      "before": 9,
+      "after": 14,
+      "slots": 32
+    },
+    {
+      "detector_id": "TDSSPWR10002",
+      "before": 9,
+      "after": 12,
+      "slots": 32
+    },
+    {
+      "detector_id": "TDSSPWR10003",
+      "before": 9,
+      "after": 14,
+      "slots": 32
+    },
+    {
+      "detector_id": "TDSSPWR20001",
+      "before": 9,
+      "after": 13,
+      "slots": 32
+    },
+    {
+      "detector_id": "TDSSPWR20002",
+      "before": 0,
+      "after": 0,
+      "slots": 32
+    },
+    {
+      "detector_id": "TDSSPWR20003",
+      "before": 9,
+      "after": 14,
+      "slots": 32
+    },
+    {
+      "detector_id": "TDSAPR10001",
+      "before": 9,
+      "after": 14,
+      "slots": 32
+    },
+    {
+      "detector_id": "TDSAPR20001",
+      "before": 9,
+      "after": 14,
+      "slots": 32
+    }
+  ]
+}

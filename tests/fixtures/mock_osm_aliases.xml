@@ -1,0 +1,11 @@
+<osm version="0.6">
+  <way id="mock_901">
+    <tag k="name:en" v="Aberdeen Tunnel" />
+    <tag k="street:name:en" v="Wong Chuk Hang Road" />
+    <tag k="lanes" v="2" />
+  </way>
+  <way id="mock_902">
+    <tag k="name:en" v="Wong Chuk Hang Road" />
+    <tag k="lanes" v="3" />
+  </way>
+</osm>

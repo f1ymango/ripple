@@ -1,0 +1,516 @@
+{
+  "source": "DATA.GOV.HK historical archive, TD raw detector feed",
+  "purpose": "Cross-check lane labels on a separate day; not incident-window calibration.",
+  "selection_rule": "Only the explicitly listed archive timestamps are read; cached XML internal timestamps are reported.",
+  "archive_timestamps": [
+    "20260514-0731",
+    "20260514-0802",
+    "20260514-0830",
+    "20260514-0900",
+    "20260514-0930",
+    "20260514-1002",
+    "20260514-1030"
+  ],
+  "snapshots": [
+    {
+      "archive_timestamp": "20260514-0731",
+      "status": "read",
+      "path": "data/raw/detectors/20260514-0731.xml.gz",
+      "sha256": "99c55fba6be85703088c2c2cc5e5e385c9f52ed4f7e3088bf761a445324bca81"
+    },
+    {
+      "archive_timestamp": "20260514-0802",
+      "status": "read",
+      "path": "data/raw/detectors/20260514-0802.xml.gz",
+      "sha256": "dcb6a6cecbf7860c4c2c79e6017a8727ef93522ef3666d3bb06465b0c4b1da83"
+    },
+    {
+      "archive_timestamp": "20260514-0830",
+      "status": "read",
+      "path": "data/raw/detectors/20260514-0830.xml.gz",
+      "sha256": "959221861652a42bdbf0a12d071753402694aff7a49c5d58386871b4119df08d"
+    },
+    {
+      "archive_timestamp": "20260514-0900",
+      "status": "archive_404"
+    },
+    {
+      "archive_timestamp": "20260514-0930",
+      "status": "read",
+      "path": "data/raw/detectors/20260514-0930.xml.gz",
+      "sha256": "81d660db51088a60708f7ac409f57233b5b801d8a4a8e303cd5fb7e4eb2e20e9"
+    },
+    {
+      "archive_timestamp": "20260514-1002",
+      "status": "read",
+      "path": "data/raw/detectors/20260514-1002.xml.gz",
+      "sha256": "60bcc708be4250c61316bd9f338828ea05b71503fe21e086adc0fff659266d5a"
+    },
+    {
+      "archive_timestamp": "20260514-1030",
+      "status": "read",
+      "path": "data/raw/detectors/20260514-1030.xml.gz",
+      "sha256": "5c4fc777af62e584aa5884497af734fa8b6b694ab99bd7fc58c4f722a33ed8d6"
+    }
+  ],
+  "detectors": {
+    "AID01105": {
+      "observed_periods": 0,
+      "lane_counts": [],
+      "stable_lane_count_in_sample": null,
+      "lane_sets": [],
+      "periods": []
+    },
+    "AID01220": {
+      "observed_periods": 0,
+      "lane_counts": [],
+      "stable_lane_count_in_sample": null,
+      "lane_sets": [],
+      "periods": []
+    },
+    "TDSSPWR20002": {
+      "observed_periods": 0,
+      "lane_counts": [],
+      "stable_lane_count_in_sample": null,
+      "lane_sets": [],
+      "periods": []
+    },
+    "AID01221": {
+      "observed_periods": 12,
+      "lane_counts": [
+        3
+      ],
+      "stable_lane_count_in_sample": 3,
+      "lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "periods": [
+        {
+          "timestamp": "2026-05-14T07:24:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0731"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T07:24:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0731"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T07:55:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0802"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T07:55:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0802"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T08:22:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0830"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T08:22:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0830"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T09:23:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0930"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T09:23:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0930"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T09:56:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-1002"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T09:56:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-1002"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T10:22:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-1030"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T10:22:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-1030"
+          ]
+        }
+      ]
+    },
+    "AID01222": {
+      "observed_periods": 12,
+      "lane_counts": [
+        3
+      ],
+      "stable_lane_count_in_sample": 3,
+      "lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "periods": [
+        {
+          "timestamp": "2026-05-14T07:24:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0731"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T07:24:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0731"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T07:55:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0802"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T07:55:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0802"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T08:22:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0830"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T08:22:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0830"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T09:23:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0930"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T09:23:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0930"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T09:56:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-1002"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T09:56:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-1002"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T10:22:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-1030"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T10:22:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-1030"
+          ]
+        }
+      ]
+    },
+    "TDSAPR10001": {
+      "observed_periods": 8,
+      "lane_counts": [
+        3
+      ],
+      "stable_lane_count_in_sample": 3,
+      "lane_sets": [
+        [
+          "Fast Lane",
+          "Middle Lane",
+          "Slow Lane"
+        ]
+      ],
+      "periods": [
+        {
+          "timestamp": "2026-05-14T07:24:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0731"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T07:24:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0731"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T07:55:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0802"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T07:55:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0802"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T08:22:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0830"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T08:22:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0830"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T09:23:00+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0930"
+          ]
+        },
+        {
+          "timestamp": "2026-05-14T09:23:30+08:00",
+          "lanes": [
+            "Fast Lane",
+            "Middle Lane",
+            "Slow Lane"
+          ],
+          "lane_count": 3,
+          "archive_timestamps": [
+            "20260514-0930"
+          ]
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "This sample does not fill missing May 15 incident-window observations.",
+    "A repeated feed lane count does not prove that a SUMO edge is mapped to the right physical carriageway.",
+    "No detector mapping, OSM tag, geometry, lane count, or traffic observation is changed."
+  ]
+}

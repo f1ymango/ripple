@@ -1,46 +1,223 @@
 import argparse
 import csv
+import math
 import os
+import re
 from pathlib import Path
 
 import sumolib
+from src.loaders.corridor import (
+    CHAIN_EASTBOUND, CHAIN_WESTBOUND,
+    CHAIN_WESTERN_EASTBOUND, CHAIN_WESTERN_WESTBOUND,
+)
 from src.twin.common import load_json, resolve
+from src.twin.network_sources import (
+    apply_mapping_overrides, cached_lane_evidence, cached_osm_path, edge_names,
+    read_osm_ways, sha256, verify_lane_evidence,
+)
+
+
+def _sequence_vector(detector_id, detector_metadata, net):
+    """Return travel direction from the registry's ordered detector chains.
+
+    Compass metadata is rounded and can point across a flyover interchange.
+    For the main corridor and the ordered Pok Fu Lam subchains, the adjacent
+    detector coordinates provide a better local travel tangent.
+    """
+    sequences = [CHAIN_EASTBOUND, CHAIN_WESTBOUND,
+                 CHAIN_WESTERN_EASTBOUND, CHAIN_WESTERN_WESTBOUND]
+    for sequence in sequences:
+        if detector_id not in sequence:
+            continue
+        index = sequence.index(detector_id)
+        try:
+            coordinates = {}
+            for adjacent in sequence[max(0, index - 1):min(len(sequence), index + 2)]:
+                row = detector_metadata[adjacent]
+                coordinates[adjacent] = net.convertLonLat2XY(
+                    float(row["longitude"]), float(row["latitude"]))
+        except (KeyError, TypeError, ValueError):
+            return None
+        vectors = []
+        if index > 0:
+            ax, ay = coordinates[sequence[index - 1]]
+            bx, by = coordinates[detector_id]
+            vectors.append((bx - ax, by - ay))
+        if index < len(sequence) - 1:
+            ax, ay = coordinates[detector_id]
+            bx, by = coordinates[sequence[index + 1]]
+            vectors.append((bx - ax, by - ay))
+        unit_vectors = []
+        for dx, dy in vectors:
+            length = math.hypot(dx, dy)
+            if length:
+                unit_vectors.append((dx / length, dy / length))
+        dx = sum(v[0] for v in unit_vectors)
+        dy = sum(v[1] for v in unit_vectors)
+        length = math.hypot(dx, dy)
+        return (dx / length, dy / length) if length else None
+    return None
+
+
+def _road_name_score(expected_name, candidate_name):
+    """Score a candidate edge name against the detector's registry road name."""
+    expected = " ".join(re.findall(r"[a-z0-9]+", expected_name.casefold()))
+    actual = " ".join(re.findall(r"[a-z0-9]+", candidate_name.casefold()))
+    if not expected or f" {expected} " not in f" {actual} ":
+        return 0
+    return 2 if actual.endswith(expected) else 1
+
+
+def _choose_named_candidate(candidates, observed_lanes=None):
+    """Resolve very close parallel candidates with measured detector lane scope.
+
+    Within one modelled lane width of the nearest equally named edge, a matching
+    TD lane count is stronger evidence than a sub-lane coordinate difference.
+    Never move to a distant road just to make the lane counts agree. This is a
+    placement heuristic, not a change to OSM lanes or to the observed counts.
+    """
+    nearest = min(candidates, key=lambda row: (-row[3], row[1], -row[2]))
+    if observed_lanes is None:
+        return nearest
+    width = max(lane.getWidth() for lane in nearest[0].getLanes())
+    compatible = [row for row in candidates if row[3] == nearest[3]
+                  and row[1] <= nearest[1] + width
+                  and row[0].getLaneNumber() == observed_lanes]
+    return min(compatible, key=lambda row: (row[1], -row[2])) if compatible else nearest
+
+
+def _candidate_name_score(expected_name, candidate, osm_ways, observed_lanes):
+    score = _road_name_score(expected_name, candidate.getName())
+    # A street alias may also name an adjacent ramp. Broaden the primary name
+    # only when the same window's measured TD lane scope corroborates that edge.
+    if observed_lanes is not None and candidate.getLaneNumber() == observed_lanes:
+        score = max([score] + [_road_name_score(expected_name, name)
+                              for name in edge_names(candidate, osm_ways)])
+    return score
 
 
 def main():
     ap = argparse.ArgumentParser(description="Map WGS84 detectors to nearest SUMO edges and write E1 loops.")
     ap.add_argument("--config", required=True)
     ap.add_argument("--detectors", required=True)
+    ap.add_argument("--lane-evidence", help="Offline audit JSON with measured per-detector lane sets; "
+                    "used only to distinguish nearby, equally named candidates.")
+    ap.add_argument("--raw-cache", default="data/raw/detectors",
+                    help="Local TD cache for lane-scope evidence when --lane-evidence is omitted.")
+    ap.add_argument("--overrides", help="Reviewed placement JSON tied to network and registry hashes")
+    ap.add_argument("--direction-alignment", type=float, default=0.7,
+                    help="Minimum cosine similarity between road bearing and detector direction (default: 0.7).")
     args = ap.parse_args()
     cfg, data = load_json(resolve(args.config)), load_json(resolve(args.detectors))
     net_path = resolve(cfg["network"])
     net = sumolib.net.readNet(str(net_path))
+    osm_path = cached_osm_path(cfg)
+    osm_ways = read_osm_ways(osm_path) if osm_path.exists() else {}
+    registry = resolve("data/detectors.csv")
+    lane_evidence = {}
+    if args.lane_evidence:
+        evidence = load_json(resolve(args.lane_evidence))
+        lane_evidence = verify_lane_evidence(
+            evidence, data.get('source', {}).get('window'), resolve(args.detectors), registry)
+    elif data.get('source', {}).get('window'):
+        lane_evidence = cached_lane_evidence(
+            resolve(args.raw_cache), data['source']['window'],
+            [detector['id'] for detector in data['detectors']])['detectors']
+    overrides_path = args.overrides or cfg.get('detector_overrides')
+    if overrides_path:
+        data = apply_mapping_overrides(data, resolve(overrides_path), net_path, registry, lane_evidence)
+    detector_metadata = {}
+    if registry.exists():
+        with registry.open(encoding="utf-8-sig", newline="") as source:
+            detector_metadata = {row["detector_id"]: row for row in csv.DictReader(source)}
     xml_path = resolve(cfg.get("detector_additional", "sim/detectors.add.xml"))
     xml_path.parent.mkdir(parents=True, exist_ok=True)
     results_dir = resolve(cfg.get("output_dir", "sim/work/results"))
+    results_dir.mkdir(parents=True, exist_ok=True)
     rows = []
-    with open(xml_path, "w", encoding="utf-8") as out:
+    temporary_xml = xml_path.with_suffix(xml_path.suffix + ".tmp")
+    with open(temporary_xml, "w", encoding="utf-8") as out:
         out.write('<additional>\n')
         for d in data["detectors"]:
             if d.get("edge_id"):
                 edge = net.getEdge(d["edge_id"])
+                if d.get("position_m") is None:
+                    raise ValueError(f"Detector {d['id']} has edge_id but no position_m; set both after map review.")
                 pos = float(d["position_m"])
-                distance = 0.0
+                if not 0 <= pos <= edge.getLength():
+                    raise ValueError(f"Detector {d['id']} position {pos} m is outside edge {edge.getID()} "
+                                     f"(length {edge.getLength():.2f} m).")
+                if d.get("lon") is not None and d.get("lat") is not None:
+                    x, y = net.convertLonLat2XY(float(d["lon"]), float(d["lat"]))
+                    projected_pos, distance = edge.getLane(0).getClosestLanePosAndDist((x, y))
+                    position_delta = abs(projected_pos - pos)
+                else:
+                    distance, position_delta = float("nan"), float("nan")
             else:
                 x, y = net.convertLonLat2XY(float(d["lon"]), float(d["lat"]))
                 edges = net.getNeighboringEdges(x, y, r=100)
                 if not edges:
                     raise ValueError(f"No network edge within 100 m of detector {d['id']}; check bbox/network.")
-                edge, distance = min(edges, key=lambda pair: pair[1])
+                direction = d.get("direction") or detector_metadata.get(d["id"], {}).get("direction", "")
+                expected = _sequence_vector(d["id"], detector_metadata, net)
+                if expected is None:
+                    words = set(direction.casefold().split())
+                    expected_x = float("east" in words) - float("west" in words)
+                    expected_y = float("north" in words) - float("south" in words)
+                    magnitude = math.hypot(expected_x, expected_y)
+                    expected = (expected_x / magnitude, expected_y / magnitude) if magnitude else None
+                if expected is None:
+                    raise ValueError(f"No travel direction is available for detector {d['id']}; "
+                                     "provide source direction or ordered corridor coordinates.")
+                directed = []
+                expected_x, expected_y = expected
+                for candidate, distance in edges:
+                    shape = candidate.getShape()
+                    dx, dy = shape[-1][0] - shape[0][0], shape[-1][1] - shape[0][1]
+                    length = math.hypot(dx, dy)
+                    alignment = ((dx * expected_x + dy * expected_y) / length
+                                 if length else -1)
+                    if alignment >= args.direction_alignment:
+                        directed.append((candidate, distance, alignment))
+                if not directed:
+                    raise ValueError(f"No directed edge within 100 m of detector {d['id']} "
+                                     f"matches its corridor travel direction (registry: {direction!r}) "
+                                     f"at cosine threshold "
+                                     f"{args.direction_alignment}; set edge_id/position_m only after map review.")
+                if directed:
+                    road_en = detector_metadata.get(d["id"], {}).get("road_en", "")
+                    expected_name = re.split(r"\s+near\s+", road_en, maxsplit=1, flags=re.IGNORECASE)[0]
+                    expected_name = re.sub(r"\s+-\s+[^-]+$", "", expected_name).strip()
+                    observed_lanes = lane_evidence.get(d['id'], {}).get('lane_count')
+                    named = [(candidate, distance, alignment,
+                              _candidate_name_score(expected_name, candidate, osm_ways, observed_lanes))
+                             for candidate, distance, alignment in directed]
+                    named = [row for row in named if row[3] > 0]
+                    if expected_name and not named:
+                        nearby = sorted({candidate.getName() for candidate, _, _ in directed})
+                        raise ValueError(f"No directed edge within 100 m of detector {d['id']} "
+                                         f"matches registry road {expected_name!r}; nearby directed OSM names: "
+                                         f"{nearby}. Review the map or set edge_id/position_m by hand.")
+                    if named:
+                        edge, distance, _, _ = _choose_named_candidate(named, observed_lanes)
+                    else:
+                        edge, distance, _ = min(directed, key=lambda row: (row[1], -row[2]))
                 # Projection to the nearest point along edge shape.
                 pos, _ = edge.getLane(0).getClosestLanePosAndDist((x, y))
+                position_delta = 0.0
             pos = max(0.1, min(float(pos), edge.getLength() - 0.1))
             did = str(d["id"]).replace('"', "")
-            out.write(f'  <inductionLoop id="{did}" lane="{edge.getID()}_0" pos="{pos:.2f}" freq="{int(data.get("interval_seconds",300))}" file="{Path(os.path.relpath(results_dir / f"e1_{did}.xml", xml_path.parent)).as_posix()}"/>\n')
-            rows.append([did, edge.getID(), f"{pos:.2f}", f"{distance:.2f}"])
+            for lane in edge.getLanes():
+                loop_id = f"{did}_{lane.getIndex()}"
+                output = results_dir / f"e1_{did}_{lane.getIndex()}.xml"
+                out.write(f'  <inductionLoop id="{loop_id}" lane="{lane.getID()}" pos="{pos:.2f}" freq="{int(data.get("interval_seconds",300))}" file="{Path(os.path.relpath(output, xml_path.parent)).as_posix()}"/>\n')
+                rows.append([did, loop_id, edge.getID(), lane.getID(), f"{pos:.2f}",
+                             f"{distance:.2f}", f"{position_delta:.2f}"])
         out.write('</additional>\n')
+    temporary_xml.replace(xml_path)
     with open(xml_path.with_suffix(".csv"), "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f); w.writerow(["detector_id", "edge_id", "position_m", "distance_from_coordinate_m"]); w.writerows(rows)
+        w = csv.writer(f); w.writerow(["detector_id", "loop_id", "edge_id", "lane_id", "position_m",
+                                       "distance_from_coordinate_m", "position_delta_m"]); w.writerows(rows)
     print(f"Proposal written: {xml_path}\nMapping table: {xml_path.with_suffix('.csv')}\nReview every location and lane direction before trusting it.")
 
 

@@ -37,7 +37,7 @@
       "description": "[llm] Lanes closed to traffic as of this message. ['unspecified'] when lanes are closed but the message does not say which ([E] decides what to simulate). 'all' and 'unspecified' stand alone. [] when no lane is closed, e.g. the lanes have re-opened."
     },
     "lanes_total": {"type": ["integer", "null"], "minimum": 1, "description": "[llm] Number of lanes in the affected direction, only if the message states it. null otherwise; never guessed from road knowledge."},
-    "in_scope": {"type": "boolean", "description": "[code] True when the message names an Aberdeen corridor road (CORRIDOR_ROADS in src/reader/reader.py) and is not a public event or public transport notice."},
+    "in_scope": {"type": "boolean", "description": "[code] True when the message names a road in CORRIDOR_ROAD_NAMES (src/loaders/corridor.py) and is not a public event or public transport notice."},
     "confidence": {"type": "number", "minimum": 0, "maximum": 1, "description": "[llm] The model's own confidence in this extraction. Always shown to the operator."},
     "notes": {"type": "string", "description": "[llm] Anything the operator should know: ambiguity, a field left null and why, a Chinese-only detail. Empty string if nothing."}
   }

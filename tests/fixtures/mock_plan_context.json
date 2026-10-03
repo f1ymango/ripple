@@ -1,0 +1,86 @@
+{
+  "incident_id": "IN-26-03365",
+  "reviewed": true,
+  "sources": [
+    "tests/fixtures/mock_plan_context.json"
+  ],
+  "active_from": "2026-05-15T09:01:00+08:00",
+  "active_until": "2026-05-15T10:35:00+08:00",
+  "od_demand_vehicles": {
+    "Mock origin->Mock destination": 100
+  },
+  "routes": [
+    {
+      "od_group": "Mock origin->Mock destination",
+      "via": "Mock Detour",
+      "roads": [
+        "Mock Detour"
+      ],
+      "residential": false,
+      "school": false
+    },
+    {
+      "od_group": "Mock origin->Mock destination",
+      "via": "Mock Alternative",
+      "roads": [
+        "Mock Alternative"
+      ],
+      "residential": false,
+      "school": false
+    },
+    {
+      "od_group": "Mock origin->Mock destination",
+      "via": "Mock Residential",
+      "roads": [
+        "Mock Residential"
+      ],
+      "residential": true,
+      "school": false
+    },
+    {
+      "od_group": "Mock origin->Mock destination",
+      "via": "Mock School",
+      "roads": [
+        "Mock School"
+      ],
+      "residential": false,
+      "school": true
+    },
+    {
+      "od_group": "Mock origin->Mock destination",
+      "via": "Mock Blocked",
+      "roads": [
+        "Mock Blocked",
+        "Wong Chuk Hang Road flyover"
+      ],
+      "residential": false,
+      "school": false
+    },
+    {
+      "od_group": "Mock origin->Mock destination",
+      "via": "Mock Emergency Route",
+      "roads": [
+        "Mock Emergency Route",
+        "Mock Hospital Road"
+      ],
+      "residential": false,
+      "school": false
+    }
+  ],
+  "blocked_roads": [],
+  "signals": {
+    "MOCK-J": 10
+  },
+  "sign_ids": [
+    "MOCK-VMS"
+  ],
+  "pt_modes": [
+    "Mock Transit"
+  ],
+  "priority_corridor": {
+    "od": "Mock origin->Mock hospital",
+    "keep_clear": [
+      "Mock Hospital Road"
+    ]
+  }
+}

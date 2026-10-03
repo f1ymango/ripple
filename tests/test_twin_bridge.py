@@ -1,6 +1,6 @@
 """The data layer's hand-over to the twin (A -> C): full slot grids, the
 calibration series, and sim/scenarios/detectors.json -- checked against the
-twin's own evaluate.py, which lines observations up by position."""
+twin's timestamp-based evaluate.py."""
 import datetime as dt
 import json
 import sys
@@ -195,7 +195,7 @@ def test_the_twins_evaluator_lines_our_slots_up_with_its_intervals(tmp_path, mon
     perfect = _evaluate(tmp_path, monkeypatch, doc)
     assert perfect["count_bin_n"] == twin_export.summary(doc)["with_both"] == 6
     assert all(r["geh"] == 0 for r in perfect["count_bins"])
-    # One missing slot -- what a gappy bin list did -- shifts everything after it.
+    # A missing simulated interval stays unmatched; later timestamps do not slide.
     shifted = _evaluate(tmp_path, monkeypatch, doc, drop_slot=2)
     assert any(r["geh"] > 0 for r in shifted["count_bins"])
 

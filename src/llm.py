@@ -29,18 +29,22 @@ def complete_json(*, component: str, model: str, system: str, user: str,
     """
     sent_at = datetime.now(HKT)
     started = time.perf_counter()
-    reply = _send(model=model, system=system, user=user, schema=schema, temperature=temperature)
-    _log({
+    entry = {
         "timestamp": sent_at.isoformat(timespec="seconds"),
         "component": component,
         "model": model,
         "temperature": temperature,
         "seed": SEED,
-        "duration_s": round(time.perf_counter() - started, 2),
         "system": system,
         "user": user,
-        "response": reply,
-    })
+    }
+    try:
+        reply = _send(model=model, system=system, user=user, schema=schema, temperature=temperature)
+    except Exception as exc:
+        _log({**entry, "duration_s": round(time.perf_counter() - started, 2),
+              "response": None, "error": str(exc)})
+        raise
+    _log({**entry, "duration_s": round(time.perf_counter() - started, 2), "response": reply})
     return reply
 
 

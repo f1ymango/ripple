@@ -437,10 +437,14 @@ Wah Fu → Pok Fu Lam Road · **MTR South Island Line** as a mode shift.
 `src/loaders/detectors.py` emits one row per detector per five minutes —
 **every** five minutes of the window, for every corridor detector, since 26 Sep.
 A slot the archive delivered nothing for is a row with `periods_observed` 0 and
-blank speed and counts, never a missing row: the twin lines series up by
-position, so one missing row shifted every later slot. Because of the partial
-coverage in section 3, every row carries how much of the window was actually
-observed:
+blank speed and counts, never a missing row. So is every slot of a detector
+that is missing from the snapshots the archive did deliver (15 May 07:55-10:35:
+AID01105, AID01220 and TDSSPWR20002) -- that is a feed outage, not
+an archive gap, though both read `coverage_pct` 0. The twin matches observations
+by timestamp, so a missing simulated interval remains unmatched without
+shifting later slots. The full grid keeps archive gaps visible. Because of the
+partial coverage in section 3, every row carries how much of the window was
+actually observed:
 
 | Column | Meaning |
 |---|---|
@@ -470,7 +474,15 @@ can come out at 200 vehicles when the truth is 90.
   traffic, detector outages are not — sensors fail in exactly the conditions an
   incident creates. Before 23 Sep an offline lane was counted as an empty one,
   halving a two-lane road's count while coverage still read 100%. If that leaves too few points, relax the threshold
-  deliberately and **state the threshold on the validation slide**.
+  deliberately and **state the threshold on the validation slide**. What each
+  choice leaves for the demo morning, before and after the incident, with the
+  bias check below:
+
+      python -m src.loaders.fetch bin-survival --start 2026-05-15T07:55 --end 2026-05-15T10:35 --split 2026-05-15T08:55
+
+  (`results/data/bin-survival_20260515-0755_1035.md`). A bin holds whole
+  archived minutes, so coverage comes in steps -- mostly 20%, 40% and 60% --
+  and a threshold between two steps changes nothing.
 - **Never quote a count from a bin without quoting its coverage.** Every number
   in the deck traces to `results/`; a count whose sampling fraction is unknown
   cannot be defended in the Q&A.
@@ -498,6 +510,17 @@ with no vehicles and every lane reporting is `count: 0`, a real measurement.
 `edge_id` / `position_m` already filled in by hand is kept when the file is
 rewritten. Both ends must sit on 5-minute boundaries.
 
+Two more inputs for the twin (30 Sep), both into `results/data/`:
+
+    python -m src.loaders.fetch flow-balance --start 2026-05-15T07:55 --end 2026-05-15T08:55 --ordinary-day 2026-05-08 2026-04-24
+    python -m src.loaders.fetch free-flow --day 2026-05-08 2026-04-24 --start 07:30 --end 11:00
+
+`flow-balance` gives each detector's hourly flow and the change between
+neighbouring detectors: where traffic joins or leaves the corridor, with a 95%
+sampling margin, checked against ordinary days. `free-flow` gives each
+detector's speeds in light traffic (occupancy at or below 10%), the desired
+speeds a model should reproduce before any queue forms.
+
 ### Four ways we offset the missing minutes
 
 The gaps cannot be filled — the files do not exist, on either archive host, at
@@ -506,15 +529,26 @@ first:
 
 **1. Choose an incident the detectors plainly saw.** `data/candidates.md`
 compares every corridor traffic accident with two ordinary days (same weekday
-and clock time, no corridor incident in the window) and credits a detector only
-when it ran 20+ km/h below the ordinary day for longer than the two ordinary
-days ever differed; it also reports archive coverage per incident. The team
-picks from that table, and `data/demo_shortlist.md` gives Data's reasoned pick:
+and clock time, not a public holiday, no corridor incident in the window) and
+credits a detector only when it ran 20+ km/h below the ordinary day for longer
+than the two ordinary days ever differed; it also reports archive coverage per
+incident. The team picks from that table, and `data/demo_shortlist.md` gives
+Data's reasoned pick:
 
     python -m src.loaders.fetch candidates --start 2026-03-22 --end 2026-09-21
 
-Three detector windows per incident; about ten minutes on a filled cache, about
-an hour on a fresh one.
+Three detector windows per incident; about ten minutes on a filled cache, over
+an hour on a fresh one, because STN is read from six weeks before `--start`.
+
+Two rules were added on 29 Sep, after the table was generated: public holidays
+(`data/hk_holidays.csv`, the government's 1823 list) are never ordinary days,
+and incidents are loaded from six weeks before `--start` so that a control day
+before the range is checked too (before, it always looked clean). The demo
+incident was re-screened under both rules on its own, without replacing the
+full table:
+
+    python -m src.loaders.fetch candidates --start 2026-05-15 --end 2026-05-15 \
+        --out results/data/candidates_2026-05-15.md
 
 **2. Widen the bin where precision matters more than timing.** Demand
 calibration for the pre-incident hour wants a stable count, not fine timing:
