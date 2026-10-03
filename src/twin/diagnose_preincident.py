@@ -19,6 +19,8 @@ def main():
     parser.add_argument('--work', required=True, help='New directory; refuses to overwrite a run')
     parser.add_argument('--out', required=True)
     parser.add_argument('--timeout', type=int, default=180)
+    parser.add_argument('--trace-flow', action='store_true',
+                        help='Record per-vehicle departure/arrival and edge traffic for delivery audits')
     args = parser.parse_args()
     if args.timeout <= 0:
         parser.error('--timeout must be positive')
@@ -44,6 +46,11 @@ def main():
                '--step-length', str(cfg.get('step_length', 1)),
                '--max-depart-delay', '-1', '--duration-log.statistics', 'true',
                '--statistic-output', str(work / 'statistics.xml'), '--no-step-log', 'true']
+    if args.trace_flow:
+        command += ['--tripinfo-output', str(work / 'tripinfo.xml'),
+                    '--tripinfo-output.write-unfinished', 'true',
+                    '--tripinfo-output.write-undeparted', 'true',
+                    '--edgedata-output', str(work / 'edge-data.xml')]
     started = time.monotonic()
     timed_out = False
     with (work / 'sumo.log').open('w', encoding='utf-8') as log:
@@ -57,6 +64,9 @@ def main():
               'command': command, 'timeout_seconds': args.timeout, 'timed_out': timed_out,
               'returncode': returncode, 'wall_seconds': time.monotonic() - started,
               'simulation_end': end, 'seed': cfg.get('seed', 2026), 'sources': {}}
+    if args.trace_flow:
+        report['flow_trace_files'] = {name: str(work / name)
+                                      for name in ('tripinfo.xml', 'edge-data.xml')}
     for label, path in {'config': args.config, 'observations': args.observations,
                         'network': cfg['network'], 'routes': cfg['routes'],
                         'loops': cfg['detector_additional']}.items():

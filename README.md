@@ -587,6 +587,14 @@ wherever the data is shown. Everything we use is aggregate and open: no
 personal data, no vehicle identifiers.
 # Component C calibration progress — 2 October
 
+**3 October decision packet:** [SUMO go/no-go evidence](docs/sumo-decision-2026-10-04.md)
+contains the latest 66.94% count / 41.42% speed result, eligible-bin lists,
+fit-versus-assessment roles, remaining work and incident assumptions. A source
+checked archive now shares the provisional replay inputs for team review.
+Route traces attribute 84.14% of the 2,390 undeparted vehicles to two detector
+origins. Recommendation: SUMO is not ready for validated Week 3 plan comparisons;
+assess the fallback independently and narrow claims if neither model qualifies.
+
 [Further experiments](docs/calibration-experiments-2026-10-02.md) tested adaptive
 entry speed and one OSM-derived lane-access correction independently. Both
 worsened teleports versus the 53-teleport reference (71 and 73 respectively)

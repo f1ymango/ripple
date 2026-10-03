@@ -1,0 +1,50 @@
+{
+  "status": "PROVISIONAL DIAGNOSTIC INPUTS; NOT A REVIEWED NETWORK RELEASE",
+  "purpose": "Reproduce the recorded no-closure calibration on Windows in an isolated repository checkout",
+  "diagnostic": "results/twin/oct02-flow-trace.json",
+  "files": {
+    "sim/work/oct02-calibration/network-speed.json": {
+      "sha256": "a232844c93eaf0afd95128991cd6475deb8cec59f7920324639a73d23642259d",
+      "bytes": 1141
+    },
+    "sim/scenarios/detectors.json": {
+      "sha256": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605",
+      "bytes": 121230
+    },
+    "sim/work/aberdeen.net.xml": {
+      "sha256": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e",
+      "bytes": 10324670
+    },
+    "sim/work/oct02-calibration/network-speed.rou.xml": {
+      "sha256": "0a784916ae8dbb586d5cacb16be3f83be8214e730bf59fea0d8f29954c463740",
+      "bytes": 22637
+    },
+    "sim/work/may-diagnostic/detectors.add.xml": {
+      "sha256": "d0ac843e8ef99b431db28444d2131e4c7e1602aa7683f5ad69c8e7a40742ad6e",
+      "bytes": 7951
+    },
+    "sim/work/may-diagnostic/candidates.rou.xml": {
+      "sha256": "0f7d386481e0f89f713169af5b81e9fb2c56aa08d4f94a5441208dd85f90a6b2",
+      "bytes": 30969
+    },
+    "sim/work/may-diagnostic/detectors.add.csv": {
+      "sha256": "f0d2818acf0b71437a58c3bc22aa05cf6591af66a267822dfac3d72d880a63d4",
+      "bytes": 4401
+    },
+    "sim/work/osm/aberdeen_bbox.osm.xml": {
+      "sha256": "c6d3333d803ef19db9707ae1ac9dc958121d7bd19941a555a8db0ec50e62b09f",
+      "bytes": 47969716
+    },
+    "results/twin/oct02-flow-trace.json": {
+      "sha256": "e17c350940a32e4cbc5050c8af5b07b48367cf2da135cd67f8bc2d917420bd76",
+      "bytes": 175349
+    }
+  },
+  "limitations": [
+    "OSM and detector placement remain provisional.",
+    "Detector export is included; raw TD archive snapshots are not.",
+    "Use a fresh checkout so extraction does not replace local work."
+  ],
+  "archive_sha256": "24c488b311b858bb8f9a320c397bb32c8bbf54a31bf9b6bc7b55afdcd87c9360",
+  "archive_bytes": 8260215
+}
