@@ -118,6 +118,63 @@ The Reader does not resolve them by guessing a lane or changing the source
 timestamp. These retrospective onset and lane choices remain hypotheses until
 the scenario owners agree and document them.
 
+### Data contribution — 2 October 2026
+
+Ripple runs on two free, public Transport Department (TD) feeds from
+DATA.GOV.HK: lane-by-lane readings (vehicle count, speed and occupancy every
+30 seconds) from 28 detectors on the Aberdeen corridor, and TD's Special
+Traffic News in English, Traditional Chinese and Simplified Chinese. Each feed
+has a historical archive, used to replay past incidents, and a live feed, read
+during an ongoing incident. The loaders (component A) collect and check both
+and hand every other component one row per detector per 5-minute slot.
+Unusable counts are marked rather than dropped.
+
+TD's archives have gaps, so the data was checked before use:
+
+- **Three news files merged.** The archive saves each language file at
+  different moments, so each misses messages the others caught. Merging them by
+  message ID raised incidents with a complete timeline from **68% to 85%**, and
+  complete corridor accidents from 35 of 53 to 49 of 55 (22 March–21 September
+  2026; `docs/02-data.md` §2).
+- **Missing detector minutes.** On the demo morning (15 May, 07:55–10:35) the
+  archive listed 113 files and served 80, covering 66 of 160 minutes. A missing
+  minute is never counted as an empty road, and a 5-minute slot is used only
+  when at least 2 of its 5 minutes and 90% of its lane readings are valid. This
+  leaves **242 of 336 slots** before the crash, the same set the SUMO twin is
+  scored against. Slots with fewer and more minutes differ by only 0.2 km/h
+  (54.9 against 54.7 km/h), so the gaps reduce precision without biasing the
+  result ([bin survival](../results/data/bin-survival_20260515-0755_1035.md)).
+  The live feed publishes every minute, so live use does not have these gaps.
+- **Speeds reported when no vehicle passes.** With no vehicle, the feed
+  reports the speed limit as the speed (about 19% of lane readings on
+  21 September) and often −1 as occupancy. The loader records these as no speed
+  and 0% occupancy.
+- **Silent detectors.** Three detectors (AID01105, AID01220, TDSSPWR20002)
+  sent nothing on the demo morning. They are reported as missing, never
+  guessed.
+
+The demo incident was chosen from **35 screened corridor accidents**, each
+compared with two ordinary days (same weekday and clock time, no corridor
+incident, no public holiday). IN-26-03365 had the highest score (4.38);
+IN-26-06391 is the backup
+([screen result](../results/data/candidates_2026-05-15.md)). The corridor had
+55 traffic accidents in 26 weeks, about two a week.
+
+TD's 09:01 message says only that "part of the lanes" is closed, as did 25 of
+the 35 screened accidents. The detectors measure each lane separately: at
+AID01104, just past the crash, the slow lane carried no vehicle in five
+readings in a row from 08:54:00 to 09:00:00 while the fast lane kept moving,
+and both lanes were almost empty from 09:00:30, about 35 minutes before TD's
+09:36 all-lanes message
+([lane evidence](../results/data/lane-evidence_AID01104_20260515-0840_0920.md)).
+Data therefore proposes closing the slow lane first in the replay. This choice
+is still to be confirmed by the team.
+
+Ripple handles no personal data: the detector feed has counts, speeds and
+occupancy only, and the traffic news is a public announcement. The full Data
+contribution, with figures, is in
+[data-and-evaluation.md](data-and-evaluation.md).
+
 ### Data contribution — evidence synthesis, 3 October 2026
 
 The loaders ingest public Transport Department detector readings and archived
@@ -200,6 +257,76 @@ detectors, and comparable observation windows and filters. An ordinary-day
 speed reference is a comparator, not a mathematical error floor. Incident queue
 formation and recovery and diversion behaviour require separate validation
 ([review and evidence links](project-status-2026-10-03.md)).
+
+### Data contribution — backup model and evaluation method — 2 October 2026
+
+The project plan says that if the SUMO twin does not roughly match the
+detectors by 4 October, the team switches to a simplified network. Data built
+this backup so the evaluation can go ahead in either case. It is a cell
+transmission model (Daganzo, 1994) of the four detector chains, divided into
+24 detector-to-detector stretches. Road lengths come from the map; lanes,
+speeds and joining and leaving traffic come from TD's detectors on two ordinary
+Fridays (8 May and 24 April). Two values are textbook figures, stated wherever
+results appear: 1,800 vehicles per hour per lane and 140 stopped vehicles per
+km per lane. The code and results are in `src/fallback/` and
+`results/fallback/replay_20260515.md` on the `data/week2-checks` branch, which
+is not merged into `main` yet.
+
+The backup was scored the same way as the SUMO twin: the same hour
+(07:55–08:55), the same 242 five-minute counts and the same two tests.
+
+| Scored on | Counts with GEH < 5 | Speed error | Speed error if an ordinary Friday is assumed |
+|---|---|---|---|
+| Backup model, all detectors | **97.1%** of 242 | 16.6% | 16.6% |
+| Backup model, detectors inside the chains | **97.1%** of 205 | 17.8% | 17.8% |
+| SUMO twin, 27 September test | 66.5% of 242 | 36.9% | – |
+| Target (`docs/03-architecture.md` §4) | at least 85% | about 15% | – |
+
+The counts pass the target. The speed error misses it, but it equals the error
+of predicting 15 May with the ordinary Fridays' average, so the model adds no
+error of its own. Two detectors that queued only on 15 May (AID01106 and
+AID01216) carry most of it; without them the error inside the chains is 12.1%.
+The score was recomputed from the raw readings with separately written code
+and matched exactly.
+
+For the incident replay, the flyover was closed as the detectors saw it (slow
+lane from 08:54, all lanes from 09:00). This timing is provisional; a second
+run closing all lanes at TD's 09:36 update is planned for 4 October.
+
+| Detector | Queue reached it: detectors | Queue reached it: model | Cleared: detectors | Cleared: model |
+|---|---|---|---|---|
+| AID01104 (at the crash) | 08:55 | 08:55 | 10:00 | 10:00 |
+| AID01103 | 09:05 | 09:00 | 10:15 | not by 10:35 |
+| AID01102 | 09:15 | 09:10 | 10:15 | not by 10:35 |
+| AID01101 | 09:50 | 09:25 | 10:05 | not by 10:35 |
+
+The model gets the start right: the queue arrives within 5 minutes of the real
+time at the three detectors nearest the crash. Later it runs too far and too
+long, because the model has no diversion yet. While all lanes were closed the
+detectors still counted traffic leaving the road (519 vehicles an hour by the
+slip road at AID01103, and at least about 130 drivers between AID01101 and
+AID01102). Without diversion, the model's queues and delays are upper bounds.
+
+**Evaluator (E), planned for week 3 (5–11 October).** Every response plan and
+a do-nothing case will be run through the chosen model on the same morning,
+with one result file per run reporting total delay, its change against doing
+nothing, the longest queue, corridor travel time, CO₂ and the other agreed
+measures. Each plan will be repeated for 30%, 50% and 70% of drivers following
+the advice and for several clearance times. Diversion will be added to the
+backup model and checked against the flows above. **Plan results are not
+measured yet.**
+
+| Measure | Target | Now |
+|---|---|---|
+| 5-minute counts with GEH < 5, 07:55–08:55 | at least 85% | **97.1%** (backup model) |
+| Average speed error per 5-minute slot | about 15%, shown with the ordinary-day floor | 16.6% (floor 16.6%) |
+| When the queue reaches each detector | within 5 minutes | 3 of 4 detectors |
+| Flow while all lanes are closed, model against detectors | close at every detector | not yet (no diversion) |
+| Same lane as TD on the 7 accidents where TD named it | agreement rate reported | not measured yet |
+| Best plan still wins at 30%, 50% and 70% compliance and across clearance times | holds across the range | not measured yet |
+
+Details, figures and the full list of data limits are in
+[data-and-evaluation.md](data-and-evaluation.md) §§6–9.
 
 ## 4. Operator Console & Demo Visuals
 

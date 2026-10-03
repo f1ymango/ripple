@@ -5,6 +5,41 @@ touch someone else's. **Nothing in your files has been changed.** Each note
 says what we found, where the proof is, and what we suggest. Pick them up when
 you are next in that code; strike a note through when it is done.
 
+## 4 Oct 2026
+
+### For Simulation and the Lead
+
+**18. SUMO on flow-balance demand passes the count target on the no-closure hour.**
+A second way to build the twin's inputs, in new files beside yours; none of
+your files is changed. 15 May, same 242 count bins and 299 speed bins as your
+packet: GEH < 5 96.7% (was 66.9%), speed error 15.7% (was 41.4%), 238 vehicles
+waiting (was 2,390), no teleport (was 53). On 15 other day-and-hour cases,
+nothing retuned, GEH passes on all 15 and speed error is at or under 15% on 5.
+Method, the two network patches, every assumption, what the scores hide and
+the commands: [sumo-flow-balance-2026-10-04.md](sumo-flow-balance-2026-10-04.md).
+To review before it is relied on: the toll-plaza connections, the cut of edge
+1198101443, the entry-road rule at AID01214, the driver settings, and the two
+signals at the Wong Nai Chung Gap flyover merge (one on-ramp there still holds
+1–6% of vehicles outside).
+
+**19. A rule for `unspecified` lanes.** `python -m src.loaders.fetch closed-lanes`
+reads one detector's lane readings and returns the lane that was blocked while
+others moved, when every lane went empty, and when traffic was flowing again;
+or `insufficient_evidence`, in which case nothing is chosen. A lane counts as
+blocked when it carried no vehicle through 3 or more archived readings in a row
+while another lane did, and chance would do that less than once in 1,000 times
+given the lane's share of the traffic on ordinary days. For IN-26-03365 at
+AID01104 it gives what note 4 found by hand
+([result](../results/data/closed-lanes_AID01104_20260515-0840_1010.md)): slow
+lane from the 08:54:00 reading (the one before, 08:50:30, still open; chance 1
+in 14,188), every lane empty from 09:00:30, flowing again by 10:00:00. It reads
+456 veh/h passing the blocked lane over those five readings; the backup
+network's 360 leaves out the 09:00:00 reading. Still to
+agree: that this rule is the default, and what a replay does on
+`insufficient_evidence` (Data suggests: run each lane and report the range).
+It does not pick the detector (use the first one past the reported place) and
+does not map lane names to SUMO lane indices.
+
 ## 30 Sep 2026
 
 ### For Simulation: the 27 Sep diagnostic (66.5% GEH < 5, 36.9% speed MAPE)

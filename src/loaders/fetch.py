@@ -12,6 +12,10 @@
         --split 2026-05-15T08:55
     python -m src.loaders.fetch lane-evidence --detector AID01104 --start 2026-05-15T08:40 \
         --end 2026-05-15T09:20 --ordinary-day 2026-05-08
+    python -m src.loaders.fetch closed-lanes --detector AID01104 --start 2026-05-15T08:40 \
+        --end 2026-05-15T10:10 --ordinary-day 2026-05-08 2026-04-24
+    python -m src.loaders.fetch twin-inputs --day 2026-05-15 \
+        --ordinary-day 2026-05-08 2026-04-24 2026-04-17 2026-04-10
     python -m src.loaders.fetch flow-balance --start 2026-05-15T07:55 --end 2026-05-15T08:55 \
         --ordinary-day 2026-05-08 2026-04-24
     python -m src.loaders.fetch free-flow --day 2026-05-08 2026-04-24 --start 07:30 --end 11:00
@@ -27,8 +31,8 @@ import argparse
 import datetime as dt
 from pathlib import Path
 
-from src.loaders import (archive, bin_survival, candidates, corridor, detectors, flow_balance,
-                         free_flow, holidays, incidents, lane_evidence, lanes, live, twin_export)
+from src.loaders import (archive, bin_survival, candidates, closed_lanes, corridor, detectors, flow_balance,
+                         free_flow, holidays, incidents, lane_evidence, lanes, live, twin_export, twin_inputs)
 from src.loaders.common import HK, MIN_DURATION_MIN
 
 
@@ -203,6 +207,37 @@ def cmd_lane_evidence(args) -> None:
     print(f"-> {md}, {js}")
 
 
+def cmd_closed_lanes(args) -> None:
+    start, end = _moment(args.start), _moment(args.end)
+    days = [dt.date.fromisoformat(d) for d in args.ordinary_day]
+    doc = closed_lanes.build(args.detector, start, end, days)
+    if not doc["readings"]:
+        raise SystemExit(f"error: no complete readings for {args.detector} in that window")
+    command = (f"python -m src.loaders.fetch closed-lanes --detector {args.detector} "
+               f"--start {args.start} --end {args.end} --ordinary-day {' '.join(args.ordinary_day)}")
+    md, js = closed_lanes.write(doc, command)
+    print(f"  decision: {doc['decision']}")
+    for line in closed_lanes._summary_lines(doc["summary"]):
+        print("  " + line.replace("**", ""))
+    print(f"-> {md}, {js}")
+
+
+def cmd_twin_inputs(args) -> None:
+    day = dt.date.fromisoformat(args.day)
+    clock = dt.time.fromisoformat
+    doc = twin_inputs.build(day, [dt.date.fromisoformat(d) for d in args.ordinary_day], refresh=args.refresh,
+                            window=(clock(args.start), clock(args.end)),
+                            scored=(clock(args.scored_from), clock(args.scored_to)),
+                            own_until=clock(args.own_until), refresh_until=clock(args.refresh_until))
+    path = twin_inputs.write(doc, Path(args.out) if args.out else None)
+    print(f"  {len(doc['pairs'])} flow changes, speeds for {len(doc['speed_profile_kmh'])} detectors "
+          f"({doc['speeds']})")
+    for name, entry in doc["entries"].items():
+        own = sum(1 for source in entry["from"] if source == "replay morning")
+        print(f"  {name:18} enters at {entry['detector']}: {own} of {len(entry['veh_h'])} steps from its own counts")
+    print(f"-> {path}")
+
+
 def cmd_flow_balance(args) -> None:
     start, end = _moment(args.start), _moment(args.end)
     days = [dt.date.fromisoformat(d) for d in args.ordinary_day]
@@ -308,6 +343,38 @@ def main() -> None:
     p.add_argument("--ordinary-day", nargs="+", required=True, dest="ordinary_day",
                    help="YYYY-MM-DD, one or more: same clock times for comparison")
     p.set_defaults(func=cmd_lane_evidence)
+
+    p = sub.add_parser("closed-lanes",
+                       help="which lanes an incident closed and from when, by a fixed rule on the "
+                            "lane readings; says so when they do not decide it")
+    p.add_argument("--detector", required=True, help="the first detector downstream of the reported place")
+    p.add_argument("--start", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
+    p.add_argument("--end", required=True, help="YYYY-MM-DDTHH:MM, Hong Kong time")
+    p.add_argument("--ordinary-day", nargs="+", required=True, dest="ordinary_day",
+                   help="YYYY-MM-DD, ordinary days giving each lane's usual share of the traffic")
+    p.set_defaults(func=cmd_closed_lanes)
+
+    p = sub.add_parser("twin-inputs",
+                       help="demand and speeds for a replay: entry counts, ordinary-day flow changes "
+                            "and quarter-hour speeds (-> sim/scenarios/)")
+    p.add_argument("--day", required=True, help="YYYY-MM-DD, the day to replay")
+    p.add_argument("--ordinary-day", nargs="+", required=True, dest="ordinary_day",
+                   help="YYYY-MM-DD, the ordinary days the changes and speeds come from")
+    p.add_argument("--start", default=twin_inputs.WINDOW[0].isoformat("minutes"),
+                   help="HH:MM on a quarter of an hour: the first reading used (default %(default)s)")
+    p.add_argument("--end", default=twin_inputs.WINDOW[1].isoformat("minutes"), help="HH:MM (default %(default)s)")
+    p.add_argument("--scored-from", default=twin_inputs.SCORED[0].isoformat("minutes"), dest="scored_from",
+                   help="HH:MM, the hour the flow changes are taken over (default %(default)s)")
+    p.add_argument("--scored-to", default=twin_inputs.SCORED[1].isoformat("minutes"), dest="scored_to")
+    p.add_argument("--own-until", default=twin_inputs.OWN_UNTIL.isoformat("minutes"), dest="own_until",
+                   help="HH:MM, entries use the day's own counts until here (default %(default)s)")
+    p.add_argument("--refresh", action="store_true",
+                   help="scale each quarter-hour's speed by the day's own previous quarter-hour: "
+                        "a 15-minute-ahead forecast, not a calibration from ordinary days")
+    p.add_argument("--refresh-until", default=twin_inputs.REFRESH_UNTIL.isoformat("minutes"), dest="refresh_until",
+                   help="HH:MM, the last quarter-hour refreshed (default %(default)s)")
+    p.add_argument("--out", default="", help="default sim/scenarios/twin-inputs_<day>[_refreshed].json")
+    p.set_defaults(func=cmd_twin_inputs)
 
     p = sub.add_parser("flow-balance",
                        help="where traffic joins and leaves between detectors (-> results/data/)")
