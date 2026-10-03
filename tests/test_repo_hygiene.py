@@ -18,9 +18,24 @@ def _mode(call: ast.Call) -> str:
     for kw in call.keywords:
         if kw.arg == "mode" and isinstance(kw.value, ast.Constant):
             return kw.value.value if isinstance(kw.value.value, str) else ""
-    if len(call.args) >= 2 and isinstance(call.args[1], ast.Constant):
-        return call.args[1].value if isinstance(call.args[1].value, str) else ""
+    # Builtin/module open(path, mode) and Path.open(mode) differ.
+    func = call.func
+    module_open = (isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name)
+                   and func.value.id in {"gzip", "bz2", "lzma", "io", "builtins"})
+    index = 0 if isinstance(func, ast.Attribute) and not module_open else 1
+    if len(call.args) > index and isinstance(call.args[index], ast.Constant):
+        return call.args[index].value if isinstance(call.args[index].value, str) else ""
     return ""
+
+
+def test_binary_mode_detection_for_builtin_and_path_open():
+    for expression in ('open("file", "rb")', 'path.open("rb")',
+                       'path.open(mode="rb")', 'open("file", mode="rb")',
+                       'gzip.open("file", "rb")', 'io.open("file", "rb")'):
+        assert _mode(ast.parse(expression, mode="eval").body) == "rb"
+    for expression in ('open("file")', 'path.open()', 'path.read_text()',
+                       'gzip.open("file")'):
+        assert _mode(ast.parse(expression, mode="eval").body) == ""
 
 
 def test_every_text_open_in_src_sets_an_encoding():
