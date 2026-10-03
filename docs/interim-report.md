@@ -138,9 +138,45 @@ The 2 October controlled comparison kept network, demand, routes, and seed fixed
 ## 4. Operator Console & Demo Visuals
 
 - **Owner:** Visuals
-- **Starting sources:** `docs/00-brief.md` §4 (G), `src/console/`, and the current map screenshot in `docs/img/`.
-- Show the current console (G) and identify which map, playback, plan-comparison, and approval features are implemented versus planned.
-- Include a screenshot or video link only when the corresponding artifact exists.
+
+### Visuals contribution — 2 October 2026
+
+Component G is a Streamlit operator console for inspecting the Aberdeen
+corridor and replaying an archived incident. The current console displays 28
+detector locations, colours measured speeds, and shows headline speed and
+congestion indicators. It distinguishes a detector reporting no vehicles from
+a missing reading, so archive gaps are visible. Play/pause, step, rewind and
+timeline scrubbing let an operator inspect the recorded five-minute bins,
+alongside TD's report and clearance markers. Corridor framing and a shared
+light theme make the map and controls readable.
+
+![Ripple console PDF capture from 2 October 2026, showing the recorded 15 May bin at 09:15 HKT, playback controls, speed indicators, the IN-26-03365 timeline and the pending simulation plan comparison.](img/interim-console-2026-10-02.png)
+
+*Figure 4.1. Recorded detector-data playback for IN-26-03365 at 09:15 HKT,
+captured from the local console on 2 October 2026. The plan-comparison panel
+reports that completed simulation runs are still pending.
+This screenshot documents the current console; it provides no evidence of
+simulated rerouting or a measured plan benefit. Data: DATA.GOV.HK / Hong Kong
+Transport Department. Basemap: CARTO / OpenStreetMap contributors.*
+
+[Original console PDF export](img/interim-console-2026-10-02.pdf).
+
+| Feature | Status at the interim checkpoint |
+|---|---|
+| Detector map, speed indicators, incident timeline and playback controls | Implemented in the console. |
+| Corridor framing and light theme | Implemented in the console. |
+| P0/P1/coordinated-plan comparison and recommendation | Local, uncommitted draft. Compares saved simulator results for the same incident, compliance, clearance and seed; withholds a recommendation until the baseline passes the project's validation targets. |
+| Paired simulation replay | Local, uncommitted renderer draft, tested with clearly named mock fixtures. The May incident replay awaits matching real SUMO trajectories. |
+| Operator approval and audit logging | Pending implementation in the console. |
+| Briefing/message panel and what-if interaction | Pending console integration. |
+| Final demo video | Pending validated simulation outputs and completion of the operator workflow. |
+
+The focused console and recommendation checks passed all 46 tests on 2 October.
+These checks verify UI behaviour and input handling; they do not establish
+traffic-model accuracy or plan effectiveness. Integration still requires
+reviewed road geometry and an incident edge, completed matching plan/result
+files, and paired trajectories demonstrating actual rerouting. All future
+plan-benefit figures will come from simulator artifacts in `results/`.
 
 ## 5. Feasibility, Sustainability, Ethics & Impact
 
