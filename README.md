@@ -15,16 +15,18 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Sat 3 Oct 2026** · Week 2 of 5 (28 Sep–4 Oct: baseline
-and interim report) · Weekly sync / stand-up: Wednesday afternoon
+**Last updated: Sun 4 Oct 2026** · Week 2 closeout; Week 3 starts Mon 5 Oct
+· Weekly sync / stand-up: Wednesday afternoon
 
-> **Immediate decision — Data + Simulation, Sun 4 Oct:** bring comparable
+> **Model decision — Lead, Mon 5 Oct evening (HKT):** Data + Simulation bring comparable
 > no-closure diagnostics for SUMO and the simplified fallback, including scoring
 > windows, filters, denominators, reproducible inputs and remaining flow/queue
-> problems. If SUMO is still not credible enough for Week 3, switch to the
-> fallback; the fallback must also pass a clean no-closure check before use.
-> Keep calibration separate from incident lane/timing assumptions and queue
-> recovery. Lead reviews the evidence and records the decision.
+> problems. The Lead deferred the 4 Oct decision for one more SUMO calibration
+> pass. Around 80% of count bins at GEH<5 would show progress, but the documented
+> acceptance targets remain ≥85% GEH<5 and roughly ≤15% speed MAPE. If SUMO
+> remains short, assess the simplified fallback; it also needs a clean
+> no-closure check before use. Keep calibration separate from incident
+> lane/timing assumptions and queue recovery, and record the decision.
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
@@ -44,7 +46,7 @@ this chain.
 |---|---|---|
 | Sun 27 Sep | 🔒 Lock the primary demo incident and backup | ✅ 28 Sep — Lead selected [IN-26-03365](data/demo_shortlist.md) as primary; IN-26-06391 as backup |
 | Sat 3 Oct | 📤 Submit interim report (official deadline Sun 4 Oct) | ✅ Lead confirmed the online form was submitted. The repository keeps the [technical draft](docs/interim-report.md) and [23-question answer bank](docs/interim-report-submission.md); the exact submitted answers and receipt are not archived |
-| Sun 4 Oct | 🚦 Go / no-go: if SUMO is not credible enough for Week 3, switch to the ~15-link fallback after a clean no-closure check | 🟡 SUMO and fallback evidence exist but are not yet comparable or accepted; Data + Simulation review due 4 Oct ([status review](docs/project-status-2026-10-03.md)) |
+| Mon 5 Oct evening (HKT) | 🚦 Decide whether to continue SUMO calibration or use the ~15-link fallback, based on comparable no-closure evidence | 🟡 Deferred from Sun 4 Oct by the Lead for one more calibration pass. Neither model is accepted; 80% GEH<5 would be progress, not the ≥85% count target, and speed validation also matters ([status review](docs/project-status-2026-10-03.md), [plan](docs/04-plan.md)) |
 | Mon 12 Oct | Pitching workshop, everyone (HKU Innovation Wing 2, 14:00–17:30) | ⚪ |
 | Wed 14 Oct | 🔒 **Results freeze**: bug fixes only after this, every number locked | ⚪ |
 | Sat 17 Oct | 📤 Submit deck + prototype (official deadline Sun 18 Oct) | ⚪ |
@@ -57,24 +59,24 @@ this chain.
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md). Week 2 checks on the demo morning: usable calibration bins per threshold ([bin survival](results/data/bin-survival_20260515-0755_1035.md)), which lane closed first ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)), and IN-26-03365 re-screened after the 29 Sep screen fixes ([re-check](results/data/candidates_2026-05-15.md)). For the twin: [flow balance](results/data/flow-balance_20260515-0755_0855.md) and [free-flow speeds](results/data/free-flow_20260508_20260424_0730-1100.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Week 2 evaluation complete on 100 hand-labelled messages. Initial held-out all-field accuracy: citywide **50%**, corridor **75%**. After prompt and label corrections informed by those results, development scores reached 75% and 85%; these are not fresh held-out results. An October prompt experiment performed worse and was not adopted. Output preservation regressions protect evidence ([score history](data/labelled_incidents/LABELLING.md#score-history), [Lead work](docs/2026-10-01-lead-work.md)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 SUMO runs and has connectivity, detector-placement, lane-scope and demand diagnostics, but validation remains below target. In the controlled 2 Oct comparison, removing the global speed ceiling changed GEH<5 from 66.53% to **66.94%** and speed MAPE from 36.94% to **41.36%**; teleports fell from 68 to 53. The ≥85% GEH and ~15% MAPE targets remain unmet. The network and inputs remain provisional; the 4 Oct SUMO/fallback decision needs comparable no-closure evidence ([interim evidence](docs/interim-report.md#3-simulation-evaluation--preliminary-results), [status review](docs/project-status-2026-10-03.md)) |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 SUMO runs and has connectivity, detector-placement, lane-scope and demand diagnostics, but validation remains below target. In the controlled 2 Oct comparison, removing the global speed ceiling changed GEH<5 from 66.53% to **66.94%** and speed MAPE from 36.94% to **41.36%**; teleports fell from 68 to 53. The ≥85% GEH and ~15% MAPE targets remain unmet. The network and inputs remain provisional; the Mon 5 Oct evening decision needs comparable no-closure evidence ([interim evidence](docs/interim-report.md#3-simulation-evaluation--preliminary-results), [status review](docs/project-status-2026-10-03.md)) |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | 🟡 P0/P1/P2 generation, schema checks and all five documented constraints are implemented with offline tests. A model-free `--check-only` path now validates the incident/context handoff before generation. Real-model quality and reviewed C/E routes, demand and controls remain outstanding ([handoff](docs/lead-pipeline-handoff.md)) |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | 🟡 Fallback evaluation work exists on open PR #35, but its current calibration overlaps an injected closure and is not accepted. Comparable P0/P1/P2 runs, required provenance sidecars and compliance/clearance sensitivity remain outstanding ([status review](docs/project-status-2026-10-03.md)) |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Bilingual drafting, saved-result selection, metric-token insertion, provenance verification and VMS limits are implemented with offline tests. A model-free handoff check revalidates plans and comparable results before an LLM call. Real validated E results and human language review remain outstanding ([handoff](docs/lead-pipeline-handoff.md), [Lead next steps](docs/2026-10-03-lead-next-steps.md)) |
-| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 Accepted console features cover the 28-detector map, speed indicators and archived incident playback ([2 Oct capture](docs/img/interim-console-2026-10-02.png)). PR #41 proposes provenance-checked plan comparisons, matching bilingual briefings and identified operator decisions with cross-platform audit locking and Windows CI. Trajectory replay is deferred until C/E can bind FCD output to evaluated runs; observed playback remains available while accepted plan outputs are missing ([operator integration](src/console/OPERATOR_WORKFLOW.md)). |
+| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 [PR #41](https://github.com/f1ymango/ripple/pull/41) merged 4 Oct after Lead review: the console has the 28-detector map and archived incident playback plus provenance-checked plan comparisons, matching bilingual briefings and identified operator decisions with cross-platform audit locking. Real accepted plan outputs and an end-to-end operator review are still missing. Trajectory replay remains deferred until C/E can bind FCD output to evaluated runs ([operator integration](src/console/OPERATOR_WORKFLOW.md)). |
 | H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Interim form submitted. Repository evidence includes sourced problem research, one qualitative [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md), the [technical draft](docs/interim-report.md) and [answer bank](docs/interim-report-submission.md). Additional interviews, accepted validation/results, deck and video evidence remain outstanding |
 
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
 
-### This week: Week 2 (28 Sep–4 Oct)
+### Week 3 priorities (5–11 Oct)
 
 | Owner | Deliverable | Next evidence |
 |---|---|---|
-| Data + Simulation | Baseline evidence and 4 Oct SUMO/fallback decision | 🟡 Bring separate no-closure diagnostics with matching windows/filters where possible, denominators, reproducible inputs and remaining queue/flow issues. Neither model is accepted yet; incident timing/lane assumptions and queue recovery are a separate decision ([status review](docs/project-status-2026-10-03.md)) |
-| Lead | Verify Reader evidence, prepare D/F integration and review the model decision | ✅ Reader evaluation and interim submission complete; model-free D/F handoff checks added and the full suite passes 383 tests. Next: review Data/Simulation evidence on 4 Oct, then validate real C/E context and results ([next steps](docs/2026-10-03-lead-next-steps.md)) |
-| Visuals | First timeline playback of the selected incident | ✅ 28 Sep — IN-26-03365 plays back in the console from the observed detector bins ([screenshot](docs/img/week2-incident-playback.png)); built on observed data, so it does not wait on the 4 Oct go/no-go |
-| Impact | Interviews and interim report, with one paragraph from each owner | ✅ Online form submitted 3 Oct; exact submitted answers and receipt are not archived. Additional interviews and final evidence pack remain open |
+| Data + Simulation | Bring comparable no-closure SUMO/fallback evidence for the Mon 5 Oct evening decision; then produce a validated baseline and matching P0/P1/P2 runs | 🟡 Show the scoring window, filters, denominators, reproducible inputs, queue/flow issues and speed error. Keep incident timing/lane and queue-recovery decisions separate. Neither model is accepted yet ([status review](docs/project-status-2026-10-03.md)) |
+| Lead | Decide the model route, then validate C/E context and real D/F handoffs | 🟡 Reader evaluation, interim submission and model-free D/F checks are complete. Review new evidence on Mon 5 Oct; real plan quality, comparable results and bilingual briefing remain unverified ([next steps](docs/2026-10-03-lead-next-steps.md)) |
+| Visuals | Connect the merged comparison and briefing workflow to accepted outputs | 🟡 [PR #41](https://github.com/f1ymango/ripple/pull/41) merged with green Linux and Windows checks. The observed playback remains available; trajectory replay awaits C/E output provenance and real operator review ([operator integration](src/console/OPERATOR_WORKFLOW.md)) |
+| Impact | Continue interviews and build the final evidence pack and deck | 🟡 Interim form submitted 3 Oct; additional interviews, validated results and final impact claims remain open ([interim draft](docs/interim-report.md)) |
 
 ### Week 1 outcomes (21–27 Sep)
 
@@ -93,6 +95,7 @@ The console framing, theme and playback control fixes are merged in
 [Visuals handover](docs/visuals-handover.md) saved for the next session. The
 console playback (PR #29), Component C source audits (PR #30), and Data's
 [week 2 checks (PR #32)](https://github.com/f1ymango/ripple/pull/32) are merged.
+The operator workflow is merged in [PR #41](https://github.com/f1ymango/ripple/pull/41).
 The local OSM network and E1 loops remain provisional and uncommitted.
 
 ### Current handoffs and open decisions
@@ -209,6 +212,17 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Sun 4 Oct**
+- Lead reviewed and merged [Visuals' operator workflow (PR #41)](https://github.com/f1ymango/ripple/pull/41):
+  provenance-checked comparisons, matching briefings and cross-platform audit
+  actions. The focused local Windows suite passed 64 tests; PR CI passed 434
+  Linux and 64 Windows tests. Real accepted results and an end-to-end operator
+  review remain outstanding.
+- Lead deferred the SUMO/fallback decision to Mon 5 Oct evening (HKT) to allow
+  one more calibration pass. Roughly 80% GEH<5 is a progress marker, not the
+  documented ≥85% GEH and ~≤15% speed acceptance gate; both candidate models
+  still need comparable no-closure evidence ([plan](docs/04-plan.md)).
 
 **Sat 3 Oct**
 - Lead confirmed the interim form was submitted. The repository retains the

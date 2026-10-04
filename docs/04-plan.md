@@ -59,11 +59,16 @@ short paragraph with evidence links and limitations to the
 contribution is already drafted. Impact confirms the collection cutoff; Lead
 and Impact review the complete report and confirm the uploader before submission.
 
-### 🚦 Go / no-go — Sun 4 Oct
-> If the baseline does **not** roughly match what the detectors recorded, switch
-> to the simplified ~15-link network (`03-architecture.md` §5) **that day**.
-> Do not spend week 3 fixing the twin. Losing the twin is survivable; losing
-> week 3 is not.
+### 🚦 Go / no-go — Mon 5 Oct evening (HKT)
+> On Sun 4 Oct, the Lead deferred this decision by one evening to allow a final
+> SUMO calibration pass. Data and Simulation should present comparable
+> no-closure evidence for SUMO and the simplified ~15-link fallback
+> (`03-architecture.md` §5): scoring windows and filters, denominators,
+> reproducible inputs, count GEH, speed error and unresolved flow/queue issues.
+> Around 80% GEH<5 would be progress, but the documented ≥85% count and roughly
+> ≤15% speed targets remain the acceptance gate. If SUMO remains short, assess
+> the fallback against the same evidence before selecting it. Record the
+> decision Monday evening and protect the 14 Oct results freeze.
 
 ### Week 3 — 5–11 Oct · Plans and results
 | Who | Task |

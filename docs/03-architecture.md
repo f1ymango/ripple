@@ -308,8 +308,9 @@ explanation beats a claimed 95% a judge can poke.
 | Map | folium / pydeck / deck.gl | detectors coloured by speed |
 | Charts | matplotlib for stills, console for interactive | stills go in the deck |
 
-**Fallback if SUMO fights us (decide by 4 Oct):** hand-build a ~15-link network
-with a simple queueing / BPR-style link model. It still demonstrates the circuit
+**Fallback if SUMO fights us (decision deferred to Mon 5 Oct evening, HKT):**
+hand-build a ~15-link network with a simple queueing / BPR-style link model.
+It still demonstrates the circuit
 effect and the plan comparison. Losing the twin is survivable; losing week 3 is
 not. See `04-plan.md` §go/no-go.
 
