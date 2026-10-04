@@ -1,6 +1,6 @@
 """Read F's saved draft and append operator decisions using G's audit contract."""
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
-import fcntl
 import json
 import os
 from pathlib import Path
@@ -12,6 +12,32 @@ from src.generation import load_json, validate
 
 HK = timezone(timedelta(hours=8))
 ACTIONS = {"viewed", "approved", "rejected"}
+
+
+@contextmanager
+def audit_lock(path: Path):
+    """Serialize writers on a persistent sibling file on Windows and Unix.
+
+    Lock byte zero on Windows, independent of the audit file's append offset.
+    Keep the lock file after releasing it so waiting writers share one file.
+    Failure to acquire a lock raises before any audit record is written.
+    """
+    with path.with_name(path.name + ".lock").open("a+b") as lock:
+        if os.name == "nt":
+            import msvcrt
+            lock.seek(0)
+            msvcrt.locking(lock.fileno(), msvcrt.LK_LOCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            if os.name == "nt":
+                lock.seek(0)
+                msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                fcntl.flock(lock, fcntl.LOCK_UN)
 
 
 def load_briefing(path: Path, comparison: dict) -> dict:
@@ -57,11 +83,11 @@ def append_action(path: Path, comparison: dict, briefing: dict, action: str,
                  evidence_key(comparison, briefing)).strip(),
     }
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a", encoding="utf-8") as stream:
-        fcntl.flock(stream, fcntl.LOCK_EX)
-        stream.write(json.dumps(record, ensure_ascii=False, allow_nan=False) + "\n")
-        stream.flush()
-        os.fsync(stream.fileno())
+    with audit_lock(path):
+        with path.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(record, ensure_ascii=False, allow_nan=False) + "\n")
+            stream.flush()
+            os.fsync(stream.fileno())
     return record
 
 

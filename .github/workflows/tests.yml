@@ -1,10 +1,8 @@
 name: tests
 
 # Runs the suite that the Lead would otherwise run by hand before every merge.
-# Linux only: the repository is private, so Actions minutes are metered and a
-# Windows runner bills at 2x. The one Windows-specific hazard we know of —
-# Python defaulting to cp1252 — is covered by tests/test_repo_hygiene.py,
-# which runs everywhere.
+# Keep the full suite on Linux; the focused Windows job verifies console
+# startup and audit locking without running the entire suite on a metered runner.
 
 on:
   push:
@@ -24,3 +22,17 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: pip install -r requirements.txt
       - run: python -m pytest -q
+
+  console-windows:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - run: python -m pip install --upgrade pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest tests/test_console.py tests/test_recommendation.py tests/test_operator_workflow.py tests/test_repo_hygiene.py -q

@@ -1,5 +1,0 @@
-<fcd-export>
-  <timestep time="0"><vehicle id="mock_1" x="10" y="0" speed="5"/></timestep>
-  <timestep time="10"><vehicle id="mock_1" x="20" y="50" speed="8"/></timestep>
-  <timestep time="20"><vehicle id="mock_1" x="30" y="50" speed="9"/></timestep>
-</fcd-export>

@@ -30,7 +30,6 @@ Owner: Visuals.
 from __future__ import annotations
 
 import glob
-import json
 import os
 import re
 import sys
@@ -59,7 +58,6 @@ SPEED_GLOB = str(DATA_DIR / "detector_5min_*.csv")
 INCIDENT_GLOB = str(DATA_DIR / "incidents_*.csv")
 RESULTS_DIR = Path(os.environ.get("RIPPLE_RESULTS_DIR") or ROOT / "results" / "runs")
 PLANS_DIR = Path(os.environ.get("RIPPLE_PLANS_DIR") or ROOT / "results" / "plans")
-REPLAYS_DIR = Path(os.environ.get("RIPPLE_REPLAYS_DIR") or ROOT / "results" / "replays")
 BRIEFINGS_DIR = Path(os.environ.get("RIPPLE_BRIEFINGS_DIR") or ROOT / "data" / "generated-briefings")
 AUDIT_PATH = Path(os.environ.get("RIPPLE_AUDIT_LOG") or ROOT / "evidence" / "audit_log.jsonl")
 
@@ -569,28 +567,6 @@ def show_plan_comparison() -> dict | None:
     st.caption(f"Plan results for {chosen_incident} are simulated with the same "
                "compliance, clearance and seed. The map above shows the selected "
                "recorded detector window.")
-    if winner_id != "P0":
-        filename = f"{comparison['baseline']['run_id']}__{winner['run_id']}.gif"
-        replay = REPLAYS_DIR / filename
-        try:
-            manifest = json.loads(replay.with_suffix(".json").read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            manifest = {}
-        if (replay.is_file() and manifest.get("baseline_run_id") ==
-                comparison["baseline"]["run_id"] and
-                manifest.get("plan_run_id") == winner["run_id"] and
-                manifest.get("incident_id") == chosen_incident and
-                manifest.get("scenario") == list(key) and
-                manifest.get("baseline_result_sha256") ==
-                recommendation.fingerprint(comparison["baseline"]) and
-                manifest.get("plan_result_sha256") ==
-                recommendation.fingerprint(winner) and
-                manifest.get("plan_sha256") ==
-                recommendation.fingerprint(comparison["plans"][winner_id])):
-            st.image(str(replay), caption="Recorded SUMO trajectory comparison: "
-                     "baseline (left) and recommended plan (right)")
-        else:
-            st.caption("Trajectory comparison is pending the paired SUMO run files.")
     return comparison
 
 

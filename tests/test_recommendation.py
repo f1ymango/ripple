@@ -1,14 +1,11 @@
-"""The final-video recommendation must trace to comparable simulator outputs."""
+"""Operator recommendations must trace to comparable simulator outputs."""
 from __future__ import annotations
 
 import json
 import shutil
-import sys
 from pathlib import Path
 
-from PIL import Image
-
-from src.console import recommendation, render_replay
+from src.console import recommendation
 
 FIXTURES = Path(__file__).parent / "fixtures" / "mock_recommendation"
 
@@ -26,7 +23,7 @@ def _assess(runs, plans, key=(0.5, 60.0, 42)):
         runs, plans, "MOCK-INCIDENT", key,
         result_paths={r["run_id"]: FIXTURES / f"mock_{r['plan_id'].lower()}_result.json"
                       for r in runs},
-        generation_inputs=json.loads((FIXTURES / "mock_generation-inputs.json").read_text()),
+        generation_inputs=json.loads((FIXTURES / "mock_generation-inputs.json").read_text(encoding="utf-8")),
         results_dir=FIXTURES)
 
 
@@ -79,20 +76,6 @@ def test_recommendation_requires_the_plan_constraint_record():
     assert selected is None and "constraint validation" in reason
 
 
-def test_renderer_uses_only_shared_complete_sumo_frames():
-    roads, incident = render_replay.road_shapes(
-        FIXTURES / "mock_network.net.xml", "mock_incident")
-    baseline = render_replay.fcd_frames(FIXTURES / "mock_baseline.fcd.xml", 10, 0, 20)
-    plan = render_replay.fcd_frames(FIXTURES / "mock_plan.fcd.xml", 10, 0, 10)
-    assert sorted(baseline.keys() & plan.keys()) == [0.0, 10.0]
-    assert baseline[10.0][0][:2] == (20.0, 0.0)
-    assert plan[10.0][0][:2] == (20.0, 50.0)
-    image = render_replay.draw_frame(
-        roads, incident, baseline[10.0], plan[10.0],
-        render_replay._bounds(roads, None), "simulation 10s", "Mock plan", "Mock Road B")
-    assert image.size == (1200, 760)
-
-
 def test_console_shows_recommendation_from_result_files(tmp_path, monkeypatch):
     from streamlit.testing.v1 import AppTest
     from src.console import app
@@ -105,42 +88,12 @@ def test_console_shows_recommendation_from_result_files(tmp_path, monkeypatch):
     monkeypatch.setenv("RIPPLE_DATA_DIR", str(data_dir))
     monkeypatch.setenv("RIPPLE_RESULTS_DIR", str(results_dir))
     monkeypatch.setenv("RIPPLE_PLANS_DIR", str(plans_dir))
-    monkeypatch.setenv("RIPPLE_REPLAYS_DIR", str(tmp_path / "replays"))
     monkeypatch.setattr(app, "DETECTORS_CSV", data_dir / "detectors.csv")
     monkeypatch.setattr(app, "SPEED_GLOB", str(data_dir / "detector_5min_*.csv"))
     monkeypatch.setattr(app, "INCIDENT_GLOB", str(data_dir / "incidents_*.csv"))
     monkeypatch.setattr(app, "RESULTS_DIR", results_dir)
     monkeypatch.setattr(app, "PLANS_DIR", plans_dir)
-    monkeypatch.setattr(app, "REPLAYS_DIR", tmp_path / "replays")
 
     at = AppTest.from_file(str(Path(app.__file__))).run()
     assert not at.exception
     assert any("Coordinated split (P2)" in success.value for success in at.success)
-
-
-def test_renderer_writes_auditable_paired_animation(tmp_path, monkeypatch):
-    results_dir, plans_dir = _copy_inputs(tmp_path)
-    out_dir = tmp_path / "replays"
-    monkeypatch.setattr(sys, "argv", [
-        "render_replay", "--incident-id", "MOCK-INCIDENT",
-        "--results-dir", str(results_dir), "--plans-dir", str(plans_dir),
-        "--network", str(FIXTURES / "mock_network.net.xml"),
-        "--incident-edge", "mock_incident",
-        "--baseline-fcd", str(FIXTURES / "mock_baseline.fcd.xml"),
-        "--plan-fcd", str(FIXTURES / "mock_plan.fcd.xml"),
-        "--out-dir", str(out_dir), "--every-seconds", "10",
-        "--end-seconds", "20",
-    ])
-    render_replay.main()
-    gif = out_dir / "mock_P0_c50_t60__mock_P2_c50_t60.gif"
-    with Image.open(gif) as image:
-        assert image.n_frames == 3
-    meta = json.loads(gif.with_suffix(".json").read_text())
-    assert meta["plan_run_id"] == "mock_P2_c50_t60"
-    assert meta["frame_count"] == 3
-    runs, plans = _inputs()
-    assert meta["plan_result_sha256"] == recommendation.fingerprint(runs[-1])
-    assert meta["plan_sha256"] == recommendation.fingerprint(plans[-1])
-    assert set(meta["source_sha256"]) == {
-        str(FIXTURES / name) for name in
-        ("mock_network.net.xml", "mock_baseline.fcd.xml", "mock_plan.fcd.xml")}

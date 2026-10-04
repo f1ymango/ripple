@@ -1,5 +1,7 @@
 """Real operator controls tested against explicitly synthetic saved artifacts."""
+from concurrent.futures import ProcessPoolExecutor
 import json
+import multiprocessing
 from pathlib import Path
 import shutil
 
@@ -29,20 +31,19 @@ def saved(tmp_path, monkeypatch):
     audit = tmp_path / "mock_audit_log.jsonl"
     for variable, path in {"RIPPLE_RESULTS_DIR": results, "RIPPLE_PLANS_DIR": plans,
                            "RIPPLE_BRIEFINGS_DIR": briefings, "RIPPLE_DATA_DIR": data,
-                           "RIPPLE_AUDIT_LOG": audit,
-                           "RIPPLE_REPLAYS_DIR": tmp_path / "replays"}.items():
+                           "RIPPLE_AUDIT_LOG": audit}.items():
         monkeypatch.setenv(variable, str(path))
     return results, plans, briefing, audit
 
 
 def read(path):
-    return json.loads(path.read_text())
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def change(path, edit):
     value = read(path)
     edit(value)
-    path.write_text(json.dumps(value))
+    path.write_text(json.dumps(value), encoding="utf-8")
 
 
 def selected(saved):
@@ -121,13 +122,78 @@ def test_decisions_append_the_existing_audit_shape_and_require_an_operator(saved
     with pytest.raises(ValueError, match="operator"):
         decide(saved, key, operator=" ")
     assert not saved[3].exists()
-    first = decide(saved, key)
+    first = decide(saved, key, operator="模擬操作員")
     second = decide(saved, key, "rejected")
-    records = [json.loads(line) for line in saved[3].read_text().splitlines()]
+    records = [json.loads(line) for line in saved[3].read_text(encoding="utf-8").splitlines()]
     assert records == [first, second]
     assert set(first) == {"timestamp", "incident_id", "run_id", "plan_id", "action", "operator", "note"}
     assert first["timestamp"].endswith("+08:00")
     assert first["plan_id"] == "P2" and key in first["note"]
+    assert first["operator"] == "模擬操作員"
+
+
+def _append_many(path, comparison, briefing, worker, note):
+    """A spawned writer exercises the native OS lock, including Windows."""
+    for _ in range(5):
+        operator_workflow.append_action(path, comparison, briefing, "approved",
+                                        f"模擬操作員 {worker}", note)
+
+
+def test_concurrent_processes_append_complete_utf8_audit_records(saved):
+    comparison, briefing = selected(saved)
+    note = "模擬審核記錄" * 8192  # Larger than the text stream's write buffer.
+    with ProcessPoolExecutor(max_workers=4,
+                             mp_context=multiprocessing.get_context("spawn")) as pool:
+        writers = [pool.submit(_append_many, saved[3], comparison, briefing, worker, note)
+                   for worker in range(4)]
+        for writer in writers:
+            writer.result(timeout=60)
+    records = [json.loads(line) for line in saved[3].read_text(encoding="utf-8").splitlines()]
+    assert len(records) == 20
+    for worker in range(4):
+        assert sum(row["operator"] == f"模擬操作員 {worker}" for row in records) == 5
+    assert all(row["note"].startswith(note + "\nEvidence SHA-256: ") for row in records)
+
+
+def _hold_lock(path, ready, release):
+    with operator_workflow.audit_lock(path):
+        ready.set()
+        if not release.wait(15):
+            raise RuntimeError("Test lock was not released.")
+
+
+def _write_after_signal(path, comparison, briefing, started, done):
+    started.set()
+    operator_workflow.append_action(path, comparison, briefing, "approved", "Mock operator", "")
+    done.set()
+
+
+def test_audit_writer_waits_for_another_process_to_release_the_lock(saved):
+    comparison, briefing = selected(saved)
+    context = multiprocessing.get_context("spawn")
+    ready, release, started, done = [context.Event() for _ in range(4)]
+    holder = context.Process(target=_hold_lock, args=(saved[3], ready, release))
+    writer = context.Process(target=_write_after_signal,
+                             args=(saved[3], comparison, briefing, started, done))
+    holder.start()
+    try:
+        assert ready.wait(15)
+        writer.start()
+        assert started.wait(15)
+        assert not done.wait(0.5)
+        assert not saved[3].exists()
+    finally:
+        release.set()
+        holder.join(15)
+        if writer.pid is not None:
+            writer.join(15)
+        for process in (holder, writer):
+            if process.is_alive():
+                process.terminate()
+                process.join(5)
+    assert holder.exitcode == writer.exitcode == 0
+    assert done.is_set()
+    assert read(saved[3])["action"] == "approved"
 
 
 def test_ui_records_one_view_and_both_decisions_without_duplicate_views(saved):
@@ -143,7 +209,7 @@ def test_ui_records_one_view_and_both_decisions_without_duplicate_views(saved):
     assert any("approved" in success.value for success in at.success)
     rejection().click().run()
     assert not at.exception
-    records = [json.loads(line) for line in saved[3].read_text().splitlines()]
+    records = [json.loads(line) for line in saved[3].read_text(encoding="utf-8").splitlines()]
     assert [row["action"] for row in records] == ["viewed", "approved", "rejected"]
 
 
