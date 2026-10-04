@@ -92,6 +92,9 @@ integration was subsequently pushed in PR #41 with Rorath's approval.
   waiting for another process's lock, alongside console startup and decisions.
 - A focused Windows CI job runs those console and audit tests. The full suite
   remains on Linux. Current checks are recorded on PR #41.
+- The first Windows run exposed native backslashes in G's sidecar source
+  identifiers. They now retain the same portable logical paths as F; a
+  producer/consumer integration test compares their complete source lists.
 - Removed trajectory rendering/display and its fixtures/tests from this PR.
   The prior draft is preserved on the local `visuals/replay-draft-oct04`
   branch at `4e7f54a`; the original checkout's user edits remain untouched.

@@ -8,6 +8,7 @@ import shutil
 import pytest
 from streamlit.testing.v1 import AppTest
 
+from src.briefing.writer import prepare_comparison
 from src.console import app, operator_workflow, recommendation
 
 FIXTURES = Path(__file__).parent / "fixtures" / "mock_recommendation"
@@ -51,6 +52,16 @@ def selected(saved):
     comparison, reason = recommendation.load_comparison(results, plans, "MOCK-INCIDENT", SCENARIO)
     assert comparison is not None, reason
     return comparison, operator_workflow.load_briefing(briefing_path, comparison)
+
+
+def test_console_and_briefing_writer_identify_the_same_evidence_sources(saved):
+    comparison, _ = selected(saved)
+    results, plans, _, _ = saved
+    result_paths = [results / f"mock_{pid.lower()}_result.json" for pid in ("P0", "P1", "P2")]
+    _, _, _, sources = prepare_comparison(
+        list(comparison["plans"].values()), result_paths,
+        generation_inputs=read(plans / "generation-inputs.json"), results_root=results)
+    assert sources == comparison["sources"]
 
 
 @pytest.mark.parametrize("problem", ["missing_sidecar", "changed_result", "changed_plan",

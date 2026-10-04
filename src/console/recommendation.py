@@ -6,7 +6,7 @@ traffic outcomes: a missing or unvalidated run means no recommendation.
 from __future__ import annotations
 
 import math
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 import jsonschema
 
@@ -173,7 +173,7 @@ def assess(results: list[dict], plans: list[dict], incident_id: str,
             source = "results/runs/" + path.relative_to(Path(results_dir)).as_posix()
             artifacts.append((source, result))
             shared_inputs.append(verify_result(path, result, plan_by_id[pid], generation_inputs))
-            sources.extend((source, str(Path(source).with_suffix(".provenance.json"))))
+            sources.extend((source, PurePosixPath(source).with_suffix(".provenance.json").as_posix()))
         if any(inputs != shared_inputs[0] for inputs in shared_inputs[1:]):
             raise ValueError("Compared runs used different simulation inputs.")
         _, winner, _, _ = select(checked, artifacts)
