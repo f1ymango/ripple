@@ -1,0 +1,22 @@
+{
+  "run_id": "mock_P1_c50_t60",
+  "plan_id": "P1",
+  "incident_id": "MOCK-INCIDENT",
+  "scenario": {
+    "compliance": 0.5,
+    "clearance_min": 60,
+    "seed": 42
+  },
+  "metrics": {
+    "total_vehicle_hours_delay": 90,
+    "delay_vs_do_nothing_pct": -10,
+    "max_queue_m": {
+      "MOCK-DETECTOR": 100
+    },
+    "corridor_tt_p95_min": 20,
+    "emergency_tt_min": 10,
+    "co2_kg": 1000,
+    "residential_delay_share_pct": 5,
+    "vehicles_completed": 100
+  }
+}

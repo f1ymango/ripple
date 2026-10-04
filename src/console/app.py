@@ -32,20 +32,34 @@ from __future__ import annotations
 import glob
 import os
 import re
+import sys
 import time
 from pathlib import Path
+
+import jsonschema
+
+ROOT = Path(__file__).resolve().parents[2]
+# Streamlit launches this file as a script and puts src/console, not the repo
+# root, on sys.path. Keep the shared recommendation module importable there.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 import altair as alt
 import pandas as pd
 import pydeck as pdk
 import streamlit as st
 
-ROOT = Path(__file__).resolve().parents[2]
+from src.console import operator_workflow, recommendation
+
 # Tests point this at a fixture directory; everything else reads the real data/.
 DATA_DIR = Path(os.environ.get("RIPPLE_DATA_DIR") or ROOT / "data")
 DETECTORS_CSV = DATA_DIR / "detectors.csv"
 SPEED_GLOB = str(DATA_DIR / "detector_5min_*.csv")
 INCIDENT_GLOB = str(DATA_DIR / "incidents_*.csv")
+RESULTS_DIR = Path(os.environ.get("RIPPLE_RESULTS_DIR") or ROOT / "results" / "runs")
+PLANS_DIR = Path(os.environ.get("RIPPLE_PLANS_DIR") or ROOT / "results" / "plans")
+BRIEFINGS_DIR = Path(os.environ.get("RIPPLE_BRIEFINGS_DIR") or ROOT / "data" / "generated-briefings")
+AUDIT_PATH = Path(os.environ.get("RIPPLE_AUDIT_LOG") or ROOT / "evidence" / "audit_log.jsonl")
 
 # The loader names its exports ..._b<width>[_cov<threshold>].csv. The `5min` in
 # the stem is stale whenever --bin-minutes was not 5; the width and the filter
@@ -496,6 +510,133 @@ def colour_legend() -> None:
     )
 
 
+def show_plan_comparison() -> dict | None:
+    """Show only complete, validated simulator comparisons from the contracts."""
+    st.subheader("Simulation plan comparison")
+    results, result_errors = recommendation.read_objects(RESULTS_DIR)
+    plans, plan_errors = recommendation.read_objects(PLANS_DIR)
+    for error in result_errors + plan_errors:
+        st.warning(f"Cannot read simulation input: {error}")
+    if result_errors or plan_errors:
+        return
+    if not results:
+        st.caption("No completed plan runs in results/runs/ yet. The map above is "
+                   "recorded detector data; it is not a route recommendation.")
+        return
+    incidents = sorted({r.get("incident_id") for r in results
+                        if isinstance(r.get("incident_id"), str)})
+    if not incidents:
+        st.warning("Run results have no incident_id.")
+        return
+    chosen_incident = st.selectbox("Incident for simulation", incidents,
+                                   index=incidents.index("IN-26-03365")
+                                   if "IN-26-03365" in incidents else 0)
+    scenarios = recommendation.scenarios_for(results, chosen_incident)
+    if not scenarios:
+        st.info("Waiting for matching P0, P1 and coordinated-plan runs for this incident.")
+        return
+    key = st.selectbox("Simulation assumption", scenarios,
+                       format_func=lambda s: f"{s[0]:.0%} compliance · "
+                                             f"{s[1]:g} min clearance · seed {s[2]}")
+    comparison, reason = recommendation.load_comparison(RESULTS_DIR, PLANS_DIR,
+                                                       chosen_incident, key)
+    if comparison is None:
+        st.warning(f"Recommendation unavailable: {reason}")
+        return
+
+    runs = comparison["runs"]
+    winner = comparison["winner"]
+    for col, pid in zip(st.columns(len(runs)), sorted(runs)):
+        result = runs[pid]
+        plan = comparison["plans"].get(pid, {})
+        with col:
+            st.markdown(f"**{pid} · {plan.get('label', 'Do nothing' if pid == 'P0' else pid)}**")
+            st.metric("Simulated total delay",
+                      f"{float(result['metrics']['total_vehicle_hours_delay']):,.1f} vehicle-hours")
+            roads = sorted({d.get("via") for d in plan.get("diversions", [])
+                            if isinstance(d, dict) and isinstance(d.get("via"), str)})
+            if roads:
+                st.caption("Via " + ", ".join(roads))
+            if result["metrics"].get("emergency_tt_min") is not None:
+                st.caption(f"Emergency trip: {result['metrics']['emergency_tt_min']} min")
+    winner_id = winner["plan_id"]
+    winner_label = comparison["plans"].get(winner_id, {}).get(
+        "label", "Do nothing" if winner_id == "P0" else winner_id)
+    st.success(f"Recommended operator response: {winner_label} ({winner_id}). "
+               "Lowest simulated total delay among these validated runs.")
+    st.caption(f"Plan results for {chosen_incident} are simulated with the same "
+               "compliance, clearance and seed. The map above shows the selected "
+               "recorded detector window.")
+    return comparison
+
+
+def show_operator_briefing(comparison: dict | None) -> None:
+    st.subheader("Operator briefing and decision")
+    if comparison is None:
+        st.caption("Waiting for a validated plan comparison and its saved briefing.")
+        st.button("Record approval", disabled=True)
+        st.button("Record rejection", disabled=True)
+        return
+    drafts, errors = recommendation.read_artifacts(BRIEFINGS_DIR)
+    for error in errors:
+        st.warning(f"Cannot read briefing: {error}")
+    matching = [path for path, draft in drafts
+                if draft.get("run_id") == comparison["winner"]["run_id"]]
+    if not matching:
+        st.info("The recommended run has no saved operator briefing yet.")
+        return
+    path = st.selectbox("Briefing draft", matching, format_func=lambda p: p.name)
+    try:
+        briefing = operator_workflow.load_briefing(path, comparison)
+    except (OSError, ValueError, jsonschema.ValidationError) as exc:
+        st.warning(f"Decision unavailable: {str(exc).splitlines()[0]}")
+        return
+    shown_key = operator_workflow.evidence_key(comparison, briefing)
+    language = st.radio("Briefing language", ["English", "繁體中文"], horizontal=True)
+    suffix = "en" if language == "English" else "zh"
+    st.write(briefing[f"operator_briefing_{suffix}"])
+    st.info(briefing["uncertainty_note_en"])
+    for message in briefing["vms_messages"]:
+        st.markdown(f"**Sign {message['sign_id']}**")
+        st.text(message[f"text_{suffix}"])
+    for message in briefing["public_messages"]:
+        st.markdown(f"**{message['audience']}**")
+        st.write(message[f"text_{suffix}"])
+    st.caption("Approval is recorded in the audit log. Message delivery is manual.")
+    operator = st.text_input("Operator name", key="operator_name")
+    note = st.text_area("Decision note", key=f"decision_note_{shown_key}")
+    if not operator.strip():
+        st.caption("Enter your name to record an approval or rejection.")
+    decision = None
+    left, right = st.columns(2)
+    with left:
+        if st.button("Record approval", type="primary", disabled=not operator.strip()):
+            decision = "approved"
+    with right:
+        if st.button("Record rejection", disabled=not operator.strip()):
+            decision = "rejected"
+    if not operator.strip():
+        return
+    viewed = f"viewed_{operator.strip()}_{shown_key}"
+    try:
+        if not st.session_state.get(viewed):
+            operator_workflow.record_decision(
+                results_dir=RESULTS_DIR, plans_dir=PLANS_DIR, briefing_path=path,
+                incident_id=comparison["incident_id"], scenario=comparison["scenario"],
+                displayed_key=shown_key, audit_path=AUDIT_PATH, action="viewed",
+                operator=operator, note="Viewed saved briefing and comparison.")
+            st.session_state[viewed] = True
+        if decision:
+            operator_workflow.record_decision(
+                results_dir=RESULTS_DIR, plans_dir=PLANS_DIR, briefing_path=path,
+                incident_id=comparison["incident_id"], scenario=comparison["scenario"],
+                displayed_key=shown_key, audit_path=AUDIT_PATH, action=decision,
+                operator=operator, note=note)
+            st.success(f"Operator decision recorded: {decision}.")
+    except (OSError, ValueError, jsonschema.ValidationError) as exc:
+        st.error(f"Decision was not recorded: {str(exc).splitlines()[0]}")
+
+
 def main() -> None:
     st.set_page_config(page_title="Ripple — Aberdeen corridor", layout="wide")
     st.title("Ripple — Aberdeen corridor")
@@ -571,6 +712,9 @@ def main() -> None:
             )
 
     st.caption(f"{len(detectors)} detectors · data: DATA.GOV.HK / Transport Department")
+
+    comparison = show_plan_comparison()
+    show_operator_briefing(comparison)
 
     if n_bins:
         autoplay_tick(n_bins, pace)

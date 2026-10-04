@@ -53,3 +53,53 @@ code or theme changes if it continues displaying the old version.
 
 Metrics must come from simulator outputs in `results/`. Test mocks must be
 clearly named `mock_*` and kept in `tests/fixtures/`.
+
+## Local operator workflow — 3 Oct 2026
+
+Integration branch: `visuals/operator-workflow-oct03`, based on fetched main
+`1f17b4f`. The working checkout is `/tmp/ripple-operator-workflow-oct03`; if
+that temporary directory is cleared, recreate a worktree from the saved branch.
+The original checkout and its earlier replay draft remain separate.
+
+- Plan comparison now reuses D/F validation and requires E's original
+  provenance sidecars and saved generation inputs. Mixed or changed inputs
+  withhold the recommendation.
+- The operator panel reads the matching saved bilingual briefing, checks
+  result/sidecar sources and sign limits, and records identified views and
+  approvals/rejections with the existing audit fields. Inputs are re-read at
+  each decision; a changed draft requires another review. Delivery is manual.
+- The earlier replay renderer checked plan/result hashes, but did not bind
+  FCD output to its evaluated producer run. It was separated on 4 Oct below.
+- Verification: 112 focused console, recommendation, operator-workflow and
+  D/F tests passed; `git diff --check` and compile checks passed. The live
+  1500px preview rendered its waiting state with disabled decisions and no
+  browser errors. Fixtures remain clearly named `mock_*`; there are no real
+  accepted plan runs or May rerouting evidence in this checkpoint.
+
+Preview: `http://127.0.0.1:8502`. It uses the original checkout's recorded
+detector bins via `RIPPLE_DATA_DIR`. The 2 Oct report contribution is already
+pushed in PR #40 and was still open when checked on 3 Oct. The console
+integration was subsequently pushed in PR #41 with Rorath's approval.
+
+## PR #41 review revision — 4 Oct 2026
+
+- Merged latest main (`6461dab`), including its binary-open hygiene fix.
+  The README resolution retains the latest Lead, Data, Simulation and Impact
+  status. Binary file opens do not receive an encoding argument.
+- Audit writes now lock a persistent sibling file using native Windows or
+  Unix locking. Windows imports no `fcntl`; the lock covers the complete
+  UTF-8 append, flush and sync. Tests exercise concurrent spawned writers and
+  waiting for another process's lock, alongside console startup and decisions.
+- A focused Windows CI job runs those console and audit tests. The full suite
+  remains on Linux. Current checks are recorded on PR #41.
+- The first Windows run exposed native backslashes in G's sidecar source
+  identifiers. They now retain the same portable logical paths as F; a
+  producer/consumer integration test compares their complete source lists.
+- Removed trajectory rendering/display and its fixtures/tests from this PR.
+  The prior draft is preserved on the local `visuals/replay-draft-oct04`
+  branch at `4e7f54a`; the original checkout's user edits remain untouched.
+  Replay must wait for a reviewed C/E producer output-provenance format.
+  Shared contracts are unchanged.
+- Current operator integration instructions are in
+  [OPERATOR_WORKFLOW.md](../src/console/OPERATOR_WORKFLOW.md), using the
+  existing [Lead handoff](lead-pipeline-handoff.md) artifact paths.

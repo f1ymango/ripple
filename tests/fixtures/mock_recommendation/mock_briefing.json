@@ -1,0 +1,30 @@
+{
+  "operator_briefing_en": "Consider the selected plan P2. Simulated delay is 80 vehicle-hours. Monitor queues and obtain operator approval.",
+  "operator_briefing_zh": "請考慮所選方案P2。模擬延誤為80車輛小時。請監察車龍並取得操作員批准。",
+  "vms_messages": [
+    {
+      "sign_id": "MOCK-VMS",
+      "text_en": "TEST ADVICE // REVIEW REQUIRED",
+      "text_zh": "測試建議 // 須經覆核",
+      "chars_en": 30
+    }
+  ],
+  "public_messages": [
+    {
+      "audience": "Mock drivers",
+      "text_en": "Draft test advice awaiting review.",
+      "text_zh": "測試建議草稿，待覆核。"
+    }
+  ],
+  "uncertainty_note_en": "Assumes 50% compliance and 60 minute clearance; lane and timing choices require review.",
+  "run_id": "mock_P2_c50_t60",
+  "recommended_plan_id": "P2",
+  "sources": [
+    "results/runs/mock_p0_result.json",
+    "results/runs/mock_p0_result.provenance.json",
+    "results/runs/mock_p1_result.json",
+    "results/runs/mock_p1_result.provenance.json",
+    "results/runs/mock_p2_result.json",
+    "results/runs/mock_p2_result.provenance.json"
+  ]
+}

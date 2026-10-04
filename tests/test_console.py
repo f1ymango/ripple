@@ -261,7 +261,7 @@ def test_the_transport_controls_appear_with_a_window(data_dir):
     _snapshot(data_dir, "detector_5min_20260921-0800_0900_b5.csv")
     at = _run()
     assert not at.exception
-    assert {b.label for b in at.button} == {"◀", "▶", "▶|", "|◀"}
+    assert {"◀", "▶", "▶|", "|◀"} <= {b.label for b in at.button}
 
 
 def test_pressing_play_on_a_one_bin_window_does_not_hang(data_dir):

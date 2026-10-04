@@ -1,0 +1,113 @@
+{
+  "incident": {
+    "incident_id": "MOCK-INCIDENT",
+    "source_message_en": "Synthetic mock incident for console tests.",
+    "source_message_zh": "模擬測試事故。",
+    "announced_at": "2026-05-15T09:01:00+08:00",
+    "closed_at": null,
+    "status": "NEW",
+    "district": null,
+    "road_name": "Mock closed road",
+    "direction": "Aberdeen Tunnel bound",
+    "near_landmark": "Yip Kan Street",
+    "between_landmark": null,
+    "lat": null,
+    "lon": null,
+    "coords_source": "none",
+    "incident_type": "traffic_accident",
+    "lanes_closed": [
+      "unspecified"
+    ],
+    "lanes_total": null,
+    "in_scope": true,
+    "confidence": 0.7,
+    "notes": "Lanes closed but not specified. The road name includes the direction in parentheses."
+  },
+  "policy_context": {
+    "incident_id": "MOCK-INCIDENT",
+    "reviewed": true,
+    "sources": [
+      "tests/fixtures/mock_plan_context.json"
+    ],
+    "active_from": "2026-05-15T09:01:00+08:00",
+    "active_until": "2026-05-15T10:35:00+08:00",
+    "od_demand_vehicles": {
+      "Mock origin->Mock destination": 100
+    },
+    "routes": [
+      {
+        "od_group": "Mock origin->Mock destination",
+        "via": "Mock Detour",
+        "roads": [
+          "Mock Detour"
+        ],
+        "residential": false,
+        "school": false
+      },
+      {
+        "od_group": "Mock origin->Mock destination",
+        "via": "Mock Alternative",
+        "roads": [
+          "Mock Alternative"
+        ],
+        "residential": false,
+        "school": false
+      },
+      {
+        "od_group": "Mock origin->Mock destination",
+        "via": "Mock Residential",
+        "roads": [
+          "Mock Residential"
+        ],
+        "residential": true,
+        "school": false
+      },
+      {
+        "od_group": "Mock origin->Mock destination",
+        "via": "Mock School",
+        "roads": [
+          "Mock School"
+        ],
+        "residential": false,
+        "school": true
+      },
+      {
+        "od_group": "Mock origin->Mock destination",
+        "via": "Mock Blocked",
+        "roads": [
+          "Mock Blocked",
+          "Wong Chuk Hang Road flyover"
+        ],
+        "residential": false,
+        "school": false
+      },
+      {
+        "od_group": "Mock origin->Mock destination",
+        "via": "Mock Emergency Route",
+        "roads": [
+          "Mock Emergency Route",
+          "Mock Hospital Road"
+        ],
+        "residential": false,
+        "school": false
+      }
+    ],
+    "blocked_roads": [],
+    "signals": {
+      "MOCK-J": 10
+    },
+    "sign_ids": [
+      "MOCK-VMS"
+    ],
+    "pt_modes": [
+      "Mock Transit"
+    ],
+    "priority_corridor": {
+      "od": "Mock origin->Mock hospital",
+      "keep_clear": [
+        "Mock Hospital Road"
+      ]
+    }
+  },
+  "model": "mock-fixture"
+}
