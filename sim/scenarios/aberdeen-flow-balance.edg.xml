@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AID01106 stands at the very start of edge 1198101443 and AID01107 near its end. A speed sign
+     covers a whole edge, so the edge is cut just past AID01106: the first piece keeps the id and
+     carries AID01106's speed, the rest (1198101443.40) carries AID01107's. The run moves the
+     AID01107 loops onto the second piece, at the same place on the road. -->
+<edges>
+    <edge id="1198101443">
+        <split pos="40" idBefore="1198101443" idAfter="1198101443.40"/>
+    </edge>
+</edges>

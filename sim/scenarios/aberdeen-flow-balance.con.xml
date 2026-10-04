@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Aberdeen Tunnel, Wong Chuk Hang portal, towards Wan Chai: every plaza lane leads on into the tube.
+
+     The OSM import left three plaza lanes with no onward connection (1198101424 lane 0;
+     1233513875#0 lanes 0 and 1), so only one of the two approach lanes could reach the tunnel
+     and the approach ran as a single lane. Here the four plaza lanes pair off, two into each
+     tunnel lane. Nothing else in the network changes.
+
+     netconvert -s sim/work/aberdeen.net.xml -x sim/scenarios/aberdeen-flow-balance.con.xml
+         -e sim/scenarios/aberdeen-flow-balance.edg.xml -o sim/work/aberdeen.flow-balance.net.xml
+         -lefthand true -output.street-names true          (two dashes before each long option) -->
+<connections>
+    <connection from="1198101424" to="1545825139" fromLane="0" toLane="0"/>
+    <connection from="1233513875#0" to="770641604#0" fromLane="0" toLane="0"/>
+    <connection from="1233513875#0" to="770641604#0" fromLane="1" toLane="0"/>
+    <delete from="1233513875#0" to="770641604#0" fromLane="2" toLane="0"/>
+    <connection from="1233513875#0" to="770641604#0" fromLane="2" toLane="1"/>
+</connections>

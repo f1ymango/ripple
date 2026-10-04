@@ -1,0 +1,343 @@
+{
+  "purpose": "No-closure calibration on flow-balance demand and ordinary-morning speeds; not incident validation",
+  "closure_applied": false,
+  "day": "2026-03-23",
+  "ordinary_days": [
+    "2026-03-16",
+    "2026-03-09",
+    "2026-03-02",
+    "2026-02-23"
+  ],
+  "speeds": "ordinary mornings, refreshed from the replay morning's own previous quarter-hour until 08:10",
+  "demand_setting_detectors": [
+    "AID01101",
+    "AID01214",
+    "TDSSPWR10001",
+    "TDSAPR20001"
+  ],
+  "run_begin": "2026-03-23T06:40:00+08:00",
+  "scored_from": "2026-03-23T07:10:00+08:00",
+  "scored_slots": 12,
+  "seed": 2026,
+  "additional": [],
+  "command": [
+    "sumo",
+    "-n",
+    "sim/work/aberdeen.flow-balance.net.xml",
+    "-r",
+    "sim/work/cases/A_mon_am/run_refreshed/demand.rou.xml",
+    "-a",
+    "sim/work/cases/A_mon_am/run_refreshed/run-seed2026/detectors.add.xml,sim/work/cases/A_mon_am/run_refreshed/speeds.add.xml",
+    "--begin",
+    "0",
+    "--end",
+    "5400.0",
+    "--seed",
+    "2026",
+    "--step-length",
+    "1",
+    "--max-depart-delay",
+    "-1",
+    "--duration-log.statistics",
+    "true",
+    "--statistic-output",
+    "sim/work/cases/A_mon_am/run_refreshed/run-seed2026/statistics.xml",
+    "--no-step-log",
+    "true"
+  ],
+  "wall_seconds": 22.5,
+  "score": {
+    "all_detectors": {
+      "geh_under_5_percent": 98.1,
+      "count_bins": 269,
+      "speed_mape_percent": 10.1,
+      "speed_bins": 297
+    },
+    "assessment_detectors": {
+      "geh_under_5_percent": 98.3,
+      "count_bins": 229,
+      "speed_mape_percent": 10.0,
+      "speed_bins": 253
+    },
+    "demand_setting_detectors": {
+      "geh_under_5_percent": 97.5,
+      "count_bins": 40,
+      "speed_mape_percent": 10.9,
+      "speed_bins": 44
+    }
+  },
+  "vehicles": {
+    "loaded": "16435",
+    "inserted": "15771",
+    "running": "505",
+    "waiting": "664"
+  },
+  "teleports": {
+    "total": "0",
+    "jam": "0",
+    "yield": "0",
+    "wrongLane": "0"
+  },
+  "teleport_start_lanes": {},
+  "per_detector": {
+    "AID01101": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1348,
+      "simulated_total": 1280,
+      "speed_bins": 11,
+      "speed_mape_percent": 3.8
+    },
+    "AID01102": {
+      "count_bins": 10,
+      "geh_under_5": 9,
+      "observed_total": 1216,
+      "simulated_total": 1343,
+      "speed_bins": 11,
+      "speed_mape_percent": 2.8
+    },
+    "AID01103": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1522,
+      "simulated_total": 1666,
+      "speed_bins": 11,
+      "speed_mape_percent": 9.9
+    },
+    "AID01104": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1221,
+      "simulated_total": 1186,
+      "speed_bins": 11,
+      "speed_mape_percent": 4.9
+    },
+    "AID01105": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1428,
+      "simulated_total": 1393,
+      "speed_bins": 11,
+      "speed_mape_percent": 9.3
+    },
+    "AID01106": {
+      "count_bins": 10,
+      "geh_under_5": 9,
+      "observed_total": 1136,
+      "simulated_total": 1082,
+      "speed_bins": 11,
+      "speed_mape_percent": 12.4
+    },
+    "AID01107": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1321,
+      "simulated_total": 1300,
+      "speed_bins": 11,
+      "speed_mape_percent": 7.9
+    },
+    "AID01108": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1338,
+      "simulated_total": 1258,
+      "speed_bins": 11,
+      "speed_mape_percent": 5.5
+    },
+    "AID01109": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 2031,
+      "simulated_total": 1632,
+      "speed_bins": 11,
+      "speed_mape_percent": 17.4
+    },
+    "AID01110": {
+      "count_bins": 10,
+      "geh_under_5": 9,
+      "observed_total": 2572,
+      "simulated_total": 2093,
+      "speed_bins": 11,
+      "speed_mape_percent": 8.5
+    },
+    "AID01214": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 2779,
+      "simulated_total": 2759,
+      "speed_bins": 11,
+      "speed_mape_percent": 12.4
+    },
+    "AID01215": {
+      "count_bins": 9,
+      "geh_under_5": 9,
+      "observed_total": 1872,
+      "simulated_total": 1935,
+      "speed_bins": 11,
+      "speed_mape_percent": 15.4
+    },
+    "AID01216": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1438,
+      "simulated_total": 1452,
+      "speed_bins": 11,
+      "speed_mape_percent": 48.3
+    },
+    "AID01217": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1757,
+      "simulated_total": 1992,
+      "speed_bins": 11,
+      "speed_mape_percent": 2.3
+    },
+    "AID01218": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1522,
+      "simulated_total": 1524,
+      "speed_bins": 11,
+      "speed_mape_percent": 11.5
+    },
+    "AID01219": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1414,
+      "simulated_total": 1342,
+      "speed_bins": 11,
+      "speed_mape_percent": 4.7
+    },
+    "AID01220": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1261,
+      "simulated_total": 1249,
+      "speed_bins": 11,
+      "speed_mape_percent": 3.8
+    },
+    "AID01221": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1897,
+      "simulated_total": 1658,
+      "speed_bins": 11,
+      "speed_mape_percent": 16.5
+    },
+    "AID01222": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1492,
+      "simulated_total": 1549,
+      "speed_bins": 11,
+      "speed_mape_percent": 8.0
+    },
+    "AID01223": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1143,
+      "simulated_total": 1214,
+      "speed_bins": 11,
+      "speed_mape_percent": 8.3
+    },
+    "TDSAPR10001": {
+      "count_bins": 10,
+      "geh_under_5": 9,
+      "observed_total": 1472,
+      "simulated_total": 1188,
+      "speed_bins": 11,
+      "speed_mape_percent": 4.9
+    },
+    "TDSAPR20001": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1453,
+      "simulated_total": 1448,
+      "speed_bins": 11,
+      "speed_mape_percent": 5.0
+    },
+    "TDSSPWR10001": {
+      "count_bins": 10,
+      "geh_under_5": 9,
+      "observed_total": 684,
+      "simulated_total": 668,
+      "speed_bins": 11,
+      "speed_mape_percent": 22.6
+    },
+    "TDSSPWR10002": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1018,
+      "simulated_total": 904,
+      "speed_bins": 11,
+      "speed_mape_percent": 4.8
+    },
+    "TDSSPWR10003": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1011,
+      "simulated_total": 846,
+      "speed_bins": 11,
+      "speed_mape_percent": 5.9
+    },
+    "TDSSPWR20001": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 671,
+      "simulated_total": 628,
+      "speed_bins": 11,
+      "speed_mape_percent": 13.5
+    },
+    "TDSSPWR20003": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1146,
+      "simulated_total": 1232,
+      "speed_bins": 11,
+      "speed_mape_percent": 3.5
+    }
+  },
+  "build_notes": [
+    "AID01104->AID01105: +246 veh/h joins on the main line (the network has no on-ramp between them)",
+    "AID01106->AID01107: +267 veh/h joins on the main line (the network has no on-ramp between them)",
+    "AID01219->AID01220: -6.4% leaves on the main line (the network has no off-ramp between them)",
+    "main_westbound: entry road 244383597 leads only to exit 1194693247, so it carries the 22.4% of the entry traffic that leaves there; the other entry road carries the rest",
+    "TDSSPWR10002->TDSSPWR10003: -6.2% leaves on the main line (the network has no off-ramp between them)",
+    "TDSSPWR10003->TDSAPR10001: +410 veh/h joins on the main line (the network has no on-ramp between them)"
+  ],
+  "sources": {
+    "network": {
+      "path": "sim/work/aberdeen.flow-balance.net.xml",
+      "sha256": "9e23e7de17a5a2e351a59cb6e21031136854c36da9036589694a240597d724cb"
+    },
+    "routes": {
+      "path": "sim/work/cases/A_mon_am/run_refreshed/demand.rou.xml",
+      "sha256": "a6b0fa69752fa3d0766fbb618cfc93c474b0e0c727514d4ce0fd81b5609a5c6c"
+    },
+    "speeds": {
+      "path": "sim/work/cases/A_mon_am/run_refreshed/speeds.add.xml",
+      "sha256": "258952af1395b83101c255cc298dd3e4bf14661ebf1901cfaa1dd0cb2e2d5215"
+    },
+    "loops": {
+      "path": "sim/work/may-diagnostic/detectors.add.xml",
+      "sha256": "d0ac843e8ef99b431db28444d2131e4c7e1602aa7683f5ad69c8e7a40742ad6e"
+    },
+    "observations": {
+      "path": "sim/work/cases/A_mon_am/detectors.json",
+      "sha256": "1e237be37b1a3581b08c14c3dcf1beec0a9326c6f3ac9372bea341684a758c90"
+    }
+  },
+  "evaluation": {
+    "geh_under_5_percent": 98.14126394052045,
+    "vehicle_presence_match_percent": 100.0,
+    "observed_zero_count_match_percent": null,
+    "speed_mape_percent": 10.142339968934639,
+    "count_bin_n": 269,
+    "speed_bin_n": 297,
+    "missing_detector_ids": [],
+    "unmatched_observation_intervals": 0,
+    "unmatched_count_intervals": 0,
+    "speed_unavailable_intervals": 0,
+    "meets_85_percent_target": true
+  }
+}

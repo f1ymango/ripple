@@ -11,8 +11,8 @@ from src import llm
 from src.evaluation_provenance import capture_inputs, write_result, verify_result
 from src.briefing import run as briefing_run
 from src.briefing.results import load_results, select
-from src.briefing.writer import assemble, check_vms, render_text, write_briefing
-from src.generation import load_json
+from src.briefing.writer import assemble, check_vms, prepare_comparison, render_text, write_briefing
+from src.generation import load_json, save_json
 from src.plans import run as plans_run
 from src.plans.generator import generate, validate_plans
 from src.plans.validator import CHECKS, validate_plan
@@ -390,3 +390,87 @@ def test_provenance_does_not_overwrite_previous_run(inputs, tmp_path):
     with pytest.raises(ValueError, match="already exists"):
         write_result(path, result, captured)
     assert path.read_bytes() == original
+
+
+@pytest.fixture
+def saved_handoff(inputs, tmp_path):
+    plans = checked(inputs)
+    saved = {"incident": inputs[0], "policy_context": inputs[1]}
+    directory = tmp_path / "plans"
+    save_json(directory / "generation-inputs.json", saved)
+    paths = []
+    for plan, (_, result) in zip(plans, artifacts()):
+        save_json(directory / f"{plan['plan_id']}.json", plan)
+        path = tmp_path / "results" / "runs" / f"{result['run_id']}.json"
+        captured = capture_inputs(plan, saved, {"mock_network": FIXTURES / "mock_plan_context.json"})
+        write_result(path, result, captured)
+        paths.append(path)
+    return directory, plans, saved, paths
+
+
+def test_plans_check_only_does_not_call_model_or_write(inputs, model, tmp_path, monkeypatch, capsys):
+    context_path = tmp_path / "mock_context.json"
+    save_json(context_path, inputs[1])
+    before = set(tmp_path.rglob("*"))
+    monkeypatch.setattr(sys, "argv", ["plans", "--incident", str(READER_RUN),
+        "--message-id", "138270", "--context", str(context_path), "--check-only"])
+    plans_run.main()
+    assert "context checks passed" in capsys.readouterr().out
+    assert set(tmp_path.rglob("*")) == before
+    assert logs(tmp_path) == []
+    inputs[1]["reviewed"] = False
+    context_path.write_text(json.dumps(inputs[1]), encoding="utf-8")
+    with pytest.raises(jsonschema.ValidationError):
+        plans_run.main()
+
+
+def test_briefing_check_only_verifies_provenance_without_writing(
+        saved_handoff, model, tmp_path, monkeypatch, capsys):
+    directory, _, _, paths = saved_handoff
+    before = {p: p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()}
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", ["briefing", "--plans", str(directory),
+        "--results", *map(str, paths), "--check-only"])
+    briefing_run.main()
+    assert "lowest-delay candidate: P2" in capsys.readouterr().out
+    assert {p: p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()} == before
+    paths[2].with_suffix(".provenance.json").unlink()
+    with pytest.raises(FileNotFoundError):
+        briefing_run.main()
+    assert logs(tmp_path) == []
+
+
+def test_comparison_accepts_result_path_iterator_and_checks_every_sidecar(saved_handoff, tmp_path):
+    _, plans, saved, paths = saved_handoff
+    kwargs = {"generation_inputs": saved, "results_root": tmp_path / "results" / "runs"}
+    assert prepare_comparison(plans, iter(paths), **kwargs)[0]["plan_id"] == "P2"
+    paths[-1].with_suffix(".provenance.json").unlink()
+    with pytest.raises(FileNotFoundError):
+        prepare_comparison(plans, iter(paths), **kwargs)
+
+
+def test_direct_writer_rejects_unsafe_plan_even_with_matching_provenance(
+        saved_handoff, model, tmp_path):
+    _, plans, saved, _ = saved_handoff
+    # A caller could otherwise bypass the CLI's constraint checks with a
+    # pre-populated constraints_checked field and matching captured hashes.
+    diversion(plans[2], "Mock Emergency Route")
+    result = artifacts()[2][1]
+    path = tmp_path / "mock_unsafe.json"
+    captured = capture_inputs(plans[2], saved, {"mock_network": FIXTURES / "mock_plan_context.json"})
+    write_result(path, result, captured)
+    verify_result(path, result, plans[2], saved)
+    with pytest.raises(ValueError, match="emergency"):
+        write_briefing(plans, [path], generation_inputs=saved, results_root=tmp_path)
+    assert logs(tmp_path) == []
+
+
+@pytest.mark.parametrize("module,args", [
+    (plans_run, ["--incident", "unused", "--context", "unused", "--out-dir", "unused"]),
+    (briefing_run, ["--plans", "unused", "--results", "unused", "--out", "unused"]),
+])
+def test_check_only_rejects_output_arguments(module, args, monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["check", *args, "--check-only"])
+    with pytest.raises(SystemExit) as exc:
+        module.main()
+    assert exc.value.code == 2
