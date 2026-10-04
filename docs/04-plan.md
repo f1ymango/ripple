@@ -65,10 +65,13 @@ and Impact review the complete report and confirm the uploader before submission
 > no-closure evidence for SUMO and the simplified ~15-link fallback
 > (`03-architecture.md` §5): scoring windows and filters, denominators,
 > reproducible inputs, count GEH, speed error and unresolved flow/queue issues.
-> Around 80% GEH<5 would be progress, but the documented ≥85% count and roughly
-> ≤15% speed targets remain the acceptance gate. If SUMO remains short, assess
-> the fallback against the same evidence before selecting it. Record the
-> decision Monday evening and protect the 14 Oct results freeze.
+> Data's new [flow-balance study](sumo-flow-balance-2026-10-04.md) reports 96.7%
+> GEH<5 and 15.7% speed error on the demo morning without a closure. The count
+> target is met in that run; ordinary-morning speed is just above target and
+> Simulation's review remains open. Passing this hour does not validate incident
+> queues or plan benefits.
+> Assess the fallback against the same evidence if needed, record the decision
+> Monday evening, and protect the 14 Oct results freeze.
 
 ### Week 3 — 5–11 Oct · Plans and results
 | Who | Task |
