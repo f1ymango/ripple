@@ -1,0 +1,9 @@
+{
+  "candidate_xml": "<routes><vType id='DEFAULT_VEHTYPE' length='5'/><vehicle id='positioned' departPos='20' arrivalPos='80'><route edges='a'/></vehicle></routes>",
+  "mapping_csv": "detector_id,edge_id,position_m\nD1,a,10\nD2,a,50\nD3,a,90\n",
+  "observations": {"interval_seconds": 300, "detectors": [
+    {"id": "D1", "observations": [{"count": 10}]},
+    {"id": "D2", "observations": [{"count": 10}]},
+    {"id": "D3", "observations": [{"count": 10}]}
+  ]}
+}

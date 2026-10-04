@@ -49,7 +49,7 @@ this chain.
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Accuracy measured on 100 hand-labelled messages, all fields right: citywide **50%** held out (v1); 75% (v2) after a prompt fix and 4 label corrections, both made once v1 had been seen (the fix alone gives 74%); corridor 75% → 85% (fix alone 80%). Quote v2 only next to v1 ([Score history](data/labelled_incidents/LABELLING.md#score-history), [results/reader/](results/reader/)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The local OSM map now has audited connectivity for all 24 directed links across the two main roads and western alternative; all 24 directed detector-to-detector links in the audit are reachable, with path distances within 1.12 times their detector-coordinate distances. AID01106 to AID01107 detour fell from 1,771.83 m to 441.79 m without editing OSM geometry. A bounded May 15 pre-incident run scores 66.5% GEH<5 and 36.9% speed MAPE, so the baseline target is not met; lane-scope gaps remain and the local network/E1 files are still provisional. Data's ~15-link fallback remains active. ([src/twin/](src/twin/README.md), [pre-incident diagnostic](results/twin/may15-preincident-diagnostic.md), [OSM connectivity audit](results/twin/osm-network-audit.md)) |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Source-backed boundary experiment: **73.55% GEH<5 (178/242)**, 45.98% speed MAPE, 2,016 waiting and 14 wrong-lane teleports; not accepted. Data's newer main run reports 96.7% / 15.7% with imposed speeds and network/OD assumptions still requiring review. No validated full incident P0, diversion or compliance handoff. Lead's model decision is now Mon 5 Oct evening; network remains provisional ([diagnosis](docs/calibration-boundaries-2026-10-04.md), [review and Visuals handoff](docs/simulation-handoff-2026-10-04.md)). |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | ⚪ Planned for week 3 |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | ⚪ Planned for week 3 |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | ⚪ Planned for week 3 |
@@ -585,6 +585,20 @@ Traffic detector data and Special Traffic News from
 [DATA.GOV.HK](https://data.gov.hk) and the Transport Department. Attribute both
 wherever the data is shown. Everything we use is aggregate and open: no
 personal data, no vehicle identifiers.
+# Component C calibration and Visuals handoff — 4 October
+
+Published the [boundary-route experiment](docs/calibration-boundaries-2026-10-04.md)
+and [current handoff/review](docs/simulation-handoff-2026-10-04.md). Counts improve
+from 162 to 178 passing bins out of the same 242, but waiting share, speed error
+and wrong-lane teleports remain unacceptable. Source observations and network
+are unchanged; no unsupported connections or side-road volumes were added.
+Position-aware fitting and an explicit no-closure mode have regression coverage;
+51 Component C tests pass. Exact provisional inputs are packaged for reproduction.
+Reviewed main at `4875a85`: Data's new 96.7% count result needs its network,
+entry and imposed-speed assumptions resolved before acceptance. The Lead moved
+the model decision to 5 Oct evening. Full incident P0/P1/P2 and bound video
+trajectories are not ready; no firm full-results date is promised.
+
 # Component C calibration progress — 2 October
 
 **3 October decision packet:** [SUMO go/no-go evidence](docs/sumo-decision-2026-10-04.md)

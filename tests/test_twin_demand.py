@@ -75,6 +75,19 @@ def test_missing_calibration_counts_do_not_become_zero_flow_targets(tmp_path, mo
     assert [float(item.get("begin")) for item in flows] == [0, 0, 5100]
     assert sum(int(item.get("number")) for item in flows) == 460
 
+    # The no-closure diagnostic conserves the full fitted rate through warm-up
+    # and the horizon, even when the scenario describes a later incident.
+    monkeypatch.setattr(sys, "argv", ["fit_demand", "--config", str(config),
+                                     "--detectors", str(observations), "--no-closure"])
+    fit_demand.main()
+    flows = ET.parse(output).getroot().findall("flow")
+    assert len(flows) == 2
+    assert sum(int(item.get("number")) for item in flows) == 480
+    assert all(item.get("begin") == "0.00" and item.get("end") == "7200.00" for item in flows)
+    summary = json.loads((tmp_path / "fit-summary.json").read_text(encoding="utf-8"))
+    assert summary["vehicles_removed_by_origin_suspension_including_rounding"] == 0
+    assert summary["vehicles_generated"] == summary["vehicles_before_origin_suspension"]
+
     scenario["incident"]["start"] = 4200
     config.write_text(json.dumps(scenario), encoding="utf-8")
     with pytest.raises(ValueError, match="overlaps the configured incident"):

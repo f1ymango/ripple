@@ -8,6 +8,7 @@ from collections import defaultdict
 import sumolib
 from src.twin.common import load_json, resolve
 from src.twin.network_sources import sha256
+from src.twin.route_crossings import crosses_detector
 
 
 def main():
@@ -63,11 +64,14 @@ def main():
         row['incoming_edges'] = sorted(e.getID() for e in edge.getIncoming())
         row['detectors'] = {key: d['position_m'] for key, d in detectors.items() if d['edge'] == edge_id}
     candidates = ET.parse(resolve(cfg['candidate_routes'])).getroot()
-    paths = [set(item.find('route').get('edges').split())
-             for item in list(candidates) if item.tag in ('vehicle', 'flow') and item.find('route') is not None]
+    candidates = [item for item in candidates if item.tag in ('vehicle', 'flow') and item.find('route') is not None]
+    lengths = {e.getID(): e.getLength() for e in net.getEdges()}
     signatures = defaultdict(list)
     for detector_id, detector in detectors.items():
-        signatures[tuple(i for i, path in enumerate(paths) if detector['edge'] in path)].append(detector_id)
+        signature = tuple(i for i, item in enumerate(candidates) if crosses_detector(
+            item.find('route').get('edges').split(), detector['edge'], detector['position_m'], lengths,
+            item.get('departPos', '0'), item.get('arrivalPos', 'max')))
+        signatures[signature].append(detector_id)
     totals = {key: sum(row[key] for row in routes.values()) for key in ('inserted', 'undeparted')}
     expected = run['statistics']['vehicles']
     if totals != {'inserted': int(expected['inserted']), 'undeparted': int(expected['waiting'])}:
@@ -81,8 +85,8 @@ def main():
               'routes': routes, 'indistinguishable_candidate_crossings': [
                   {'detectors': {key: detectors[key] for key in ids}, 'candidate_indices': list(signature)}
                   for signature, ids in signatures.items() if len(ids) > 1],
-              'limitations': ['Route presence on an edge does not prove a vehicle crossed its detector.',
-                             'Edge-membership fitting cannot distinguish detectors with identical candidate crossings.',
+              'limitations': ['Geometric crossing eligibility does not prove actual detector passage.',
+                             'Detectors on the same edge still have identical signatures for full-edge routes.',
                              'Trip traces include warm-up and the complete simulated horizon, not only scored observation bins.']}
     out = resolve(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)

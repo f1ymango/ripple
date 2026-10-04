@@ -1,0 +1,732 @@
+{
+  "change_tested": "Replace detector-to-detector route candidates with existing corridor entries/exits selected by Data net-flow evidence, then refit the same count targets; network, observations, speeds and horizon unchanged.",
+  "same_count_bins_and_observations": true,
+  "reference": {
+    "count_pass": 162,
+    "count_bins": 242,
+    "geh_under_5_percent": 66.94214876033058,
+    "speed_mape_percent": 41.41833484147054,
+    "speed_bins": 298,
+    "common_speed_bins": 298,
+    "common_speed_mape_percent": 41.41833484147054,
+    "eligible_speed_bins": 299,
+    "unscored_speed_bins": 1,
+    "missing_detector_ids": [],
+    "unmatched_count_intervals": 0,
+    "vehicles": {
+      "loaded": 17922,
+      "inserted": 15532,
+      "running": 1547,
+      "waiting": 2390
+    },
+    "waiting_percent": 13.33556522709519,
+    "teleports": {
+      "total": 53,
+      "jam": 41,
+      "yield": 7,
+      "wrongLane": 5
+    },
+    "wall_seconds": 47.44597290002275,
+    "complete": true,
+    "per_detector": {
+      "AID01101": {
+        "count_bins": 9,
+        "count_pass": 8,
+        "observed": 1194.0,
+        "simulated": 1188.0,
+        "speed_ape_sum": 100.49312079685251,
+        "speed_bins": 11,
+        "count_misses": 1,
+        "speed_mape_percent": 9.13573825425932
+      },
+      "AID01102": {
+        "count_bins": 10,
+        "count_pass": 10,
+        "observed": 1311.0,
+        "simulated": 1305.0,
+        "speed_ape_sum": 55.4007876955643,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 4.616732307963692
+      },
+      "AID01103": {
+        "count_bins": 10,
+        "count_pass": 7,
+        "observed": 1596.0,
+        "simulated": 991.0,
+        "speed_ape_sum": 540.5855108975622,
+        "speed_bins": 12,
+        "count_misses": 3,
+        "speed_mape_percent": 45.048792574796856
+      },
+      "AID01104": {
+        "count_bins": 10,
+        "count_pass": 7,
+        "observed": 1041.0,
+        "simulated": 777.0,
+        "speed_ape_sum": 424.11550455420013,
+        "speed_bins": 12,
+        "count_misses": 3,
+        "speed_mape_percent": 35.34295871285001
+      },
+      "AID01106": {
+        "count_bins": 10,
+        "count_pass": 6,
+        "observed": 998.0,
+        "simulated": 475.0,
+        "speed_ape_sum": 2188.4899661078366,
+        "speed_bins": 11,
+        "count_misses": 4,
+        "speed_mape_percent": 198.9536332825306
+      },
+      "AID01107": {
+        "count_bins": 10,
+        "count_pass": 1,
+        "observed": 1276.0,
+        "simulated": 458.0,
+        "speed_ape_sum": 445.32462338435806,
+        "speed_bins": 12,
+        "count_misses": 9,
+        "speed_mape_percent": 37.11038528202984
+      },
+      "AID01108": {
+        "count_bins": 10,
+        "count_pass": 10,
+        "observed": 1225.0,
+        "simulated": 1070.0,
+        "speed_ape_sum": 447.6423393944305,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 37.30352828286921
+      },
+      "AID01109": {
+        "count_bins": 10,
+        "count_pass": 10,
+        "observed": 1976.0,
+        "simulated": 1787.0,
+        "speed_ape_sum": 563.990671222909,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 46.99922260190908
+      },
+      "AID01110": {
+        "count_bins": 10,
+        "count_pass": 0,
+        "observed": 2503.0,
+        "simulated": 1489.0,
+        "speed_ape_sum": 1114.646785532805,
+        "speed_bins": 12,
+        "count_misses": 10,
+        "speed_mape_percent": 92.88723212773375
+      },
+      "AID01214": {
+        "count_bins": 10,
+        "count_pass": 1,
+        "observed": 2494.0,
+        "simulated": 1519.0,
+        "speed_ape_sum": 466.14691029200975,
+        "speed_bins": 12,
+        "count_misses": 9,
+        "speed_mape_percent": 38.84557585766748
+      },
+      "AID01215": {
+        "count_bins": 10,
+        "count_pass": 10,
+        "observed": 1911.0,
+        "simulated": 1854.0,
+        "speed_ape_sum": 248.58377190061987,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 20.715314325051654
+      },
+      "AID01216": {
+        "count_bins": 10,
+        "count_pass": 10,
+        "observed": 1343.0,
+        "simulated": 1333.0,
+        "speed_ape_sum": 1117.1493796890447,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 93.09578164075373
+      },
+      "AID01217": {
+        "count_bins": 10,
+        "count_pass": 0,
+        "observed": 1887.0,
+        "simulated": 824.0,
+        "speed_ape_sum": 455.93157995113717,
+        "speed_bins": 12,
+        "count_misses": 10,
+        "speed_mape_percent": 37.99429832926143
+      },
+      "AID01218": {
+        "count_bins": 10,
+        "count_pass": 0,
+        "observed": 1483.0,
+        "simulated": 701.0,
+        "speed_ape_sum": 209.68010928917786,
+        "speed_bins": 12,
+        "count_misses": 10,
+        "speed_mape_percent": 17.47334244076482
+      },
+      "AID01219": {
+        "count_bins": 10,
+        "count_pass": 9,
+        "observed": 1325.0,
+        "simulated": 1044.0,
+        "speed_ape_sum": 338.05243009143175,
+        "speed_bins": 12,
+        "count_misses": 1,
+        "speed_mape_percent": 28.171035840952644
+      },
+      "AID01221": {
+        "count_bins": 10,
+        "count_pass": 2,
+        "observed": 1827.0,
+        "simulated": 1064.0,
+        "speed_ape_sum": 192.45196240528432,
+        "speed_bins": 12,
+        "count_misses": 8,
+        "speed_mape_percent": 16.037663533773692
+      },
+      "AID01222": {
+        "count_bins": 10,
+        "count_pass": 7,
+        "observed": 1580.0,
+        "simulated": 1101.0,
+        "speed_ape_sum": 191.1617631479121,
+        "speed_bins": 12,
+        "count_misses": 3,
+        "speed_mape_percent": 15.930146928992675
+      },
+      "AID01223": {
+        "count_bins": 10,
+        "count_pass": 8,
+        "observed": 1197.0,
+        "simulated": 954.0,
+        "speed_ape_sum": 131.40334805763226,
+        "speed_bins": 12,
+        "count_misses": 2,
+        "speed_mape_percent": 10.950279004802688
+      },
+      "TDSSPWR10001": {
+        "count_bins": 9,
+        "count_pass": 7,
+        "observed": 561.0,
+        "simulated": 562.0,
+        "speed_ape_sum": 253.4760917183293,
+        "speed_bins": 12,
+        "count_misses": 2,
+        "speed_mape_percent": 21.123007643194107
+      },
+      "TDSSPWR10002": {
+        "count_bins": 9,
+        "count_pass": 9,
+        "observed": 923.0,
+        "simulated": 978.0,
+        "speed_ape_sum": 383.98683268862817,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 31.998902724052346
+      },
+      "TDSSPWR10003": {
+        "count_bins": 9,
+        "count_pass": 7,
+        "observed": 870.0,
+        "simulated": 978.0,
+        "speed_ape_sum": 157.33853750991562,
+        "speed_bins": 12,
+        "count_misses": 2,
+        "speed_mape_percent": 13.11154479249297
+      },
+      "TDSSPWR20001": {
+        "count_bins": 9,
+        "count_pass": 9,
+        "observed": 664.0,
+        "simulated": 660.0,
+        "speed_ape_sum": 1618.3140053583647,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 134.8595004465304
+      },
+      "TDSSPWR20003": {
+        "count_bins": 9,
+        "count_pass": 9,
+        "observed": 1135.0,
+        "simulated": 1264.0,
+        "speed_ape_sum": 62.533562245479295,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 5.211130187123275
+      },
+      "TDSAPR10001": {
+        "count_bins": 9,
+        "count_pass": 6,
+        "observed": 1148.0,
+        "simulated": 978.0,
+        "speed_ape_sum": 584.4194126624461,
+        "speed_bins": 12,
+        "count_misses": 3,
+        "speed_mape_percent": 48.70161772187051
+      },
+      "TDSAPR20001": {
+        "count_bins": 9,
+        "count_pass": 9,
+        "observed": 1382.0,
+        "simulated": 1260.0,
+        "speed_ape_sum": 51.344776164289016,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 4.278731347024085
+      }
+    },
+    "worst_counts": [
+      "AID01110",
+      "AID01217",
+      "AID01218",
+      "AID01107",
+      "AID01214",
+      "AID01221",
+      "AID01106",
+      "AID01103",
+      "AID01104",
+      "AID01222",
+      "TDSAPR10001",
+      "AID01223",
+      "TDSSPWR10001",
+      "TDSSPWR10003",
+      "AID01101",
+      "AID01219",
+      "AID01102",
+      "AID01108",
+      "AID01109",
+      "AID01215",
+      "AID01216",
+      "TDSSPWR10002",
+      "TDSSPWR20001",
+      "TDSSPWR20003",
+      "TDSAPR20001"
+    ],
+    "worst_speed_contributions": [
+      "AID01106",
+      "TDSSPWR20001",
+      "AID01216",
+      "AID01110",
+      "TDSAPR10001",
+      "AID01109",
+      "AID01103",
+      "AID01214",
+      "AID01217",
+      "AID01108",
+      "AID01107",
+      "AID01104",
+      "TDSSPWR10002",
+      "AID01219",
+      "TDSSPWR10001",
+      "AID01215",
+      "AID01218",
+      "AID01221",
+      "AID01222",
+      "TDSSPWR10003",
+      "AID01223",
+      "AID01101",
+      "TDSSPWR20003",
+      "AID01102",
+      "TDSAPR20001"
+    ]
+  },
+  "candidate": {
+    "count_pass": 178,
+    "count_bins": 242,
+    "geh_under_5_percent": 73.55371900826447,
+    "speed_mape_percent": 45.980173909177296,
+    "speed_bins": 299,
+    "common_speed_bins": 298,
+    "common_speed_mape_percent": 45.41822881458963,
+    "eligible_speed_bins": 299,
+    "unscored_speed_bins": 0,
+    "missing_detector_ids": [],
+    "unmatched_count_intervals": 0,
+    "vehicles": {
+      "loaded": 13622,
+      "inserted": 11606,
+      "running": 1837,
+      "waiting": 2016
+    },
+    "waiting_percent": 14.799588900308326,
+    "teleports": {
+      "total": 14,
+      "jam": 0,
+      "yield": 0,
+      "wrongLane": 14
+    },
+    "wall_seconds": 79.89448820000689,
+    "complete": true,
+    "per_detector": {
+      "AID01101": {
+        "count_bins": 9,
+        "count_pass": 8,
+        "observed": 1194.0,
+        "simulated": 1187.0,
+        "speed_ape_sum": 98.94670149872563,
+        "speed_bins": 11,
+        "count_misses": 1,
+        "speed_mape_percent": 8.99515468170233
+      },
+      "AID01102": {
+        "count_bins": 10,
+        "count_pass": 10,
+        "observed": 1311.0,
+        "simulated": 1320.0,
+        "speed_ape_sum": 59.9391877731243,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 4.994932314427025
+      },
+      "AID01103": {
+        "count_bins": 10,
+        "count_pass": 10,
+        "observed": 1596.0,
+        "simulated": 1596.0,
+        "speed_ape_sum": 304.5214844740662,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 25.37679037283885
+      },
+      "AID01104": {
+        "count_bins": 10,
+        "count_pass": 9,
+        "observed": 1041.0,
+        "simulated": 1143.0,
+        "speed_ape_sum": 271.1631565643361,
+        "speed_bins": 12,
+        "count_misses": 1,
+        "speed_mape_percent": 22.596929713694674
+      },
+      "AID01106": {
+        "count_bins": 10,
+        "count_pass": 10,
+        "observed": 998.0,
+        "simulated": 1140.0,
+        "speed_ape_sum": 2127.059747562193,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 177.2549789635161
+      },
+      "AID01107": {
+        "count_bins": 10,
+        "count_pass": 10,
+        "observed": 1276.0,
+        "simulated": 1127.0,
+        "speed_ape_sum": 221.68633084984933,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 18.47386090415411
+      },
+      "AID01108": {
+        "count_bins": 10,
+        "count_pass": 10,
+        "observed": 1225.0,
+        "simulated": 1092.0,
+        "speed_ape_sum": 608.2865527444254,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 50.69054606203545
+      },
+      "AID01109": {
+        "count_bins": 10,
+        "count_pass": 1,
+        "observed": 1976.0,
+        "simulated": 1194.0,
+        "speed_ape_sum": 362.83398316860604,
+        "speed_bins": 12,
+        "count_misses": 9,
+        "speed_mape_percent": 30.236165264050502
+      },
+      "AID01110": {
+        "count_bins": 10,
+        "count_pass": 4,
+        "observed": 2503.0,
+        "simulated": 1720.0,
+        "speed_ape_sum": 1096.3367849869965,
+        "speed_bins": 12,
+        "count_misses": 6,
+        "speed_mape_percent": 91.36139874891637
+      },
+      "AID01214": {
+        "count_bins": 10,
+        "count_pass": 9,
+        "observed": 2494.0,
+        "simulated": 2162.0,
+        "speed_ape_sum": 362.1453728489022,
+        "speed_bins": 12,
+        "count_misses": 1,
+        "speed_mape_percent": 30.17878107074185
+      },
+      "AID01215": {
+        "count_bins": 10,
+        "count_pass": 8,
+        "observed": 1911.0,
+        "simulated": 1592.0,
+        "speed_ape_sum": 336.25030293827535,
+        "speed_bins": 12,
+        "count_misses": 2,
+        "speed_mape_percent": 28.020858578189614
+      },
+      "AID01216": {
+        "count_bins": 10,
+        "count_pass": 7,
+        "observed": 1343.0,
+        "simulated": 1057.0,
+        "speed_ape_sum": 1367.1568437323285,
+        "speed_bins": 12,
+        "count_misses": 3,
+        "speed_mape_percent": 113.92973697769405
+      },
+      "AID01217": {
+        "count_bins": 10,
+        "count_pass": 4,
+        "observed": 1887.0,
+        "simulated": 1229.0,
+        "speed_ape_sum": 785.9095042355899,
+        "speed_bins": 12,
+        "count_misses": 6,
+        "speed_mape_percent": 65.49245868629916
+      },
+      "AID01218": {
+        "count_bins": 10,
+        "count_pass": 4,
+        "observed": 1483.0,
+        "simulated": 876.0,
+        "speed_ape_sum": 751.2690807605718,
+        "speed_bins": 12,
+        "count_misses": 6,
+        "speed_mape_percent": 62.60575673004765
+      },
+      "AID01219": {
+        "count_bins": 10,
+        "count_pass": 2,
+        "observed": 1325.0,
+        "simulated": 676.0,
+        "speed_ape_sum": 888.4219070514499,
+        "speed_bins": 12,
+        "count_misses": 8,
+        "speed_mape_percent": 74.03515892095416
+      },
+      "AID01221": {
+        "count_bins": 10,
+        "count_pass": 1,
+        "observed": 1827.0,
+        "simulated": 1022.0,
+        "speed_ape_sum": 425.9415575237593,
+        "speed_bins": 12,
+        "count_misses": 9,
+        "speed_mape_percent": 35.495129793646605
+      },
+      "AID01222": {
+        "count_bins": 10,
+        "count_pass": 2,
+        "observed": 1580.0,
+        "simulated": 931.0,
+        "speed_ape_sum": 612.842893451568,
+        "speed_bins": 12,
+        "count_misses": 8,
+        "speed_mape_percent": 51.070241120964
+      },
+      "AID01223": {
+        "count_bins": 10,
+        "count_pass": 10,
+        "observed": 1197.0,
+        "simulated": 1168.0,
+        "speed_ape_sum": 151.0460465847789,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 12.587170548731576
+      },
+      "TDSSPWR10001": {
+        "count_bins": 9,
+        "count_pass": 9,
+        "observed": 561.0,
+        "simulated": 492.0,
+        "speed_ape_sum": 270.9345434307064,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 22.577878619225533
+      },
+      "TDSSPWR10002": {
+        "count_bins": 9,
+        "count_pass": 9,
+        "observed": 923.0,
+        "simulated": 836.0,
+        "speed_ape_sum": 388.88286676644464,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 32.40690556387039
+      },
+      "TDSSPWR10003": {
+        "count_bins": 9,
+        "count_pass": 8,
+        "observed": 870.0,
+        "simulated": 841.0,
+        "speed_ape_sum": 146.81734257368993,
+        "speed_bins": 12,
+        "count_misses": 1,
+        "speed_mape_percent": 12.234778547807494
+      },
+      "TDSSPWR20001": {
+        "count_bins": 9,
+        "count_pass": 9,
+        "observed": 664.0,
+        "simulated": 624.0,
+        "speed_ape_sum": 1403.2105689854693,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 116.93421408212244
+      },
+      "TDSSPWR20003": {
+        "count_bins": 9,
+        "count_pass": 9,
+        "observed": 1135.0,
+        "simulated": 898.0,
+        "speed_ape_sum": 61.428957401297886,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 5.1190797834414905
+      },
+      "TDSAPR10001": {
+        "count_bins": 9,
+        "count_pass": 6,
+        "observed": 1148.0,
+        "simulated": 836.0,
+        "speed_ape_sum": 589.5312912831599,
+        "speed_bins": 12,
+        "count_misses": 3,
+        "speed_mape_percent": 49.12760760692999
+      },
+      "TDSAPR20001": {
+        "count_bins": 9,
+        "count_pass": 9,
+        "observed": 1382.0,
+        "simulated": 1115.0,
+        "speed_ape_sum": 55.508989653695856,
+        "speed_bins": 12,
+        "count_misses": 0,
+        "speed_mape_percent": 4.625749137807988
+      }
+    },
+    "worst_counts": [
+      "AID01109",
+      "AID01221",
+      "AID01219",
+      "AID01222",
+      "AID01110",
+      "AID01217",
+      "AID01218",
+      "AID01216",
+      "TDSAPR10001",
+      "AID01215",
+      "AID01101",
+      "AID01104",
+      "AID01214",
+      "TDSSPWR10003",
+      "AID01102",
+      "AID01103",
+      "AID01106",
+      "AID01107",
+      "AID01108",
+      "AID01223",
+      "TDSSPWR10001",
+      "TDSSPWR10002",
+      "TDSSPWR20001",
+      "TDSSPWR20003",
+      "TDSAPR20001"
+    ],
+    "worst_speed_contributions": [
+      "AID01106",
+      "TDSSPWR20001",
+      "AID01216",
+      "AID01110",
+      "AID01219",
+      "AID01217",
+      "AID01218",
+      "AID01222",
+      "AID01108",
+      "TDSAPR10001",
+      "AID01221",
+      "TDSSPWR10002",
+      "AID01109",
+      "AID01214",
+      "AID01215",
+      "AID01103",
+      "AID01104",
+      "TDSSPWR10001",
+      "AID01107",
+      "AID01223",
+      "TDSSPWR10003",
+      "AID01101",
+      "TDSSPWR20003",
+      "AID01102",
+      "TDSAPR20001"
+    ]
+  },
+  "sources": {
+    "reference": {
+      "path": "results/twin/oct02-flow-trace.json",
+      "sha256": "e17c350940a32e4cbc5050c8af5b07b48367cf2da135cd67f8bc2d917420bd76"
+    },
+    "candidate": {
+      "path": "results/twin/oct03-boundaries.json",
+      "sha256": "8d4f9dbec91025050543f98d3bf411d28b042f06c4491ce8755724865a1a917e"
+    }
+  },
+  "run_sources": {
+    "reference": {
+      "config": {
+        "path": "sim/work/oct02-calibration/network-speed.json",
+        "sha256": "a232844c93eaf0afd95128991cd6475deb8cec59f7920324639a73d23642259d"
+      },
+      "observations": {
+        "path": "sim/scenarios/detectors.json",
+        "sha256": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605"
+      },
+      "network": {
+        "path": "sim/work/aberdeen.net.xml",
+        "sha256": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e"
+      },
+      "routes": {
+        "path": "sim\\work\\oct02-calibration\\network-speed.rou.xml",
+        "sha256": "0a784916ae8dbb586d5cacb16be3f83be8214e730bf59fea0d8f29954c463740"
+      },
+      "loops": {
+        "path": "sim/work/may-diagnostic/detectors.add.xml",
+        "sha256": "d0ac843e8ef99b431db28444d2131e4c7e1602aa7683f5ad69c8e7a40742ad6e"
+      }
+    },
+    "candidate": {
+      "config": {
+        "path": "sim/work/oct03-boundaries/scenario.json",
+        "sha256": "b4730cda5b3b6d61a1981eee29f458bd05c3884bc6dcd7ff49074c5801b75d20"
+      },
+      "observations": {
+        "path": "sim/scenarios/detectors.json",
+        "sha256": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605"
+      },
+      "network": {
+        "path": "sim/work/aberdeen.net.xml",
+        "sha256": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e"
+      },
+      "routes": {
+        "path": "sim/work/oct03-boundaries/fitted.rou.xml",
+        "sha256": "b8fd7363b4fb33b0389a8391bccb74071b56b66bc11426c1a856f3cc04c37ccb"
+      },
+      "loops": {
+        "path": "sim/work/may-diagnostic/detectors.add.xml",
+        "sha256": "d0ac843e8ef99b431db28444d2131e4c7e1602aa7683f5ad69c8e7a40742ad6e"
+      }
+    }
+  },
+  "limitations": [
+    "Count fitting and scoring reuse the same hour: not independent validation.",
+    "An improved GEH percentage is not acceptance of speed, queues or incident replay."
+  ]
+}

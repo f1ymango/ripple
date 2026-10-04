@@ -1,0 +1,62 @@
+{
+  "status": "PROVISIONAL DIAGNOSTIC INPUTS; NOT A REVIEWED NETWORK RELEASE",
+  "purpose": "Reproduce the recorded no-closure calibration on Windows in an isolated repository checkout",
+  "diagnostic": "results/twin/oct03-boundaries.json",
+  "files": {
+    "sim/work/oct03-boundaries/scenario.json": {
+      "sha256": "b4730cda5b3b6d61a1981eee29f458bd05c3884bc6dcd7ff49074c5801b75d20",
+      "bytes": 1134
+    },
+    "sim/scenarios/detectors.json": {
+      "sha256": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605",
+      "bytes": 121230
+    },
+    "sim/work/aberdeen.net.xml": {
+      "sha256": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e",
+      "bytes": 10324670
+    },
+    "sim/work/oct03-boundaries/fitted.rou.xml": {
+      "sha256": "b8fd7363b4fb33b0389a8391bccb74071b56b66bc11426c1a856f3cc04c37ccb",
+      "bytes": 12383
+    },
+    "sim/work/may-diagnostic/detectors.add.xml": {
+      "sha256": "d0ac843e8ef99b431db28444d2131e4c7e1602aa7683f5ad69c8e7a40742ad6e",
+      "bytes": 7951
+    },
+    "sim/work/oct03-boundaries/candidates.rou.xml": {
+      "sha256": "45c390b45424fa1f72c7f1bca9fca157a9129fe924cbc46a277fb11e9dad97c1",
+      "bytes": 17130
+    },
+    "sim/work/may-diagnostic/detectors.add.csv": {
+      "sha256": "f0d2818acf0b71437a58c3bc22aa05cf6591af66a267822dfac3d72d880a63d4",
+      "bytes": 4401
+    },
+    "sim/work/osm/aberdeen_bbox.osm.xml": {
+      "sha256": "c6d3333d803ef19db9707ae1ac9dc958121d7bd19941a555a8db0ec50e62b09f",
+      "bytes": 47969716
+    },
+    "results/twin/oct03-boundaries.json": {
+      "sha256": "8d4f9dbec91025050543f98d3bf411d28b042f06c4491ce8755724865a1a917e",
+      "bytes": 175034
+    },
+    "sim/work/oct03-boundaries/boundary-audit.json": {
+      "sha256": "4e7f73603d2cfa4b213ae514fae133c76d34a4cf64d92548e2f485e92db32cad",
+      "bytes": 24381
+    },
+    "sim/work/oct03-boundaries/fit-summary.json": {
+      "sha256": "b3e7f6e902f98d26b123d6722ca67c6299f6742eea4f7bf7e483266431efc06c",
+      "bytes": 41235
+    },
+    "sim/work/oct03-evidence/flow-balance_20260515-0755_0855.json": {
+      "sha256": "c3e2c01bd16ebf2db1506cfc5d1a99ae8725e298d7400c48d7b0bfd85caa07c1",
+      "bytes": 20309
+    }
+  },
+  "limitations": [
+    "OSM and detector placement remain provisional.",
+    "Detector export is included; raw TD archive snapshots are not.",
+    "Use a fresh checkout so extraction does not replace local work."
+  ],
+  "archive_sha256": "1b841d7c8f169a714d6b34ce31e6e1d0b9316b58a27d26d6191598912a2fb5cc",
+  "archive_bytes": 8268536
+}

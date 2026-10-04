@@ -148,3 +148,12 @@ The incident runner represents a closure by setting selected lane speeds to zero
 ## 25-second validation answer template
 
 “We validate before we claim. We replayed the incident with no intervention and compared simulated detectors against the real detectors at the same locations. [X]% of count bins were within GEH 5, and speed MAPE was [Y]%. The improvement is the validated baseline compared with the plan, and we report outcomes over 30%, 50% and 70% driver compliance.” Replace the brackets only with the evaluation output. If baseline validation is poor, say so and use the simplified network specified by the team's architecture contract.
+# 4 October experimental calibration update
+
+`boundary_routes` is an opt-in source-backed entry/exit candidate generator;
+`fit_demand --no-closure` preserves demand through a no-closure replay and now
+respects deterministic route endpoint positions. Existing default route generation
+is unchanged. See [reproduction and results](../../docs/calibration-boundaries-2026-10-04.md)
+and [Visuals handoff / Data review](../../docs/simulation-handoff-2026-10-04.md).
+The experiment scores 73.55% GEH, misses the target and is **not an accepted
+baseline**. Do not use it for validated plan benefits.

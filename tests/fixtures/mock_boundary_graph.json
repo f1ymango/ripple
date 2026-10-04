@@ -1,0 +1,10 @@
+{
+  "connections": [["up", "a"], ["a", "b"], ["side", "join"], ["join", "b"], ["b", "c"], ["b", "exit"], ["c", "down"], ["cycle1", "cycle2"], ["cycle2", "cycle1"], ["a", "bypass"], ["bypass", "c"]],
+  "spine": ["a", "b", "c"],
+  "lengths": {"a": 100, "b": 100, "c": 100},
+  "chain": {"detectors": ["D1", "D2", "D3"], "steps": [
+    {"from": "D1", "to": "D2", "change_veh_h": 100, "margin_veh_h": 20},
+    {"from": "D2", "to": "D3", "change_veh_h": -50, "margin_veh_h": 20}
+  ]},
+  "mapping": {"D1": ["a", 50], "D2": ["b", 50], "D3": ["c", 50]}
+}

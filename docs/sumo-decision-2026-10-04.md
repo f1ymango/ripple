@@ -1,5 +1,10 @@
 # SUMO evidence for the 4 October decision
 
+**4 October update:** this is the original 66.94% evidence packet. The Lead has
+moved the decision to 5 October evening. Read the [new experiment](calibration-boundaries-2026-10-04.md)
+and [review of Data's new main results](simulation-handoff-2026-10-04.md) before
+using the recommendation below; neither establishes full incident validation.
+
 Prepared by Simulation on 3 October. Checked team main at `962a5b3`, including
 Data's flow-balance, free-flow-speed and entry-route notes. Lead owns the final
 integration decision. Recommendation: **SUMO is currently a no-go for validated

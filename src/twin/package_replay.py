@@ -12,6 +12,8 @@ def main():
     parser.add_argument('--diagnostic', required=True)
     parser.add_argument('--osm', required=True)
     parser.add_argument('--out', required=True)
+    parser.add_argument('--extra', nargs='*', default=[],
+                        help='Explicit in-repository evidence/build files needed to regenerate demand')
     args = parser.parse_args()
     run = load_json(resolve(args.diagnostic))
     files = {}
@@ -24,6 +26,9 @@ def main():
     for path in (resolve(cfg['candidate_routes']),
                  resolve(cfg['detector_additional']).with_suffix('.csv'),
                  resolve(args.osm), resolve(args.diagnostic)):
+        files[path] = sha256(path)
+    for extra in args.extra:
+        path = resolve(extra)
         files[path] = sha256(path)
     members = {}
     for path, digest in files.items():

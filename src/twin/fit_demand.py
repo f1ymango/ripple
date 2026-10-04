@@ -4,6 +4,7 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 
 from src.twin.common import load_json, resolve
+from src.twin.route_crossings import read_mapping, crosses_detector
 
 
 def main():
@@ -11,20 +12,22 @@ def main():
     ap.add_argument("--config", required=True)
     ap.add_argument("--detectors", required=True)
     ap.add_argument("--iterations", type=int, default=300)
+    ap.add_argument("--no-closure", action="store_true",
+                    help="Fit a no-closure diagnostic without suspending incident-edge origins")
     args = ap.parse_args()
     cfg, data = load_json(resolve(args.config)), load_json(resolve(args.detectors))
     if args.iterations < 1:
         raise ValueError("--iterations must be positive")
     candidate = resolve(cfg.get("candidate_routes", "sim/work/routes/candidates.rou.xml"))
     root = ET.parse(candidate).getroot()
-    edges = {e.getID() for e in __import__("sumolib").net.readNet(str(resolve(cfg["network"]))).getEdges()}
+    network_edges = __import__("sumolib").net.readNet(str(resolve(cfg["network"]))).getEdges()
+    edges = {e.getID() for e in network_edges}
+    lengths = {e.getID(): e.getLength() for e in network_edges if hasattr(e, "getLength")}
     ordered = sorted(data["detectors"], key=lambda d: (d.get("position_m") is None, d.get("id", "")))
     # Mapping file supplies the map-matched edge IDs. Ordering is the user's corridor order, if provided.
     mapping_path = resolve(cfg.get("detector_additional", "sim/detectors.add.xml")).with_suffix(".csv")
-    import csv
-    edge_by_id = {}
-    with open(mapping_path, encoding="utf-8") as f:
-        for row in csv.DictReader(f): edge_by_id[row["detector_id"]] = row["edge_id"]
+    mapping = read_mapping(mapping_path)
+    edge_by_id = {did: item[0] for did, item in mapping.items()}
     target = {}
     calibration_coverage = {}
     calibration_seconds = float(cfg.get("calibration_seconds", 3600))
@@ -61,6 +64,8 @@ def main():
             target[d["id"]] = sum(vals) * calibration_seconds / observed_seconds
             calibration_coverage[d["id"]] = len(vals) / max(len(observations), 1)
     routes = []
+    route_endpoints = []
+    types = {item.get("id"): item for item in root.findall("vType")}
     for vehicle in root.findall("vehicle") + root.findall("flow"):
         route = vehicle.find("route")
         if route is None: continue
@@ -68,8 +73,14 @@ def main():
         if path and all(e in edges for e in path):
             # A detector with no usable calibration counts supplies no target.
             # Treating its missing value as zero suppresses flow on shared edges.
-            crossings = {did for did, de in edge_by_id.items() if did in target and de in path}
-            if crossings: routes.append((rid, path, crossings))
+            depart, arrival = vehicle.get("departPos", "0"), vehicle.get("arrivalPos", "max")
+            typ = types.get(vehicle.get("type", "DEFAULT_VEHTYPE"))
+            length = float(typ.get("length", "5")) if typ is not None else 5.0
+            crossings = {did for did, (de, pos) in mapping.items() if did in target
+                         and crosses_detector(path, de, pos, lengths, depart, arrival, length)}
+            if crossings:
+                routes.append((rid, path, crossings))
+                route_endpoints.append((depart, arrival, vehicle.get("type", "DEFAULT_VEHTYPE")))
     if not routes or not target:
         raise ValueError("Need candidate routes, detector mappings, and non-null pre-incident observed counts.")
     # Coordinate descent on predicted detector totals, with nonnegative trip counts.
@@ -118,7 +129,7 @@ def main():
         # the blocked incident edge during the closure; upstream routes still
         # travel into the incident and form the queue. Resume the fitted rate
         # after reopening so the demand horizon remains consistent.
-        if incident_edge and incident_edge not in {"REVIEW_REQUIRED", ""} \
+        if not args.no_closure and incident_edge and incident_edge not in {"REVIEW_REQUIRED", ""} \
                 and path[0] == incident_edge and incident_overlap:
             suspended_origin_routes += 1
             segments = [
@@ -139,10 +150,11 @@ def main():
             flow_id = f"fit_{route_serial}"
             if len(segments) == 2:
                 flow_id += "_pre" if segment_no == 0 else "_post"
+            depart, arrival, vehicle_type = route_endpoints[route_serial]
             vehicle = ET.SubElement(
-                fitted_root, "flow", id=flow_id, type="DEFAULT_VEHTYPE",
+                fitted_root, "flow", id=flow_id, type=vehicle_type,
                 begin=f"{segment_begin:.2f}", end=f"{segment_end:.2f}",
-                number=str(segment_count), departLane="best", departPos="0",
+                number=str(segment_count), departLane="best", departPos=depart, arrivalPos=arrival,
                 departSpeed="desired")
             ET.SubElement(vehicle, "route", edges=" ".join(path))
             vehicle_total += segment_count
@@ -155,6 +167,11 @@ def main():
     ET.ElementTree(fitted_root).write(out, encoding="utf-8", xml_declaration=True)
     predictions = dict(predicted)
     summary = {"target_counts": dict(target), "predicted_counts": predictions,
+               "no_closure_fit": args.no_closure,
+               "detectors_without_position": sorted(did for did, (_, pos) in mapping.items() if pos is None),
+               "route_weights": [{"candidate": rid, "edges": path, "crossings": sorted(crosses),
+                                   "calibration_count": value}
+                                  for (rid, path, crosses), value in zip(routes, flow)],
                "detectors_without_calibration_counts": sorted(set(edge_by_id) - set(target)),
                "calibration_coverage_fraction": calibration_coverage,
                "calibration_window_slots": calibration_slots,
