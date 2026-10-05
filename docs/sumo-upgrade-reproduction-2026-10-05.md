@@ -151,11 +151,8 @@ no-closure SUMO baseline and what incident checks remain. Do not use the count
 score alone to validate a crash or rank plans. Data owns the fallback/E, Lead
 owns the model decision and main merge, and Simulation owns this SUMO review.
 
-**Local verification on 5 October:** the saved main results and hourly scores
-were read and recomputed from committed count rows. A new SUMO replay could not
-be completed here: both installed Windows executables, `sumo.exe` and
-`netconvert.exe`, exited before printing a version with process code
-`0xC0E90002`, including an attempted unsandboxed version check. The commands
-above are specified for a working SUMO installation; the saved 4 October Data
-run was made on Linux with SUMO 1.27.1, and its Windows execution is still
-unverified.
+**Local verification on 5 October:** after a transient Windows executable
+failure, SUMO and netconvert 1.27.1 ran. The independent replay matched every
+scored row and vehicle statistic in Data's saved ordinary-morning run. The
+recompiled network was not byte-identical; its hash and a no-speed-sign control
+are recorded in [Component C's review](sumo-flow-balance-review-2026-10-05.md).
