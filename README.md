@@ -587,6 +587,12 @@ wherever the data is shown. Everything we use is aggregate and open: no
 personal data, no vehicle identifiers.
 # Component C calibration and Visuals handoff — 4 October
 
+**5 October review:** [Reproduction and assumption handout](docs/sumo-upgrade-reproduction-2026-10-05.md)
+for Data's upgraded no-closure SUMO case. The [hourly-equivalent audit](results/twin/oct05-hourly-geh.json)
+recomputes 11/25 original and 19/25 upgraded detector passes from identical
+eligible bins; the upgrade's map/entry/speed assumptions and incident behaviour
+remain to be reviewed. A fresh Windows replay could not start on this machine.
+
 Published the [boundary-route experiment](docs/calibration-boundaries-2026-10-04.md)
 and [current handoff/review](docs/simulation-handoff-2026-10-04.md). Counts improve
 from 162 to 178 passing bins out of the same 242, but waiting share, speed error

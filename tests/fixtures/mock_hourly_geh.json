@@ -1,0 +1,12 @@
+{
+  "reference": [
+    {"detector_id": "A", "time": "t0", "observed": 10, "simulated": 10},
+    {"detector_id": "A", "time": "t1", "observed": 10, "simulated": 10},
+    {"detector_id": "B", "time": "t0", "observed": 0, "simulated": 0}
+  ],
+  "candidate": [
+    {"detector_id": "A", "time": "t0", "observed": 10, "simulated": 20},
+    {"detector_id": "A", "time": "t1", "observed": 10, "simulated": 20},
+    {"detector_id": "B", "time": "t0", "observed": 0, "simulated": 0}
+  ]
+}

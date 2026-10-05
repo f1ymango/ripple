@@ -150,6 +150,11 @@ The incident runner represents a closure by setting selected lane speeds to zero
 “We validate before we claim. We replayed the incident with no intervention and compared simulated detectors against the real detectors at the same locations. [X]% of count bins were within GEH 5, and speed MAPE was [Y]%. The improvement is the validated baseline compared with the plan, and we report outcomes over 30%, 50% and 70% driver compliance.” Replace the brackets only with the evaluation output. If baseline validation is poor, say so and use the simplified network specified by the team's architecture contract.
 # 4 October experimental calibration update
 
+The [5 October reproduction handout](../../docs/sumo-upgrade-reproduction-2026-10-05.md)
+compares the original, boundary-route and Data-upgrade assumptions, gives
+commands for an isolated replay, and adds an hourly-equivalent count check.
+It records the local Windows SUMO startup blocker without claiming a new replay.
+
 `boundary_routes` is an opt-in source-backed entry/exit candidate generator;
 `fit_demand --no-closure` preserves demand through a no-closure replay and now
 respects deterministic route endpoint positions. Existing default route generation

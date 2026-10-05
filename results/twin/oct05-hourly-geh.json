@@ -1,0 +1,583 @@
+{
+  "method": "For each detector, sum eligible five-minute bins, multiply both observed and simulated sums by 12/eligible_bins, then calculate GEH on those hourly equivalents.",
+  "interval_seconds": 300,
+  "expected_bins_per_detector": 12,
+  "not_a_measured_full_hour": true,
+  "eligible_count_pairs_identical": true,
+  "sources": {
+    "reference": {
+      "path": "results/twin/oct02-flow-trace.json",
+      "sha256": "e17c350940a32e4cbc5050c8af5b07b48367cf2da135cd67f8bc2d917420bd76",
+      "observations_sha256": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605"
+    },
+    "candidate": {
+      "path": "sim/work/oct05-main-review/results/twin/oct04-flow-balance.json",
+      "sha256": "d5a4656cc76aaab76c5f4fb7804eea25a4ad67945f935e8c214e38fbb451e5a2",
+      "observations_sha256": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605"
+    }
+  },
+  "reference": {
+    "detectors_under_5": 11,
+    "detectors_scored": 25,
+    "under_5_percent": 44.0,
+    "by_detector": {
+      "AID01101": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 1194.0,
+        "simulated_in_eligible_bins": 1188.0,
+        "observed_hourly_equivalent": 1592.0,
+        "simulated_hourly_equivalent": 1584.0,
+        "geh_on_eligible_bin_sums": 0.1738582763399234,
+        "geh_hourly_equivalent": 0.20075424529139824,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01102": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1311.0,
+        "simulated_in_eligible_bins": 1305.0,
+        "observed_hourly_equivalent": 1573.2,
+        "simulated_hourly_equivalent": 1566.0,
+        "geh_on_eligible_bin_sums": 0.1659003790827993,
+        "geh_hourly_equivalent": 0.18173475984461596,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01103": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1596.0,
+        "simulated_in_eligible_bins": 991.0,
+        "observed_hourly_equivalent": 1915.1999999999998,
+        "simulated_hourly_equivalent": 1189.2,
+        "geh_on_eligible_bin_sums": 16.82178810599836,
+        "geh_hourly_equivalent": 18.427345606454807,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01104": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1041.0,
+        "simulated_in_eligible_bins": 777.0,
+        "observed_hourly_equivalent": 1249.2,
+        "simulated_hourly_equivalent": 932.4,
+        "geh_on_eligible_bin_sums": 8.756327273847905,
+        "geh_hourly_equivalent": 9.59207593756843,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01106": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 998.0,
+        "simulated_in_eligible_bins": 475.0,
+        "observed_hourly_equivalent": 1197.6,
+        "simulated_hourly_equivalent": 570.0,
+        "geh_on_eligible_bin_sums": 19.271490855922686,
+        "geh_hourly_equivalent": 21.110860517086792,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01107": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1276.0,
+        "simulated_in_eligible_bins": 458.0,
+        "observed_hourly_equivalent": 1531.2,
+        "simulated_hourly_equivalent": 549.6,
+        "geh_on_eligible_bin_sums": 27.78073648218317,
+        "geh_hourly_equivalent": 30.432272070796873,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01108": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1225.0,
+        "simulated_in_eligible_bins": 1070.0,
+        "observed_hourly_equivalent": 1470.0,
+        "simulated_hourly_equivalent": 1284.0,
+        "geh_on_eligible_bin_sums": 4.575676908623826,
+        "geh_hourly_equivalent": 5.012402917417548,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01109": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1976.0,
+        "simulated_in_eligible_bins": 1787.0,
+        "observed_hourly_equivalent": 2371.2,
+        "simulated_hourly_equivalent": 2144.4,
+        "geh_on_eligible_bin_sums": 4.357222051046511,
+        "geh_hourly_equivalent": 4.773097610834195,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01110": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 2503.0,
+        "simulated_in_eligible_bins": 1489.0,
+        "observed_hourly_equivalent": 3003.6,
+        "simulated_hourly_equivalent": 1786.8,
+        "geh_on_eligible_bin_sums": 22.696437088517353,
+        "geh_hourly_equivalent": 24.862701136755664,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01214": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 2494.0,
+        "simulated_in_eligible_bins": 1519.0,
+        "observed_hourly_equivalent": 2992.7999999999997,
+        "simulated_hourly_equivalent": 1822.8,
+        "geh_on_eligible_bin_sums": 21.76632120041307,
+        "geh_hourly_equivalent": 23.843810230738324,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01215": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1911.0,
+        "simulated_in_eligible_bins": 1854.0,
+        "observed_hourly_equivalent": 2293.2,
+        "simulated_hourly_equivalent": 2224.7999999999997,
+        "geh_on_eligible_bin_sums": 1.313733768441167,
+        "geh_hourly_equivalent": 1.439123239062993,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01216": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1343.0,
+        "simulated_in_eligible_bins": 1333.0,
+        "observed_hourly_equivalent": 1611.6,
+        "simulated_hourly_equivalent": 1599.6,
+        "geh_on_eligible_bin_sums": 0.2733832759069041,
+        "geh_hourly_equivalent": 0.2994763741177399,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01217": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1887.0,
+        "simulated_in_eligible_bins": 824.0,
+        "observed_hourly_equivalent": 2264.4,
+        "simulated_hourly_equivalent": 988.8,
+        "geh_on_eligible_bin_sums": 28.872441067403784,
+        "geh_hourly_equivalent": 31.62817452571118,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01218": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1483.0,
+        "simulated_in_eligible_bins": 701.0,
+        "observed_hourly_equivalent": 1779.6,
+        "simulated_hourly_equivalent": 841.1999999999999,
+        "geh_on_eligible_bin_sums": 23.664396527350174,
+        "geh_hourly_equivalent": 25.92304757555322,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01219": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1325.0,
+        "simulated_in_eligible_bins": 1044.0,
+        "observed_hourly_equivalent": 1590.0,
+        "simulated_hourly_equivalent": 1252.8,
+        "geh_on_eligible_bin_sums": 8.164672844083071,
+        "geh_hourly_equivalent": 8.943950982708317,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01221": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1827.0,
+        "simulated_in_eligible_bins": 1064.0,
+        "observed_hourly_equivalent": 2192.4,
+        "simulated_hourly_equivalent": 1276.8,
+        "geh_on_eligible_bin_sums": 20.06852667018345,
+        "geh_hourly_equivalent": 21.98396950630703,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01222": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1580.0,
+        "simulated_in_eligible_bins": 1101.0,
+        "observed_hourly_equivalent": 1896.0,
+        "simulated_hourly_equivalent": 1321.2,
+        "geh_on_eligible_bin_sums": 13.082842233632116,
+        "geh_hourly_equivalent": 14.331535615283164,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01223": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1197.0,
+        "simulated_in_eligible_bins": 954.0,
+        "observed_hourly_equivalent": 1436.3999999999999,
+        "simulated_hourly_equivalent": 1144.8,
+        "geh_on_eligible_bin_sums": 7.4097075306908415,
+        "geh_hourly_equivalent": 8.116927918150552,
+        "under_5_hourly_equivalent": false
+      },
+      "TDSAPR10001": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 1148.0,
+        "simulated_in_eligible_bins": 978.0,
+        "observed_hourly_equivalent": 1530.6666666666665,
+        "simulated_hourly_equivalent": 1304.0,
+        "geh_on_eligible_bin_sums": 5.214135213119826,
+        "geh_hourly_equivalent": 6.020764737771674,
+        "under_5_hourly_equivalent": false
+      },
+      "TDSAPR20001": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 1382.0,
+        "simulated_in_eligible_bins": 1260.0,
+        "observed_hourly_equivalent": 1842.6666666666665,
+        "simulated_hourly_equivalent": 1680.0,
+        "geh_on_eligible_bin_sums": 3.3566682591023804,
+        "geh_hourly_equivalent": 3.87594664594606,
+        "under_5_hourly_equivalent": true
+      },
+      "TDSSPWR10001": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 561.0,
+        "simulated_in_eligible_bins": 562.0,
+        "observed_hourly_equivalent": 748.0,
+        "simulated_hourly_equivalent": 749.3333333333333,
+        "geh_on_eligible_bin_sums": 0.042201231027863884,
+        "geh_hourly_equivalent": 0.04872978418813883,
+        "under_5_hourly_equivalent": true
+      },
+      "TDSSPWR10002": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 923.0,
+        "simulated_in_eligible_bins": 978.0,
+        "observed_hourly_equivalent": 1230.6666666666665,
+        "simulated_hourly_equivalent": 1304.0,
+        "geh_on_eligible_bin_sums": 1.7839662293966119,
+        "geh_hourly_equivalent": 2.0599467655346753,
+        "under_5_hourly_equivalent": true
+      },
+      "TDSSPWR10003": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 870.0,
+        "simulated_in_eligible_bins": 978.0,
+        "observed_hourly_equivalent": 1160.0,
+        "simulated_hourly_equivalent": 1304.0,
+        "geh_on_eligible_bin_sums": 3.5529391527827525,
+        "geh_hourly_equivalent": 4.102580752546967,
+        "under_5_hourly_equivalent": true
+      },
+      "TDSSPWR20001": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 664.0,
+        "simulated_in_eligible_bins": 660.0,
+        "observed_hourly_equivalent": 885.3333333333333,
+        "simulated_hourly_equivalent": 880.0,
+        "geh_on_eligible_bin_sums": 0.15546441486729434,
+        "geh_hourly_equivalent": 0.17951484354607755,
+        "under_5_hourly_equivalent": true
+      },
+      "TDSSPWR20003": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 1135.0,
+        "simulated_in_eligible_bins": 1264.0,
+        "observed_hourly_equivalent": 1513.3333333333333,
+        "simulated_hourly_equivalent": 1685.3333333333333,
+        "geh_on_eligible_bin_sums": 3.7246852932235295,
+        "geh_hourly_equivalent": 4.3008961133784895,
+        "under_5_hourly_equivalent": true
+      }
+    }
+  },
+  "candidate": {
+    "detectors_under_5": 19,
+    "detectors_scored": 25,
+    "under_5_percent": 76.0,
+    "by_detector": {
+      "AID01101": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 1194.0,
+        "simulated_in_eligible_bins": 1230.0,
+        "observed_hourly_equivalent": 1592.0,
+        "simulated_hourly_equivalent": 1640.0,
+        "geh_on_eligible_bin_sums": 1.034072981318567,
+        "geh_hourly_equivalent": 1.194044628251987,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01102": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1311.0,
+        "simulated_in_eligible_bins": 1394.0,
+        "observed_hourly_equivalent": 1573.2,
+        "simulated_hourly_equivalent": 1672.8,
+        "geh_on_eligible_bin_sums": 2.2568851320073393,
+        "geh_hourly_equivalent": 2.4722937929968865,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01103": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1596.0,
+        "simulated_in_eligible_bins": 1736.0,
+        "observed_hourly_equivalent": 1915.1999999999998,
+        "simulated_hourly_equivalent": 2083.2,
+        "geh_on_eligible_bin_sums": 3.429971702850177,
+        "geh_hourly_equivalent": 3.757345746510897,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01104": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1041.0,
+        "simulated_in_eligible_bins": 1143.0,
+        "observed_hourly_equivalent": 1249.2,
+        "simulated_hourly_equivalent": 1371.6,
+        "geh_on_eligible_bin_sums": 3.086660416610892,
+        "geh_hourly_equivalent": 3.381267075072155,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01106": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 998.0,
+        "simulated_in_eligible_bins": 1230.0,
+        "observed_hourly_equivalent": 1197.6,
+        "simulated_hourly_equivalent": 1476.0,
+        "geh_on_eligible_bin_sums": 6.950969605458965,
+        "geh_hourly_equivalent": 7.614405698885323,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01107": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1276.0,
+        "simulated_in_eligible_bins": 1238.0,
+        "observed_hourly_equivalent": 1531.2,
+        "simulated_hourly_equivalent": 1485.6,
+        "geh_on_eligible_bin_sums": 1.0718054419203848,
+        "geh_hourly_equivalent": 1.1741040355931793,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01108": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1225.0,
+        "simulated_in_eligible_bins": 1146.0,
+        "observed_hourly_equivalent": 1470.0,
+        "simulated_hourly_equivalent": 1375.2,
+        "geh_on_eligible_bin_sums": 2.294437922824561,
+        "geh_hourly_equivalent": 2.5134308142526183,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01109": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1976.0,
+        "simulated_in_eligible_bins": 1691.0,
+        "observed_hourly_equivalent": 2371.2,
+        "simulated_hourly_equivalent": 2029.1999999999998,
+        "geh_on_eligible_bin_sums": 6.655863440209319,
+        "geh_hourly_equivalent": 7.291133091753163,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01110": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 2503.0,
+        "simulated_in_eligible_bins": 2372.0,
+        "observed_hourly_equivalent": 3003.6,
+        "simulated_hourly_equivalent": 2846.4,
+        "geh_on_eligible_bin_sums": 2.6533771417592065,
+        "geh_hourly_equivalent": 2.906629028220197,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01214": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 2494.0,
+        "simulated_in_eligible_bins": 2542.0,
+        "observed_hourly_equivalent": 2992.7999999999997,
+        "simulated_hourly_equivalent": 3050.4,
+        "geh_on_eligible_bin_sums": 0.9565625511264975,
+        "geh_hourly_equivalent": 1.0478617738333496,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01215": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1911.0,
+        "simulated_in_eligible_bins": 1707.0,
+        "observed_hourly_equivalent": 2293.2,
+        "simulated_hourly_equivalent": 2048.4,
+        "geh_on_eligible_bin_sums": 4.796350187838469,
+        "geh_hourly_equivalent": 5.254138383146533,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01216": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1343.0,
+        "simulated_in_eligible_bins": 1178.0,
+        "observed_hourly_equivalent": 1611.6,
+        "simulated_hourly_equivalent": 1413.6,
+        "geh_on_eligible_bin_sums": 4.647426384058169,
+        "geh_hourly_equivalent": 5.091000529786653,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01217": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1887.0,
+        "simulated_in_eligible_bins": 1786.0,
+        "observed_hourly_equivalent": 2264.4,
+        "simulated_hourly_equivalent": 2143.2,
+        "geh_on_eligible_bin_sums": 2.356817245912146,
+        "geh_hourly_equivalent": 2.581763939006571,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01218": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1483.0,
+        "simulated_in_eligible_bins": 1404.0,
+        "observed_hourly_equivalent": 1779.6,
+        "simulated_hourly_equivalent": 1684.8,
+        "geh_on_eligible_bin_sums": 2.0793073904807993,
+        "geh_hourly_equivalent": 2.277767123507072,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01219": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1325.0,
+        "simulated_in_eligible_bins": 1289.0,
+        "observed_hourly_equivalent": 1590.0,
+        "simulated_hourly_equivalent": 1546.8,
+        "geh_on_eligible_bin_sums": 0.9957829982722385,
+        "geh_hourly_equivalent": 1.0908256210676668,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01221": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1827.0,
+        "simulated_in_eligible_bins": 1634.0,
+        "observed_hourly_equivalent": 2192.4,
+        "simulated_hourly_equivalent": 1960.8,
+        "geh_on_eligible_bin_sums": 4.6395035054038,
+        "geh_hourly_equivalent": 5.082321451067908,
+        "under_5_hourly_equivalent": false
+      },
+      "AID01222": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1580.0,
+        "simulated_in_eligible_bins": 1450.0,
+        "observed_hourly_equivalent": 1896.0,
+        "simulated_hourly_equivalent": 1740.0,
+        "geh_on_eligible_bin_sums": 3.3399274710016016,
+        "geh_hourly_equivalent": 3.6587072325975174,
+        "under_5_hourly_equivalent": true
+      },
+      "AID01223": {
+        "eligible_bins": 10,
+        "missing_or_ineligible_bins": 2,
+        "observed_in_eligible_bins": 1197.0,
+        "simulated_in_eligible_bins": 1134.0,
+        "observed_hourly_equivalent": 1436.3999999999999,
+        "simulated_hourly_equivalent": 1360.8,
+        "geh_on_eligible_bin_sums": 1.8453740556877365,
+        "geh_hourly_equivalent": 2.0215059946699334,
+        "under_5_hourly_equivalent": true
+      },
+      "TDSAPR10001": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 1148.0,
+        "simulated_in_eligible_bins": 995.0,
+        "observed_hourly_equivalent": 1530.6666666666665,
+        "simulated_hourly_equivalent": 1326.6666666666665,
+        "geh_on_eligible_bin_sums": 4.674071409071274,
+        "geh_hourly_equivalent": 5.397152772477668,
+        "under_5_hourly_equivalent": false
+      },
+      "TDSAPR20001": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 1382.0,
+        "simulated_in_eligible_bins": 1339.0,
+        "observed_hourly_equivalent": 1842.6666666666665,
+        "simulated_hourly_equivalent": 1785.3333333333333,
+        "geh_on_eligible_bin_sums": 1.1657869313999905,
+        "geh_hourly_equivalent": 1.3461347973230628,
+        "under_5_hourly_equivalent": true
+      },
+      "TDSSPWR10001": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 561.0,
+        "simulated_in_eligible_bins": 582.0,
+        "observed_hourly_equivalent": 748.0,
+        "simulated_hourly_equivalent": 776.0,
+        "geh_on_eligible_bin_sums": 0.878438127193422,
+        "geh_hourly_equivalent": 1.0143329784031059,
+        "under_5_hourly_equivalent": true
+      },
+      "TDSSPWR10002": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 923.0,
+        "simulated_in_eligible_bins": 838.0,
+        "observed_hourly_equivalent": 1230.6666666666665,
+        "simulated_hourly_equivalent": 1117.3333333333333,
+        "geh_on_eligible_bin_sums": 2.8645357424677163,
+        "geh_hourly_equivalent": 3.3076809640340787,
+        "under_5_hourly_equivalent": true
+      },
+      "TDSSPWR10003": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 870.0,
+        "simulated_in_eligible_bins": 835.0,
+        "observed_hourly_equivalent": 1160.0,
+        "simulated_hourly_equivalent": 1113.3333333333333,
+        "geh_on_eligible_bin_sums": 1.198728554188798,
+        "geh_hourly_equivalent": 1.3841725068923891,
+        "under_5_hourly_equivalent": true
+      },
+      "TDSSPWR20001": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 664.0,
+        "simulated_in_eligible_bins": 665.0,
+        "observed_hourly_equivalent": 885.3333333333333,
+        "simulated_hourly_equivalent": 886.6666666666666,
+        "geh_on_eligible_bin_sums": 0.03879292326456055,
+        "geh_hourly_equivalent": 0.04479420937889433,
+        "under_5_hourly_equivalent": true
+      },
+      "TDSSPWR20003": {
+        "eligible_bins": 9,
+        "missing_or_ineligible_bins": 3,
+        "observed_in_eligible_bins": 1135.0,
+        "simulated_in_eligible_bins": 1062.0,
+        "observed_hourly_equivalent": 1513.3333333333333,
+        "simulated_hourly_equivalent": 1416.0,
+        "geh_on_eligible_bin_sums": 2.2025350561672976,
+        "geh_hourly_equivalent": 2.5432684151555516,
+        "under_5_hourly_equivalent": true
+      }
+    }
+  }
+}

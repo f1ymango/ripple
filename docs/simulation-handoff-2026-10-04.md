@@ -1,5 +1,12 @@
 # Simulation handoff and calibration review — 4 October 2026
 
+**5 October follow-up:** [the reproduction and assumption handout](sumo-upgrade-reproduction-2026-10-05.md)
+checks the reporter's upgrade claims against saved rows, gives exact replay
+commands and records the hourly-equivalent GEH method. The original and upgrade
+score 11/25 and 19/25 detectors respectively under that method. A fresh Windows
+SUMO replay remains unverified because the installed executables exit before
+startup in this environment. The incident baseline remains unvalidated.
+
 Checked remote main at `4875a85`. The Lead has moved the model decision to
 **Monday 5 October evening HKT**. The results freeze remains 14 October.
 This note supplies Simulation's status for Visuals; it does not promise other

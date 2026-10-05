@@ -12,6 +12,8 @@
   input archive; update Simulation's status and Visuals handoff.
 - Review Data's newer main results and record source/network, imposed-speed
   and incident-readiness questions for the 5 October decision.
+- Add a reproduction/assumption handout for the reporter's upgraded case and
+  a source-hashed hourly-equivalent GEH audit on matched eligible bins.
 
 ## Evidence and limits
 
@@ -31,7 +33,9 @@ Evidence and reproduction:
 
 - `docs/calibration-boundaries-2026-10-04.md`
 - `docs/simulation-handoff-2026-10-04.md`
+- `docs/sumo-upgrade-reproduction-2026-10-05.md`
 - `results/twin/oct03-boundaries-comparison.json`
+- `results/twin/oct05-hourly-geh.json`
 - `results/twin/oct04-boundary-experiment-inputs.zip` and manifest
 
 ## Checks
@@ -41,6 +45,9 @@ Evidence and reproduction:
 - Complete no-closure SUMO run under a 180-second wall limit.
 - Trip trace reconciles inserted and waiting totals exactly.
 - Input archive integrity checked; no independent fresh-checkout replay.
+- The saved count rows reproduce 11/25 original and 19/25 upgrade hourly-
+  equivalent detector passes. A new Windows SUMO run was blocked by the local
+  executables exiting before startup (`0xC0E90002`).
 
 ## Invalid historical artifacts
 
