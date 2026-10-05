@@ -15,19 +15,17 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Sun 4 Oct 2026** · Week 2 closeout; Week 3 starts Mon 5 Oct
+**Last updated: Mon 5 Oct 2026** · Week 3 in progress
 · Weekly sync / stand-up: Wednesday afternoon
 
-> **Model decision — Lead, Mon 5 Oct evening (HKT):** Data + Simulation bring comparable
-> no-closure diagnostics for SUMO and the simplified fallback, including scoring
-> windows, filters, denominators, reproducible inputs and remaining flow/queue
-> problems. The Lead deferred the 4 Oct decision for one more SUMO calibration
-> pass. Data's new no-closure run exceeds the ≥85% GEH<5 count target, while its
-> ordinary-morning speed error is 15.7% against the roughly ≤15% target;
-> Simulation has not yet reviewed the new assumptions. Assess the simplified
-> fallback against the same evidence if needed. Neither model has validated
-> incident queues, recovery or plan benefits. Record the decision separately
-> from incident lane/timing assumptions.
+> **Model decision — Lead, Mon 5 Oct (HKT):** Continue flow-balance SUMO as the
+> primary path for a bounded incident P0 diagnostic; keep the simplified model
+> available as a contingency. Simulation independently reproduced Data's 96.7%
+> GEH<5 count result on the 15 May no-closure hour. Ordinary-morning speed MAPE
+> remains 15.7%, above the approximately 15% target, and the speeds are imposed.
+> This is a limited count-baseline claim, not acceptance of incident queues,
+> recovery or plan benefits. The [decision and next gates](docs/04-plan.md)
+> remain separate from incident lane/timing assumptions.
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
@@ -47,7 +45,7 @@ this chain.
 |---|---|---|
 | Sun 27 Sep | 🔒 Lock the primary demo incident and backup | ✅ 28 Sep — Lead selected [IN-26-03365](data/demo_shortlist.md) as primary; IN-26-06391 as backup |
 | Sat 3 Oct | 📤 Submit interim report (official deadline Sun 4 Oct) | ✅ Lead confirmed the online form was submitted. The repository keeps the [technical draft](docs/interim-report.md) and [23-question answer bank](docs/interim-report-submission.md); the exact submitted answers and receipt are not archived |
-| Mon 5 Oct evening (HKT) | 🚦 Decide whether to continue with SUMO or use the ~15-link fallback, based on reviewed no-closure evidence and incident-readiness risks | 🟡 Deferred from Sun 4 Oct by the Lead. Data's new SUMO run passes the count target on the demo morning, but ordinary-morning speed error is 15.7%, assumptions await Simulation review, and neither model has passed incident validation ([Data report](docs/sumo-flow-balance-2026-10-04.md), [plan](docs/04-plan.md)) |
+| Mon 5 Oct (HKT) | 🚦 Decide whether to continue with SUMO or use the simplified fallback | ✅ Lead chose conditional SUMO continuation for an incident P0 diagnostic, with fallback retained. Simulation independently reproduced the no-closure count score; speed and incident acceptance remain open ([review](docs/sumo-flow-balance-review-2026-10-05.md), [decision](docs/04-plan.md)) |
 | Mon 12 Oct | Pitching workshop, everyone (HKU Innovation Wing 2, 14:00–17:30) | ⚪ |
 | Wed 14 Oct | 🔒 **Results freeze**: bug fixes only after this, every number locked | ⚪ |
 | Sat 17 Oct | 📤 Submit deck + prototype (official deadline Sun 18 Oct) | ⚪ |
@@ -60,7 +58,7 @@ this chain.
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md). Week 2 checks on the demo morning: usable calibration bins per threshold ([bin survival](results/data/bin-survival_20260515-0755_1035.md)), which lane closed first ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)), and IN-26-03365 re-screened after the 29 Sep screen fixes ([re-check](results/data/candidates_2026-05-15.md)). For the twin: [flow balance](results/data/flow-balance_20260515-0755_0855.md) and [free-flow speeds](results/data/free-flow_20260508_20260424_0730-1100.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Week 2 evaluation complete on 100 hand-labelled messages. Initial held-out all-field accuracy: citywide **50%**, corridor **75%**. After prompt and label corrections informed by those results, development scores reached 75% and 85%; these are not fresh held-out results. An October prompt experiment performed worse and was not adopted. Output preservation regressions protect evidence ([score history](data/labelled_incidents/LABELLING.md#score-history), [Lead work](docs/2026-10-01-lead-work.md)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Data's merged 4 Oct flow-balance run on the 15 May no-closure hour reports **96.7% GEH<5** of 242 count bins and **15.7% speed MAPE** of 299 bins, against the earlier 66.9% / 41.4% packet. A separate within-day speed refresh scores 97.5% / 13.2% but uses each detector's preceding-quarter-hour speed. Across 15 further windows, counts pass ≥85% in all; speed meets ~≤15% in 5. The speeds are imposed, not produced by queue formation. Simulation still needs to review network and demand assumptions; incident queues, recovery and diversions remain unvalidated ([Data report](docs/sumo-flow-balance-2026-10-04.md)). |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Simulation independently reproduced Data's 15 May no-closure **96.7% GEH<5** of 242 count bins and **15.7% speed MAPE** of 299 bins, with 238 of 16,601 vehicles waiting and zero teleports. A no-speed-sign control retained 96.7% count GEH but reached 41.2% speed MAPE and 523 waiting. Data's separate 97.5% / 13.2% refresh uses each detector's preceding-quarter-hour speed. The limited count claim is reproducible; toll-lane, inferred-join and ramp assumptions, incident queues, recovery and diversions remain unvalidated ([independent review](docs/sumo-flow-balance-review-2026-10-05.md), [Data study](docs/sumo-flow-balance-2026-10-04.md)). |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | 🟡 P0/P1/P2 generation, schema checks and all five documented constraints are implemented with offline tests. A model-free `--check-only` path now validates the incident/context handoff before generation. Real-model quality and reviewed C/E routes, demand and controls remain outstanding ([handoff](docs/lead-pipeline-handoff.md)) |
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | 🟡 No `src/evaluator/` implementation or real P0/P1/P2 results are on main yet. Open PR #35 contains a fallback model, but its older calibration overlaps an injected closure and is not accepted. The evaluator must write comparable contracted results and provenance sidecars before F/G can recommend a plan; compliance/clearance sensitivity remains outstanding ([handoff](docs/lead-pipeline-handoff.md), [Data report](docs/sumo-flow-balance-2026-10-04.md)) |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Bilingual drafting, saved-result selection, metric-token insertion, provenance verification and VMS limits are implemented with offline tests. A model-free handoff check revalidates plans and comparable results before an LLM call. Real validated E results and human language review remain outstanding ([handoff](docs/lead-pipeline-handoff.md), [Lead next steps](docs/2026-10-03-lead-next-steps.md)) |
@@ -74,8 +72,8 @@ The JSON contracts between modules are in
 
 | Owner | Deliverable | Next evidence |
 |---|---|---|
-| Data + Simulation | Review Data's new flow-balance run for the Mon 5 Oct evening decision; then establish the incident baseline and matching P0/P1/P2 runs | 🟡 No-closure count validation is much stronger, but speed and network assumptions need review. Neither model has validated incident queues or plan effects. E and its contracted results are still missing from main ([Data report](docs/sumo-flow-balance-2026-10-04.md), [handoff](docs/lead-pipeline-handoff.md)) |
-| Lead | Decide the model route, then validate C/E context and real D/F handoffs | 🟡 Reader evaluation, interim submission and model-free D/F checks are complete. Review new evidence on Mon 5 Oct; real plan quality, comparable results and bilingual briefing remain unverified ([next steps](docs/2026-10-03-lead-next-steps.md)) |
+| Data + Simulation | Agree the evidence-labelled incident edge, lane and onset on 6 Oct; attempt a bounded P0 diagnostic by 7 Oct while Data builds E | 🟡 Independent no-closure count reproduction is complete, but speed and physical assumptions remain open. Neither incident queues nor plan effects are validated; E and contracted results are still missing from main ([review](docs/sumo-flow-balance-review-2026-10-05.md), [handoff](docs/lead-pipeline-handoff.md)) |
+| Lead | Hold conditional SUMO decision and validate C/E context and real D/F handoffs | 🟡 Model route decided for the bounded P0 step, with fallback retained. Reader evaluation, interim submission and model-free D/F checks are complete. Reviewed context, real plan quality, comparable results and bilingual briefing remain unverified ([decision](docs/04-plan.md), [handoff](docs/lead-pipeline-handoff.md)) |
 | Visuals | Connect the merged comparison and briefing workflow to accepted outputs | 🟡 [PR #41](https://github.com/f1ymango/ripple/pull/41) merged with green Linux and Windows checks. The observed playback remains available; trajectory replay awaits C/E output provenance and real operator review ([operator integration](src/console/OPERATOR_WORKFLOW.md)) |
 | Impact | Continue interviews and build the final evidence pack and deck | 🟡 Interim form submitted 3 Oct; additional interviews, validated results and final impact claims remain open ([interim draft](docs/interim-report.md)) |
 
@@ -213,6 +211,14 @@ The local OSM network and E1 loops remain provisional and uncommitted.
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Mon 5 Oct**
+- Lead chose conditional SUMO continuation for a bounded incident P0 diagnostic,
+  keeping the simplified model available. Simulation independently reproduced
+  the 15 May no-closure 96.7% GEH<5 / 15.7% speed MAPE result; removing speed
+  signs left counts at 96.7% but raised speed error to 41.2%. Incident and plan
+  benefit claims remain blocked ([review](docs/sumo-flow-balance-review-2026-10-05.md),
+  [decision](docs/04-plan.md)).
 
 **Sun 4 Oct**
 - Data's merged [flow-balance report](docs/sumo-flow-balance-2026-10-04.md)

@@ -59,19 +59,41 @@ short paragraph with evidence links and limitations to the
 contribution is already drafted. Impact confirms the collection cutoff; Lead
 and Impact review the complete report and confirm the uploader before submission.
 
-### 🚦 Go / no-go — Mon 5 Oct evening (HKT)
-> On Sun 4 Oct, the Lead deferred this decision by one evening to allow a final
-> SUMO calibration pass. Data and Simulation should present comparable
-> no-closure evidence for SUMO and the simplified ~15-link fallback
-> (`03-architecture.md` §5): scoring windows and filters, denominators,
-> reproducible inputs, count GEH, speed error and unresolved flow/queue issues.
-> Data's new [flow-balance study](sumo-flow-balance-2026-10-04.md) reports 96.7%
-> GEH<5 and 15.7% speed error on the demo morning without a closure. The count
-> target is met in that run; ordinary-morning speed is just above target and
-> Simulation's review remains open. Passing this hour does not validate incident
-> queues or plan benefits.
-> Assess the fallback against the same evidence if needed, record the decision
-> Monday evening, and protect the 14 Oct results freeze.
+### 🚦 Model decision — Mon 5 Oct (HKT)
+
+**Lead decision: continue with flow-balance SUMO as the primary path for a
+bounded incident P0 diagnostic; keep the simplified model available as a
+contingency.** This is a development decision, not acceptance of an incident
+baseline or plan benefits. Simulation independently rebuilt Data's 15 May
+no-closure case and reproduced 96.7% GEH<5 over 242 count bins, 15.7% speed
+MAPE over 299 bins, 238 of 16,601 vehicles waiting to enter and zero
+teleports. With the same network and demand but no imposed speed signs, counts
+still scored 96.7%, while speed MAPE rose to 41.2% and waiting to 523
+([independent review](sumo-flow-balance-review-2026-10-05.md),
+[Data study](sumo-flow-balance-2026-10-04.md)).
+
+The evidence supports a limited, partly speed-controlled **no-closure count
+baseline**, not demonstrated queue formation or recovery. Ordinary-morning
+speed error remains above the approximately 15% target; the separate 13.2%
+refreshed-speed result is a short-horizon claim, not a replacement baseline.
+Toll-plaza lane legality, inferred joins and the ramp entry queue remain under
+review. F/G keep their P0 speed-MAPE gate at 15%; this decision does not relax
+it or substitute the refreshed-speed score. Do not rank plans or quote
+delay/emissions savings from this setup yet.
+
+- **6 Oct:** Data and Simulation agree the SUMO edge, proposed initial lane,
+  physical onset and phase-transition rule for IN-26-03365, with evidence and
+  assumptions labelled. TD's 09:01 first report says `unspecified`; the 09:36
+  update says `all`. Operator action cannot precede its report.
+- **By 7 Oct, if those inputs are agreed:** Simulation attempts a bounded P0
+  diagnostic against closure flow, upstream queues and recovery through 10:35.
+  Data starts E in parallel against the existing result/provenance contract.
+- **9 Oct checkpoint:** if a credible incident replay and path to comparable,
+  provenance-bound P0/P1/P2 are still absent, narrow the demo and remove
+  unsupported benefit claims. Reassess the contingency without assuming that
+  the simplified model is already validated.
+
+The 14 Oct results freeze and 17 Oct internal submission target stay in place.
 
 ### Week 3 — 5–11 Oct · Plans and results
 | Who | Task |
