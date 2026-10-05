@@ -14,6 +14,7 @@ been run on Windows.**
 | Refreshed-speed run replayed the same way | Reproduced exactly: 236/242 (97.5%) and 13.2% of 299 |
 | `twin-inputs_20260515.json` rebuilt from the raw detector cache | Byte-identical to the committed file (both variants) |
 | Twelve one-at-a-time assumption tests on the flow-balance run | Section 3 |
+| Recommended reviewed baseline, for Simulation to reproduce | Section 6: 231/242 (95.5%) and 15.8% of 299 |
 
 Two corrections to the 4 October report came out of this: the network hash in
 the saved result cannot be reproduced as written (section 1), and the toll-plaza
@@ -318,6 +319,85 @@ separate test, and the 96.7% does not establish it.
    totals.
 5. Agree the incident check for whichever model is chosen: row 9 has to be
    settled first for this one.
+
+## 6. Recommended reviewed baseline, for Simulation to reproduce
+
+Data's recommendation for this evening: keep the flow-balance demand, and give
+way on the two assumptions that have no support. Added 5 October after the
+checks above.
+
+| Assumption | Recommended | Why |
+|---|---|---|
+| Demand (where traffic enters and leaves) | Data's | Simulation's fitted routes match the counts on paper but send 87% of westbound traffic out of one single-lane exit, which jams the run (section 0) |
+| Canal Road entry rule (row 4) | Data's, labelled as an inference | The network's lane connections support it, and without it both models fail on the same lane |
+| Toll-plaza lane 0 connection (row 1) | Simulation's: leave it unconnected | OSM tags it as a franchised-bus lane, and leaving it out costs nothing |
+| +201 veh/h joining with no ramp (row 3) | Simulation's: drop it | Nothing physical supports it. It costs 3 bins on the western chain, away from the incident |
+| Speed signs (row 5) | Data's, for the no-closure baseline only | They bring the speed error from about 41% to 15.8%, but they are inputs, not model behaviour |
+| Driver settings (row 6) | Data's with speed signs; SUMO's defaults without | Data's settings only make sense when the speeds are imposed |
+| Warm-up (row 7) | Either | 30 or 15 minutes gives the same score |
+
+**Two files carry the two changes**, both added on this branch
+(`data/replay-handoff-oct05`), so nothing in the code changes:
+
+| File | What it is | SHA-256 |
+|---|---|---|
+| `sim/scenarios/aberdeen-flow-balance-buslane.con.xml` | Connection patch without lane 0: only lane 1 of `1233513875#0` is connected and lane 2 moved over | `d259c1ab989bf7ed37dfe38beccdf20a6ebe10c8642fe9e78d65fb6979e3a676` |
+| `sim/scenarios/twin-inputs_20260515_no-mainline-join.json` | The committed `twin-inputs_20260515.json` with one value changed: `join_veh_h` for TDSSPWR10003 to TDSAPR10001 set from 201.2 to 0.0 | `fbc71ca5696238006dd42403d0f4783cab1ad50664d34f5087c56eed6fbe8e1f` |
+
+**Commands**, after section 1's setup (clone, archive, `replay-oct05` folder),
+with this branch checked out instead of main `4875a85`, or with the two files
+copied in:
+
+```powershell
+netconvert -s sim/work/aberdeen.net.xml -x sim/scenarios/aberdeen-flow-balance-buslane.con.xml -e sim/scenarios/aberdeen-flow-balance.edg.xml -o sim/work/replay-oct05/aberdeen.flow-balance-buslane.net.xml --lefthand true --output.street-names true
+
+python -m src.twin.flow_balance_demand --inputs sim/scenarios/twin-inputs_20260515_no-mainline-join.json --network sim/work/replay-oct05/aberdeen.flow-balance-buslane.net.xml --out sim/work/replay-oct05/reviewed --begin 07:25 --end 08:55
+python -m src.twin.run_flow_balance --inputs-dir sim/work/replay-oct05/reviewed --network sim/work/replay-oct05/aberdeen.flow-balance-buslane.net.xml --loops sim/work/may-diagnostic/detectors.add.xml --observations sim/scenarios/detectors.json --seed 2026 --out results/twin/replay-oct05/reviewed.json
+```
+
+The same with the speed signs off (add `--no-speeds`, new folders):
+
+```powershell
+python -m src.twin.flow_balance_demand --inputs sim/scenarios/twin-inputs_20260515_no-mainline-join.json --network sim/work/replay-oct05/aberdeen.flow-balance-buslane.net.xml --out sim/work/replay-oct05/reviewed-no-signs --begin 07:25 --end 08:55 --no-speeds
+python -m src.twin.run_flow_balance --inputs-dir sim/work/replay-oct05/reviewed-no-signs --network sim/work/replay-oct05/aberdeen.flow-balance-buslane.net.xml --loops sim/work/may-diagnostic/detectors.add.xml --observations sim/scenarios/detectors.json --seed 2026 --out results/twin/replay-oct05/reviewed-no-signs.json
+```
+
+**Expected hashes** (run today from a new clone, Linux only)
+
+| File | Expected |
+|---|---|
+| Regenerated network, header removed (section 1's command) | `c11501968dc3d15235f23c6802f0be9551b03743ef0a81eecf6f28ed26c23937` |
+| `…/reviewed/demand.rou.xml` | `9fc839b2c6cf11360520b89463b7880dbb56bb5b8c962cf5a75460782f7b2857` |
+| `…/reviewed/speeds.add.xml` | `53b247a9471f9e2e62acc8ff6f8d44f9811fd97cf019d609af15502d864585a7` |
+| `…/reviewed-no-signs/demand.rou.xml` | same as the routes above |
+| `…/reviewed-no-signs/speeds.add.xml` (empty) | `2bc3ed19d77d67e8318ca3ec67dfcdb454194eeb127ec3068267a7865397d437` |
+
+Base network, loops and observations are those of section 1.
+
+**Expected scores**
+
+| Run | Count bins GEH < 5 | Speed error | Loaded | Entered | Waiting | Teleports |
+|---|---|---|---|---|---|---|
+| Reviewed baseline, speed signs on | 231/242 (95.5%) | 15.8% of 299 (15.78) | 16,299 | 16,077 | 222 | 0 |
+| The same, speed signs off | 233/242 (96.3%) | 41.2% of 299 | 16,299 | 15,776 | 523 | 0 |
+
+Reviewed baseline split: assessment-only detectors 95.1% of 205 and 16.7% of
+252; demand-setting detectors 97.3% of 37 and 10.6% of 47. On hourly totals,
+19 of 25 detectors are within GEH 5. Eleven bins fail: the eight of section 3
+plus AID01109 08:00, TDSSPWR10002 08:50 and TDSAPR10001 08:00 (TDSAPR10001 is
+where the dropped join used to enter).
+
+The signs-off run keeps Data's driver settings, because the builder has no
+switch for them. With SUMO's default drivers as well (a one-line change to
+`VTYPE` in `flow_balance_demand.py`, in the evidence zip as
+`recommended_nospeeds`) it gives 233/242, 40.1% and 518 waiting.
+
+**What this baseline still does not cover.** It is a no-closure run. For the
+incident the speed signs have to come off, at least on the incident chain, so
+that the queue forms by itself; the signs-off row shows the counts hold and
+the speeds do not. Row 9 (exits end at the first off-ramp, chains
+independent) remains untested and decides whether this base can carry a
+diversion.
 
 Evidence for sections 0 and 3 (variant scripts, route files and every result
 JSON) is in `ripple-oct05-review-evidence.zip`, held by Data outside the
