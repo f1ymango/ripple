@@ -1,10 +1,10 @@
 # Aberdeen traffic twin: build and run guide
 
-**6 October P0 handoff:** [the proposed evidence-labelled setup](../../docs/p0-setup-proposal-2026-10-06.md)
-uses Data's unmerged PR #46 revision and records the exact edge, lane mapping,
-timing, sources and remaining decisions. Simulation reproduced its no-closure
-baseline, but Data has not yet confirmed the initial lane and physical phase
-times. No incident P0 result is claimed.
+**7 October P0 diagnostic:** [the evidence-labelled setup](../../docs/p0-setup-proposal-2026-10-06.md)
+uses Data's PR #46 revision. Data and Simulation accepted the inferred lane
+and phase times as assumptions for [a bounded replay](../../docs/p0-diagnostic-2026-10-07.md).
+The run completed, but early closure flow, upstream queue timing, recovery and
+teleports prevent incident validation. No plan benefit is claimed.
 
 This is component C of Ripple, the twin: `src/twin/` holds the scripts, `sim/` the network and detector loops once they are reviewed (committed, as `docs/03-architecture.md` §2 lays out), `sim/scenarios/` the example configs, and `sim/work/` (git-ignored) the downloads, routes and SUMO output. Run the commands below from the repository root. It is a starter workflow: add the team's actual detector observations and coordinates before claiming calibration results. No calibration result is claimed until that data is added and the evaluation script is run.
 

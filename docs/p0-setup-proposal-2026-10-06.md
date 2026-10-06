@@ -1,8 +1,10 @@
 # IN-26-03365 P0 setup for Data and Simulation agreement — 6 October HKT
 
-**Status: proposed, not yet agreed.** Simulation can reproduce the revised
-PR #46 no-closure baseline, but Data has not confirmed the incident lane and
-phase times. This is the single candidate setup to decide today. P0 means the
+**Status: agreed only as assumptions for the first bounded diagnostic.** Data
+confirmed its proposed PR #46 setup, and Simulation accepted the inferred lane
+and phase times for this run. The resulting
+[P0 diagnostic](p0-diagnostic-2026-10-07.md) completed but fails the key
+incident flow and queue comparison. P0 means the
 physical incident with **no operator intervention**. Any P1/P2 advice must
 start no earlier than the 09:01 TD report and must respect when the message was
 actually available to an operator.
@@ -11,7 +13,7 @@ actually available to an operator.
 
 | Item | Exact choice | Evidence and status |
 |---|---|---|
-| Source revision | PR #46 head `647b13c` ([Data handoff](https://github.com/f1ymango/ripple/blob/647b13c/docs/flow-balance-replay-handoff-2026-10-05.md)) for the two revised files; flow-balance builder/runner from main `4875a85` | **Proposed.** PR #46 is not merged in the fetched main as of this review. Data recommends the revision; Simulation independently reproduced its stated no-closure result. |
+| Source revision | PR #46 head `647b13c` ([Data handoff](https://github.com/f1ymango/ripple/blob/647b13c/docs/flow-balance-replay-handoff-2026-10-05.md)) for the two revised files; flow-balance builder/runner from main `4875a85` | **Agreed for this diagnostic.** PR #46 was unmerged in the fetched main when this input was frozen. Simulation independently reproduced its no-closure result. |
 | Base road and detectors | `sim/work/aberdeen.net.xml` from [Simulation's provisional input archive](../results/twin/oct04-provisional-replay-inputs.zip), SHA-256 `e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e`; loop file in that archive, SHA-256 `d0ac843e8ef99b431db28444d2131e4c7e1602aa7683f5ad69c8e7a40742ad6e` | **Source-backed but provisional physical map.** [Network audit](../results/twin/osm-network-audit.md) checks the AID01104 placement/lane scope. The archived network is not a committed reviewed standalone `sim/aberdeen.net.xml`. |
 | Network conversion | `netconvert` 1.27.1, `--lefthand true`, original net plus PR #46 [`aberdeen-flow-balance-buslane.con.xml`](https://github.com/f1ymango/ripple/blob/647b13c/sim/scenarios/aberdeen-flow-balance-buslane.con.xml) (SHA-256 `d259c1ab989bf7ed37dfe38beccdf20a6ebe10c8642fe9e78d65fb6979e3a676`) and main `aberdeen-flow-balance.edg.xml`. Normalised generated-network SHA-256 `c11501968dc3d15235f23c6802f0be9551b03743ef0a81eecf6f28ed26c23937`. | **Model choice.** Keeps the OSM-tagged bus lane disconnected and splits one edge into two speed zones. Raw network byte hashes include a generated timestamp/path; use the documented header-stripped check. Tunnel connections still need physical review. |
 | Demand input | PR #46 [`twin-inputs_20260515_no-mainline-join.json`](https://github.com/f1ymango/ripple/blob/647b13c/sim/scenarios/twin-inputs_20260515_no-mainline-join.json), SHA-256 `fbc71ca5696238006dd42403d0f4783cab1ad50664d34f5087c56eed6fbe8e1f`. Four first-detector counts from 15 May set entry demand; four earlier Fridays set internal joins/exits and later entry rates. | **Measured aggregates plus inferred allocation.** This revision removes an unsupported +201 veh/h main-line join. It still assumes a 32.7% westbound entry-to-exit split and independent chains. Demand after the pre-incident hour uses ordinary-day rates, not observed incident-window downstream counts. [Data's handoff](https://github.com/f1ymango/ripple/blob/647b13c/docs/flow-balance-replay-handoff-2026-10-05.md) lists the remaining omissions. |
@@ -76,12 +78,16 @@ incident count.** The default-driver preparation was checked: only the three
 vehicle-type attributes changed, and all flow elements remained identical.
 The prepared route SHA-256 in the local draft is
 `1a0acd0ac0baa0dc24dfd6e6f7c87b78ea418403af4fa583d35e1329470597b0`.
-The P0 closure has not been run. After Data confirms the choices, configure
+The P0 closure has since been run. For reproduction, configure
 the existing `src/twin/run_scenario.py` with the network and
 `demand-default-drivers.rou.xml` above, the archived all-lane loop file, `seed=2026`, `begin=0`,
 `end=11400`, incident `edge_id="44419212"`, `start=5400`,
 `duration_seconds=4020`, and phases at offsets 0 `[0]` and 2460 `"all"`.
-Use the archived loop file as `detector_additional`; the generated no-sign
+Before running, use `src/twin/run_flow_balance.py::move_loops` to relocate
+AID01107 loops across the network's edge split and assign fresh loop-output
+paths. The first attempt with the unrelocated archived loop file failed at
+startup; [the diagnostic report](p0-diagnostic-2026-10-07.md) records this.
+Use the relocated loop file as `detector_additional`; the generated no-sign
 additional file is empty and is not needed by `run_scenario.py`. Record exact
 hashes in the run sidecar. The runner's `--max-seconds` limits simulated time,
 not wall time, so launch it under an external 180-second wall guard and retain
@@ -95,15 +101,13 @@ backlog, dropped/unfinished vehicles, teleports and source hashes. The
 independent chain and immediate off-ramp exit assumptions could suppress
 spillback or diversion, so a good GEH score alone cannot accept P0.
 
-**Decisions still required today:** Data/E owns the initial unspecified-lane
-policy and must confirm or revise `[0]`, including what detector evidence may
-override it and what happens when evidence is insufficient. Data and Simulation
-must agree the physical onset and all-lane transition as scenario assumptions;
-the Lead resolves any remaining disagreement and approves the exact baseline
-input version. Data/E owns reviewed plan context and provenance-bound P0
-`result.json`; none is claimed here. Simulation will attempt the bounded P0
-diagnostic by **7 October HKT after these choices are recorded**, and will
-publish failure/timeout evidence if the run cannot complete.
+**Decisions after this diagnostic:** Data/E still owns the operational policy
+for unspecified lanes, including evidence overrides and insufficient-data
+behaviour. The slow-lane/phase choices here were accepted as **diagnostic
+assumptions**, not observed physical facts or an operator default. The early
+closure-flow mismatch and downstream discrepancy require Data and Simulation
+review; the Lead resolves the subsequent model decision. Data/E owns reviewed
+plan context and provenance-bound P0 `result.json`; neither is claimed here.
 
 ### Reconciliation with E's 6 October assumption table
 

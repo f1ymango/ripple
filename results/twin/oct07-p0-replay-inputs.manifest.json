@@ -1,0 +1,76 @@
+{
+  "status": "PROVISIONAL ASSUMED P0 DIAGNOSTIC INPUTS; NOT INCIDENT VALIDATION",
+  "incident": "IN-26-03365",
+  "source_pr_46_commit": "647b13c",
+  "assumptions": {
+    "initial_lane": "44419212_0",
+    "physical_onset_hkt": "08:55",
+    "all_lane_phase_hkt": "09:36",
+    "reopen_hkt": "10:02",
+    "td_report_times_are_not_physical_transition_observations": true
+  },
+  "files": {
+    "sim/work/p0-replay/network.net.xml": {
+      "sha256": "eb006b4ea09f01246ea53f163d68854e47b1be0410943f587d846388ef053e9d",
+      "bytes": 10183122
+    },
+    "sim/work/p0-replay/demand.rou.xml": {
+      "sha256": "1a0acd0ac0baa0dc24dfd6e6f7c87b78ea418403af4fa583d35e1329470597b0",
+      "bytes": 112451
+    },
+    "sim/work/p0-replay/detectors.json": {
+      "sha256": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605",
+      "bytes": 121230
+    },
+    "sim/work/p0-replay/base-aberdeen.net.xml": {
+      "sha256": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e",
+      "bytes": 10324670
+    },
+    "sim/work/p0-replay/aberdeen-flow-balance-buslane.con.xml": {
+      "sha256": "d259c1ab989bf7ed37dfe38beccdf20a6ebe10c8642fe9e78d65fb6979e3a676",
+      "bytes": 1156
+    },
+    "sim/work/p0-replay/aberdeen-flow-balance.edg.xml": {
+      "sha256": "f8ffc9d9631f6b17e04fe5727fa442a909438cb091f993da428da5fee1711ebf",
+      "bytes": 535
+    },
+    "sim/work/p0-replay/twin-inputs_20260515_no-mainline-join.json": {
+      "sha256": "fbc71ca5696238006dd42403d0f4783cab1ad50664d34f5087c56eed6fbe8e1f",
+      "bytes": 14770
+    },
+    "sim/work/p0-replay/detectors.add.xml": {
+      "sha256": "df4f18a398bf26a9849fcd5ba9beaed78a39c3f0e873924c6631b421d86a43e2",
+      "bytes": 7993
+    },
+    "sim/work/p0-replay/p0.json": {
+      "sha256": "78321ee7e8374a9459051c7e4253666da8fb0d65a11f08f8fcaabd6ec54d8fd1",
+      "bytes": 674
+    },
+    "sim/work/p0-replay/evaluate.json": {
+      "sha256": "45e455bc8783610e4fd513ab08825fe8e8c2335188ec83c89b8078c4d935fca3",
+      "bytes": 40
+    },
+    "sim/work/p0-replay/results/.keep": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  },
+  "source_files": {
+    "sim\\work\\oct06-pr46-review\\sim\\work\\aberdeen.flow-balance-buslane.net.xml": "eb006b4ea09f01246ea53f163d68854e47b1be0410943f587d846388ef053e9d",
+    "sim\\work\\oct06-pr46-review\\sim\\work\\p0-demand-draft-oct06\\demand-default-drivers.rou.xml": "1a0acd0ac0baa0dc24dfd6e6f7c87b78ea418403af4fa583d35e1329470597b0",
+    "sim\\work\\oct06-pr46-review\\sim\\scenarios\\detectors.json": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605",
+    "sim\\work\\oct06-pr46-review\\sim\\work\\aberdeen.net.xml": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e",
+    "sim\\work\\oct06-pr46-review\\sim\\scenarios\\aberdeen-flow-balance-buslane.con.xml": "d259c1ab989bf7ed37dfe38beccdf20a6ebe10c8642fe9e78d65fb6979e3a676",
+    "sim\\work\\oct06-pr46-review\\sim\\scenarios\\aberdeen-flow-balance.edg.xml": "f8ffc9d9631f6b17e04fe5727fa442a909438cb091f993da428da5fee1711ebf",
+    "sim\\work\\oct06-pr46-review\\sim\\scenarios\\twin-inputs_20260515_no-mainline-join.json": "fbc71ca5696238006dd42403d0f4783cab1ad50664d34f5087c56eed6fbe8e1f",
+    "sim\\work\\oct06-p0-run\\results\\detectors.add.xml": "8ab0fc219e1487665150241bcf990c9ac72b4755177625679301303c664523cf"
+  },
+  "loop_rewrite": "Only the detector output file attributes become relative to the portable packet; lane and position stay unchanged.",
+  "limitations": [
+    "Base OSM network and detector placement are provisional.",
+    "The PR #46 flow-balance demand includes inferred route and join allocations.",
+    "No intervention, plan benefit or observed physical phase transition is claimed."
+  ],
+  "archive_sha256": "52b298aa73eb7e8621fce28223fc6b798100979f5735d0605ee62c2198b68505",
+  "archive_bytes": 3191450
+}
