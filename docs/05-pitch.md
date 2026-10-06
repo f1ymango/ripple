@@ -2,6 +2,11 @@
 
 Five minutes, then 5–7 minutes of Q&A. The deck is preloaded by the organisers.
 
+> **Working script, 6 Oct:** The no-closure count check is reproducible, but
+> there is no accepted incident P0 or comparable P0/P1/P2 result set. Demo,
+> benefit and sensitivity lines below are targets until linked to validated
+> outputs in `results/`. Remove any unsupported claim at the 9 Oct checkpoint.
+
 ---
 
 ## 1. Problem statement (working draft)
@@ -10,9 +15,9 @@ Five minutes, then 5–7 minutes of Q&A. The deck is preloaded by the organisers
 > and everyone gets the same advice: take the alternative route. Navigation apps
 > then optimise each driver separately. Because roads behave like a circuit,
 > thousands of individually sensible choices can move the jam instead of
-> clearing it — delaying ambulances, deliveries and airport trips. We turn an
-> incident report into a tested, coordinated response in minutes, using
-> Hong Kong's open data.
+> clearing it — delaying ambulances, deliveries and airport trips. Our goal is
+> to turn an incident report into a tested, coordinated response in minutes,
+> using Hong Kong's open data. The incident benefit must still be demonstrated.
 
 ## 2. Five-minute structure
 
@@ -21,8 +26,8 @@ Five minutes, then 5–7 minutes of Q&A. The deck is preloaded by the organisers
 | 0:00–0:40 | **The story** | 29 Jul 2026, Tsing Yi: an overturned lorry, tunnels to the airport shut intermittently, ~4 km of queues, and one instruction for everybody — "consider alternative routes, including Tsuen Wan Road." |
 | 0:40–1:20 | **Why it's structural** | Wardrop: best-for-me ≠ best-for-us. Circuit analogy. Historical US estimates attribute about a quarter of all congestion to incidents; roughly 20% of incidents are secondary. These are context, not Hong Kong measurements. |
 | 1:20–1:50 | **The honest gap** | HK already coordinates (ETCC, TIMS, adaptive signals). What's missing: advice is one-size-fits-all, and the systems that do this properly overseas cost USD 4–75M and took ~5 years. TD is starting a study on an AI Traffic Management Platform now — **Aberdeen first**. |
-| 1:50–3:30 | **Demo** | The video. Real message in → parsed → forecast → three plans compared → briefing and bilingual sign text out → operator approves. |
-| 3:30–4:15 | **Proof** | Validation chart (sim vs observed), the headline number, the sensitivity range. "It still wins at 30% compliance." |
+| 1:50–3:30 | **Demo** | Target sequence: real message in → parsed → forecast → three plans compared → briefing and bilingual sign text out → operator approves. Show only stages actually evidenced by 9 Oct; observed playback is available now. |
+| 3:30–4:15 | **Proof** | Show the no-closure count check with its imposed-speed caveat. Add an incident-validation chart, plan benefit and sensitivity range only if comparable results exist in `results/`; otherwise state that these are not measured yet. |
 | 4:15–5:00 | **Impact, ethics, next** | Who benefits, what it costs to run, what we refuse to do, the roadmap. |
 
 **Open with the story, not the architecture.** Judges are a mixed panel —
@@ -84,8 +89,9 @@ Use these verbatim. Do not paraphrase numbers upward.
 **Prior art we must acknowledge (do not pretend to be first)**
 - LLM + traffic simulator work already exists: TrafficGPT, ChatSUMO, Open-TI, [Checked: https://github.com/topics/traffic-simulation, 2026-09-25]
   SUMO-MCP, AgentSUMO. **Our novelty is the application**, not the pattern: real
-  Hong Kong incident feeds → a validated corridor twin → a tested, coordinated,
-  bilingual, operator-approved response.
+  Hong Kong incident feeds → a corridor twin with explicit validation gates →
+  candidate coordinated, bilingual, operator-approved responses. Incident
+  replay and plan benefits remain to be established.
 - DTSUMO (J. Intelligent Transportation Systems, 2025) is a published Python ⚠️ FLAG: Paper publication year marked 2025; verify exact package release version in PyPI before code integration. [Checked: https://www.tandfonline.com/toc/gits20/current, 2026-09-25]
   package that updates a SUMO twin from real-time detector data — check it
   before writing our own.
@@ -94,21 +100,25 @@ Use these verbatim. Do not paraphrase numbers upward.
 
 **"Isn't the Transport Department already building this?"**
 > Yes — and that's the point. Their platform is at *study* stage, announced in
-> April, with Aberdeen as the first pilot area. We've built one working module
-> of it on open data, in their pilot area, in four weeks. We're not competing
-> with TD; we're showing what one piece looks like and what it's worth.
+> April, with Aberdeen as the first pilot area. We've built the incident reader,
+> plan/briefing guardrails and operator workflow on open data. The incident
+> evaluator and benefit proof are not complete yet. We're not competing with
+> TD; we're testing what one piece could look like.
 
 **"How do you know your simulation is right?"**
-> We don't compare simulation to reality and call the difference a benefit. We
-> run three cases: reality, a baseline simulation with no intervention, and the
-> plan. The baseline-versus-reality match is our validation — [GEH / MAPE
-> number] — and our claim is plan versus baseline, like for like.
+> We don't compare simulation to reality and call the difference a benefit.
+> The intended test separates observed reality, a no-intervention P0 replay
+> and candidate plans. The independently reproduced no-closure count check is
+> limited: speeds were imposed and incident queues and recovery are not yet
+> validated. We will claim a plan benefit only after an accepted P0 and
+> comparable provenance-bound plan results exist.
 
 **"Why would drivers take a slower route?"**
 > Most don't have to. Our levers are signals, road signs, fleet dispatch and
-> destination-specific advice — not compulsion. And we report results across
-> 30%, 50% and 70% compliance: the plan still wins at 30%. US corridor studies
-> assumed 10–70% diversion, so that's the realistic band.
+> destination-specific advice — not compulsion. The planned sensitivity test
+> covers 30%, 50% and 70% compliance, but no Ripple plan benefit has been
+> established at any of those levels. US corridor studies assumed 10–70%
+> diversion; that is context, not a measured local compliance rate.
 
 **"What if the language model hallucinates?"**
 > It never produces a number. It reads the message, proposes candidate plans and
@@ -124,21 +134,23 @@ Use these verbatim. Do not paraphrase numbers upward.
 > the ground truth, so the accuracy figure does not move with the machine.
 
 **"This only works where there are detectors."**
-> Correct, and we say so on the ethics slide. We report a confidence level per
-> corridor based on detector density and refuse to recommend below a threshold.
-> Coverage is a policy question for TD, and the same platform they're building
-> will expand it.
+> Correct, and we say so on the ethics slide. The current handoff must have
+> reviewed demand, routes and sources, and the result gates reject an
+> unvalidated baseline. A per-corridor coverage threshold remains a proposed
+> deployment policy, not a measured or implemented confidence score.
 
 **"Isn't this just Google Maps?"**
 > Google Maps is the user-equilibrium machine — it optimises for you, alone.
-> We optimise the network and hand the result to the person who controls signs
-> and signals. Different customer, different objective.
+> We are testing network-level response plans for the person who controls signs
+> and signals. Different customer, different objective; a measured benefit
+> still requires an accepted incident comparison.
 
 **"What's genuinely new?"**
 > Not LLM-plus-simulator; that exists. What's new is the end-to-end path from
-> Hong Kong's own bilingual incident feed, through a corridor twin validated
-> against Hong Kong detector data, to a coordinated plan with an operator in the
-> loop — at a cost that lets you do it for one corridor, not a whole programme.
+> Hong Kong's own bilingual incident feed, through a corridor twin checked
+> against Hong Kong detector counts for a no-closure hour, to candidate
+> coordinated plans with an operator in the loop. Incident validation and
+> one-corridor cost are still to be demonstrated.
 
 **"Who would pay for it?"** → §6.
 
@@ -147,16 +159,17 @@ Use these verbatim. Do not paraphrase numbers upward.
 ## 5. Ethics slide
 
 - **Distributional fairness.** A plan that helps the average can hurt a
-  neighbourhood. We measure and report the **share of delay pushed onto
-  residential streets**, and the constraint validator rejects plans that exceed
-  a threshold or route past schools at school-run times.
+  neighbourhood. The plan validator rejects routes that exceed its residential
+  exposure limit or pass schools at school-run times. The **share of delay
+  pushed onto residential streets** still needs comparable evaluator results
+  before it can be reported.
 - **Human in the loop.** We recommend; we never actuate. Every recommendation
   and approval is written to an audit log.
 - **Privacy.** Only aggregate open data — detector counts and public incident
   notices. No personal data, no vehicle identifiers, no individual tracking.
 - **Coverage bias, named.** Detector density is uneven; a naive rollout would
-  serve well-instrumented corridors first. We publish a per-corridor confidence
-  and refuse to recommend below a threshold.
+  serve well-instrumented corridors first. A per-corridor confidence policy
+  and refusal threshold are future deployment work, not current evidence.
 - **Not an enforcement tool.** The government has said its platform is for
   planning and management, with automated enforcement out of scope at study
   stage. Ours is the same, by design.

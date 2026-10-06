@@ -81,10 +81,26 @@ review. F/G keep their P0 speed-MAPE gate at 15%; this decision does not relax
 it or substitute the refreshed-speed score. Do not rank plans or quote
 delay/emissions savings from this setup yet.
 
-- **6 Oct:** Data and Simulation agree the SUMO edge, proposed initial lane,
-  physical onset and phase-transition rule for IN-26-03365, with evidence and
-  assumptions labelled. TD's 09:01 first report says `unspecified`; the 09:36
-  update says `all`. Operator action cannot precede its report.
+Simulation's unmerged [6 Oct P0 proposal](https://github.com/f1ymango/ripple/blob/32373d6/docs/p0-setup-proposal-2026-10-06.md)
+reports separate, provisional no-closure checks on the revised PR #46 inputs:
+95.5% GEH<5 / 15.8% speed MAPE with speed signs, and 96.3% / 40.1% without
+signs and with default drivers. The latter is the proposed first P0 queue
+diagnostic setup, not an accepted speed baseline or an incident result.
+
+- **6 Oct status:** Data sent the Lead a proposed P0 setup for IN-26-03365
+  using the revised inputs under review in
+  [PR #46](https://github.com/f1ymango/ripple/pull/46). It selects edge
+  `44419212` and infers initial slow lane `44419212_0` from
+  [AID01104](../results/data/closed-lanes_AID01104_20260515-0840_1010.md);
+  AID01105 is unavailable. The 08:55 physical onset is assumed. TD's 09:01
+  first report says "part of the lanes" (Reader encoding: `unspecified`);
+  its 09:36 update says "all lanes"
+  ([archived messages](../data/demo_incident_messages.jsonl)), and its 10:02
+  incident end is recorded in the
+  [shortlist](../data/demo_shortlist.md). These are reported times, not observed
+  physical transition times. Simulation's explicit confirmation of the lane
+  rule and phase assumptions is still pending; do not inject an unagreed
+  closure. Operator action cannot precede the relevant report.
 - **By 7 Oct, if those inputs are agreed:** Simulation attempts a bounded P0
   diagnostic against closure flow, upstream queues and recovery through 10:35.
   Data starts E in parallel against the existing result/provenance contract.
