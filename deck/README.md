@@ -40,6 +40,9 @@ this component.
   it was checked. Nothing is estimated to fill a gap.
 - If a figure is not measured yet, write "not measured yet" on the slide. An
   honest gap survives the Q&A; an invented number does not.
+- Do not calculate delay savings or a benefit–cost ratio from the reproducible
+  no-closure count score alone. Wait for an accepted incident P0 and comparable,
+  provenance-bound plan results in `results/`.
 
 ## Dates
 

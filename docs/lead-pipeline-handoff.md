@@ -31,10 +31,19 @@ must be canonical across inputs; code normalises case and spacing but cannot
 infer aliases or missing route segments. The incident road is also excluded
 from diversions when lanes are closed.
 
-The proposed 08:55 physical onset, TD's 09:01 report and unresolved physical
-lane choice remain separate. D preserves `unspecified`; Data/E still owns
-the lane evidence/default policy. Operator actions cannot precede the report.
-A new incident update needs another reviewed context; D does not schedule phases.
+For `IN-26-03365`, Data proposed edge `44419212`, detector-inferred initial
+slow lane `44419212_0` and assumed 08:55 physical onset. The
+[AID01104 analysis](../results/data/closed-lanes_AID01104_20260515-0840_1010.md)
+supports the lane inference but does not establish the physical closure;
+AID01105 is unavailable. TD's 09:01 partial-closure and 09:36 all-lanes
+[messages](../data/demo_incident_messages.jsonl) and the 10:02 incident end
+recorded in the [shortlist](../data/demo_shortlist.md) are *reported times*,
+not proof of physical
+transition times. Simulation's explicit agreement to this P0 setup is pending.
+D preserves `unspecified`; Data/E still owns the scenario assumptions and any
+general no-evidence policy. Operator actions cannot precede the relevant
+report. A new incident update needs another reviewed context; D does not
+schedule phases. See the [6 Oct decision status](04-plan.md).
 
 ## Generate plans
 
