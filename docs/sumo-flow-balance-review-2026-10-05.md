@@ -27,8 +27,10 @@ vehicle statistics. The network hash here is
 `920e8df22737dd5cac44a7cbfa004ba1f2b2f63bcff8f7abfffe4cc6ed299d4d`,
 versus Data's
 `9e23e7de17a5a2e351a59cb6e21031136854c36da9036589694a240597d724cb`.
-The reason for the byte difference has not been established; do not claim a
-byte-identical network. Both runs use the same observation SHA-256
+Data's later [PR #46 handoff](https://github.com/f1ymango/ripple/blob/647b13c/docs/flow-balance-replay-handoff-2026-10-05.md)
+identifies the byte difference: `netconvert` writes build time and output path
+into the header. A comparison with the header removed and line endings
+normalised is reproducible. The raw files remain nonidentical. Both runs use the same observation SHA-256
 `a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605`
 and loops SHA-256
 `d0ac843e8ef99b431db28444d2131e4c7e1602aa7683f5ad69c8e7a40742ad6e`.
