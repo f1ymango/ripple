@@ -17,13 +17,19 @@ actually available to an operator.
 | Demand input | PR #46 [`twin-inputs_20260515_no-mainline-join.json`](https://github.com/f1ymango/ripple/blob/647b13c/sim/scenarios/twin-inputs_20260515_no-mainline-join.json), SHA-256 `fbc71ca5696238006dd42403d0f4783cab1ad50664d34f5087c56eed6fbe8e1f`. Four first-detector counts from 15 May set entry demand; four earlier Fridays set internal joins/exits and later entry rates. | **Measured aggregates plus inferred allocation.** This revision removes an unsupported +201 veh/h main-line join. It still assumes a 32.7% westbound entry-to-exit split and independent chains. Demand after the pre-incident hour uses ordinary-day rates, not observed incident-window downstream counts. [Data's handoff](https://github.com/f1ymango/ripple/blob/647b13c/docs/flow-balance-replay-handoff-2026-10-05.md) lists the remaining omissions. |
 | Observation export | `sim/scenarios/detectors.json` from the same archive, SHA-256 `a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605` | **Observed**, 07:55–10:35. Never use incident-window downstream detector counts or speeds to set P0 demand or speed controls. Apply the existing coverage/validity filters. |
 | Seed and horizon | SUMO seed `2026`, 1 s step; 07:25–10:35 HKT (11,400 simulated seconds), first 30 minutes warm-up; `--max-depart-delay -1`; 180 s wall timeout for the first attempt | **Reproducibility choice.** Matches PR #46's 07:25 warm-up and extends the builder's explicit 14 entry steps through the incident window. A timeout is an incomplete diagnostic, not a score. |
-| Speed control | For the first P0 **queue diagnostic**, build with `--no-speeds` so no variable speed sign prescribes the incident-chain queue. This disables signs on all chains; keep that limitation in the comparison. | **Simulation proposal.** The revised no-sign no-closure control has 41.2% speed MAPE, so the first P0 cannot claim the 15.8% signed-speed baseline. Selective non-incident signs would require an explicit builder change and separate replay. |
+| Speed control and drivers | For the first P0 **queue diagnostic**, build with `--no-speeds` so no variable speed sign prescribes the incident-chain queue. Then use `src/twin/use_default_driver_settings.py` to remove the builder's `speedFactor`, `speedDev`, and `sigma` attributes from the generated vehicle type. Keep the generated flows and departure attributes. | **Simulation implementation of E's stated choice.** Signs are disabled on all chains; selective non-incident signs would require an explicit builder change. The revised no-sign control with tuned drivers scored 41.2% speed MAPE; with default drivers it scored **40.1%**. The signed-speed 15.8% baseline is a separate claim. |
 
 The revised **no-closure** baseline independently reproduced on Windows SUMO
 1.27.1: 231/242 count bins (95.5%) GEH < 5, 15.8% speed MAPE over 299 bins,
 222 of 16,299 waiting to enter, zero teleports. The generated
 [result](../results/twin/oct06-pr46-reviewed-independent.json) exactly matches
 Data's published aggregates. This does not validate an incident queue.
+The separate [no-sign, default-driver control](../results/twin/oct06-pr46-no-signs-default-drivers.json)
+scored 233/242 (96.3%), 40.1% speed MAPE over 299 bins, 518 of 16,299
+waiting, and zero teleports. It uses the same 07:25–08:55 window and seed;
+no closure was applied. Its poor speed match is a material limit on the
+proposed first P0 queue diagnostic, not a reason to quote the signed-speed
+score for that different setup.
 
 ## Physical incident and clocks
 
@@ -44,9 +50,12 @@ edge lane is a spatial approximation.
 ## Reproduction and decision gate
 
 From an isolated checkout at PR #46 head, extract the Simulation archive at
-the checkout root, then run:
+the checkout root. Fetch the small route-preparation utility from Simulation's
+branch into that isolated checkout, then run:
 
 ```powershell
+git fetch origin sim/e1-evaluation-correctness
+git checkout origin/sim/e1-evaluation-correctness -- src/twin/use_default_driver_settings.py
 netconvert -s sim/work/aberdeen.net.xml `
   -x sim/scenarios/aberdeen-flow-balance-buslane.con.xml `
   -e sim/scenarios/aberdeen-flow-balance.edg.xml `
@@ -56,13 +65,20 @@ python -m src.twin.flow_balance_demand `
   --inputs sim/scenarios/twin-inputs_20260515_no-mainline-join.json `
   --network sim/work/aberdeen.flow-balance-buslane.net.xml `
   --out sim/work/p0-demand --begin 07:25 --end 10:35 --no-speeds
+python -m src.twin.use_default_driver_settings `
+  --routes sim/work/p0-demand/demand.rou.xml `
+  --out sim/work/p0-demand/demand-default-drivers.rou.xml
 ```
 
 The demand build has been checked locally: 287 flows and about 33,509 expected
 vehicles over 07:25–10:35. **This is a generated model output, not an observed
-incident count.** The P0 closure has not been run. After Data confirms the
-choices, configure the existing `src/twin/run_scenario.py` with network and
-routes above, the archived all-lane loop file, `seed=2026`, `begin=0`,
+incident count.** The default-driver preparation was checked: only the three
+vehicle-type attributes changed, and all flow elements remained identical.
+The prepared route SHA-256 in the local draft is
+`1a0acd0ac0baa0dc24dfd6e6f7c87b78ea418403af4fa583d35e1329470597b0`.
+The P0 closure has not been run. After Data confirms the choices, configure
+the existing `src/twin/run_scenario.py` with the network and
+`demand-default-drivers.rou.xml` above, the archived all-lane loop file, `seed=2026`, `begin=0`,
 `end=11400`, incident `edge_id="44419212"`, `start=5400`,
 `duration_seconds=4020`, and phases at offsets 0 `[0]` and 2460 `"all"`.
 Use the archived loop file as `detector_additional`; the generated no-sign
@@ -88,3 +104,16 @@ input version. Data/E owns reviewed plan context and provenance-bound P0
 `result.json`; none is claimed here. Simulation will attempt the bounded P0
 diagnostic by **7 October HKT after these choices are recorded**, and will
 publish failure/timeout evidence if the run cannot complete.
+
+### Reconciliation with E's 6 October assumption table
+
+E's choices agree with this setup on flow-balance demand, the **inferred**
+Canal Road entry rule, leaving toll-plaza lane 0 disconnected, dropping the
+unsupported +201 veh/h main-line join, using speed signs **only** for the
+no-closure calibration, and allowing either 15- or 30-minute warm-up. We retain
+30 minutes for direct comparison. The one implementation mismatch was that
+Data's builder retained its tuned driver attributes under `--no-speeds`;
+`use_default_driver_settings.py` now makes the proposed default-driver P0
+explicit without changing flow or network. This table does **not** confirm
+`44419212_0` as physically closed at 08:55 or confirm 09:36 as the physical
+all-lane onset; those remain the Data/Simulation/Lead decisions above.

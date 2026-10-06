@@ -1,0 +1,6054 @@
+{
+  "purpose": "No-closure calibration on flow-balance demand and ordinary-morning speeds; not incident validation",
+  "closure_applied": false,
+  "day": "2026-05-15",
+  "ordinary_days": [
+    "2026-05-08",
+    "2026-04-24",
+    "2026-04-17",
+    "2026-04-10"
+  ],
+  "speeds": "none",
+  "demand_setting_detectors": [
+    "AID01101",
+    "AID01214",
+    "TDSSPWR10001",
+    "TDSAPR20001"
+  ],
+  "run_begin": "2026-05-15T07:25:00+08:00",
+  "scored_from": "2026-05-15T07:55:00+08:00",
+  "scored_slots": 12,
+  "seed": 2026,
+  "additional": [],
+  "command": [
+    "sumo",
+    "-n",
+    "sim/work/aberdeen.flow-balance-buslane.net.xml",
+    "-r",
+    "sim/work/default-driver-review-oct06/demand.rou.xml",
+    "-a",
+    "sim/work/default-driver-review-oct06/run-seed2026/detectors.add.xml,sim/work/default-driver-review-oct06/speeds.add.xml",
+    "--begin",
+    "0",
+    "--end",
+    "5400.0",
+    "--seed",
+    "2026",
+    "--step-length",
+    "1",
+    "--max-depart-delay",
+    "-1",
+    "--duration-log.statistics",
+    "true",
+    "--statistic-output",
+    "sim/work/default-driver-review-oct06/run-seed2026/statistics.xml",
+    "--no-step-log",
+    "true"
+  ],
+  "wall_seconds": 34.2,
+  "score": {
+    "all_detectors": {
+      "geh_under_5_percent": 96.3,
+      "count_bins": 242,
+      "speed_mape_percent": 40.1,
+      "speed_bins": 299
+    },
+    "assessment_detectors": {
+      "geh_under_5_percent": 95.6,
+      "count_bins": 205,
+      "speed_mape_percent": 44.7,
+      "speed_bins": 252
+    },
+    "demand_setting_detectors": {
+      "geh_under_5_percent": 100.0,
+      "count_bins": 37,
+      "speed_mape_percent": 15.4,
+      "speed_bins": 47
+    }
+  },
+  "vehicles": {
+    "loaded": "16299",
+    "inserted": "15781",
+    "running": "670",
+    "waiting": "518"
+  },
+  "teleports": {
+    "total": "0",
+    "jam": "0",
+    "yield": "0",
+    "wrongLane": "0"
+  },
+  "teleport_start_lanes": {},
+  "per_detector": {
+    "AID01101": {
+      "count_bins": 9,
+      "geh_under_5": 9,
+      "observed_total": 1194,
+      "simulated_total": 1229,
+      "speed_bins": 11,
+      "speed_mape_percent": 8.3
+    },
+    "AID01102": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1311,
+      "simulated_total": 1394,
+      "speed_bins": 12,
+      "speed_mape_percent": 5.1
+    },
+    "AID01103": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1596,
+      "simulated_total": 1735,
+      "speed_bins": 12,
+      "speed_mape_percent": 25.3
+    },
+    "AID01104": {
+      "count_bins": 10,
+      "geh_under_5": 9,
+      "observed_total": 1041,
+      "simulated_total": 1143,
+      "speed_bins": 12,
+      "speed_mape_percent": 22.9
+    },
+    "AID01106": {
+      "count_bins": 10,
+      "geh_under_5": 8,
+      "observed_total": 998,
+      "simulated_total": 1254,
+      "speed_bins": 12,
+      "speed_mape_percent": 215.8
+    },
+    "AID01107": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1276,
+      "simulated_total": 1251,
+      "speed_bins": 12,
+      "speed_mape_percent": 14.6
+    },
+    "AID01108": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1225,
+      "simulated_total": 1209,
+      "speed_bins": 12,
+      "speed_mape_percent": 27.8
+    },
+    "AID01109": {
+      "count_bins": 10,
+      "geh_under_5": 9,
+      "observed_total": 1976,
+      "simulated_total": 1521,
+      "speed_bins": 12,
+      "speed_mape_percent": 37.0
+    },
+    "AID01110": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 2503,
+      "simulated_total": 2197,
+      "speed_bins": 12,
+      "speed_mape_percent": 84.1
+    },
+    "AID01214": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 2494,
+      "simulated_total": 2536,
+      "speed_bins": 12,
+      "speed_mape_percent": 25.1
+    },
+    "AID01215": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1911,
+      "simulated_total": 1701,
+      "speed_bins": 12,
+      "speed_mape_percent": 18.0
+    },
+    "AID01216": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1343,
+      "simulated_total": 1128,
+      "speed_bins": 12,
+      "speed_mape_percent": 91.6
+    },
+    "AID01217": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1887,
+      "simulated_total": 1730,
+      "speed_bins": 12,
+      "speed_mape_percent": 39.5
+    },
+    "AID01218": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1483,
+      "simulated_total": 1360,
+      "speed_bins": 12,
+      "speed_mape_percent": 19.0
+    },
+    "AID01219": {
+      "count_bins": 10,
+      "geh_under_5": 9,
+      "observed_total": 1325,
+      "simulated_total": 1192,
+      "speed_bins": 12,
+      "speed_mape_percent": 55.1
+    },
+    "AID01221": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1827,
+      "simulated_total": 1474,
+      "speed_bins": 12,
+      "speed_mape_percent": 27.1
+    },
+    "AID01222": {
+      "count_bins": 10,
+      "geh_under_5": 10,
+      "observed_total": 1580,
+      "simulated_total": 1343,
+      "speed_bins": 12,
+      "speed_mape_percent": 13.7
+    },
+    "AID01223": {
+      "count_bins": 10,
+      "geh_under_5": 9,
+      "observed_total": 1197,
+      "simulated_total": 1046,
+      "speed_bins": 12,
+      "speed_mape_percent": 9.0
+    },
+    "TDSAPR10001": {
+      "count_bins": 9,
+      "geh_under_5": 6,
+      "observed_total": 1148,
+      "simulated_total": 845,
+      "speed_bins": 12,
+      "speed_mape_percent": 48.5
+    },
+    "TDSAPR20001": {
+      "count_bins": 9,
+      "geh_under_5": 9,
+      "observed_total": 1382,
+      "simulated_total": 1339,
+      "speed_bins": 12,
+      "speed_mape_percent": 4.9
+    },
+    "TDSSPWR10001": {
+      "count_bins": 9,
+      "geh_under_5": 9,
+      "observed_total": 561,
+      "simulated_total": 523,
+      "speed_bins": 12,
+      "speed_mape_percent": 22.7
+    },
+    "TDSSPWR10002": {
+      "count_bins": 9,
+      "geh_under_5": 9,
+      "observed_total": 923,
+      "simulated_total": 836,
+      "speed_bins": 12,
+      "speed_mape_percent": 32.6
+    },
+    "TDSSPWR10003": {
+      "count_bins": 9,
+      "geh_under_5": 9,
+      "observed_total": 870,
+      "simulated_total": 834,
+      "speed_bins": 12,
+      "speed_mape_percent": 13.5
+    },
+    "TDSSPWR20001": {
+      "count_bins": 9,
+      "geh_under_5": 9,
+      "observed_total": 664,
+      "simulated_total": 669,
+      "speed_bins": 12,
+      "speed_mape_percent": 134.0
+    },
+    "TDSSPWR20003": {
+      "count_bins": 9,
+      "geh_under_5": 9,
+      "observed_total": 1135,
+      "simulated_total": 1061,
+      "speed_bins": 12,
+      "speed_mape_percent": 5.3
+    }
+  },
+  "build_notes": [
+    "AID01106->AID01107: +58 veh/h left out (no on-ramp between them, under 5%)",
+    "main_westbound: entry road 244383597 leads only to exit 1194693247, so it carries the 32.7% of the entry traffic that leaves there; the other entry road carries the rest",
+    "TDSSPWR10002->TDSSPWR10003: +44 veh/h left out (no on-ramp between them, under 5%)"
+  ],
+  "sources": {
+    "network": {
+      "path": "sim/work/aberdeen.flow-balance-buslane.net.xml",
+      "sha256": "eb006b4ea09f01246ea53f163d68854e47b1be0410943f587d846388ef053e9d"
+    },
+    "routes": {
+      "path": "sim/work/default-driver-review-oct06/demand.rou.xml",
+      "sha256": "8d150bdfcebb8ab8f593f90f7128e37ba279d54433ff7da95f5c87621111d4f0"
+    },
+    "speeds": {
+      "path": "sim/work/default-driver-review-oct06/speeds.add.xml",
+      "sha256": "729aa13dba98bcdd4a53abb3ca8cd2015d31c1ffc5bb5f090e2ab48f8977173f"
+    },
+    "loops": {
+      "path": "sim/work/may-diagnostic/detectors.add.xml",
+      "sha256": "d0ac843e8ef99b431db28444d2131e4c7e1602aa7683f5ad69c8e7a40742ad6e"
+    },
+    "observations": {
+      "path": "sim/scenarios/detectors.json",
+      "sha256": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605"
+    }
+  },
+  "evaluation": {
+    "count_bins": [
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 105,
+        "simulated": 134.0,
+        "geh": 2.6528582517288197,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 150,
+        "simulated": 169.0,
+        "geh": 1.5044344066833022,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 165,
+        "simulated": 175.0,
+        "geh": 0.7669649888473704,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 202,
+        "simulated": 170.0,
+        "geh": 2.346353840341653,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 118,
+        "simulated": 129.0,
+        "geh": 0.9898267954648646,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 132,
+        "simulated": 122.0,
+        "geh": 0.8873565094161138,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 115,
+        "simulated": 119.0,
+        "geh": 0.36980013081681945,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 97,
+        "simulated": 105.0,
+        "geh": 0.7960297521679913,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 110,
+        "simulated": 106.0,
+        "geh": 0.3849001794597505,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 150,
+        "simulated": 139.0,
+        "geh": 0.9150793638884732,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 132,
+        "simulated": 168.0,
+        "geh": 2.939387691339814,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 152,
+        "simulated": 177.0,
+        "geh": 1.949202938963626,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 148,
+        "simulated": 175.0,
+        "geh": 2.124601583484511,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 145,
+        "simulated": 136.0,
+        "geh": 0.759284173097276,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 107,
+        "simulated": 131.0,
+        "geh": 2.200076392867707,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 138,
+        "simulated": 125.0,
+        "geh": 1.133653872512063,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 109,
+        "simulated": 124.0,
+        "geh": 1.3897231638362384,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 115,
+        "simulated": 112.0,
+        "geh": 0.28159395267835924,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 115,
+        "simulated": 107.0,
+        "geh": 0.7593263966019992,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 218,
+        "simulated": 173.0,
+        "geh": 3.218393429334682,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 155,
+        "simulated": 200.0,
+        "geh": 3.377639812683607,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 172,
+        "simulated": 206.0,
+        "geh": 2.473136089341247,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 150,
+        "simulated": 214.0,
+        "geh": 4.7439956266310475,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 158,
+        "simulated": 177.0,
+        "geh": 1.468068077643886,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 145,
+        "simulated": 161.0,
+        "geh": 1.2935233335271092,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 165,
+        "simulated": 153.0,
+        "geh": 0.951661902861773,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 145,
+        "simulated": 166.0,
+        "geh": 1.6840465735057135,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 143,
+        "simulated": 146.0,
+        "geh": 0.24956709924231088,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 145,
+        "simulated": 139.0,
+        "geh": 0.5035088149780135,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 142,
+        "simulated": 115.0,
+        "geh": 2.381837893512647,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 152,
+        "simulated": 127.0,
+        "geh": 2.1166687833365083,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 112,
+        "simulated": 140.0,
+        "geh": 2.494438257849294,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 140,
+        "simulated": 139.0,
+        "geh": 0.08466675133346033,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 100,
+        "simulated": 118.0,
+        "geh": 1.7240873133980725,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 77,
+        "simulated": 107.0,
+        "geh": 3.1277162108561214,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 88,
+        "simulated": 104.0,
+        "geh": 1.632993161855452,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 106,
+        "simulated": 100.0,
+        "geh": 0.5911975668985759,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 82,
+        "simulated": 100.0,
+        "geh": 1.8869127060994528,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 42,
+        "simulated": 93.0,
+        "geh": 6.207522318391883,
+        "within_5": false
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 132,
+        "simulated": 122.0,
+        "geh": 0.8873565094161138,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 105,
+        "simulated": 135.0,
+        "geh": 2.7386127875258306,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 85,
+        "simulated": 143.0,
+        "geh": 5.432197707173825,
+        "within_5": false
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 100,
+        "simulated": 150.0,
+        "geh": 4.47213595499958,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 75,
+        "simulated": 140.0,
+        "geh": 6.269156688215357,
+        "within_5": false
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 80,
+        "simulated": 118.0,
+        "geh": 3.819143697985006,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 82,
+        "simulated": 114.0,
+        "geh": 3.232488142567074,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 119,
+        "simulated": 112.0,
+        "geh": 0.6513389472789296,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 118,
+        "simulated": 115.0,
+        "geh": 0.2779446327672477,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 102,
+        "simulated": 105.0,
+        "geh": 0.29488391230979427,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 118,
+        "simulated": 116.0,
+        "geh": 0.18490006540840973,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 145,
+        "simulated": 137.0,
+        "geh": 0.6737215368532151,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 155,
+        "simulated": 145.0,
+        "geh": 0.816496580927726,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 145,
+        "simulated": 149.0,
+        "geh": 0.329914439536929,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 130,
+        "simulated": 143.0,
+        "geh": 1.1126972805283737,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 125,
+        "simulated": 122.0,
+        "geh": 0.2699527623995085,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 120,
+        "simulated": 110.0,
+        "geh": 0.9325048082403138,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 130,
+        "simulated": 120.0,
+        "geh": 0.8944271909999159,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 123,
+        "simulated": 111.0,
+        "geh": 1.1094003924504583,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 85,
+        "simulated": 98.0,
+        "geh": 1.3590417710722233,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 140,
+        "simulated": 125.0,
+        "geh": 1.3031167282892082,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 142,
+        "simulated": 113.0,
+        "geh": 2.568283168066276,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 118,
+        "simulated": 140.0,
+        "geh": 1.9369919939163724,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 120,
+        "simulated": 138.0,
+        "geh": 1.584811631386123,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 125,
+        "simulated": 146.0,
+        "geh": 1.8040544742677427,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 142,
+        "simulated": 115.0,
+        "geh": 2.381837893512647,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 122,
+        "simulated": 123.0,
+        "geh": 0.09035079029052513,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 111,
+        "simulated": 103.0,
+        "geh": 0.7733891912365308,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 123,
+        "simulated": 109.0,
+        "geh": 1.299867367239363,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 82,
+        "simulated": 97.0,
+        "geh": 1.58554926774507,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 200,
+        "simulated": 143.0,
+        "geh": 4.352540225430912,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 218,
+        "simulated": 152.0,
+        "geh": 4.852416505819131,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 208,
+        "simulated": 150.0,
+        "geh": 4.335123537961228,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 195,
+        "simulated": 165.0,
+        "geh": 2.23606797749979,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 200,
+        "simulated": 170.0,
+        "geh": 2.2056438662814233,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 187,
+        "simulated": 154.0,
+        "geh": 2.5272706175226958,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 165,
+        "simulated": 144.0,
+        "geh": 1.6894877720891723,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 201,
+        "simulated": 157.0,
+        "geh": 3.288714408108518,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 210,
+        "simulated": 141.0,
+        "geh": 5.208474357065141,
+        "within_5": false
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 192,
+        "simulated": 145.0,
+        "geh": 3.620744714125323,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 250,
+        "simulated": 215.0,
+        "geh": 2.295390425243835,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 232,
+        "simulated": 209.0,
+        "geh": 1.5489005683133898,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 252,
+        "simulated": 227.0,
+        "geh": 1.6154266743780963,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 278,
+        "simulated": 233.0,
+        "geh": 2.8152506119043452,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 245,
+        "simulated": 226.0,
+        "geh": 1.2381069036570418,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 245,
+        "simulated": 222.0,
+        "geh": 1.5051659793084833,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 232,
+        "simulated": 218.0,
+        "geh": 0.9333333333333333,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 279,
+        "simulated": 223.0,
+        "geh": 3.5346886573476977,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 258,
+        "simulated": 212.0,
+        "geh": 3.000709136045834,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 232,
+        "simulated": 212.0,
+        "geh": 1.3423121104280487,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 245,
+        "simulated": 267.0,
+        "geh": 1.375,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 258,
+        "simulated": 259.0,
+        "geh": 0.06219704135711229,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 232,
+        "simulated": 259.0,
+        "geh": 1.7232092449360275,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 288,
+        "simulated": 258.0,
+        "geh": 1.8156825980064073,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 212,
+        "simulated": 232.0,
+        "geh": 1.3423121104280487,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 238,
+        "simulated": 227.0,
+        "geh": 0.7214084193623482,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 275,
+        "simulated": 259.0,
+        "geh": 0.9791840981793674,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 241,
+        "simulated": 261.0,
+        "geh": 1.2623888061956063,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 263,
+        "simulated": 256.0,
+        "geh": 0.4345395986709406,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 242,
+        "simulated": 258.0,
+        "geh": 1.0119288512538813,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 165,
+        "simulated": 179.0,
+        "geh": 1.0674899923282326,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 165,
+        "simulated": 174.0,
+        "geh": 0.6912858353783117,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 180,
+        "simulated": 174.0,
+        "geh": 0.4509876168016973,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 195,
+        "simulated": 175.0,
+        "geh": 1.4704292441876154,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 200,
+        "simulated": 156.0,
+        "geh": 3.2979394315817903,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 200,
+        "simulated": 151.0,
+        "geh": 3.698771644872346,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 195,
+        "simulated": 172.0,
+        "geh": 1.697890982208793,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 201,
+        "simulated": 177.0,
+        "geh": 1.745743121887939,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 200,
+        "simulated": 169.0,
+        "geh": 2.282251538880162,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 210,
+        "simulated": 174.0,
+        "geh": 2.598076211353316,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 130,
+        "simulated": 120.0,
+        "geh": 0.8944271909999159,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 155,
+        "simulated": 112.0,
+        "geh": 3.721583972708073,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 132,
+        "simulated": 114.0,
+        "geh": 1.6230053424013782,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 115,
+        "simulated": 117.0,
+        "geh": 0.18569533817705186,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 128,
+        "simulated": 104.0,
+        "geh": 2.2283440581246223,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 133,
+        "simulated": 106.0,
+        "geh": 2.4699025102302805,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 135,
+        "simulated": 114.0,
+        "geh": 1.8820650027825274,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 144,
+        "simulated": 111.0,
+        "geh": 2.9225291222823144,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 123,
+        "simulated": 115.0,
+        "geh": 0.7333587976225691,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 148,
+        "simulated": 115.0,
+        "geh": 2.8777367532998523,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 198,
+        "simulated": 180.0,
+        "geh": 1.3093073414159542,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 190,
+        "simulated": 161.0,
+        "geh": 2.189068932679552,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 160,
+        "simulated": 180.0,
+        "geh": 1.5339299776947408,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 188,
+        "simulated": 165.0,
+        "geh": 1.7312328378384574,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 175,
+        "simulated": 183.0,
+        "geh": 0.5979480742015487,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 175,
+        "simulated": 174.0,
+        "geh": 0.07570111641044645,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 228,
+        "simulated": 174.0,
+        "geh": 3.808866325636431,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 175,
+        "simulated": 173.0,
+        "geh": 0.15161960871578067,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 200,
+        "simulated": 163.0,
+        "geh": 2.74639759039326,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 198,
+        "simulated": 177.0,
+        "geh": 1.533623161014465,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 178,
+        "simulated": 140.0,
+        "geh": 3.0135960257289476,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 158,
+        "simulated": 135.0,
+        "geh": 1.9002424849756634,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 132,
+        "simulated": 146.0,
+        "geh": 1.1874645015519592,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 165,
+        "simulated": 125.0,
+        "geh": 3.3218191941495987,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 165,
+        "simulated": 136.0,
+        "geh": 2.363903523223745,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 132,
+        "simulated": 129.0,
+        "geh": 0.2626128657194451,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 120,
+        "simulated": 144.0,
+        "geh": 2.088931871468374,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 136,
+        "simulated": 142.0,
+        "geh": 0.5089133578079825,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 155,
+        "simulated": 128.0,
+        "geh": 2.2697892992296724,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 142,
+        "simulated": 135.0,
+        "geh": 0.5948030041269223,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 105,
+        "simulated": 128.0,
+        "geh": 2.1309088512155654,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 125,
+        "simulated": 127.0,
+        "geh": 0.1781741612749496,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 150,
+        "simulated": 127.0,
+        "geh": 1.9543527278456019,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 178,
+        "simulated": 108.0,
+        "geh": 5.853694070049635,
+        "within_5": false
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 138,
+        "simulated": 136.0,
+        "geh": 0.1708715315433522,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 132,
+        "simulated": 111.0,
+        "geh": 1.9051586888313607,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 122,
+        "simulated": 118.0,
+        "geh": 0.3651483716701107,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 115,
+        "simulated": 111.0,
+        "geh": 0.3762883473534389,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 122,
+        "simulated": 122.0,
+        "geh": 0.0,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 138,
+        "simulated": 104.0,
+        "geh": 3.090909090909091,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 138,
+        "simulated": 133.0,
+        "geh": 0.42953677958755776,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 200,
+        "simulated": 155.0,
+        "geh": 3.377639812683607,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 200,
+        "simulated": 160.0,
+        "geh": 2.9814239699997196,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 180,
+        "simulated": 138.0,
+        "geh": 3.3308166600162052,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 208,
+        "simulated": 150.0,
+        "geh": 4.335123537961228,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 180,
+        "simulated": 136.0,
+        "geh": 3.500452050373212,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 180,
+        "simulated": 164.0,
+        "geh": 1.2199885626608373,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 181,
+        "simulated": 135.0,
+        "geh": 3.6595635072083583,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 182,
+        "simulated": 143.0,
+        "geh": 3.059411708155671,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 178,
+        "simulated": 160.0,
+        "geh": 1.3846153846153846,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 155,
+        "simulated": 137.0,
+        "geh": 1.4896905994842624,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 170,
+        "simulated": 124.0,
+        "geh": 3.7940160546746835,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 162,
+        "simulated": 144.0,
+        "geh": 1.4552137502179978,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 175,
+        "simulated": 135.0,
+        "geh": 3.2128773156099952,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 150,
+        "simulated": 122.0,
+        "geh": 2.400980191995124,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 132,
+        "simulated": 141.0,
+        "geh": 0.7703288865196433,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 155,
+        "simulated": 142.0,
+        "geh": 1.0667929218208836,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 139,
+        "simulated": 143.0,
+        "geh": 0.33686076842660756,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 150,
+        "simulated": 115.0,
+        "geh": 3.0406056993414854,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 192,
+        "simulated": 140.0,
+        "geh": 4.035982733672931,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed": 70,
+        "simulated": 108.0,
+        "geh": 4.027991944024168,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 145,
+        "simulated": 108.0,
+        "geh": 3.2897012611104643,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 122,
+        "simulated": 98.0,
+        "geh": 2.2883102141894214,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 122,
+        "simulated": 109.0,
+        "geh": 1.2096294735180122,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 102,
+        "simulated": 108.0,
+        "geh": 0.5855400437691199,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 112,
+        "simulated": 110.0,
+        "geh": 0.1898315991504998,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 115,
+        "simulated": 94.0,
+        "geh": 2.0542871497869775,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 132,
+        "simulated": 118.0,
+        "geh": 1.2521980673998823,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 127,
+        "simulated": 100.0,
+        "geh": 2.534345574105233,
+        "within_5": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 150,
+        "simulated": 93.0,
+        "geh": 5.171145012542265,
+        "within_5": false
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 98,
+        "simulated": 60.0,
+        "geh": 4.275334023518891,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 72,
+        "simulated": 56.0,
+        "geh": 2.0,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 25,
+        "simulated": 57.0,
+        "geh": 4.997560380435394,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 68,
+        "simulated": 75.0,
+        "geh": 0.8278373543847156,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 68,
+        "simulated": 75.0,
+        "geh": 0.8278373543847156,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 28,
+        "simulated": 46.0,
+        "geh": 2.9591817714964312,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 67,
+        "simulated": 43.0,
+        "geh": 3.236159339823562,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 85,
+        "simulated": 57.0,
+        "geh": 3.3229886429427893,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 50,
+        "simulated": 54.0,
+        "geh": 0.5547001962252291,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 88,
+        "simulated": 112.0,
+        "geh": 2.4,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 105,
+        "simulated": 89.0,
+        "geh": 1.6245538642137904,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 68,
+        "simulated": 86.0,
+        "geh": 2.0512903762734833,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 112,
+        "simulated": 115.0,
+        "geh": 0.28159395267835924,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 107,
+        "simulated": 100.0,
+        "geh": 0.6880624620561866,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 98,
+        "simulated": 79.0,
+        "geh": 2.0196772131203886,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 91,
+        "simulated": 73.0,
+        "geh": 1.9877674693472378,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 112,
+        "simulated": 93.0,
+        "geh": 1.8766862336342203,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 142,
+        "simulated": 89.0,
+        "geh": 4.931566315111896,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 148,
+        "simulated": 98.0,
+        "geh": 4.508348173337161,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 102,
+        "simulated": 100.0,
+        "geh": 0.19900743804199783,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 135,
+        "simulated": 93.0,
+        "geh": 3.9336604086431146,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 55,
+        "simulated": 96.0,
+        "geh": 4.718569768717175,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 98,
+        "simulated": 108.0,
+        "geh": 0.9853292781642932,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 58,
+        "simulated": 84.0,
+        "geh": 3.0856323113040185,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 87,
+        "simulated": 73.0,
+        "geh": 1.5652475842498528,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 85,
+        "simulated": 84.0,
+        "geh": 0.10878565864408424,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 102,
+        "simulated": 98.0,
+        "geh": 0.4,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 68,
+        "simulated": 70.0,
+        "geh": 0.2407717061715384,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 72,
+        "simulated": 80.0,
+        "geh": 0.9176629354822471,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 80,
+        "simulated": 76.0,
+        "geh": 0.4529108136578383,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 55,
+        "simulated": 76.0,
+        "geh": 2.594768665503905,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 60,
+        "simulated": 75.0,
+        "geh": 1.8257418583505538,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 100,
+        "simulated": 67.0,
+        "geh": 3.6113593240862465,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 67,
+        "simulated": 69.0,
+        "geh": 0.24253562503633297,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 70,
+        "simulated": 76.0,
+        "geh": 0.7022468831767834,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 92,
+        "simulated": 80.0,
+        "geh": 1.293993278441261,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 130,
+        "simulated": 117.0,
+        "geh": 1.1697953037312037,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 118,
+        "simulated": 120.0,
+        "geh": 0.18333969940564226,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 110,
+        "simulated": 123.0,
+        "geh": 1.2044267419914065,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 158,
+        "simulated": 121.0,
+        "geh": 3.132669799338032,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 120,
+        "simulated": 114.0,
+        "geh": 0.5547001962252291,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 98,
+        "simulated": 112.0,
+        "geh": 1.3662601021279464,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 119,
+        "simulated": 107.0,
+        "geh": 1.1288650420603168,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 130,
+        "simulated": 122.0,
+        "geh": 0.7126966450997984,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 152,
+        "simulated": 125.0,
+        "geh": 2.294240158775272,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 188,
+        "simulated": 117.0,
+        "geh": 5.749411944270303,
+        "within_5": false
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 162,
+        "simulated": 89.0,
+        "geh": 6.516298903090796,
+        "within_5": false
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 185,
+        "simulated": 98.0,
+        "geh": 7.3137655197400555,
+        "within_5": false
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 98,
+        "simulated": 104.0,
+        "geh": 0.5970223141259935,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 98,
+        "simulated": 110.0,
+        "geh": 1.1766968108291043,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 100,
+        "simulated": 74.0,
+        "geh": 2.7874925905782666,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 107,
+        "simulated": 81.0,
+        "geh": 2.681695240272863,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 105,
+        "simulated": 87.0,
+        "geh": 1.8371173070873836,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 105,
+        "simulated": 85.0,
+        "geh": 2.051956704170308,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed": 172,
+        "simulated": 150.0,
+        "geh": 1.7338428937260213,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed": 152,
+        "simulated": 154.0,
+        "geh": 0.16169041669088866,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed": 138,
+        "simulated": 156.0,
+        "geh": 1.4846149779161804,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed": 182,
+        "simulated": 147.0,
+        "geh": 2.7288841145490768,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed": 135,
+        "simulated": 148.0,
+        "geh": 1.0928615144439162,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed": 145,
+        "simulated": 135.0,
+        "geh": 0.8451542547285166,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed": 133,
+        "simulated": 137.0,
+        "geh": 0.34426518632954817,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed": 175,
+        "simulated": 155.0,
+        "geh": 1.556997888323046,
+        "within_5": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed": 150,
+        "simulated": 157.0,
+        "geh": 0.5649940185898832,
+        "within_5": true
+      }
+    ],
+    "speed_bins": [
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 68.3,
+        "simulated_kmh": 64.69146268656718,
+        "absolute_percentage_error": 5.283363562859179
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 74.8,
+        "simulated_kmh": 65.05540828402367,
+        "absolute_percentage_error": 13.027529032053915
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 68.3,
+        "simulated_kmh": 64.4976,
+        "absolute_percentage_error": 5.567203513909212
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 65.0,
+        "simulated_kmh": 64.30362352941177,
+        "absolute_percentage_error": 1.071348416289591
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 65.7,
+        "simulated_kmh": 66.02427906976743,
+        "absolute_percentage_error": 0.49357544865666364
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 56.6,
+        "simulated_kmh": 65.84256,
+        "absolute_percentage_error": 16.329611307420503
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 59.2,
+        "simulated_kmh": 65.62374803149606,
+        "absolute_percentage_error": 10.85092572887848
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 56.5,
+        "simulated_kmh": 66.12432786885248,
+        "absolute_percentage_error": 17.03420861743801
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 58.9,
+        "simulated_kmh": 66.88376470588236,
+        "absolute_percentage_error": 13.554778787576161
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 62.7,
+        "simulated_kmh": 67.43245714285715,
+        "absolute_percentage_error": 7.5477785372522215
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 64.6,
+        "simulated_kmh": 65.01430188679245,
+        "absolute_percentage_error": 0.6413341900812047
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 72.0,
+        "simulated_kmh": 64.86086330935251,
+        "absolute_percentage_error": 9.915467625899293
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 74.3,
+        "simulated_kmh": 66.348,
+        "absolute_percentage_error": 10.702557200538356
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 70.5,
+        "simulated_kmh": 64.04196610169491,
+        "absolute_percentage_error": 9.160331770645517
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 73.2,
+        "simulated_kmh": 66.16224000000001,
+        "absolute_percentage_error": 9.614426229508185
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 66.1,
+        "simulated_kmh": 66.57352941176471,
+        "absolute_percentage_error": 0.7163833763460148
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 64.9,
+        "simulated_kmh": 67.14357251908397,
+        "absolute_percentage_error": 3.45696844234818
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 68.1,
+        "simulated_kmh": 65.81349618320611,
+        "absolute_percentage_error": 3.3575680129131897
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 68.7,
+        "simulated_kmh": 66.95274193548386,
+        "absolute_percentage_error": 2.5433159599943895
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 61.5,
+        "simulated_kmh": 66.76329600000001,
+        "absolute_percentage_error": 8.558204878048798
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 67.0,
+        "simulated_kmh": 65.47412903225808,
+        "absolute_percentage_error": 2.2774193548386914
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 67.1,
+        "simulated_kmh": 66.93074999999999,
+        "absolute_percentage_error": 0.25223546944859204
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 65.3,
+        "simulated_kmh": 65.79992523364487,
+        "absolute_percentage_error": 0.7655822873581523
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 65.0,
+        "simulated_kmh": 45.93287861271676,
+        "absolute_percentage_error": 29.334032903512675
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 43.4,
+        "simulated_kmh": 46.478519999999996,
+        "absolute_percentage_error": 7.093364055299533
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 64.6,
+        "simulated_kmh": 45.494388349514566,
+        "absolute_percentage_error": 29.575250232949585
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 71.7,
+        "simulated_kmh": 46.42856074766355,
+        "absolute_percentage_error": 35.24607984984163
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 63.3,
+        "simulated_kmh": 46.513627118644074,
+        "absolute_percentage_error": 26.518756526628636
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 66.3,
+        "simulated_kmh": 46.54411976047904,
+        "absolute_percentage_error": 29.79770775191698
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 62.0,
+        "simulated_kmh": 46.767801242236025,
+        "absolute_percentage_error": 24.56806251252254
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 62.8,
+        "simulated_kmh": 47.212682926829274,
+        "absolute_percentage_error": 24.820568587851472
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 61.6,
+        "simulated_kmh": 47.07364705882353,
+        "absolute_percentage_error": 23.58174178762414
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 64.0,
+        "simulated_kmh": 46.10298795180723,
+        "absolute_percentage_error": 27.964081325301205
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 58.7,
+        "simulated_kmh": 47.73772602739726,
+        "absolute_percentage_error": 18.675083428624777
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 63.2,
+        "simulated_kmh": 46.77176978417266,
+        "absolute_percentage_error": 25.99403515162554
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 65.9,
+        "simulated_kmh": 46.56052173913044,
+        "absolute_percentage_error": 29.346704492973547
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 61.9,
+        "simulated_kmh": 46.45190551181103,
+        "absolute_percentage_error": 24.95653390660577
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 73.5,
+        "simulated_kmh": 45.386742857142856,
+        "absolute_percentage_error": 38.24932944606414
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 71.4,
+        "simulated_kmh": 45.48664748201439,
+        "absolute_percentage_error": 36.29321080950366
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 59.0,
+        "simulated_kmh": 46.24413559322034,
+        "absolute_percentage_error": 21.62010916403332
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 55.5,
+        "simulated_kmh": 46.19823853211009,
+        "absolute_percentage_error": 16.759930572774614
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 58.7,
+        "simulated_kmh": 47.13745794392524,
+        "absolute_percentage_error": 19.697686637265353
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 57.6,
+        "simulated_kmh": 46.62556363636364,
+        "absolute_percentage_error": 19.05284090909091
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 56.5,
+        "simulated_kmh": 48.24138461538461,
+        "absolute_percentage_error": 14.617018379850247
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 58.3,
+        "simulated_kmh": 46.28448,
+        "absolute_percentage_error": 20.60981132075471
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 61.2,
+        "simulated_kmh": 46.4724,
+        "absolute_percentage_error": 24.064705882352943
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 51.3,
+        "simulated_kmh": 46.33974193548387,
+        "absolute_percentage_error": 9.669119034144494
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 32.5,
+        "simulated_kmh": 45.560065573770494,
+        "absolute_percentage_error": 40.184817150063054
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 15.2,
+        "simulated_kmh": 45.4032,
+        "absolute_percentage_error": 198.70526315789473
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 11.7,
+        "simulated_kmh": 45.38668531468531,
+        "absolute_percentage_error": 287.92038730500263
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 12.4,
+        "simulated_kmh": 45.052800000000005,
+        "absolute_percentage_error": 263.32903225806456
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 8.2,
+        "simulated_kmh": 46.6848,
+        "absolute_percentage_error": 469.32682926829284
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 11.5,
+        "simulated_kmh": 45.0,
+        "absolute_percentage_error": 291.30434782608694
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 12.5,
+        "simulated_kmh": 46.352135593220346,
+        "absolute_percentage_error": 270.81708474576277
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 12.5,
+        "simulated_kmh": 46.77175862068965,
+        "absolute_percentage_error": 274.1740689655172
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 13.1,
+        "simulated_kmh": 46.63515789473684,
+        "absolute_percentage_error": 255.99357171554843
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 18.6,
+        "simulated_kmh": 47.16514285714286,
+        "absolute_percentage_error": 153.57603686635946
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 27.2,
+        "simulated_kmh": 46.231199999999994,
+        "absolute_percentage_error": 69.96764705882352
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 40.3,
+        "simulated_kmh": 46.126285714285714,
+        "absolute_percentage_error": 14.457284650833046
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 62.8,
+        "simulated_kmh": 45.603310344827584,
+        "absolute_percentage_error": 27.38326378212168
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 52.5,
+        "simulated_kmh": 44.7414306569343,
+        "absolute_percentage_error": 14.778227320125145
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 53.0,
+        "simulated_kmh": 44.93668965517241,
+        "absolute_percentage_error": 15.213793103448287
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 53.8,
+        "simulated_kmh": 44.288456375838926,
+        "absolute_percentage_error": 17.679449115541026
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 55.8,
+        "simulated_kmh": 45.95337062937063,
+        "absolute_percentage_error": 17.64628919467628
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 42.6,
+        "simulated_kmh": 45.46455652173913,
+        "absolute_percentage_error": 6.72431108389466
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 48.3,
+        "simulated_kmh": 46.689934426229506,
+        "absolute_percentage_error": 3.333469096833315
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 46.5,
+        "simulated_kmh": 46.16984347826087,
+        "absolute_percentage_error": 0.7100140252454347
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 48.0,
+        "simulated_kmh": 47.556,
+        "absolute_percentage_error": 0.9250000000000055
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 37.7,
+        "simulated_kmh": 45.7944,
+        "absolute_percentage_error": 21.470557029177716
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 32.1,
+        "simulated_kmh": 46.28335135135135,
+        "absolute_percentage_error": 44.18489517554937
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 48.6,
+        "simulated_kmh": 46.12628571428571,
+        "absolute_percentage_error": 5.089947089947107
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 81.3,
+        "simulated_kmh": 60.08688,
+        "absolute_percentage_error": 26.09239852398524
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 80.9,
+        "simulated_kmh": 57.99217699115044,
+        "absolute_percentage_error": 28.316221271754717
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 83.1,
+        "simulated_kmh": 58.05977142857144,
+        "absolute_percentage_error": 30.132645693656507
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 85.9,
+        "simulated_kmh": 58.720695652173916,
+        "absolute_percentage_error": 31.6406336994483
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 84.0,
+        "simulated_kmh": 57.99057534246576,
+        "absolute_percentage_error": 30.963600782778855
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 85.1,
+        "simulated_kmh": 57.044,
+        "absolute_percentage_error": 32.968272620446534
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 78.1,
+        "simulated_kmh": 60.23206956521739,
+        "absolute_percentage_error": 22.87827200356288
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 86.3,
+        "simulated_kmh": 58.28875471698113,
+        "absolute_percentage_error": 32.45798989921074
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 80.4,
+        "simulated_kmh": 59.15121951219512,
+        "absolute_percentage_error": 26.42883145249364
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 79.1,
+        "simulated_kmh": 61.307650485436895,
+        "absolute_percentage_error": 22.493488640408472
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 80.4,
+        "simulated_kmh": 59.73853211009174,
+        "absolute_percentage_error": 25.69834314665207
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 79.7,
+        "simulated_kmh": 61.193319587628864,
+        "absolute_percentage_error": 23.220427117153246
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 28.4,
+        "simulated_kmh": 52.96732867132869,
+        "absolute_percentage_error": 86.50467842017144
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 39.1,
+        "simulated_kmh": 52.53631578947368,
+        "absolute_percentage_error": 34.36397900121146
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 31.5,
+        "simulated_kmh": 52.63728,
+        "absolute_percentage_error": 67.10247619047618
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 47.1,
+        "simulated_kmh": 52.745236363636366,
+        "absolute_percentage_error": 11.985639837869138
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 53.0,
+        "simulated_kmh": 52.94329411764707,
+        "absolute_percentage_error": 0.10699223085458376
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 54.1,
+        "simulated_kmh": 52.56894409937888,
+        "absolute_percentage_error": 2.830047875454934
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 47.4,
+        "simulated_kmh": 52.90690909090909,
+        "absolute_percentage_error": 11.61795166858458
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 40.3,
+        "simulated_kmh": 52.44495104895105,
+        "absolute_percentage_error": 30.136354960176305
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 25.5,
+        "simulated_kmh": 52.659000000000006,
+        "absolute_percentage_error": 106.5058823529412
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 34.4,
+        "simulated_kmh": 53.869528662420386,
+        "absolute_percentage_error": 56.597467041919735
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 45.0,
+        "simulated_kmh": 52.44,
+        "absolute_percentage_error": 16.533333333333328
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 44.0,
+        "simulated_kmh": 52.68910344827586,
+        "absolute_percentage_error": 19.747962382445134
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 41.1,
+        "simulated_kmh": 60.64928372093024,
+        "absolute_percentage_error": 47.56516720420983
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 38.3,
+        "simulated_kmh": 61.109052631578955,
+        "absolute_percentage_error": 59.55366222344376
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 43.0,
+        "simulated_kmh": 61.188422907489,
+        "absolute_percentage_error": 42.29865792439302
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 40.0,
+        "simulated_kmh": 61.803038626609435,
+        "absolute_percentage_error": 54.50759656652359
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 35.9,
+        "simulated_kmh": 60.66,
+        "absolute_percentage_error": 68.96935933147633
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 44.0,
+        "simulated_kmh": 60.40162025316456,
+        "absolute_percentage_error": 37.27640966628309
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 23.9,
+        "simulated_kmh": 60.668108108108115,
+        "absolute_percentage_error": 153.84145651928083
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 24.2,
+        "simulated_kmh": 60.951735849056604,
+        "absolute_percentage_error": 151.86667706221738
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 25.3,
+        "simulated_kmh": 61.038990825688074,
+        "absolute_percentage_error": 141.2608333031149
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 33.0,
+        "simulated_kmh": 61.30041255605382,
+        "absolute_percentage_error": 85.75882592743582
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 32.9,
+        "simulated_kmh": 61.668679245283016,
+        "absolute_percentage_error": 87.442794058611
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 33.8,
+        "simulated_kmh": 60.62875471698112,
+        "absolute_percentage_error": 79.37501395556546
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 34.0,
+        "simulated_kmh": 43.61757303370786,
+        "absolute_percentage_error": 28.28697951090548
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 33.1,
+        "simulated_kmh": 42.98636293436294,
+        "absolute_percentage_error": 29.868165964842703
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 27.7,
+        "simulated_kmh": 42.68084942084943,
+        "absolute_percentage_error": 54.08248888393295
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 34.6,
+        "simulated_kmh": 42.6933488372093,
+        "absolute_percentage_error": 23.391181610431495
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 35.4,
+        "simulated_kmh": 42.90455172413793,
+        "absolute_percentage_error": 21.199298655756873
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 37.1,
+        "simulated_kmh": 44.00158951965065,
+        "absolute_percentage_error": 18.602667168869676
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 35.9,
+        "simulated_kmh": 43.55968281938326,
+        "absolute_percentage_error": 21.336163842293214
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 37.1,
+        "simulated_kmh": 43.67921538461539,
+        "absolute_percentage_error": 17.733734190337973
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 38.9,
+        "simulated_kmh": 42.77703474903474,
+        "absolute_percentage_error": 9.966670306001907
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 35.6,
+        "simulated_kmh": 41.917655172413795,
+        "absolute_percentage_error": 17.74622239442077
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 34.3,
+        "simulated_kmh": 43.275937500000005,
+        "absolute_percentage_error": 26.168913994169117
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 33.2,
+        "simulated_kmh": 43.904930232558144,
+        "absolute_percentage_error": 32.24376576071729
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 39.7,
+        "simulated_kmh": 56.09966480446928,
+        "absolute_percentage_error": 41.30897935634577
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 39.3,
+        "simulated_kmh": 55.9508275862069,
+        "absolute_percentage_error": 42.36851803106082
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 46.8,
+        "simulated_kmh": 55.84758620689656,
+        "absolute_percentage_error": 19.332449160035388
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 62.2,
+        "simulated_kmh": 55.30155428571428,
+        "absolute_percentage_error": 11.090748736793763
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 64.9,
+        "simulated_kmh": 56.677846153846154,
+        "absolute_percentage_error": 12.668958160483593
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 62.8,
+        "simulated_kmh": 56.600254777070056,
+        "absolute_percentage_error": 9.872205768996722
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 66.7,
+        "simulated_kmh": 55.42879470198677,
+        "absolute_percentage_error": 16.898358767636033
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 63.2,
+        "simulated_kmh": 56.32959537572254,
+        "absolute_percentage_error": 10.870893392844087
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 66.2,
+        "simulated_kmh": 56.13676744186047,
+        "absolute_percentage_error": 15.201257640694157
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 63.8,
+        "simulated_kmh": 55.61206779661017,
+        "absolute_percentage_error": 12.833749535093775
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 63.8,
+        "simulated_kmh": 55.949112426035505,
+        "absolute_percentage_error": 12.305466416872244
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 63.7,
+        "simulated_kmh": 56.64662068965517,
+        "absolute_percentage_error": 11.072808964434584
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 15.8,
+        "simulated_kmh": 64.2,
+        "absolute_percentage_error": 306.32911392405066
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 15.8,
+        "simulated_kmh": 65.43771428571429,
+        "absolute_percentage_error": 314.16274864376135
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 14.5,
+        "simulated_kmh": 65.24336842105264,
+        "absolute_percentage_error": 349.9542649727768
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 50.9,
+        "simulated_kmh": 63.03046153846153,
+        "absolute_percentage_error": 23.83194801269456
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 74.6,
+        "simulated_kmh": 65.6916923076923,
+        "absolute_percentage_error": 11.941431222932557
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 78.6,
+        "simulated_kmh": 65.76344554455446,
+        "absolute_percentage_error": 16.331494218124092
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 67.0,
+        "simulated_kmh": 66.3806037735849,
+        "absolute_percentage_error": 0.9244719797240378
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 80.3,
+        "simulated_kmh": 63.775433628318574,
+        "absolute_percentage_error": 20.578538445431413
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 76.5,
+        "simulated_kmh": 66.47747368421052,
+        "absolute_percentage_error": 13.10134158926729
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 74.7,
+        "simulated_kmh": 65.54724324324324,
+        "absolute_percentage_error": 12.252686421361123
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 74.5,
+        "simulated_kmh": 64.5433043478261,
+        "absolute_percentage_error": 13.364692150569002
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 78.1,
+        "simulated_kmh": 65.2129043478261,
+        "absolute_percentage_error": 16.50076267883982
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 77.8,
+        "simulated_kmh": 46.3244,
+        "absolute_percentage_error": 40.45706940874036
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 80.9,
+        "simulated_kmh": 45.33942857142857,
+        "absolute_percentage_error": 43.95620695744306
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 78.5,
+        "simulated_kmh": 45.4304,
+        "absolute_percentage_error": 42.12687898089172
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 81.8,
+        "simulated_kmh": 44.66749090909091,
+        "absolute_percentage_error": 45.3942653923094
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 75.2,
+        "simulated_kmh": 44.713573770491806,
+        "absolute_percentage_error": 40.54046041158005
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 71.0,
+        "simulated_kmh": 46.09208053691275,
+        "absolute_percentage_error": 35.081576708573586
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 71.0,
+        "simulated_kmh": 45.78331034482758,
+        "absolute_percentage_error": 35.51646430305974
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 68.1,
+        "simulated_kmh": 45.28456050955415,
+        "absolute_percentage_error": 33.50284800359156
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 73.4,
+        "simulated_kmh": 45.59855172413794,
+        "absolute_percentage_error": 37.87663252842243
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 77.6,
+        "simulated_kmh": 45.65840462427746,
+        "absolute_percentage_error": 41.16184971098265
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 73.9,
+        "simulated_kmh": 45.56341104294479,
+        "absolute_percentage_error": 38.34450467801788
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 76.2,
+        "simulated_kmh": 45.477152542372885,
+        "absolute_percentage_error": 40.31869745095422
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 43.4,
+        "simulated_kmh": 44.89302857142857,
+        "absolute_percentage_error": 3.4401579986833513
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 35.7,
+        "simulated_kmh": 44.876533333333334,
+        "absolute_percentage_error": 25.704575163398687
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 34.2,
+        "simulated_kmh": 43.148712328767125,
+        "absolute_percentage_error": 26.165825522710882
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 56.3,
+        "simulated_kmh": 43.388064,
+        "absolute_percentage_error": 22.934166962699816
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 52.0,
+        "simulated_kmh": 44.32155882352941,
+        "absolute_percentage_error": 14.766233031674217
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 36.1,
+        "simulated_kmh": 46.252224,
+        "absolute_percentage_error": 28.122504155124645
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 55.2,
+        "simulated_kmh": 44.019069767441856,
+        "absolute_percentage_error": 20.25530839231548
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 54.0,
+        "simulated_kmh": 44.46385714285715,
+        "absolute_percentage_error": 17.659523809523794
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 52.0,
+        "simulated_kmh": 43.814499999999995,
+        "absolute_percentage_error": 15.741346153846164
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 56.8,
+        "simulated_kmh": 44.92749295774647,
+        "absolute_percentage_error": 20.902301130728034
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 50.5,
+        "simulated_kmh": 43.98074999999999,
+        "absolute_percentage_error": 12.909405940594073
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 55.1,
+        "simulated_kmh": 44.3536,
+        "absolute_percentage_error": 19.50344827586207
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 75.5,
+        "simulated_kmh": 45.788625,
+        "absolute_percentage_error": 39.35281456953642
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 73.7,
+        "simulated_kmh": 44.975622047244094,
+        "absolute_percentage_error": 38.97473263603244
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 69.2,
+        "simulated_kmh": 43.32188976377954,
+        "absolute_percentage_error": 37.39611305812206
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 66.5,
+        "simulated_kmh": 44.023999999999994,
+        "absolute_percentage_error": 33.79849624060151
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 64.7,
+        "simulated_kmh": 40.770264705882354,
+        "absolute_percentage_error": 36.98568051641058
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 64.6,
+        "simulated_kmh": 36.300315789473686,
+        "absolute_percentage_error": 43.80756069740915
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 64.4,
+        "simulated_kmh": 29.874162162162165,
+        "absolute_percentage_error": 53.6115494376364
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 68.5,
+        "simulated_kmh": 18.482017699115044,
+        "absolute_percentage_error": 73.01895226406563
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 60.6,
+        "simulated_kmh": 23.71271186440678,
+        "absolute_percentage_error": 60.87011243497231
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 70.2,
+        "simulated_kmh": 11.45772972972973,
+        "absolute_percentage_error": 83.67844767844768
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 61.7,
+        "simulated_kmh": 13.833737704918034,
+        "absolute_percentage_error": 77.57903127241809
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 60.0,
+        "simulated_kmh": 10.703769230769232,
+        "absolute_percentage_error": 82.1603846153846
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 50.6,
+        "simulated_kmh": 35.65407518796993,
+        "absolute_percentage_error": 29.537400814288677
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 52.2,
+        "simulated_kmh": 32.46805161290323,
+        "absolute_percentage_error": 37.80066740823136
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 44.9,
+        "simulated_kmh": 34.286175,
+        "absolute_percentage_error": 23.638808463251667
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 55.9,
+        "simulated_kmh": 35.839304347826086,
+        "absolute_percentage_error": 35.88675429726997
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 48.8,
+        "simulated_kmh": 34.09416,
+        "absolute_percentage_error": 30.134918032786878
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 42.6,
+        "simulated_kmh": 34.49083636363636,
+        "absolute_percentage_error": 19.035595390524975
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 45.7,
+        "simulated_kmh": 35.499705882352934,
+        "absolute_percentage_error": 22.320118419359012
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 45.9,
+        "simulated_kmh": 34.84628571428571,
+        "absolute_percentage_error": 24.08216619981326
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 45.6,
+        "simulated_kmh": 31.926951219512198,
+        "absolute_percentage_error": 29.98475609756097
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 45.7,
+        "simulated_kmh": 34.22826666666667,
+        "absolute_percentage_error": 25.102261123267684
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 44.2,
+        "simulated_kmh": 34.221146853146855,
+        "absolute_percentage_error": 22.576590829984493
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 49.0,
+        "simulated_kmh": 36.5472,
+        "absolute_percentage_error": 25.413877551020413
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 63.8,
+        "simulated_kmh": 62.028000000000006,
+        "absolute_percentage_error": 2.7774294670846262
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 64.2,
+        "simulated_kmh": 62.34793548387098,
+        "absolute_percentage_error": 2.884835694905025
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 61.4,
+        "simulated_kmh": 60.656000000000006,
+        "absolute_percentage_error": 1.211726384364809
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 59.7,
+        "simulated_kmh": 60.90240000000001,
+        "absolute_percentage_error": 2.014070351758801
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 52.5,
+        "simulated_kmh": 61.24131147540984,
+        "absolute_percentage_error": 16.65011709601874
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 49.3,
+        "simulated_kmh": 61.41548936170213,
+        "absolute_percentage_error": 24.575029131241646
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 51.2,
+        "simulated_kmh": 61.57148936170213,
+        "absolute_percentage_error": 20.25681515957446
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 48.4,
+        "simulated_kmh": 60.78177391304348,
+        "absolute_percentage_error": 25.582177506288183
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 51.6,
+        "simulated_kmh": 61.970450704225364,
+        "absolute_percentage_error": 20.09777268260729
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 50.8,
+        "simulated_kmh": 61.434377622377625,
+        "absolute_percentage_error": 20.933814217278794
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 57.6,
+        "simulated_kmh": 61.66142608695652,
+        "absolute_percentage_error": 7.051086956521728
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 53.0,
+        "simulated_kmh": 64.07074285714286,
+        "absolute_percentage_error": 20.88819407008087
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 71.6,
+        "simulated_kmh": 64.134,
+        "absolute_percentage_error": 10.42737430167597
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 69.8,
+        "simulated_kmh": 63.988,
+        "absolute_percentage_error": 8.32664756446991
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 70.7,
+        "simulated_kmh": 63.62228571428572,
+        "absolute_percentage_error": 10.010911295211153
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 69.9,
+        "simulated_kmh": 62.14227522935779,
+        "absolute_percentage_error": 11.098318699058959
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 58.4,
+        "simulated_kmh": 63.774000000000015,
+        "absolute_percentage_error": 9.202054794520578
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 55.6,
+        "simulated_kmh": 61.87831578947369,
+        "absolute_percentage_error": 11.291934873154114
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 54.8,
+        "simulated_kmh": 63.00294545454546,
+        "absolute_percentage_error": 14.968878566688804
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 57.6,
+        "simulated_kmh": 62.117999999999995,
+        "absolute_percentage_error": 7.8437499999999885
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 61.2,
+        "simulated_kmh": 63.49787234042554,
+        "absolute_percentage_error": 3.75469336670839
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 56.7,
+        "simulated_kmh": 62.48928813559322,
+        "absolute_percentage_error": 10.21038471885929
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 60.1,
+        "simulated_kmh": 61.62336,
+        "absolute_percentage_error": 2.5347088186356017
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 58.9,
+        "simulated_kmh": 63.62400000000001,
+        "absolute_percentage_error": 8.020373514431258
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 30.9,
+        "simulated_kmh": 33.26126086956522,
+        "absolute_percentage_error": 7.6416209371042765
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 29.1,
+        "simulated_kmh": 34.1736,
+        "absolute_percentage_error": 17.435051546391747
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 24.7,
+        "simulated_kmh": 32.98564285714286,
+        "absolute_percentage_error": 33.54511278195489
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 17.4,
+        "simulated_kmh": 32.67536842105263,
+        "absolute_percentage_error": 87.78947368421053
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 29.6,
+        "simulated_kmh": 34.43472,
+        "absolute_percentage_error": 16.333513513513502
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 28.1,
+        "simulated_kmh": 33.608,
+        "absolute_percentage_error": 19.601423487544466
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 42.7,
+        "simulated_kmh": 33.50448,
+        "absolute_percentage_error": 21.535175644028108
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 53.4,
+        "simulated_kmh": 33.876000000000005,
+        "absolute_percentage_error": 36.56179775280898
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 31.5,
+        "simulated_kmh": 32.580000000000005,
+        "absolute_percentage_error": 3.4285714285714453
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 35.4,
+        "simulated_kmh": 32.215813953488365,
+        "absolute_percentage_error": 8.994875837603486
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 38.5,
+        "simulated_kmh": 33.826736842105255,
+        "absolute_percentage_error": 12.138345864661675
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 35.5,
+        "simulated_kmh": 32.976,
+        "absolute_percentage_error": 7.10985915492958
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 76.2,
+        "simulated_kmh": 44.32900840336134,
+        "absolute_percentage_error": 41.82544828955205
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 74.8,
+        "simulated_kmh": 45.545785714285714,
+        "absolute_percentage_error": 39.10991214667685
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 74.6,
+        "simulated_kmh": 46.58844943820225,
+        "absolute_percentage_error": 37.548995391149795
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 68.1,
+        "simulated_kmh": 45.792,
+        "absolute_percentage_error": 32.75770925110131
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 72.5,
+        "simulated_kmh": 45.040695652173916,
+        "absolute_percentage_error": 37.87490254872563
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 69.6,
+        "simulated_kmh": 45.332571428571434,
+        "absolute_percentage_error": 34.86699507389161
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 69.0,
+        "simulated_kmh": 45.91152,
+        "absolute_percentage_error": 33.461565217391296
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 50.9,
+        "simulated_kmh": 46.99741935483871,
+        "absolute_percentage_error": 7.667152544521191
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 67.1,
+        "simulated_kmh": 46.896607594936704,
+        "absolute_percentage_error": 30.109377652851403
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 74.8,
+        "simulated_kmh": 45.83687671232877,
+        "absolute_percentage_error": 38.720753058384
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 69.5,
+        "simulated_kmh": 45.41574193548387,
+        "absolute_percentage_error": 34.65360872592249
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 60.4,
+        "simulated_kmh": 47.07020224719101,
+        "absolute_percentage_error": 22.06920157749832
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 49.5,
+        "simulated_kmh": 39.16135384615385,
+        "absolute_percentage_error": 20.886153846153835
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 52.4,
+        "simulated_kmh": 40.77183673469387,
+        "absolute_percentage_error": 22.191151269668183
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 49.9,
+        "simulated_kmh": 41.086079999999995,
+        "absolute_percentage_error": 17.663166332665337
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 47.5,
+        "simulated_kmh": 41.53935483870967,
+        "absolute_percentage_error": 12.548726655348064
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 44.0,
+        "simulated_kmh": 41.745,
+        "absolute_percentage_error": 5.125000000000006
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 46.8,
+        "simulated_kmh": 40.985217391304346,
+        "absolute_percentage_error": 12.424749163879598
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 48.8,
+        "simulated_kmh": 39.75066666666667,
+        "absolute_percentage_error": 18.54371584699453
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 45.4,
+        "simulated_kmh": 42.06,
+        "absolute_percentage_error": 7.356828193832592
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 44.9,
+        "simulated_kmh": 42.13157142857143,
+        "absolute_percentage_error": 6.165765192491253
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 46.7,
+        "simulated_kmh": 41.96564383561644,
+        "absolute_percentage_error": 10.137807632512983
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 47.6,
+        "simulated_kmh": 42.08914285714285,
+        "absolute_percentage_error": 11.577430972388965
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 49.6,
+        "simulated_kmh": 40.860734693877546,
+        "absolute_percentage_error": 17.61948650427914
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 61.1,
+        "simulated_kmh": 96.14666666666668,
+        "absolute_percentage_error": 57.35951991271141
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 49.1,
+        "simulated_kmh": 96.462,
+        "absolute_percentage_error": 96.4602851323829
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 39.6,
+        "simulated_kmh": 95.42025,
+        "absolute_percentage_error": 140.96022727272725
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 41.6,
+        "simulated_kmh": 94.18168421052633,
+        "absolute_percentage_error": 126.39827935222674
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 42.4,
+        "simulated_kmh": 96.28342105263158,
+        "absolute_percentage_error": 127.08354021847073
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 36.0,
+        "simulated_kmh": 95.3242105263158,
+        "absolute_percentage_error": 164.78947368421055
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 33.1,
+        "simulated_kmh": 97.07328,
+        "absolute_percentage_error": 193.27274924471297
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 32.8,
+        "simulated_kmh": 96.89664705882353,
+        "absolute_percentage_error": 195.41660688665715
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 37.8,
+        "simulated_kmh": 96.07002985074627,
+        "absolute_percentage_error": 154.1535181236674
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 44.6,
+        "simulated_kmh": 96.1961739130435,
+        "absolute_percentage_error": 115.68648859426791
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 44.3,
+        "simulated_kmh": 95.81684210526315,
+        "absolute_percentage_error": 116.290839966734
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 44.2,
+        "simulated_kmh": 97.48800000000001,
+        "absolute_percentage_error": 120.56108597285069
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 92.9,
+        "simulated_kmh": 80.45185714285715,
+        "absolute_percentage_error": 13.399507919421803
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 80.6,
+        "simulated_kmh": 80.52923076923076,
+        "absolute_percentage_error": 0.08780301584271688
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 86.9,
+        "simulated_kmh": 79.28189999999998,
+        "absolute_percentage_error": 8.766513233601872
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 86.8,
+        "simulated_kmh": 77.8779512195122,
+        "absolute_percentage_error": 10.278858042036635
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 72.1,
+        "simulated_kmh": 81.33381818181819,
+        "absolute_percentage_error": 12.806960030261019
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 83.6,
+        "simulated_kmh": 79.17976859504131,
+        "absolute_percentage_error": 5.287358139902733
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 80.0,
+        "simulated_kmh": 79.51073684210527,
+        "absolute_percentage_error": 0.6115789473684075
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 80.2,
+        "simulated_kmh": 79.10292857142858,
+        "absolute_percentage_error": 1.3679194869967892
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 79.6,
+        "simulated_kmh": 80.65542857142857,
+        "absolute_percentage_error": 1.32591529073942
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 80.8,
+        "simulated_kmh": 80.51282242990655,
+        "absolute_percentage_error": 0.35541778476911856
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 73.7,
+        "simulated_kmh": 78.74734426229507,
+        "absolute_percentage_error": 6.848499677469566
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 78.3,
+        "simulated_kmh": 80.51472,
+        "absolute_percentage_error": 2.8285057471264365
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 45.5,
+        "simulated_kmh": 65.196,
+        "absolute_percentage_error": 43.28791208791208
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 49.8,
+        "simulated_kmh": 65.952,
+        "absolute_percentage_error": 32.43373493975904
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 42.1,
+        "simulated_kmh": 66.132,
+        "absolute_percentage_error": 57.083135391924
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 45.8,
+        "simulated_kmh": 66.31200000000001,
+        "absolute_percentage_error": 44.786026200873394
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 43.4,
+        "simulated_kmh": 65.34,
+        "absolute_percentage_error": 50.55299539170508
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 44.1,
+        "simulated_kmh": 65.808,
+        "absolute_percentage_error": 49.22448979591838
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 45.6,
+        "simulated_kmh": 65.592,
+        "absolute_percentage_error": 43.84210526315789
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 44.7,
+        "simulated_kmh": 67.176,
+        "absolute_percentage_error": 50.28187919463086
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 38.6,
+        "simulated_kmh": 67.03200000000001,
+        "absolute_percentage_error": 73.65803108808292
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 44.7,
+        "simulated_kmh": 66.276,
+        "absolute_percentage_error": 48.26845637583891
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 45.2,
+        "simulated_kmh": 64.83600000000001,
+        "absolute_percentage_error": 43.44247787610621
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 46.3,
+        "simulated_kmh": 66.924,
+        "absolute_percentage_error": 44.54427645788339
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_kmh": 67.4,
+        "simulated_kmh": 66.53309433962264,
+        "absolute_percentage_error": 1.2862101786014386
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_kmh": 64.7,
+        "simulated_kmh": 66.45624000000001,
+        "absolute_percentage_error": 2.714435857805263
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_kmh": 72.6,
+        "simulated_kmh": 65.22194805194805,
+        "absolute_percentage_error": 10.16260598905227
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_kmh": 67.3,
+        "simulated_kmh": 64.0686923076923,
+        "absolute_percentage_error": 4.801348725568641
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_kmh": 57.2,
+        "simulated_kmh": 67.56563265306121,
+        "absolute_percentage_error": 18.12173540744967
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:20:00+08:00",
+        "observed_kmh": 68.6,
+        "simulated_kmh": 64.6512,
+        "absolute_percentage_error": 5.756268221574333
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_kmh": 61.9,
+        "simulated_kmh": 65.3614054054054,
+        "absolute_percentage_error": 5.591931188053971
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:30:00+08:00",
+        "observed_kmh": 65.0,
+        "simulated_kmh": 65.57008695652173,
+        "absolute_percentage_error": 0.8770568561872839
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_kmh": 63.2,
+        "simulated_kmh": 66.91253333333333,
+        "absolute_percentage_error": 5.8742616033755155
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_kmh": 65.8,
+        "simulated_kmh": 65.91573722627737,
+        "absolute_percentage_error": 0.17589244115102556
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_kmh": 63.2,
+        "simulated_kmh": 65.28611612903227,
+        "absolute_percentage_error": 3.300816659861175
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_kmh": 65.1,
+        "simulated_kmh": 65.5608152866242,
+        "absolute_percentage_error": 0.7078575831401088
+      }
+    ],
+    "vehicle_presence_bins": [
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01101",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01102",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01103",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01104",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01106",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01107",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01108",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01109",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01110",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01214",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01215",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01216",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01217",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01218",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01219",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01221",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01222",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T07:55:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "AID01223",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10002",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR10003",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSSPWR20003",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR10001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:00:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:05:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:10:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:15:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:25:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:35:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:40:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:45:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      },
+      {
+        "detector_id": "TDSAPR20001",
+        "time": "2026-05-15T08:50:00+08:00",
+        "observed_empty": false,
+        "simulated_empty": false,
+        "matched": true
+      }
+    ],
+    "geh_under_5_percent": 96.28099173553719,
+    "vehicle_presence_match_percent": 100.0,
+    "observed_zero_count_bins": 0,
+    "observed_zero_count_match_percent": null,
+    "speed_mape_percent": 40.128511409005036,
+    "count_bin_n": 242,
+    "speed_bin_n": 299,
+    "missing_detector_ids": [],
+    "unmatched_observation_intervals": 0,
+    "unmatched_count_intervals": 0,
+    "speed_unavailable_intervals": 0,
+    "meets_85_percent_target": true
+  }
+}
