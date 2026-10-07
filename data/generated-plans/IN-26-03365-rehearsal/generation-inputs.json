@@ -1,0 +1,79 @@
+{
+  "incident": {
+    "incident_id": "IN-26-03365",
+    "source_message_en": "Due to traffic accident , part of the lanes of Wong Chuk Hang Road flyover (Aberdeen Tunnel bound) near Yip Kan Street is closed to all traffic. Only remaining lanes are available to motorists. Traffic is busy now.",
+    "source_message_zh": "因交通意外，黃竹坑道天橋(往香港仔隧道方向)近業勤街的部份行車線現已封閉。 駕駛人士只可使用餘下行車線行車。 現時上址交通繁忙。",
+    "announced_at": "2026-05-15T09:01:00+08:00",
+    "closed_at": null,
+    "status": "NEW",
+    "district": null,
+    "road_name": "Wong Chuk Hang Road flyover",
+    "direction": "Aberdeen Tunnel bound",
+    "near_landmark": "Yip Kan Street",
+    "between_landmark": null,
+    "lat": null,
+    "lon": null,
+    "coords_source": "none",
+    "incident_type": "traffic_accident",
+    "lanes_closed": [
+      "unspecified"
+    ],
+    "lanes_total": null,
+    "in_scope": true,
+    "confidence": 0.7,
+    "notes": "Lanes closed but not specified. The road name includes the direction in parentheses."
+  },
+  "policy_context": {
+    "incident_id": "IN-26-03365",
+    "reviewed": true,
+    "sources": [
+      "data/demo_incident_messages.jsonl",
+      "data/demo_shortlist.md",
+      "data/detectors.csv",
+      "docs/00-brief.md",
+      "docs/02-data.md",
+      "sim/scenarios/evaluator_IN-26-03365_replay.json",
+      "sim/scenarios/evaluator_IN-26-03365_signals.add.xml",
+      "data/plan-context/IN-26-03365_first-report-v2.md"
+    ],
+    "active_from": "2026-05-15T09:01:00+08:00",
+    "active_until": "2026-05-15T10:02:00+08:00",
+    "od_demand_vehicles": {
+      "Aberdeen->Canal Road Flyover": 1060.1,
+      "Aberdeen->Wong Nai Chung Road": 66.0
+    },
+    "routes": [
+      {
+        "od_group": "Aberdeen->Canal Road Flyover",
+        "via": "Wong Chuk Hang Road",
+        "roads": [
+          "Wong Chuk Hang Road"
+        ],
+        "residential": false,
+        "school": true
+      },
+      {
+        "od_group": "Aberdeen->Wong Nai Chung Road",
+        "via": "Wong Chuk Hang Road",
+        "roads": [
+          "Wong Chuk Hang Road"
+        ],
+        "residential": false,
+        "school": true
+      }
+    ],
+    "blocked_roads": [],
+    "signals": {
+      "Wong Chuk Hang Road / Tong Bin Lane": 20
+    },
+    "sign_ids": [],
+    "pt_modes": [],
+    "priority_corridor": {
+      "od": "Aberdeen->Queen Mary Hospital",
+      "keep_clear": [
+        "Pok Fu Lam Road",
+        "Shek Pai Wan Road"
+      ]
+    }
+  }
+}

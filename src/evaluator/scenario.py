@@ -2,14 +2,63 @@
 
 The file is one of the hashed simulation inputs, so the assumptions travel with
 every result. Nothing here is read from an LLM.
+
+Four blocks are optional. A scenario without them runs exactly as before:
+
+  closure.scene   speeds E sets around the crash: the closed edge and the lanes
+                  leading to it. With it, a lane closed while another stays
+                  open is closed to traffic (drivers move over beforehand)
+                  instead of being set to zero speed.
+  vehicles        the mean vehicle length, which sets how much road a queue takes.
+  drivers_leave   drivers who see the queue ahead of an exit take that exit.
+  plan_actions    where a plan's od groups, routes and junctions are in this
+                  network. Without it E can only run P0.
 """
+import hashlib
 from datetime import datetime
 
 from src.generation import load_json, validate
 from src.plans.schema import NAME, array, obj
 
 SECONDS = {"type": "number", "minimum": 0}
+POSITIVE = {"type": "number", "exclusiveMinimum": 0}
+SHARE = {"type": "number", "minimum": 0, "maximum": 1}
 EDGES = array(NAME, minItems=1, uniqueItems=True)
+LANES = array(NAME, minItems=1, uniqueItems=True)
+
+
+def optional(schema, *names):
+    """`schema` with these properties allowed to be absent."""
+    schema["required"] = [name for name in schema["required"] if name not in names]
+    return schema
+
+
+def named(items):
+    return {"type": "object", "additionalProperties": items}
+
+
+SCENE = optional(obj({
+    "approach_edges": EDGES,                 # the lanes leading to the closed edge, where traffic passes the scene
+    "open_kmh": POSITIVE,                    # the closed edge and the approach when nothing is closed
+    "passing_kmh": POSITIVE,                 # the open lanes of the closed edge while another lane is closed
+    "crawl_kmh": POSITIVE,                   # the approach while every lane is closed
+    "move_over_at_edges": EDGES,             # where drivers learn a lane ahead is closed; default reroute_at_edges
+    "reopening": obj({"lanes": LANES, "minutes": POSITIVE, "approach_kmh": POSITIVE}),
+}), "move_over_at_edges", "reopening")
+DRIVERS_LEAVE = optional(obj({
+    "share": SHARE,                          # of the drivers who see the queue at an exit
+    "queue_kmh": POSITIVE,                   # traffic ahead slower than this is a queue
+    "route_crosses": NAME,                   # only drivers heading for this edge
+    "exits": array(obj({"decide_on": EDGES, "exit_edge": NAME, "look_ahead": EDGES,
+                        "nearside_lanes": {"type": "integer", "minimum": 1}}), minItems=1),
+    "entry": obj({"edge": NAME, "after_waiting_seconds": POSITIVE}),
+    "extra_minutes_outside": {"type": "number", "minimum": 0},
+}), "entry")
+PLAN_ACTIONS = obj({
+    "od_groups": named(obj({"via_edge": NAME, "to_edge": NAME})),
+    "routes": named(obj({"replace": EDGES, "with": EDGES})),
+    "signals": named(obj({"tls_id": NAME, "green_phases": array({"type": "integer", "minimum": 0}, minItems=1)})),
+})
 SCENARIO_SCHEMA = obj({
     "incident_id": NAME,
     "run_prefix": NAME,                      # date and corridor, e.g. 2026-05-15_ABD
@@ -17,17 +66,21 @@ SCENARIO_SCHEMA = obj({
     "status": NAME,
     "sumo_version": NAME,
     "seed": {"type": "integer"},
-    "inputs": obj({"network": NAME, "routes": NAME, "detector_loops": NAME, "observations": NAME}),
+    "inputs": optional(obj({"network": NAME, "routes": NAME, "detector_loops": NAME, "observations": NAME,
+                            "speed_signs": NAME}), "speed_signs"),
     "run": obj({"begin": {"type": "string", "format": "date-time"},
                 "end_seconds": {"type": "integer", "exclusiveMinimum": 0},
                 "warmup_seconds": {"type": "integer", "minimum": 0},
                 "wall_timeout_seconds": {"type": "integer", "exclusiveMinimum": 0}}),
-    "closure": obj({"edge_id": NAME, "lanes_total": {"type": "integer", "minimum": 1},
-                    "onset_seconds": SECONDS,
-                    "phases": array(obj({"offset_seconds": SECONDS,
-                                         "lanes": array(NAME, minItems=1, uniqueItems=True)}),
-                                    minItems=1),
-                    "reroute_at_edges": EDGES}),   # optional: see reroute_window
+    "closure": optional(obj({"edge_id": NAME, "lanes_total": {"type": "integer", "minimum": 1},
+                             "onset_seconds": SECONDS,
+                             "phases": array(obj({"offset_seconds": SECONDS, "lanes": LANES}), minItems=1),
+                             "reroute_at_edges": EDGES,          # see reroute_window
+                             "scene": SCENE}), "reroute_at_edges", "scene"),
+    "vehicles": obj({"type": NAME, "length_m": POSITIVE}),
+    "drivers_leave": DRIVERS_LEAVE,
+    "plan_actions": PLAN_ACTIONS,
+    "speed_assessment_detectors": array(NAME, minItems=1, uniqueItems=True),   # where the model makes the speed itself
     "assumptions": array(obj({"choice": NAME, "status": NAME, "source": NAME}), minItems=1),
     "metrics": obj({
         "queue_paths": {"type": "object", "minProperties": 1, "additionalProperties": EDGES},
@@ -36,7 +89,7 @@ SCENARIO_SCHEMA = obj({
         "residential_edge_types": array(NAME, minItems=1, uniqueItems=True),
     }),
 })
-SCENARIO_SCHEMA["properties"]["closure"]["required"].remove("reroute_at_edges")
+optional(SCENARIO_SCHEMA, "vehicles", "drivers_leave", "plan_actions", "speed_assessment_detectors")
 STEP_SECONDS = 1        # every twin run so far uses a one-second step
 BIN_SECONDS = 300       # detector observations and edge statistics are five-minute bins
 
@@ -76,7 +129,21 @@ def load(path):
         raise ValueError("Closure phases must start at offset 0 and be strictly increasing")
     for phase in closure["phases"]:
         lane_indices(phase["lanes"], closure["lanes_total"])
+    scene = closure.get("scene")
+    if scene:
+        if "reroute_at_edges" not in closure:
+            raise ValueError("A scene needs closure.reroute_at_edges: where drivers move over or turn off")
+        if "reopening" in scene:
+            still = lane_indices(scene["reopening"]["lanes"], closure["lanes_total"])
+            if len(still) == closure["lanes_total"]:
+                raise ValueError("At reopening at least one lane must open")
     return scenario
+
+
+def draw(seed, *parts):
+    """A number in [0, 1) fixed by the run's seed and these words: the same driver decides the same way in every run."""
+    text = ":".join(map(str, (seed,) + parts)).encode("utf-8")
+    return int(hashlib.sha256(text).hexdigest()[:13], 16) / 16 ** 13
 
 
 def closure_steps(scenario, clearance_min):
@@ -89,7 +156,18 @@ def closure_steps(scenario, clearance_min):
               lane_indices(phase["lanes"], closure["lanes_total"]))
              for phase in closure["phases"]
              if phase["offset_seconds"] < clearance_min * 60]
-    return steps + [(reopen, [])]
+    reopening = closure.get("scene", {}).get("reopening")
+    if not reopening:
+        return steps + [(reopen, [])]
+    last = reopen + round(reopening["minutes"] * 60)       # the road reopens in two stages
+    if last > scenario["run"]["end_seconds"]:
+        raise ValueError("Every lane must reopen within the run")
+    return steps + [(reopen, lane_indices(reopening["lanes"], closure["lanes_total"])), (last, [])]
+
+
+def reopen_second(scenario, clearance_min):
+    """When the first lane reopens: the clearance, counted from the closure onset."""
+    return scenario["closure"]["onset_seconds"] + round(clearance_min * 60)
 
 
 def reroute_window(scenario, clearance_min):
@@ -104,7 +182,42 @@ def reroute_window(scenario, clearance_min):
         return None
     steps = closure_steps(scenario, clearance_min)
     shut = [second for second, lanes in steps if len(lanes) == closure["lanes_total"]]
-    return (shut[0], steps[-1][0]) if shut else None
+    return (shut[0], reopen_second(scenario, clearance_min)) if shut else None
+
+
+def lane_closures(scenario, clearance_min):
+    """[(from, until, lane indices)] while some lanes are closed and others open. Empty without a scene.
+
+    With a scene these lanes are closed to traffic, so drivers move over before
+    them. Without one they are set to zero speed, as src/twin/run_scenario.py does.
+    """
+    closure = scenario["closure"]
+    if "scene" not in closure:
+        return []
+    steps = closure_steps(scenario, clearance_min)
+    return [(second, until, lanes) for (second, lanes), (until, _) in zip(steps, steps[1:])
+            if 0 < len(lanes) < closure["lanes_total"]]
+
+
+def scene_speeds(scenario, clearance_min, now):
+    """(km/h on the closed edge, km/h on the approach) that E sets at simulation second `now`.
+
+    Some lanes closed: the open lanes pass at `passing_kmh`. Every lane
+    closed: nobody new gets onto the edge (they are turned off at
+    `reroute_at_edges`), the few already on it leave at the same speed, and
+    the approach crawls past the scene. Some lanes still closed after the first
+    one reopens: the edge runs freely and the approach at the reopening speed.
+    """
+    closure, scene = scenario["closure"], scenario["closure"]["scene"]
+    steps = closure_steps(scenario, clearance_min)
+    closed = ([lanes for second, lanes in steps if second <= now] or [[]])[-1]
+    if len(closed) == closure["lanes_total"]:
+        return scene["passing_kmh"], scene["crawl_kmh"]
+    if closed and now < reopen_second(scenario, clearance_min):
+        return scene["passing_kmh"], scene["open_kmh"]
+    if closed:
+        return scene["open_kmh"], scene["reopening"]["approach_kmh"]
+    return scene["open_kmh"], scene["open_kmh"]
 
 
 def run_id(scenario, plan_id, compliance, clearance_min):

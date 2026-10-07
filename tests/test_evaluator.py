@@ -1,6 +1,6 @@
-"""E: lane mapping, closure timing, metrics read from simulator output, and the provenance-bound result.
+"""E: lane mapping, closure timing, driver behaviour, plan actions, metrics and the provenance-bound result.
 
-No SUMO needed: the simulator is replaced by mock output files written here.
+No SUMO needed: the simulator is replaced by mock output files and a stand-in for TraCI written here.
 """
 import json
 import shutil
@@ -12,7 +12,9 @@ import pytest
 
 from src.briefing.schema import RESULT_SCHEMA
 from src.evaluation_provenance import sidecar_path, verify_result
-from src.evaluator import metrics, od_demand, run, scenario as scenarios, simulate
+from src.evaluator import metrics, od_demand, run, scenario as scenarios, simulate, speed_signs
+from src.evaluator.actions import PlanActions
+from src.evaluator.behaviour import LEFT_FILE, DriversLeave
 from src.generation import load_json, validate
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -56,11 +58,11 @@ class MockNet:
         return self.edges[edge_id]
 
 
-def write_mock_output(work):
+def write_mock_output(work, trips=TRIPS):
     work = Path(work)
     (work / "tripinfo.xml").write_text("<tripinfos>" + "".join(
         f'<tripinfo id="{i}" depart="{d}" departDelay="{w}" arrival="{a}" duration="{t}" timeLoss="{loss}">'
-        f'<emissions CO2_abs="{co2}"/></tripinfo>' for i, d, w, a, t, loss, co2 in TRIPS) + "</tripinfos>")
+        f'<emissions CO2_abs="{co2}"/></tripinfo>' for i, d, w, a, t, loss, co2 in trips) + "</tripinfos>")
     (work / "queues.xml").write_text("<queue-export>" + "".join(
         f'<data timestep="{t}"><lanes>' + "".join(
             f'<lane id="{lane}" queueing_length="{m}"/>' for lane, m in lanes.items()) + "</lanes></data>"
@@ -74,10 +76,10 @@ def write_mock_output(work):
         '<interval begin="600" nVehContrib="0" speed="-1"/></detector>')
 
 
-def mock_run(complete=True):
-    def fake(scenario, files, work, clearance_min, on_step=None):
+def mock_run(complete=True, trips=TRIPS):
+    def fake(scenario, files, work, clearance_min, controllers=()):
         simulate.prepare(scenario, files, work, clearance_min)
-        write_mock_output(work)
+        write_mock_output(work, trips)
         return {"complete": complete, "final_time_seconds": 900 if complete else 450,
                 "vehicles_loaded": 7, "vehicles_inserted": 6, "vehicles_waiting_to_enter_at_end": 1,
                 "teleports": {"total": 0, "jam": 0, "yield": 0, "wrongLane": 0}}
@@ -297,7 +299,7 @@ def test_unfinished_run_writes_no_result(evaluate, tmp_path, monkeypatch):
     assert not (tmp_path / "results").exists()
 
 
-def test_plans_with_actions_are_refused_until_they_are_modelled(evaluate, tmp_path):
+def test_plan_with_actions_is_refused_on_a_scenario_that_cannot_place_them(evaluate, tmp_path):
     with pytest.raises(NotImplementedError, match="only run P0"):
         evaluate("P1")
     assert not (tmp_path / "results").exists() and not (tmp_path / "work").exists()
@@ -335,3 +337,366 @@ def test_do_nothing_plan_is_the_validators_p0():
     expected = load_json(FIXTURES / "mock_recommendation" / "mock_p0.json")
     assert {k: v for k, v in plan.items() if k not in ("label", "rationale")} == \
         {k: v for k, v in expected.items() if k not in ("label", "rationale")}
+
+
+# --- a scenario with a scene, drivers who leave, and plan actions -----------------------
+
+SCENE = {"approach_edges": ["in"], "open_kmh": 72, "passing_kmh": 3.6, "crawl_kmh": 7.2,
+         "reopening": {"lanes": ["slow"], "minutes": 2, "approach_kmh": 18}}
+LEAVE = {"share": 1.0, "queue_kmh": 15, "route_crosses": "closed",
+         "exits": [{"decide_on": ["far", "in"], "exit_edge": "off", "look_ahead": ["closed"], "nearside_lanes": 1}],
+         "entry": {"edge": "far", "after_waiting_seconds": 60}, "extra_minutes_outside": 20}
+PLACES = {"od_groups": {"Mock origin->Mock destination": {"via_edge": "closed", "to_edge": "out"}},
+          "routes": {"Mock Detour": {"replace": ["closed"], "with": ["under1", "under2"]}},
+          "signals": {"MOCK-J": {"tls_id": "tls", "green_phases": [0]}}}
+
+
+def full_scenario(tmp_path, **changes):
+    """The mock scenario with every optional block, starting two minutes before the mock plans' action window."""
+    scenario = load_json(MOCK / "mock_scenario.json")
+    scenario["run"]["begin"] = "2026-05-15T08:59:00+08:00"       # the mock context acts from 09:01, second 120
+    scenario["closure"].update(reroute_at_edges=["in"], scene=SCENE)
+    scenario.update(drivers_leave=LEAVE, plan_actions=PLACES, vehicles={"type": "car", "length_m": 6.5},
+                    speed_assessment_detectors=["MOCK01"])
+    scenario.update(changes)
+    path = tmp_path / "mock_full.json"
+    path.write_text(json.dumps(scenario))
+    return scenarios.load(path), path
+
+
+def test_a_scene_reopens_in_two_stages_and_sets_the_speeds_around_the_crash(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    assert scenarios.closure_steps(scenario, 5) == [(300, [0]), (420, [0, 1]), (600, [0]), (720, [])]
+    assert scenarios.reroute_window(scenario, 5) == (420, 600)            # turned off only while every lane is closed
+    assert scenarios.lane_closures(scenario, 5) == [(300, 420, [0]), (600, 720, [0])]
+    speeds = [scenarios.scene_speeds(scenario, 5, second) for second in (0, 300, 420, 600, 720)]
+    assert speeds == [(72, 72), (3.6, 72), (3.6, 7.2), (72, 18), (72, 72)]   # (closed edge, approach) in km/h
+    with pytest.raises(ValueError, match="within the run"):
+        scenarios.closure_steps(scenario, 9)                              # the second stage would end after the run
+
+
+def test_a_scene_needs_somewhere_for_drivers_to_turn_off(tmp_path):
+    scenario = load_json(MOCK / "mock_scenario.json")
+    scenario["closure"]["scene"] = SCENE
+    path = tmp_path / "mock_scene_only.json"
+    path.write_text(json.dumps(scenario))
+    with pytest.raises(ValueError, match="reroute_at_edges"):
+        scenarios.load(path)
+
+
+def test_draws_are_fixed_by_seed_and_words():
+    assert scenarios.draw(42, "f1.0", "advice") == scenarios.draw(42, "f1.0", "advice")
+    assert scenarios.draw(42, "f1.0", "advice") != scenarios.draw(43, "f1.0", "advice")
+    draws = [scenarios.draw(42, f"f1.{i}", "advice") for i in range(2000)]
+    assert all(0 <= d < 1 for d in draws) and 0.45 < sum(draws) / len(draws) < 0.55
+
+
+def test_with_a_scene_part_closed_lanes_are_closed_to_traffic_and_signs_are_loaded(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    files = {name: Path(path) for name, path in scenario["inputs"].items()}
+    files["speed_signs"] = MOCK / "mock_loops.add.xml"                    # any file: prepare only passes it on
+    extras = simulate.prepare(scenario, files, tmp_path / "work", 5)
+    assert extras[2] == files["speed_signs"]
+    assert extras[-1].read_text() == (
+        '<additional><rerouter id="closure" edges="in"><interval begin="420" end="600">'
+        '<closingReroute id="closed"/></interval></rerouter>'
+        '<rerouter id="lanes" edges="in"><interval begin="300" end="420">'
+        '<closingLaneReroute id="closed_0" disallow="all"/></interval><interval begin="600" end="720">'
+        '<closingLaneReroute id="closed_0" disallow="all"/></interval></rerouter></additional>\n')
+
+
+class Road:
+    """A stand-in for TraCI with vehicles on edges: enough for the closure, the drivers and a plan's actions."""
+
+    class TraCIException(Exception):
+        pass
+
+    def __init__(self):
+        self.on, self.speed, self.routes, self.lane_index, self.index = {}, {}, {}, {}, {}
+        self.pending, self.departed, self.removed, self.lane_speeds = [], [], [], {}
+        self.program, self.logics = "0", {"0": types.SimpleNamespace(programID="0", type=0, phases=[
+            types.SimpleNamespace(duration=24, state="G"), types.SimpleNamespace(duration=6, state="y")])}
+        self.edge = types.SimpleNamespace(
+            getLastStepVehicleIDs=lambda edge: list(self.on.get(edge, [])),
+            getLastStepVehicleNumber=lambda edge: len(self.on.get(edge, [])),
+            getLastStepMeanSpeed=lambda edge: self.speed.get(edge, 20.0), getLaneNumber=lambda edge: 2)
+        self.vehicle = types.SimpleNamespace(
+            getRoute=lambda v: tuple(self.routes[v]), getRouteIndex=lambda v: self.index.get(v, 0),
+            getLaneIndex=lambda v: self.lane_index.get(v, 0), setRoute=self.set_route,
+            getIDList=lambda: sorted(v for vehicles in self.on.values() for v in vehicles),
+            remove=self.removed.append)
+        self.simulation = types.SimpleNamespace(getPendingVehicles=lambda: list(self.pending),
+                                                getDepartedIDList=lambda: list(self.departed))
+        self.lane = types.SimpleNamespace(setMaxSpeed=self.lane_speeds.__setitem__)
+        self.trafficlight = types.SimpleNamespace(
+            getProgram=lambda tls: self.program, getAllProgramLogics=lambda tls: list(self.logics.values()),
+            setProgramLogic=lambda tls, logic: self.logics.__setitem__(logic.programID, logic),
+            setProgram=lambda tls, program: setattr(self, "program", program),
+            Phase=lambda duration, state: types.SimpleNamespace(duration=duration, state=state),
+            Logic=lambda program, kind, index, phases: types.SimpleNamespace(programID=program, type=kind, phases=phases))
+
+    def set_route(self, vehicle, route):
+        if route[0] != self.routes[vehicle][self.index.get(vehicle, 0)]:
+            raise self.TraCIException("a new route must start where the vehicle is")
+        self.routes[vehicle], self.index[vehicle] = list(route), 0
+
+    def put(self, vehicle, edge, route, lane=0):
+        self.on.setdefault(edge, []).append(vehicle)
+        self.routes[vehicle], self.lane_index[vehicle], self.index[vehicle] = list(route), lane, route.index(edge)
+
+
+THROUGH = ["far", "in", "closed", "out"]
+
+
+def test_closure_with_a_scene_sets_each_lane_only_when_its_speed_changes(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    for now in (0, 1, 300, 420, 421, 600, 720):
+        closure.step(road, now)
+        if now == 0:
+            assert road.lane_speeds == {"closed_0": 20.0, "closed_1": 20.0, "in_0": 20.0, "in_1": 20.0}
+            road.lane_speeds.clear()
+        elif now in (1, 421):
+            assert road.lane_speeds == {}                                 # nothing changed: nothing sent
+        elif now == 420:
+            assert road.lane_speeds == {"in_0": 2.0, "in_1": 2.0}         # the approach crawls; the edge already did
+            road.lane_speeds.clear()
+        else:
+            road.lane_speeds.clear()
+
+
+def test_a_driver_at_an_exit_leaves_only_when_the_traffic_ahead_is_queued(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    road, drivers = Road(), DriversLeave(scenario)
+    road.put("a.0", "in", THROUGH)
+    road.put("ahead.0", "closed", THROUGH)
+    drivers.step(road, 10)
+    assert road.routes["a.0"] == THROUGH and drivers.left == []           # traffic ahead is moving
+    road.speed["closed"] = 1.0
+    drivers.step(road, 11)
+    assert road.routes["a.0"] == ["in", "off"]
+    assert drivers.left == [{"id": "a.0", "how": "exit", "edge": "off", "second": 11}]
+
+
+def test_only_nearside_drivers_heading_for_the_queue_leave(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    road, drivers = Road(), DriversLeave(scenario)
+    road.speed["closed"] = 1.0
+    road.put("ahead.0", "closed", THROUGH)
+    road.put("offside.0", "in", THROUGH, lane=1)
+    road.put("local.0", "in", ["far", "in", "home"])
+    drivers.step(road, 10)
+    assert drivers.left == []
+    road.lane_index["offside.0"] = 0                                      # it has moved over since
+    drivers.step(road, 11)
+    assert [row["id"] for row in drivers.left] == ["offside.0"]
+    assert road.routes["local.0"] == ["far", "in", "home"]
+
+
+def test_share_decides_how_many_leave(tmp_path):
+    scenario, _ = full_scenario(tmp_path, drivers_leave={**LEAVE, "share": 0.4})
+    road, drivers = Road(), DriversLeave(scenario)
+    road.speed["closed"] = 1.0
+    road.put("ahead.0", "closed", THROUGH)
+    for i in range(1000):
+        road.put(f"f.{i}", "in", THROUGH)
+    drivers.step(road, 10)
+    assert 350 < len(drivers.left) < 450
+    drivers.step(road, 11)                                                # nobody is asked twice at the same exit
+    assert 350 < len(drivers.left) < 450
+
+
+def test_a_driver_kept_out_by_the_queue_gives_up_after_waiting(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    road, drivers = Road(), DriversLeave(scenario)
+    road.pending, road.routes = ["late.0", "ramp.0"], {"late.0": THROUGH, "ramp.0": ["ramp", "in", "closed", "out"]}
+    drivers.step(road, 100)
+    drivers.step(road, 159)
+    assert road.removed == []                                             # under a minute
+    drivers.step(road, 160)
+    assert road.removed == ["late.0"]                                     # the rule is for the corridor's entry only
+    assert drivers.left == [{"id": "late.0", "how": "entry", "edge": "far", "second": 160, "waited_seconds": 60}]
+    drivers.save(tmp_path)
+    assert load_json(tmp_path / LEFT_FILE) == drivers.left
+    assert drivers.report()["vehicles_left_by_edge"] == {"far": 1}
+
+
+@pytest.fixture
+def mock_plans():
+    folder = FIXTURES / "mock_recommendation"
+    return ({plan: load_json(folder / f"mock_{plan.lower()}.json") for plan in ("P0", "P1", "P2")},
+            load_json(folder / "mock_generation-inputs.json")["policy_context"])
+
+
+def test_plan_actions_e_cannot_model_are_refused(tmp_path, mock_plans):
+    plans, context = mock_plans
+    scenario, _ = full_scenario(tmp_path)
+    with pytest.raises(NotImplementedError, match="public transport"):
+        PlanActions({**plans["P1"], "pt_nudge": {"mode": "MTR", "intent": "ride"}}, context, scenario, 0.5, 5)
+    with pytest.raises(NotImplementedError, match="does not place 'Mock Alternative'"):
+        PlanActions({**plans["P1"], "diversions": [{**plans["P1"]["diversions"][0], "via": "Mock Alternative"}]},
+                    context, scenario, 0.5, 5)
+    with pytest.raises(NotImplementedError, match="only run P0"):
+        PlanActions(plans["P1"], context, scenarios.load(SCENARIO), 0.5, 5)
+
+
+def test_advised_drivers_take_the_detour_and_go_back_when_the_road_reopens(tmp_path, mock_plans):
+    plans, context = mock_plans
+    scenario, _ = full_scenario(tmp_path)
+    road, actions = Road(), PlanActions(plans["P1"], context, scenario, 1.0, 5)
+    assert (actions.start, actions.end) == (120, 600)                     # from the report until the first lane reopens
+    road.put("early.0", "far", THROUGH)
+    road.put("past.0", "closed", THROUGH)
+    road.put("local.0", "far", ["far", "in", "home"])
+    actions.step(road, 119)
+    assert road.routes["early.0"] == THROUGH                              # nothing before the report
+    actions.step(road, 120)                                               # everyone on the road hears it at once
+    assert road.routes["early.0"] == ["far", "in", "under1", "under2", "out"]
+    assert road.routes["past.0"] == THROUGH and road.routes["local.0"] == ["far", "in", "home"]
+    road.on["far"].append("next.0")
+    road.routes["next.0"], road.departed = list(THROUGH), ["next.0"]
+    actions.step(road, 121)                                               # later drivers hear it as they set off
+    assert road.routes["next.0"] == ["far", "in", "under1", "under2", "out"]
+    assert actions.follows("next.0", road.routes["next.0"], 121) and not actions.follows("next.0", THROUGH, 600)
+    road.departed, road.index["early.0"] = [], 2                          # early.0 is on the detour by now
+    actions.step(road, 600)
+    assert road.routes["next.0"] == THROUGH and road.routes["early.0"][-3:] == ["under1", "under2", "out"]
+    assert actions.report()["vehicles_that_took_the_advised_route"] == 2
+    assert actions.report()["of_them_back_on_the_reopened_road"] == 1
+
+
+def test_compliance_scales_how_many_follow_and_followers_do_not_leave(tmp_path, mock_plans):
+    plans, context = mock_plans
+    scenario, _ = full_scenario(tmp_path, drivers_leave={**LEAVE, "route_crosses": "in"})   # the detour crosses it too
+    road, actions = Road(), PlanActions(plans["P1"], context, scenario, 0.3, 5)
+    for i in range(1000):
+        road.put(f"f.{i}", "in", THROUGH)
+    road.put("ahead.0", "closed", THROUGH)
+    road.speed["closed"] = 1.0
+    drivers = DriversLeave(scenario, actions)                             # share 1: everyone who may leave does
+    actions.step(road, 120)
+    drivers.step(road, 120)
+    assert 250 < len(actions.rerouted) < 350
+    assert len(drivers.left) == 1000 - len(actions.rerouted)
+    assert not {row["id"] for row in drivers.left} & actions.rerouted
+
+
+def test_signal_green_is_extended_for_the_action_window_only(tmp_path, mock_plans):
+    plans, context = mock_plans
+    scenario, _ = full_scenario(tmp_path)
+    plan = {**plans["P0"], "plan_id": "P2", "signals": [{"junction_id": "MOCK-J", "green_extend_s": 10}]}
+    road, actions = Road(), PlanActions(plan, context, scenario, 0.5, 5)
+    actions.step(road, 119)
+    assert road.program == "0"
+    actions.step(road, 120)
+    assert road.program == "plan" and [p.duration for p in road.logics["plan"].phases] == [34, 6]
+    actions.step(road, 600)
+    assert road.program == "0" and [p.duration for p in road.logics["0"].phases] == [24, 6]
+
+
+def test_vehicles_that_left_the_corridor_are_charged_and_not_counted_as_completed(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    files = {name: Path(path) for name, path in scenario["inputs"].items()}
+    simulate.prepare(scenario, files, tmp_path / "work", 5)
+    write_mock_output(tmp_path / "work")
+    before, _ = metrics.compute(scenario, files, tmp_path / "work", MockNet())
+    (tmp_path / "work" / LEFT_FILE).write_text(json.dumps([
+        {"id": "main.2", "how": "exit", "edge": "off", "second": 500},
+        {"id": "main.9", "how": "entry", "edge": "far", "second": 700, "waited_seconds": 90},
+        {"id": "main.8", "how": "entry", "edge": "far", "second": 250, "waited_seconds": 60}]))   # scheduled in the warm-up
+    after, detail = metrics.compute(scenario, files, tmp_path / "work", MockNet())
+    assert detail["vehicles_in_scope_left_corridor"] == {"at_an_exit": 1, "kept_out_of_the_network": 1}
+    assert detail["vehicles_in_scope"] == 7
+    assert detail["delay_hours_assumed_outside_network"] == round(2 * 20 / 60 + 90 / 3600, 1)
+    assert after["total_vehicle_hours_delay"] == round((670 + 310 + 2 * 1200 + 90) / 3600, 1)
+    assert after["vehicles_completed"] == before["vehicles_completed"] - 1
+    assert detail["corridor_vehicles"] == 2                               # main.2 left: its time is not a corridor time
+
+
+# --- P1 and P2 against their P0 ----------------------------------------------------------
+
+@pytest.fixture
+def evaluate_plans(tmp_path, plans, monkeypatch):
+    shutil.copy(FIXTURES / "mock_recommendation" / "mock_p2.json", plans / "P2.json")
+    monkeypatch.setattr(metrics, "read_net", lambda path: MockNet())
+    _, scenario_path = full_scenario(tmp_path)
+
+    def call(plan_id, trips=TRIPS, scenario=scenario_path):
+        monkeypatch.setattr(simulate, "run", mock_run(trips=trips))
+        return run.evaluate(plans, plan_id, scenario, 0.5, 5.0,
+                            results_dir=tmp_path / "results", work_root=tmp_path / "work")
+    return call
+
+
+def test_a_plan_is_compared_with_the_p0_of_the_same_scenario(evaluate_plans, plans):
+    with pytest.raises(ValueError, match="Run P0 first"):
+        evaluate_plans("P1")
+    p0, p0_report, _ = evaluate_plans("P0")
+    quicker = [(i, d, w, a, t, loss / 2, co2) for i, d, w, a, t, loss, co2 in TRIPS]
+    p1, report, path = evaluate_plans("P1", trips=quicker)
+    validate(p1, RESULT_SCHEMA)
+    assert p1["validation"] == {}                                         # only P0 is compared with the real morning
+    assert p1["metrics"]["total_vehicle_hours_delay"] == round((335 + 310) / 3600, 1)
+    assert p1["metrics"]["delay_vs_do_nothing_pct"] == round(100 * (0.2 - 0.3) / 0.3, 1)
+    assert report["compared_with"] == {"run_id": p0["run_id"], "validation": p0["validation"]}
+    assert report["validation_targets_met"] is p0_report["validation_targets_met"]
+    assert report["plan_effects_modelled"]["diversions"] == [
+        {"od_group": "Mock origin->Mock destination", "probability_a_driver_follows": 0.5}]
+    assert p0_report["speed_error_by_source"]["model_makes_the_speed"]["speed_bins"] == 1
+    verify_result(path, p1, load_json(plans / "P1.json"), load_json(plans / "generation-inputs.json"))
+
+
+def test_a_plan_is_refused_if_its_p0_was_made_from_other_inputs(evaluate_plans, tmp_path):
+    evaluate_plans("P0")
+    scenario = load_json(tmp_path / "mock_full.json")
+    scenario["assumptions"][0]["choice"] = "Edited after P0 was run"
+    (tmp_path / "mock_full.json").write_text(json.dumps(scenario))
+    with pytest.raises(ValueError, match="different simulation inputs"):
+        evaluate_plans("P1")
+
+
+# --- speed signs and the rehearsal plans -------------------------------------------------
+
+def test_refreshed_signs_show_the_speed_measured_in_the_quarter_hour_before():
+    observations = {"detectors": [{"id": "D1", "observations": [
+        {"time": "2026-01-01T08:00:00+08:00", "count": 30, "speed_kmh": 30.0},
+        {"time": "2026-01-01T08:05:00+08:00", "count": 10, "speed_kmh": 10.0},     # 40 vehicles, harmonic mean 20
+        {"time": "2026-01-01T08:35:00+08:00", "count": None, "speed_kmh": None}]}]}
+    own = speed_signs.own_profile(observations, 15)
+    assert own == {"D1": {"08:00": pytest.approx(20.0)}}
+    ordinary = {"07:45": 60.0, "08:00": 50.0, "08:15": 40.0, "08:30": 45.0}
+    profile, ratios = speed_signs.refreshed(ordinary, own["D1"])
+    assert profile == {"07:45": 60.0, "08:00": 50.0, "08:15": 20.0, "08:30": 45.0}   # no reading before 08:30: ordinary
+    assert ratios == {"08:15": 0.5}
+
+
+def test_sign_file_keeps_ordinary_speeds_where_the_queue_must_form_by_itself():
+    import datetime as dt
+    import xml.etree.ElementTree as ET
+    signs = ET.fromstring('<additional><variableSpeedSign id="vss_a" lanes="a_0"/>'
+                          '<variableSpeedSign id="vss_b" lanes="b_0"/><variableSpeedSign id="vss_c" lanes="c_0"/></additional>')
+    inputs = {"day": "2026-01-01", "ordinary_days": [], "speed_profile_minutes": 15,
+              "speed_profile_kmh": {"D1": {"08:00": 50.0, "08:15": 40.0}, "D2": {"08:00": 72.0, "08:15": 72.0}}}
+    observations = {"detectors": [{"id": d, "observations": [
+        {"time": "2026-01-01T08:00:00+08:00", "count": 10, "speed_kmh": 18.0}]} for d in ("D1", "D2")]}
+    out, report = speed_signs.build(signs, {"a": "D1", "b": "D2", "c": "D2"}, inputs, observations,
+                                    ordinary_only={"D2"}, drop_edges={"c"},
+                                    begin=dt.datetime.fromisoformat("2026-01-01T08:00:00+08:00"), end_seconds=1800)
+    steps = {sign.get("id"): [(step.get("time"), step.get("speed")) for step in sign] for sign in out}
+    assert steps == {"vss_a": [("0", "13.89"), ("900", "5.00")], "vss_b": [("0", "20.00"), ("900", "20.00")]}
+    assert report["detectors"]["D1"]["kind"] == "refreshed" and report["detectors"]["D2"]["kind"] == "ordinary only"
+    assert report["edges_left_unsigned"] == ["c"]
+
+
+def test_rehearsal_plans_pass_ds_checks_and_differ(mock_plans):
+    from src.evaluator.rehearsal_plans import rehearsal_plans
+    _, context = mock_plans
+    inputs = load_json(FIXTURES / "mock_recommendation" / "mock_generation-inputs.json")
+    context = {**context, "routes": context["routes"][:1]}                # one detour, as in the real context
+    p0, p1, p2 = rehearsal_plans(inputs["incident"], context, 0.5)
+    assert not p0["diversions"] and not p0["signals"]
+    assert [d["share"] for d in p1["diversions"]] == [1] and not p1["signals"]
+    assert [d["share"] for d in p2["diversions"]] == [0.5]
+    assert p2["signals"] == [{"junction_id": "MOCK-J", "green_extend_s": 10}]
+    with pytest.raises(ValueError, match="exactly one detour"):
+        rehearsal_plans(inputs["incident"], {**context, "routes": mock_plans[1]["routes"][:2]}, 0.5)
