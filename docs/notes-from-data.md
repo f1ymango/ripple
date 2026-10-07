@@ -5,6 +5,52 @@ touch someone else's. **Nothing in your files has been changed.** Each note
 says what we found, where the proof is, and what we suggest. Pick them up when
 you are next in that code; strike a note through when it is done.
 
+## 8 Oct 2026
+
+All four come from [the replay note](evaluator-replay-2026-10-08.md).
+
+### For the Lead
+
+**20. How to word the validation.** E's P0 replay of IN-26-03365 meets both
+targets over the whole run: GEH < 5 in 89.29% of count bins, speed error
+14.54%. But on 21 of the 25 detectors the speed is an input, refreshed from
+the detector's own previous quarter-hour. With ordinary-morning speeds only it
+is 16.75%, and on the crashed stretch, where the model makes the speed, 31%.
+Suggested sentence for the slide is in section 2 of the note. Your call which
+figure leads.
+
+**21. D's plans and the seed.** E now runs P1 and P2. So far only on stand-ins
+from `src/evaluator/rehearsal_plans.py`, built on
+[a second context](../data/plan-context/IN-26-03365_first-report-v2.md) that
+offers D one junction. Two things for you: generate D's own set from that
+context, and decide whether the briefing compares one seed or several. The
+stand-ins lower delay by 1 to 5% and P0 alone moves 3% from seed to seed, so
+one seed cannot rank them. E refuses a plan that uses public transport.
+
+### For Simulation
+
+**22. The tunnel side of the flyover.** During the closure AID01106 and
+AID01107 counted 895 and 824 vehicles in ten bins while AID01103, before the
+fork, counted 433. So about half the tunnel's traffic did not come over the
+flyover, and the model has almost none of it: it sends 330 and 328. That is
+36 of P0's 65 failing count bins. Two things could explain it and both are
+yours to check: traffic joining after the flyover that the demand lacks, or
+AID01106 standing somewhere other than edge `1198101443` (your map review
+already flags it). The on-ramp at `46766432` is the other loose end: 448.7 of
+P0's 1,702 vehicle-hours of delay are vehicles waiting to enter there, and it
+queues with no closure too. In P1 at 70% compliance that one ramp cancels the
+plan's whole gain.
+
+**23. The scene assumptions need your review, as the 7 Oct P0 setup did.**
+E now sets the speeds around the crash: 4.7 km/h past it while one lane was
+shut, 7 km/h on the last 330 m while both were, and one lane's worth at
+22 km/h for 20 minutes after 10:00. Vehicles are 6.5 m long. Each is in
+[the scenario](../sim/scenarios/evaluator_IN-26-03365_replay.json) with its
+evidence, and section 3 of the note shows the score without each. The
+20 minutes after reopening are the weakest: AID01104 shows both flyover lanes
+in use from 10:04, so E's closed lane only stands for a narrowing at the
+scene. None of your files is changed.
+
 ## 4 Oct 2026
 
 ### For Simulation and the Lead

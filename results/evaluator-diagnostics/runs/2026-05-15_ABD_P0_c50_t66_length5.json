@@ -1,0 +1,26 @@
+{
+  "run_id": "2026-05-15_ABD_P0_c50_t66_length5",
+  "plan_id": "P0",
+  "incident_id": "IN-26-03365",
+  "scenario": {
+    "compliance": 0.5,
+    "clearance_min": 66.0,
+    "seed": 2026
+  },
+  "metrics": {
+    "total_vehicle_hours_delay": 1573.1,
+    "delay_vs_do_nothing_pct": 0,
+    "max_queue_m": {
+      "AID01103": 1092
+    },
+    "corridor_tt_p95_min": 78.3,
+    "emergency_tt_min": 2.9,
+    "co2_kg": 16419,
+    "residential_delay_share_pct": 0.0,
+    "vehicles_completed": 26232
+  },
+  "validation": {
+    "geh_under_5_pct": 88.46,
+    "speed_mape_pct": 16.06
+  }
+}

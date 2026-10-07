@@ -1,5 +1,8 @@
 # E — P0 for IN-26-03365: first result, the detector evidence, and a better baseline (7 October)
 
+> **8 October:** followed by [the replay note](evaluator-replay-2026-10-08.md), where E runs P0, P1 and
+> P2 on a calibrated replay. The three runs below stay as the record of how the baseline was reached.
+
 Prepared by Data. **No P0 here is accurate enough to compare plans against
 yet.** Timing the closure from the detectors and letting drivers go round it
 brings the counts closer to the morning; the speed error stays near 40%, and
