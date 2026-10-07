@@ -1,0 +1,177 @@
+{
+  "incident_id": "IN-26-03365",
+  "run_prefix": "2026-05-15_ABD",
+  "run_label": "detector-0854-0900",
+  "status": "DIAGNOSTIC: CLOSURE TIMED FROM THE AID01104 LANE READINGS, NO REROUTING. NOT A VALIDATED INCIDENT REPLAY; DO NOT RANK PLANS AGAINST IT",
+  "sumo_version": "1.27.1",
+  "seed": 2026,
+  "inputs": {
+    "network": "sim/work/p0-replay/network.net.xml",
+    "routes": "sim/work/p0-replay/demand.rou.xml",
+    "detector_loops": "sim/work/p0-replay/detectors.add.xml",
+    "observations": "sim/work/p0-replay/detectors.json"
+  },
+  "run": {
+    "begin": "2026-05-15T07:25:00+08:00",
+    "end_seconds": 11400,
+    "warmup_seconds": 1800,
+    "wall_timeout_seconds": 900
+  },
+  "closure": {
+    "edge_id": "44419212",
+    "lanes_total": 2,
+    "onset_seconds": 5340,
+    "phases": [
+      {
+        "offset_seconds": 0,
+        "lanes": [
+          "slow"
+        ]
+      },
+      {
+        "offset_seconds": 390,
+        "lanes": [
+          "all"
+        ]
+      }
+    ]
+  },
+  "assumptions": [
+    {
+      "choice": "Inputs are Simulation's 7 Oct P0 packet, unchanged: results/twin/oct07-p0-replay-inputs.zip at 4ec5afe on sim/e1-evaluation-correctness, SHA-256 52b298aa73eb7e8621fce28223fc6b798100979f5735d0605ee62c2198b68505. Flow-balance demand from PR #46 (647b13c), no speed signs, SUMO default drivers.",
+      "status": "model choice; the no-closure version of this setup scored 96.3% GEH<5 but 40.1% speed MAPE",
+      "source": "docs/p0-setup-proposal-2026-10-06.md on sim/e1-evaluation-correctness"
+    },
+    {
+      "choice": "The slow lane, 44419212_0, closes at 08:54:00 (5,340 s).",
+      "status": "observed at AID01104: first of five readings in a row with no slow-lane vehicle while the fast lane carried traffic; the last reading with it open was 08:50:30",
+      "source": "results/data/closed-lanes_AID01104_20260515-0840_1010.md"
+    },
+    {
+      "choice": "Both lanes close at 09:00:30 (offset 390 s).",
+      "status": "observed at AID01104: every lane empty from 09:00:30. Single readings at 09:09, 09:14 and 09:30:30 show a few vehicles (17 in the five-minute counts 09:05-09:30); E does not model them. TD's 'all lanes' message came at 09:36",
+      "source": "results/data/closed-lanes_AID01104_20260515-0840_1010.md"
+    },
+    {
+      "choice": "Reopening is set by --clearance, counted from the 08:54 onset. 66 minutes gives 10:00:00.",
+      "status": "observed at AID01104: last empty reading 09:59:30, traffic again at 10:00:00. TD reported the incident over at 10:02",
+      "source": "results/data/closed-lanes_AID01104_20260515-0840_1010.md"
+    },
+    {
+      "choice": "TD's messages time what an operator could know, not the closure: first report 09:01, all lanes 09:36, end 10:02.",
+      "status": "observed report times",
+      "source": "data/demo_incident_messages.jsonl; data/demo_shortlist.md"
+    },
+    {
+      "choice": "The whole 543 m edge lane is closed by setting its speed limit to zero, as in src/twin/run_scenario.py.",
+      "status": "spatial approximation; the crash position on the edge is not observed",
+      "source": "docs/p0-setup-proposal-2026-10-06.md on sim/e1-evaluation-correctness"
+    },
+    {
+      "choice": "Queue path AID01104: from the downstream end of edge 44419212 back along the main eastbound route to the network entry on Aberdeen Praya Road.",
+      "status": "measurement choice",
+      "source": "sim/work/p0-replay/demand.rou.xml, route of flow f2"
+    },
+    {
+      "choice": "Corridor travel time: vehicles from the Aberdeen Praya Road entry (1197689855) over the flyover (44419212) to the Canal Road Flyover exit (485146382).",
+      "status": "measurement choice",
+      "source": "sim/work/p0-replay/demand.rou.xml"
+    },
+    {
+      "choice": "Emergency route: fastest free-flow path in this network from Aberdeen Praya Road (edge 1197441895) by Shek Pai Wan Road to the northbound Pok Fu Lam Road edge nearest Queen Mary Hospital (944309310).",
+      "status": "CANDIDATE, NOT REVIEWED. The hospital's position is not from a repository source. Only 8 of the 40 edges carry modelled traffic, so the figure is close to free-flow time",
+      "source": "docs/00-brief.md (Queen Mary Hospital on the western alternative); docs/02-data.md section 5"
+    },
+    {
+      "choice": "Residential streets are edges tagged highway.residential or highway.living_street in the OSM-built network.",
+      "status": "OSM tags, not a land-use survey",
+      "source": "sim/work/p0-replay/network.net.xml"
+    },
+    {
+      "choice": "Every vehicle keeps its route: drivers queue behind the closure and none goes round.",
+      "status": "model limit, contradicted by the detectors: AID01106, past the flyover, counted 895 vehicles in the ten bins 09:05-09:55 while AID01104 counted 17",
+      "source": "results/data/closed-lanes_AID01106_20260515-0840_1035.md; sim/work/p0-replay/detectors.json"
+    }
+  ],
+  "metrics": {
+    "queue_paths": {
+      "AID01104": [
+        "44419212",
+        "1198059120",
+        "1198059119",
+        "1198059118",
+        "814979901#0",
+        "814979900",
+        "814979902",
+        "23632768",
+        "814979896",
+        "297373180",
+        "310329775",
+        "45174709",
+        "302998780",
+        "956602966",
+        "26560239",
+        "1197441891",
+        "1197441888",
+        "1197441889",
+        "40959451",
+        "1197689928",
+        "1197689929",
+        "1197441907",
+        "1197689927",
+        "1197689855"
+      ]
+    },
+    "corridor": {
+      "from_edge": "1197689855",
+      "to_edge": "485146382",
+      "via_edge": "44419212"
+    },
+    "emergency_route_edges": [
+      "1197441895",
+      "1197689899",
+      "1197689898",
+      "1197689858",
+      "1197689857",
+      "946158623",
+      "946158571",
+      "260770853",
+      "946158552",
+      "44578237#0",
+      "44578237#1",
+      "946158582",
+      "946158577",
+      "946158605",
+      "946158633",
+      "946158600",
+      "946158598",
+      "946158618",
+      "946158620",
+      "946158615",
+      "946158596",
+      "946158613",
+      "946158614",
+      "946158631",
+      "946158629",
+      "946158590",
+      "946492540",
+      "946158651",
+      "23633484#0",
+      "23633484#1",
+      "946158645",
+      "946158646",
+      "899194796",
+      "944309216",
+      "944309218",
+      "944309220",
+      "944309278",
+      "944309330",
+      "944309326",
+      "944309310"
+    ],
+    "residential_edge_types": [
+      "highway.residential",
+      "highway.living_street"
+    ]
+  }
+}

@@ -99,6 +99,8 @@ def evaluate(plans_dir, plan_id, scenario_path, compliance, clearance_min,
         "metric_definitions": metrics.DEFINITIONS,
         "assumptions": scenario["assumptions"],
         "plan_effects_modelled": "none: P0 applies no operator action; compliance has no effect on this run",
+        "driver_rerouting": ("drivers reroute by themselves while every lane is closed"
+                             if health.get("drivers_rerouted_during_seconds") else "none: every vehicle keeps its route"),
         "simulation_inputs": {name: str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path)
                               for name, path in sorted(files.items())},
     }
@@ -114,8 +116,11 @@ def main():
     parser.add_argument("--scenario", required=True)
     parser.add_argument("--compliance", type=float, required=True, help="Share of advised drivers who divert, 0 to 1")
     parser.add_argument("--clearance", type=float, required=True, help="Minutes from closure onset to reopening")
+    parser.add_argument("--results-dir", default="results",
+                        help="Use another folder for a diagnostic that must not sit beside the baseline in results/runs/")
     args = parser.parse_args()
-    result, report, path = evaluate(args.plans, args.plan, args.scenario, args.compliance, args.clearance)
+    result, report, path = evaluate(args.plans, args.plan, args.scenario, args.compliance, args.clearance,
+                                    results_dir=args.results_dir)
     health, check = report["run_health"], result["validation"]
     print(f"{result['run_id']}: {health['vehicles_inserted']} of {health['vehicles_loaded']} vehicles entered, "
           f"{health['vehicles_waiting_to_enter_at_end']} still waiting, {health['teleports']['total']} teleports")

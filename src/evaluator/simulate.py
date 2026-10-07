@@ -10,18 +10,19 @@ import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from src.evaluator.scenario import BIN_SECONDS, STEP_SECONDS, closure_steps
+from src.evaluator.scenario import BIN_SECONDS, STEP_SECONDS, closure_steps, reroute_window
 from src.twin.common import require_command
 from src.twin.network_sources import sha256
 
 QUEUE_PERIOD_SECONDS = 10
 
 
-def prepare(scenario, files, work):
-    """A new work folder holding a byte-identical copy of the loops file.
+def prepare(scenario, files, work, clearance_min):
+    """A new work folder holding a byte-identical copy of the loops file, and E's own SUMO add-ons.
 
     SUMO writes each loop's output next to the loops file, so the copy is what
-    keeps one run's detector output apart from the next.
+    keeps one run's detector output apart from the next. Returns every
+    additional file SUMO should load.
     """
     work = Path(work)
     work.mkdir(parents=True, exist_ok=False)
@@ -34,13 +35,23 @@ def prepare(scenario, files, work):
         f'<additional><edgeData id="edges" file="edges.xml" begin="{run["warmup_seconds"]}" '
         f'end="{run["end_seconds"]}" period="{BIN_SECONDS}" excludeEmpty="true"/></additional>\n',
         encoding="utf-8")
-    return loops
+    extras = [loops, work / "edges.add.xml"]
+    window = reroute_window(scenario, clearance_min)
+    if window:
+        closure = scenario["closure"]
+        (work / "reroute.add.xml").write_text(
+            f'<additional><rerouter id="closure" edges="{" ".join(closure["reroute_at_edges"])}">'
+            f'<interval begin="{window[0]}" end="{window[1]}">'
+            f'<closingReroute id="{closure["edge_id"]}"/></interval></rerouter></additional>\n',
+            encoding="utf-8")
+        extras.append(work / "reroute.add.xml")
+    return extras
 
 
-def command(scenario, files, work, loops):
+def command(scenario, files, work, extras):
     run = scenario["run"]
     return [require_command("sumo"), "-n", str(files["network"]), "-r", str(files["routes"]),
-            "-a", f"{loops},{work / 'edges.add.xml'}",
+            "-a", ",".join(map(str, extras)),
             "--begin", "0", "--end", str(run["end_seconds"]), "--step-length", str(STEP_SECONDS),
             "--seed", str(scenario["seed"]), "--max-depart-delay", "-1", "--no-step-log", "true",
             "--duration-log.statistics", "true", "--statistic-output", str(work / "statistics.xml"),
@@ -61,13 +72,13 @@ def run(scenario, files, work, clearance_min, on_step=None):
     import traci
     steps = closure_steps(scenario, clearance_min)
     edge = scenario["closure"]["edge_id"]
-    loops = prepare(scenario, files, work)
     work = Path(work)
+    extras = prepare(scenario, files, work, clearance_min)
     before = {name: sha256(path) for name, path in files.items()}
-    if sha256(loops) != before["detector_loops"]:
+    if sha256(extras[0]) != before["detector_loops"]:
         raise RuntimeError("The loops copy differs from the captured loops file")
     limit, started = scenario["run"]["wall_timeout_seconds"], time.monotonic()
-    traci.start(command(scenario, files, work, loops), label=work.name,
+    traci.start(command(scenario, files, work, extras), label=work.name,
                 stdout=subprocess.DEVNULL)                 # SUMO's messages are kept in sumo.log
     try:
         version = traci.getVersion()[1]
@@ -104,6 +115,7 @@ def run(scenario, files, work, clearance_min, on_step=None):
         "sumo_version": version,
         "closure_steps": [{"second": second, "lanes_closed": [f"{edge}_{i}" for i in lanes]}
                           for second, lanes in steps],
+        "drivers_rerouted_during_seconds": reroute_window(scenario, clearance_min),
         "vehicles_loaded": int(vehicles["loaded"]),
         "vehicles_inserted": int(vehicles["inserted"]),
         "vehicles_running_at_end": int(vehicles["running"]),

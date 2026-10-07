@@ -6,8 +6,8 @@ Runs one validated plan through the twin and writes the contracted
 
 **Status, 7 Oct:** P0 only. Diversions and signal changes are not modelled
 yet, so E refuses P1 and P2 rather than save the do-nothing case under their
-names. The first P0 does not meet the validation targets; see
-[the note](../../docs/evaluator-p0-2026-10-07.md).
+names. No P0 meets the validation targets yet; the current baseline and how
+it was reached are in [the note](../../docs/evaluator-p0-2026-10-07.md).
 
 ## Run it
 
@@ -20,13 +20,15 @@ git checkout 4ec5afe -- results/twin/oct07-p0-replay-inputs.zip
 python -c "import zipfile; zipfile.ZipFile('results/twin/oct07-p0-replay-inputs.zip').extractall('.')"
 git restore --staged results/twin/oct07-p0-replay-inputs.zip   # keep Simulation's file out of your commit
 
-python -m src.evaluator.run --plans data/generated-plans/IN-26-03365-first --plan P0 \
-    --scenario sim/scenarios/evaluator_IN-26-03365.json --compliance 0.5 --clearance 67
+python -m src.evaluator.run --plans data/generated-plans/IN-26-03365-p0-only --plan P0 \
+    --scenario sim/scenarios/evaluator_IN-26-03365_detector-timing-rerouted.json \
+    --compliance 0.5 --clearance 66
 ```
 
 `--plans` is the folder D wrote (`P0.json`, `generation-inputs.json`).
-`--clearance` is minutes from closure onset to reopening; 67 is 08:55 to TD's
-10:02 incident end. The run takes about two minutes and prints SUMO's teleport
+`--clearance` is minutes from closure onset to reopening; 66 is 08:54 to
+10:00, when AID01104 carried traffic again. `--results-dir` sends a diagnostic
+somewhere other than `results/`, so it does not sit beside the baseline. The run takes about two minutes and prints SUMO's teleport
 warnings as it goes; they are also kept in the run's `sumo.log`.
 
 It writes three files and never overwrites one:
@@ -54,16 +56,24 @@ Nothing is written if the run does not reach its end time.
 
 ## The scenario file
 
-[sim/scenarios/evaluator_IN-26-03365.json](../../sim/scenarios/evaluator_IN-26-03365.json)
-holds what E assumes: inputs, seed, the closure, and where each metric is
-measured. Every assumption carries its status and source, and they are copied
-into each run report.
+A scenario file in `sim/scenarios/` holds what E assumes: inputs, seed, the
+closure, and where each metric is measured. Every assumption carries its
+status and source, and they are copied into each run report.
+
+| Scenario | Closure | Drivers |
+|---|---|---|
+| [evaluator_IN-26-03365.json](../../sim/scenarios/evaluator_IN-26-03365.json) | TD-message timing: 08:55, all lanes 09:36, reopen 10:02 | keep their routes |
+| [..._detector-timing.json](../../sim/scenarios/evaluator_IN-26-03365_detector-timing.json) | AID01104 readings: 08:54:00, all lanes 09:00:30, reopen 10:00:00 | keep their routes |
+| [..._detector-timing-rerouted.json](../../sim/scenarios/evaluator_IN-26-03365_detector-timing-rerouted.json), **current baseline** | the same | go round while every lane is closed |
 
 - **Lanes travel as names.** [scenario.py](scenario.py) converts them to SUMO
   indices once (`slow` is index 0 in our left-hand network).
 - **`unspecified` is never simulated as it stands.** The scenario must name
   the lanes and say why. For IN-26-03365 that is the slow lane, inferred from
   AID01104.
+- **Rerouting is optional.** With `closure.reroute_at_edges`, a driver
+  entering one of those edges while every lane is closed takes another route,
+  chosen by SUMO. Nobody reroutes while a lane is open.
 - A different closure assumption is a new scenario file with a new
   `run_label`, so its results get their own `run_id`.
 
@@ -71,12 +81,12 @@ into each run report.
 
 - Vehicles count from the end of the warm-up, **including** those still
   driving or still waiting to enter when the run ends.
-- `total_vehicle_hours_delay` includes time waiting to enter. In the first P0
-  1,388 of the 2,584 vehicle-hours is ramp flow `f22` waiting to enter, a
-  queue Simulation also found with no closure at all.
-- `max_queue_m` cannot exceed its path. In the first P0 it is 1,961 m of a
-  1,971 m path (`queue_share_of_path_pct` 99.5 in the run report): the queue
-  reached the network entry, so the real figure is "at least".
+- `total_vehicle_hours_delay` includes time waiting to enter. In the P0 runs so
+  far a third to a half of it is ramp flow `f22` waiting to enter, a queue
+  Simulation also found with no closure at all.
+- `max_queue_m` cannot exceed its path. `queue_share_of_path_pct` in the run
+  report shows how much of the path it filled; near 100 means the queue ran
+  off the path and the real figure is "at least".
 - `emergency_tt_min` is general traffic on a candidate route that mostly
   carries no modelled traffic. Treat it as a placeholder until the route is
   reviewed.

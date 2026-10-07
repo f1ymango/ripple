@@ -1,0 +1,303 @@
+{
+  "detector_id": "AID01103",
+  "start": "2026-05-15T08:40:00+08:00",
+  "end": "2026-05-15T10:35:00+08:00",
+  "ordinary_days": [
+    "2026-05-08",
+    "2026-04-24"
+  ],
+  "archive": "detectors: 83 snapshots listed, 61 read, 22 not served",
+  "readings": 98,
+  "decision": "lanes",
+  "summary": {
+    "lanes_closed_first": [
+      "Middle Lane"
+    ],
+    "closed_from": "2026-05-15T09:09:30+08:00",
+    "last_open": "2026-05-15T09:09:00+08:00",
+    "passing_veh_h": 405,
+    "all_lanes_from": null,
+    "last_closed_reading": "2026-05-15T10:05:00+08:00",
+    "flowing_again_by": "2026-05-15T10:05:30+08:00"
+  },
+  "lanes": [
+    "Fast Lane",
+    "Middle Lane",
+    "Slow Lane"
+  ],
+  "phases": [
+    {
+      "lanes_closed": [
+        "Middle Lane"
+      ],
+      "from": "2026-05-15T09:09:30+08:00",
+      "last_open": "2026-05-15T09:09:00+08:00",
+      "until": "2026-05-15T09:19:00+08:00",
+      "next_reading": "2026-05-15T09:19:30+08:00",
+      "readings": 8,
+      "chance": 1.576567319913277e-07,
+      "vehicles_in_other_lanes": 27,
+      "passing_veh_h": 405
+    },
+    {
+      "lanes_closed": [
+        "Middle Lane"
+      ],
+      "from": "2026-05-15T09:28:00+08:00",
+      "last_open": "2026-05-15T09:25:30+08:00",
+      "until": "2026-05-15T09:43:00+08:00",
+      "next_reading": "2026-05-15T09:43:30+08:00",
+      "readings": 11,
+      "chance": 8.670210733230315e-09,
+      "vehicles_in_other_lanes": 32,
+      "passing_veh_h": 349
+    },
+    {
+      "lanes_closed": [
+        "Middle Lane"
+      ],
+      "from": "2026-05-15T09:44:00+08:00",
+      "last_open": "2026-05-15T09:43:30+08:00",
+      "until": "2026-05-15T10:02:30+08:00",
+      "next_reading": "2026-05-15T10:04:00+08:00",
+      "readings": 20,
+      "chance": 6.63491331661876e-24,
+      "vehicles_in_other_lanes": 92,
+      "passing_veh_h": 552
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T09:55:30+08:00",
+      "last_open": "2026-05-15T09:55:00+08:00",
+      "until": "2026-05-15T10:05:00+08:00",
+      "next_reading": "2026-05-15T10:05:30+08:00",
+      "readings": 12,
+      "chance": 5.509510080507237e-05,
+      "vehicles_in_other_lanes": 73,
+      "passing_veh_h": 730
+    }
+  ],
+  "rejected": [
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T08:40:00+08:00",
+      "last_open": null,
+      "until": "2026-05-15T08:40:00+08:00",
+      "next_reading": "2026-05-15T08:40:30+08:00",
+      "readings": 1,
+      "chance": 0.13331721393168372,
+      "vehicles_in_other_lanes": 15,
+      "passing_veh_h": 1800,
+      "why": "1 reading(s) in a row, fewer than 3"
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T08:44:00+08:00",
+      "last_open": "2026-05-15T08:43:30+08:00",
+      "until": "2026-05-15T08:44:00+08:00",
+      "next_reading": "2026-05-15T08:44:30+08:00",
+      "readings": 1,
+      "chance": 0.3414071840971169,
+      "vehicles_in_other_lanes": 8,
+      "passing_veh_h": 960,
+      "why": "1 reading(s) in a row, fewer than 3"
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T08:49:30+08:00",
+      "last_open": "2026-05-15T08:49:00+08:00",
+      "until": "2026-05-15T08:49:30+08:00",
+      "next_reading": "2026-05-15T08:50:00+08:00",
+      "readings": 1,
+      "chance": 0.22816546022844786,
+      "vehicles_in_other_lanes": 11,
+      "passing_veh_h": 1320,
+      "why": "1 reading(s) in a row, fewer than 3"
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T08:54:30+08:00",
+      "last_open": "2026-05-15T08:54:00+08:00",
+      "until": "2026-05-15T08:54:30+08:00",
+      "next_reading": "2026-05-15T08:56:00+08:00",
+      "readings": 1,
+      "chance": 0.1744086679987467,
+      "vehicles_in_other_lanes": 13,
+      "passing_veh_h": 1560,
+      "why": "1 reading(s) in a row, fewer than 3"
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T09:09:00+08:00",
+      "last_open": "2026-05-15T09:05:30+08:00",
+      "until": "2026-05-15T09:09:00+08:00",
+      "next_reading": "2026-05-15T09:09:30+08:00",
+      "readings": 1,
+      "chance": 0.3904932881955999,
+      "vehicles_in_other_lanes": 7,
+      "passing_veh_h": 840,
+      "why": "1 reading(s) in a row, fewer than 3"
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T09:14:00+08:00",
+      "last_open": "2026-05-15T09:12:30+08:00",
+      "until": "2026-05-15T09:14:30+08:00",
+      "next_reading": "2026-05-15T09:18:00+08:00",
+      "readings": 2,
+      "chance": 0.5843005939558139,
+      "vehicles_in_other_lanes": 4,
+      "passing_veh_h": 240,
+      "why": "2 reading(s) in a row, fewer than 3"
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T09:20:00+08:00",
+      "last_open": "2026-05-15T09:19:30+08:00",
+      "until": "2026-05-15T09:20:00+08:00",
+      "next_reading": "2026-05-15T09:20:30+08:00",
+      "readings": 1,
+      "chance": 0.5843005939558139,
+      "vehicles_in_other_lanes": 4,
+      "passing_veh_h": 480,
+      "why": "1 reading(s) in a row, fewer than 3"
+    },
+    {
+      "lanes_closed": [
+        "Middle Lane"
+      ],
+      "from": "2026-05-15T09:23:00+08:00",
+      "last_open": "2026-05-15T09:20:30+08:00",
+      "until": "2026-05-15T09:23:00+08:00",
+      "next_reading": "2026-05-15T09:23:30+08:00",
+      "readings": 1,
+      "chance": 0.09823216292486088,
+      "vehicles_in_other_lanes": 4,
+      "passing_veh_h": 480,
+      "why": "1 reading(s) in a row, fewer than 3"
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T09:23:00+08:00",
+      "last_open": "2026-05-15T09:20:30+08:00",
+      "until": "2026-05-15T09:23:30+08:00",
+      "next_reading": "2026-05-15T09:25:00+08:00",
+      "readings": 2,
+      "chance": 0.22816546022844786,
+      "vehicles_in_other_lanes": 11,
+      "passing_veh_h": 660,
+      "why": "2 reading(s) in a row, fewer than 3"
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T09:28:00+08:00",
+      "last_open": "2026-05-15T09:25:30+08:00",
+      "until": "2026-05-15T09:43:00+08:00",
+      "next_reading": "2026-05-15T09:43:30+08:00",
+      "readings": 11,
+      "chance": 0.013585969092407378,
+      "vehicles_in_other_lanes": 32,
+      "passing_veh_h": 349,
+      "why": "chance 0.014 is not below 1 in 1000"
+    },
+    {
+      "lanes_closed": "all",
+      "from": "2026-05-15T09:43:30+08:00",
+      "last_open": "2026-05-15T09:43:00+08:00",
+      "until": "2026-05-15T09:43:30+08:00",
+      "next_reading": "2026-05-15T09:44:00+08:00",
+      "readings": 1,
+      "chance": 1.5348210336266511e-06,
+      "why": "1 reading(s) in a row, fewer than 3"
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T09:44:00+08:00",
+      "last_open": "2026-05-15T09:43:30+08:00",
+      "until": "2026-05-15T09:45:00+08:00",
+      "next_reading": "2026-05-15T09:45:30+08:00",
+      "readings": 3,
+      "chance": 0.0778973272848171,
+      "vehicles_in_other_lanes": 19,
+      "passing_veh_h": 760,
+      "why": "chance 0.078 is not below 1 in 1000"
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T09:49:30+08:00",
+      "last_open": "2026-05-15T09:49:00+08:00",
+      "until": "2026-05-15T09:54:00+08:00",
+      "next_reading": "2026-05-15T09:54:30+08:00",
+      "readings": 4,
+      "chance": 0.1994844204487273,
+      "vehicles_in_other_lanes": 12,
+      "passing_veh_h": 360,
+      "why": "chance 0.2 is not below 1 in 1000"
+    },
+    {
+      "lanes_closed": [
+        "Middle Lane"
+      ],
+      "from": "2026-05-15T10:05:30+08:00",
+      "last_open": "2026-05-15T10:05:00+08:00",
+      "until": "2026-05-15T10:05:30+08:00",
+      "next_reading": "2026-05-15T10:09:00+08:00",
+      "readings": 1,
+      "chance": 0.0005306700122282585,
+      "vehicles_in_other_lanes": 13,
+      "passing_veh_h": 1560,
+      "why": "1 reading(s) in a row, fewer than 3"
+    },
+    {
+      "lanes_closed": [
+        "Slow Lane"
+      ],
+      "from": "2026-05-15T10:15:30+08:00",
+      "last_open": "2026-05-15T10:15:00+08:00",
+      "until": "2026-05-15T10:16:00+08:00",
+      "next_reading": "2026-05-15T10:16:30+08:00",
+      "readings": 2,
+      "chance": 0.030418383473097055,
+      "vehicles_in_other_lanes": 26,
+      "passing_veh_h": 1560,
+      "why": "2 reading(s) in a row, fewer than 3"
+    }
+  ],
+  "rule": {
+    "min_run_readings": 3,
+    "chance_one_in": 1000
+  },
+  "ordinary": {
+    "readings": 186,
+    "share_pct": {
+      "Fast Lane": 43.4,
+      "Middle Lane": 44.0,
+      "Slow Lane": 12.6
+    },
+    "vehicles_per_reading": 13.39
+  }
+}

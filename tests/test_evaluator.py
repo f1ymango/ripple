@@ -76,7 +76,7 @@ def write_mock_output(work):
 
 def mock_run(complete=True):
     def fake(scenario, files, work, clearance_min, on_step=None):
-        simulate.prepare(scenario, files, work)
+        simulate.prepare(scenario, files, work, clearance_min)
         write_mock_output(work)
         return {"complete": complete, "final_time_seconds": 900 if complete else 450,
                 "vehicles_loaded": 7, "vehicles_inserted": 6, "vehicles_waiting_to_enter_at_end": 1,
@@ -129,6 +129,19 @@ def test_closure_steps_follow_the_clearance():
     with pytest.raises(ValueError, match="within the run"):
         scenarios.closure_steps(scenario, 11)
     assert scenarios.run_id(scenario, "P0", 0.5, 5.0) == "mock_P0_c50_t5_mock-closure"
+
+
+def test_drivers_reroute_only_while_every_lane_is_closed(tmp_path):
+    scenario = scenarios.load(SCENARIO)
+    assert scenarios.reroute_window(scenario, 5) is None           # this scenario keeps every route
+    scenario["closure"]["reroute_at_edges"] = ["in"]
+    assert scenarios.reroute_window(scenario, 5) == (420, 600)     # phase two shuts both lanes
+    assert scenarios.reroute_window(scenario, 1.5) is None         # reopened before both lanes shut
+    files = {name: Path(path) for name, path in scenario["inputs"].items()}
+    extras = simulate.prepare(scenario, files, tmp_path / "work", 5)
+    assert extras[-1].read_text() == (
+        '<additional><rerouter id="closure" edges="in"><interval begin="420" end="600">'
+        '<closingReroute id="closed"/></interval></rerouter></additional>\n')
 
 
 def test_scenario_must_resolve_unspecified_lanes(tmp_path):
@@ -210,7 +223,7 @@ def test_run_is_void_if_an_input_changes_underneath_it(twin):
 def output(tmp_path):
     scenario = scenarios.load(SCENARIO)
     files = {name: Path(path) for name, path in scenario["inputs"].items()}
-    simulate.prepare(scenario, files, tmp_path / "work")
+    simulate.prepare(scenario, files, tmp_path / "work", 5)
     write_mock_output(tmp_path / "work")
     return scenario, files, tmp_path / "work"
 

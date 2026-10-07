@@ -26,7 +26,8 @@ SCENARIO_SCHEMA = obj({
                     "onset_seconds": SECONDS,
                     "phases": array(obj({"offset_seconds": SECONDS,
                                          "lanes": array(NAME, minItems=1, uniqueItems=True)}),
-                                    minItems=1)}),
+                                    minItems=1),
+                    "reroute_at_edges": EDGES}),   # optional: see reroute_window
     "assumptions": array(obj({"choice": NAME, "status": NAME, "source": NAME}), minItems=1),
     "metrics": obj({
         "queue_paths": {"type": "object", "minProperties": 1, "additionalProperties": EDGES},
@@ -35,6 +36,7 @@ SCENARIO_SCHEMA = obj({
         "residential_edge_types": array(NAME, minItems=1, uniqueItems=True),
     }),
 })
+SCENARIO_SCHEMA["properties"]["closure"]["required"].remove("reroute_at_edges")
 STEP_SECONDS = 1        # every twin run so far uses a one-second step
 BIN_SECONDS = 300       # detector observations and edge statistics are five-minute bins
 
@@ -88,6 +90,21 @@ def closure_steps(scenario, clearance_min):
              for phase in closure["phases"]
              if phase["offset_seconds"] < clearance_min * 60]
     return steps + [(reopen, [])]
+
+
+def reroute_window(scenario, clearance_min):
+    """(from, until) in simulation seconds while every lane is closed, if the scenario reroutes drivers.
+
+    With the whole edge shut nobody can get through, so a driver entering one of
+    `reroute_at_edges` takes another road; SUMO picks it. Drivers do not reroute
+    while a lane is still open.
+    """
+    closure = scenario["closure"]
+    if "reroute_at_edges" not in closure:
+        return None
+    steps = closure_steps(scenario, clearance_min)
+    shut = [second for second, lanes in steps if len(lanes) == closure["lanes_total"]]
+    return (shut[0], steps[-1][0]) if shut else None
 
 
 def run_id(scenario, plan_id, compliance, clearance_min):
