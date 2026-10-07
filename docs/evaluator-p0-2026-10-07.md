@@ -34,7 +34,7 @@ Same network, demand, seed and scorer in all three
 | Reopens | 10:02 (TD message) | 10:00:00 | 10:00:00 |
 | Drivers go round a full closure | no | no | yes, from the last 330 m before the fork |
 | **GEH < 5, all 607 count bins** (target 85%) | 87.14% | 81.71% | **89.95%** |
-| **Speed MAPE, 790 bins** (target 15%) | 47.34% | 37.49% | 42.69% |
+| **Speed MAPE, 786–790 bins** (target 15%) | 47.34% | 37.49% | 42.69% |
 | GEH < 5 during the closure | 80.90% | 74.16% | 88.39% |
 | Still waiting to enter at 10:35 | 840 (2.5%) | 642 (1.9%) | 447 (1.3%) |
 | Teleports (wrong-lane) | 72 (9) | 170 (25) | 35 (0) |
