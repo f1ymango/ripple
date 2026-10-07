@@ -8,6 +8,10 @@ teleports prevent incident validation. No plan benefit is claimed.
 [A same-input follow-up](../../docs/p0-followup-2026-10-07.md) checks an
 earlier all-lane timing assumption and a no-closure control; neither resolves
 the incident or the ramp backlog.
+[The route-cut audit](../../docs/p0-core-blocker-2026-10-07.md) identifies the
+core structural blocker: observed tunnel traffic continues while the flyover
+is empty, but no generated route links the surface-road fork to the tunnel.
+P0 remains unvalidated for comparing response plans.
 
 This is component C of Ripple, the twin: `src/twin/` holds the scripts, `sim/` the network and detector loops once they are reviewed (committed, as `docs/03-architecture.md` §2 lays out), `sim/scenarios/` the example configs, and `sim/work/` (git-ignored) the downloads, routes and SUMO output. Run the commands below from the repository root. It is a starter workflow: add the team's actual detector observations and coordinates before claiming calibration results. No calibration result is claimed until that data is added and the evaluation script is run.
 

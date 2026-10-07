@@ -1,0 +1,200 @@
+{
+  "purpose": "Locate P0's route-topology mismatch without using incident readings to set demand",
+  "observation_window_hkt": [
+    "2026-05-15T09:45:00+08:00",
+    "2026-05-15T10:00:00+08:00"
+  ],
+  "eligible_detector_counts": {
+    "AID01103": {
+      "bins": 3,
+      "observed": 115,
+      "simulated": 16.0
+    },
+    "AID01104": {
+      "bins": 3,
+      "observed": 0,
+      "simulated": 0.0
+    },
+    "AID01106": {
+      "bins": 3,
+      "observed": 228,
+      "simulated": 33.0
+    },
+    "AID01107": {
+      "bins": 3,
+      "observed": 204,
+      "simulated": 34.0
+    }
+  },
+  "fork": "1198059120",
+  "flyover": "44419212",
+  "surface_exit": "1198059138",
+  "downstream_tunnel_entrance": "1198101443",
+  "passenger_surface_path": [
+    "1198059138",
+    "1470218115",
+    "770629127#0",
+    "1470218117",
+    "92245534",
+    "1198059130",
+    "1198059131",
+    "1198059126",
+    "1198059128",
+    "714996652",
+    "1198101500",
+    "1198101498",
+    "86289334",
+    "1198101497",
+    "1198101443"
+  ],
+  "passenger_surface_path_length_m": 693.95,
+  "other_passenger_entries_to_surface_path": [
+    {
+      "onto": "1470218117",
+      "from": "1470218112",
+      "road_name": "\u5357\u6717\u5c71\u9053 Nam Long Shan Road"
+    },
+    {
+      "onto": "1470218117",
+      "from": "814923162#0",
+      "road_name": "\u9ec3\u7af9\u5751\u9053 Wong Chuk Hang Road"
+    },
+    {
+      "onto": "1198059126",
+      "from": "412761199#1",
+      "road_name": ""
+    },
+    {
+      "onto": "1198059126",
+      "from": "412761212",
+      "road_name": "\u5858\u908a\u5f91 Tong Bin Lane"
+    },
+    {
+      "onto": "714996652",
+      "from": "44419216",
+      "road_name": "\u9ec3\u7af9\u5751\u9053\u5929\u6a4b Wong Chuk Hang Road flyover"
+    },
+    {
+      "onto": "86289334",
+      "from": "26560290#0",
+      "road_name": "\u6d77\u6d0b\u516c\u5712\u9053 Ocean Park Road"
+    }
+  ],
+  "generated_fork_flow_groups": {
+    "flyover": {
+      "count": 51,
+      "flow_ids": [
+        "f1",
+        "f2",
+        "f3",
+        "f5",
+        "f6",
+        "f7",
+        "f9",
+        "f10",
+        "f11",
+        "f13",
+        "f14",
+        "f15",
+        "f54",
+        "f55",
+        "f56",
+        "f72",
+        "f73",
+        "f74",
+        "f90",
+        "f91",
+        "f92",
+        "f108",
+        "f109",
+        "f110",
+        "f126",
+        "f127",
+        "f128",
+        "f144",
+        "f145",
+        "f146",
+        "f162",
+        "f163",
+        "f164",
+        "f180",
+        "f181",
+        "f182",
+        "f198",
+        "f199",
+        "f200",
+        "f216",
+        "f217",
+        "f218",
+        "f234",
+        "f235",
+        "f236",
+        "f252",
+        "f253",
+        "f254",
+        "f270",
+        "f271",
+        "f272"
+      ]
+    },
+    "surface_ends_at_fork": {
+      "count": 17,
+      "flow_ids": [
+        "f0",
+        "f4",
+        "f8",
+        "f12",
+        "f53",
+        "f71",
+        "f89",
+        "f107",
+        "f125",
+        "f143",
+        "f161",
+        "f179",
+        "f197",
+        "f215",
+        "f233",
+        "f251",
+        "f269"
+      ]
+    },
+    "surface_reaches_downstream": {
+      "count": 0,
+      "flow_ids": []
+    }
+  },
+  "ordinary_day_downstream_joins": [
+    {
+      "kind": "join",
+      "start": 21,
+      "prefix": [
+        "1198059128"
+      ],
+      "pair": "AID01104->AID01106",
+      "veh_h": 62.5
+    },
+    {
+      "kind": "join",
+      "start": 24,
+      "prefix": [
+        "26560290#0"
+      ],
+      "pair": "AID01104->AID01106",
+      "veh_h": 62.5
+    }
+  ],
+  "ordinary_day_downstream_join_veh_h": 125.0,
+  "limitations": [
+    "A drivable path does not establish how many incident drivers used it.",
+    "The route file has stochastic flows; counts here are flow definitions, not vehicles.",
+    "AID01106 physical cross-section remains provisional in the source audit.",
+    "The observed downstream count must not also be used as a validation target if it sets diversion demand."
+  ],
+  "source_sha256": {
+    "network": "eb006b4ea09f01246ea53f163d68854e47b1be0410943f587d846388ef053e9d",
+    "routes": "1a0acd0ac0baa0dc24dfd6e6f7c87b78ea418403af4fa583d35e1329470597b0",
+    "build": "a35d08c09d8d5f87d2f15c6a651f51076d2b71a2446bfbf4209517d71ee831be",
+    "evaluation": "9b90f21385ee0d1f6533442e892a87cdf987d5f90dd6018b3c893397c974a0f2"
+  }
+}
