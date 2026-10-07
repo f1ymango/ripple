@@ -43,6 +43,8 @@ def data_dir(tmp_path, monkeypatch) -> Path:
     """A stand-in data/ directory the console reads instead of the real one."""
     shutil.copy(REAL_DETECTORS_CSV, tmp_path / "detectors.csv")
     monkeypatch.setenv("RIPPLE_DATA_DIR", str(tmp_path))
+    # Real results exist since E's first P0; these tests are about the map, not the plan panel.
+    monkeypatch.setenv("RIPPLE_RESULTS_DIR", str(tmp_path / "runs"))
     monkeypatch.setattr(app, "DATA_DIR", tmp_path)
     monkeypatch.setattr(app, "DETECTORS_CSV", tmp_path / "detectors.csv")
     monkeypatch.setattr(app, "SPEED_GLOB", str(tmp_path / "detector_5min_*.csv"))

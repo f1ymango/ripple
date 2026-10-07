@@ -1,0 +1,50 @@
+{
+  "incident_id": "IN-26-03365",
+  "reviewed": true,
+  "sources": [
+    "data/demo_incident_messages.jsonl",
+    "data/demo_shortlist.md",
+    "data/detectors.csv",
+    "docs/00-brief.md",
+    "docs/02-data.md",
+    "sim/scenarios/evaluator_IN-26-03365.json",
+    "data/plan-context/IN-26-03365_first-report.md"
+  ],
+  "active_from": "2026-05-15T09:01:00+08:00",
+  "active_until": "2026-05-15T10:02:00+08:00",
+  "od_demand_vehicles": {
+    "Aberdeen->Canal Road Flyover": 1060.1,
+    "Aberdeen->Wong Nai Chung Road": 66.0
+  },
+  "routes": [
+    {
+      "od_group": "Aberdeen->Canal Road Flyover",
+      "via": "Wong Chuk Hang Road",
+      "roads": [
+        "Wong Chuk Hang Road"
+      ],
+      "residential": false,
+      "school": true
+    },
+    {
+      "od_group": "Aberdeen->Wong Nai Chung Road",
+      "via": "Wong Chuk Hang Road",
+      "roads": [
+        "Wong Chuk Hang Road"
+      ],
+      "residential": false,
+      "school": true
+    }
+  ],
+  "blocked_roads": [],
+  "signals": {},
+  "sign_ids": [],
+  "pt_modes": [],
+  "priority_corridor": {
+    "od": "Aberdeen->Queen Mary Hospital",
+    "keep_clear": [
+      "Pok Fu Lam Road",
+      "Shek Pai Wan Road"
+    ]
+  }
+}

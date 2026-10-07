@@ -1,0 +1,9 @@
+{
+  "interval_seconds": 300,
+  "detectors": [
+    {"id": "MOCK01", "observations": [
+      {"time": "2026-01-01T08:05:00+08:00", "count": 10, "speed_kmh": 36.0},
+      {"time": "2026-01-01T08:10:00+08:00", "count": 0, "speed_kmh": null}
+    ]}
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "incident_id": "MOCK-INCIDENT",
+  "run_prefix": "mock",
+  "run_label": "mock-closure",
+  "status": "MOCK SCENARIO FOR TESTS ONLY",
+  "sumo_version": "mock",
+  "seed": 42,
+  "inputs": {
+    "network": "tests/fixtures/mock_evaluator/mock_network.net.xml",
+    "routes": "tests/fixtures/mock_evaluator/mock_routes.rou.xml",
+    "detector_loops": "tests/fixtures/mock_evaluator/mock_loops.add.xml",
+    "observations": "tests/fixtures/mock_evaluator/mock_observations.json"
+  },
+  "run": {"begin": "2026-01-01T08:00:00+08:00", "end_seconds": 900, "warmup_seconds": 300,
+          "wall_timeout_seconds": 60},
+  "closure": {"edge_id": "closed", "lanes_total": 2, "onset_seconds": 300,
+              "phases": [{"offset_seconds": 0, "lanes": ["slow"]},
+                         {"offset_seconds": 120, "lanes": ["all"]}]},
+  "assumptions": [{"choice": "Synthetic closure", "status": "mock", "source": "tests"}],
+  "metrics": {
+    "queue_paths": {"MOCK01": ["closed", "in"]},
+    "corridor": {"from_edge": "in", "to_edge": "out", "via_edge": "closed"},
+    "emergency_route_edges": ["home", "quiet"],
+    "residential_edge_types": ["highway.residential"]
+  }
+}

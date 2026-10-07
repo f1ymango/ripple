@@ -1,0 +1,5 @@
+<routes>
+  <flow id="main" begin="0" end="600" number="6"><route edges="in closed out"/></flow>
+  <flow id="side" begin="0" end="600" period="exp(0.01)"><route edges="in closed side_out"/></flow>
+  <flow id="other" begin="0" end="600" number="4"><route edges="home"/></flow>
+</routes>
