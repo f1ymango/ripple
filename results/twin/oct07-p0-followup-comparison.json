@@ -1,0 +1,701 @@
+{
+  "purpose": "Compare source-identical diagnostic variants; no physical phase is established by fit",
+  "same_eligible_count_pairs": true,
+  "eligible_count_bins": 607,
+  "variants": {
+    "p0_0936": {
+      "geh_under_5_percent": 87.1499176276771,
+      "speed_mape_percent": 47.33195450184125,
+      "waiting_at_horizon": 840,
+      "teleports": 72,
+      "windows": {
+        "early_0905_0930": {
+          "AID01102": {
+            "eligible_count_bins": 6,
+            "observed_count": 318,
+            "simulated_count": 619.0,
+            "observed_speed_kmh_range": [
+              5.3,
+              63.6
+            ],
+            "simulated_speed_kmh_range": [
+              65.29211650485438,
+              67.20685714285715
+            ]
+          },
+          "AID01103": {
+            "eligible_count_bins": 6,
+            "observed_count": 280,
+            "simulated_count": 826.0,
+            "observed_speed_kmh_range": [
+              6.1,
+              13.5
+            ],
+            "simulated_speed_kmh_range": [
+              45.97560000000001,
+              47.37757664233577
+            ]
+          },
+          "AID01104": {
+            "eligible_count_bins": 6,
+            "observed_count": 17,
+            "simulated_count": 547.0,
+            "observed_speed_kmh_range": [
+              6.5,
+              65.0
+            ],
+            "simulated_speed_kmh_range": [
+              43.524,
+              44.82000000000001
+            ]
+          },
+          "AID01106": {
+            "eligible_count_bins": 6,
+            "observed_count": 585,
+            "simulated_count": 616.0,
+            "observed_speed_kmh_range": [
+              37.9,
+              46.1
+            ],
+            "simulated_speed_kmh_range": [
+              45.3456,
+              46.848
+            ]
+          },
+          "AID01109": {
+            "eligible_count_bins": 6,
+            "observed_count": 1073,
+            "simulated_count": 807.0,
+            "observed_speed_kmh_range": [
+              48.0,
+              56.6
+            ],
+            "simulated_speed_kmh_range": [
+              51.312705882352944,
+              52.830000000000005
+            ]
+          }
+        },
+        "full_0940_0955": {
+          "AID01102": {
+            "eligible_count_bins": 4,
+            "observed_count": 64,
+            "simulated_count": 124.0,
+            "observed_speed_kmh_range": [
+              2.8,
+              6.2
+            ],
+            "simulated_speed_kmh_range": [
+              0.07200000000000001,
+              62.444347826086954
+            ]
+          },
+          "AID01103": {
+            "eligible_count_bins": 4,
+            "observed_count": 153,
+            "simulated_count": 46.0,
+            "observed_speed_kmh_range": [
+              6.3,
+              13.0
+            ],
+            "simulated_speed_kmh_range": [
+              0.16200000000000003,
+              42.476400000000005
+            ]
+          },
+          "AID01104": {
+            "eligible_count_bins": 4,
+            "observed_count": 0,
+            "simulated_count": 0.0,
+            "observed_speed_kmh_range": null,
+            "simulated_speed_kmh_range": null
+          },
+          "AID01106": {
+            "eligible_count_bins": 4,
+            "observed_count": 310,
+            "simulated_count": 59.0,
+            "observed_speed_kmh_range": [
+              42.6,
+              45.7
+            ],
+            "simulated_speed_kmh_range": [
+              42.732,
+              48.816
+            ]
+          },
+          "AID01109": {
+            "eligible_count_bins": 4,
+            "observed_count": 798,
+            "simulated_count": 423.0,
+            "observed_speed_kmh_range": [
+              44.3,
+              57.9
+            ],
+            "simulated_speed_kmh_range": [
+              50.205090909090906,
+              50.701871559633034
+            ]
+          }
+        },
+        "recovery_1005_1030": {
+          "AID01102": {
+            "eligible_count_bins": 4,
+            "observed_count": 383,
+            "simulated_count": 675.0,
+            "observed_speed_kmh_range": [
+              12.1,
+              69.8
+            ],
+            "simulated_speed_kmh_range": [
+              35.388245733788395,
+              68.04
+            ]
+          },
+          "AID01103": {
+            "eligible_count_bins": 4,
+            "observed_count": 545,
+            "simulated_count": 956.0,
+            "observed_speed_kmh_range": [
+              25.4,
+              66.9
+            ],
+            "simulated_speed_kmh_range": [
+              35.84790532544379,
+              47.12448979591837
+            ]
+          },
+          "AID01104": {
+            "eligible_count_bins": 4,
+            "observed_count": 405,
+            "simulated_count": 643.0,
+            "observed_speed_kmh_range": [
+              56.5,
+              64.5
+            ],
+            "simulated_speed_kmh_range": [
+              42.355333333333334,
+              47.56875
+            ]
+          },
+          "AID01106": {
+            "eligible_count_bins": 4,
+            "observed_count": 530,
+            "simulated_count": 739.0,
+            "observed_speed_kmh_range": [
+              39.2,
+              41.9
+            ],
+            "simulated_speed_kmh_range": [
+              40.211424,
+              46.07166666666667
+            ]
+          },
+          "AID01109": {
+            "eligible_count_bins": 4,
+            "observed_count": 792,
+            "simulated_count": 750.0,
+            "observed_speed_kmh_range": [
+              51.3,
+              53.5
+            ],
+            "simulated_speed_kmh_range": [
+              51.682736842105264,
+              53.35383050847458
+            ]
+          }
+        }
+      }
+    },
+    "sensitivity_0915": {
+      "geh_under_5_percent": 83.85502471169687,
+      "speed_mape_percent": 41.841900233429186,
+      "waiting_at_horizon": 648,
+      "teleports": 130,
+      "windows": {
+        "early_0905_0930": {
+          "AID01102": {
+            "eligible_count_bins": 6,
+            "observed_count": 318,
+            "simulated_count": 410.0,
+            "observed_speed_kmh_range": [
+              5.3,
+              63.6
+            ],
+            "simulated_speed_kmh_range": [
+              0.37440000000000007,
+              67.20685714285715
+            ]
+          },
+          "AID01103": {
+            "eligible_count_bins": 6,
+            "observed_count": 280,
+            "simulated_count": 403.0,
+            "observed_speed_kmh_range": [
+              6.1,
+              13.5
+            ],
+            "simulated_speed_kmh_range": [
+              3.468,
+              47.37757664233577
+            ]
+          },
+          "AID01104": {
+            "eligible_count_bins": 6,
+            "observed_count": 17,
+            "simulated_count": 184.0,
+            "observed_speed_kmh_range": [
+              6.5,
+              8.0
+            ],
+            "simulated_speed_kmh_range": [
+              43.524,
+              44.1
+            ]
+          },
+          "AID01106": {
+            "eligible_count_bins": 6,
+            "observed_count": 585,
+            "simulated_count": 280.0,
+            "observed_speed_kmh_range": [
+              37.9,
+              46.1
+            ],
+            "simulated_speed_kmh_range": [
+              45.0144,
+              50.161090909090916
+            ]
+          },
+          "AID01109": {
+            "eligible_count_bins": 6,
+            "observed_count": 1073,
+            "simulated_count": 726.0,
+            "observed_speed_kmh_range": [
+              48.0,
+              56.6
+            ],
+            "simulated_speed_kmh_range": [
+              50.56452336448598,
+              52.830000000000005
+            ]
+          }
+        },
+        "full_0940_0955": {
+          "AID01102": {
+            "eligible_count_bins": 4,
+            "observed_count": 64,
+            "simulated_count": 11.0,
+            "observed_speed_kmh_range": [
+              2.8,
+              6.2
+            ],
+            "simulated_speed_kmh_range": [
+              0.054,
+              0.216
+            ]
+          },
+          "AID01103": {
+            "eligible_count_bins": 4,
+            "observed_count": 153,
+            "simulated_count": 17.0,
+            "observed_speed_kmh_range": [
+              6.3,
+              13.0
+            ],
+            "simulated_speed_kmh_range": [
+              0.06,
+              9.696
+            ]
+          },
+          "AID01104": {
+            "eligible_count_bins": 4,
+            "observed_count": 0,
+            "simulated_count": 0.0,
+            "observed_speed_kmh_range": null,
+            "simulated_speed_kmh_range": null
+          },
+          "AID01106": {
+            "eligible_count_bins": 4,
+            "observed_count": 310,
+            "simulated_count": 42.0,
+            "observed_speed_kmh_range": [
+              42.6,
+              45.7
+            ],
+            "simulated_speed_kmh_range": [
+              42.156000000000006,
+              49.836000000000006
+            ]
+          },
+          "AID01109": {
+            "eligible_count_bins": 4,
+            "observed_count": 798,
+            "simulated_count": 426.0,
+            "observed_speed_kmh_range": [
+              44.3,
+              57.9
+            ],
+            "simulated_speed_kmh_range": [
+              50.334792452830186,
+              50.66357142857142
+            ]
+          }
+        },
+        "recovery_1005_1030": {
+          "AID01102": {
+            "eligible_count_bins": 4,
+            "observed_count": 383,
+            "simulated_count": 959.0,
+            "observed_speed_kmh_range": [
+              12.1,
+              69.8
+            ],
+            "simulated_speed_kmh_range": [
+              27.758722689075633,
+              35.84205633802817
+            ]
+          },
+          "AID01103": {
+            "eligible_count_bins": 4,
+            "observed_count": 545,
+            "simulated_count": 1310.0,
+            "observed_speed_kmh_range": [
+              25.4,
+              66.9
+            ],
+            "simulated_speed_kmh_range": [
+              32.451692307692305,
+              43.55537304075236
+            ]
+          },
+          "AID01104": {
+            "eligible_count_bins": 4,
+            "observed_count": 405,
+            "simulated_count": 852.0,
+            "observed_speed_kmh_range": [
+              56.5,
+              64.5
+            ],
+            "simulated_speed_kmh_range": [
+              42.66031578947368,
+              44.35318309859155
+            ]
+          },
+          "AID01106": {
+            "eligible_count_bins": 4,
+            "observed_count": 530,
+            "simulated_count": 903.0,
+            "observed_speed_kmh_range": [
+              39.2,
+              41.9
+            ],
+            "simulated_speed_kmh_range": [
+              41.13529411764706,
+              43.20394520547946
+            ]
+          },
+          "AID01109": {
+            "eligible_count_bins": 4,
+            "observed_count": 792,
+            "simulated_count": 840.0,
+            "observed_speed_kmh_range": [
+              51.3,
+              53.5
+            ],
+            "simulated_speed_kmh_range": [
+              50.824932515337416,
+              54.619008849557524
+            ]
+          }
+        }
+      }
+    },
+    "no_closure": {
+      "geh_under_5_percent": 90.1153212520593,
+      "speed_mape_percent": 56.89578862037477,
+      "waiting_at_horizon": 964,
+      "teleports": 0,
+      "windows": {
+        "early_0905_0930": {
+          "AID01102": {
+            "eligible_count_bins": 6,
+            "observed_count": 318,
+            "simulated_count": 618.0,
+            "observed_speed_kmh_range": [
+              5.3,
+              63.6
+            ],
+            "simulated_speed_kmh_range": [
+              65.15545631067961,
+              67.28262857142857
+            ]
+          },
+          "AID01103": {
+            "eligible_count_bins": 6,
+            "observed_count": 280,
+            "simulated_count": 826.0,
+            "observed_speed_kmh_range": [
+              6.1,
+              13.5
+            ],
+            "simulated_speed_kmh_range": [
+              45.71301492537314,
+              47.10612949640288
+            ]
+          },
+          "AID01104": {
+            "eligible_count_bins": 6,
+            "observed_count": 17,
+            "simulated_count": 545.0,
+            "observed_speed_kmh_range": [
+              6.5,
+              65.0
+            ],
+            "simulated_speed_kmh_range": [
+              46.23730434782608,
+              47.7636
+            ]
+          },
+          "AID01106": {
+            "eligible_count_bins": 6,
+            "observed_count": 585,
+            "simulated_count": 612.0,
+            "observed_speed_kmh_range": [
+              37.9,
+              46.1
+            ],
+            "simulated_speed_kmh_range": [
+              44.74998165137615,
+              47.128277227722776
+            ]
+          },
+          "AID01109": {
+            "eligible_count_bins": 6,
+            "observed_count": 1073,
+            "simulated_count": 799.0,
+            "observed_speed_kmh_range": [
+              48.0,
+              56.6
+            ],
+            "simulated_speed_kmh_range": [
+              51.5726106870229,
+              52.9021512605042
+            ]
+          }
+        },
+        "full_0940_0955": {
+          "AID01102": {
+            "eligible_count_bins": 4,
+            "observed_count": 64,
+            "simulated_count": 434.0,
+            "observed_speed_kmh_range": [
+              2.8,
+              6.2
+            ],
+            "simulated_speed_kmh_range": [
+              65.5128,
+              66.99113513513512
+            ]
+          },
+          "AID01103": {
+            "eligible_count_bins": 4,
+            "observed_count": 153,
+            "simulated_count": 568.0,
+            "observed_speed_kmh_range": [
+              6.3,
+              13.0
+            ],
+            "simulated_speed_kmh_range": [
+              46.041360000000005,
+              47.23405714285715
+            ]
+          },
+          "AID01104": {
+            "eligible_count_bins": 4,
+            "observed_count": 0,
+            "simulated_count": 375.0,
+            "observed_speed_kmh_range": null,
+            "simulated_speed_kmh_range": null
+          },
+          "AID01106": {
+            "eligible_count_bins": 4,
+            "observed_count": 310,
+            "simulated_count": 418.0,
+            "observed_speed_kmh_range": [
+              42.6,
+              45.7
+            ],
+            "simulated_speed_kmh_range": [
+              45.785828571428574,
+              47.29058823529412
+            ]
+          },
+          "AID01109": {
+            "eligible_count_bins": 4,
+            "observed_count": 798,
+            "simulated_count": 573.0,
+            "observed_speed_kmh_range": [
+              44.3,
+              57.9
+            ],
+            "simulated_speed_kmh_range": [
+              51.36813422818793,
+              54.56139130434783
+            ]
+          }
+        },
+        "recovery_1005_1030": {
+          "AID01102": {
+            "eligible_count_bins": 4,
+            "observed_count": 383,
+            "simulated_count": 448.0,
+            "observed_speed_kmh_range": [
+              12.1,
+              69.8
+            ],
+            "simulated_speed_kmh_range": [
+              64.62178512396696,
+              67.1198918918919
+            ]
+          },
+          "AID01103": {
+            "eligible_count_bins": 4,
+            "observed_count": 545,
+            "simulated_count": 589.0,
+            "observed_speed_kmh_range": [
+              25.4,
+              66.9
+            ],
+            "simulated_speed_kmh_range": [
+              45.63888,
+              46.97629411764705
+            ]
+          },
+          "AID01104": {
+            "eligible_count_bins": 4,
+            "observed_count": 405,
+            "simulated_count": 385.0,
+            "observed_speed_kmh_range": [
+              56.5,
+              64.5
+            ],
+            "simulated_speed_kmh_range": [
+              44.43105154639176,
+              47.68125
+            ]
+          },
+          "AID01106": {
+            "eligible_count_bins": 4,
+            "observed_count": 530,
+            "simulated_count": 430.0,
+            "observed_speed_kmh_range": [
+              39.2,
+              41.9
+            ],
+            "simulated_speed_kmh_range": [
+              43.48246153846154,
+              47.039551401869154
+            ]
+          },
+          "AID01109": {
+            "eligible_count_bins": 4,
+            "observed_count": 792,
+            "simulated_count": 570.0,
+            "observed_speed_kmh_range": [
+              51.3,
+              53.5
+            ],
+            "simulated_speed_kmh_range": [
+              51.90430344827587,
+              53.21011764705882
+            ]
+          }
+        }
+      }
+    }
+  },
+  "network_findings": {
+    "incident_edge_index_in_main_eastbound_plan": 19,
+    "joins_after_incident_before_AID01106": [
+      {
+        "kind": "join",
+        "start": 21,
+        "prefix": [
+          "1198059128"
+        ],
+        "pair": "AID01104->AID01106",
+        "veh_h": 62.5
+      },
+      {
+        "kind": "join",
+        "start": 24,
+        "prefix": [
+          "26560290#0"
+        ],
+        "pair": "AID01104->AID01106",
+        "veh_h": 62.5
+      }
+    ],
+    "ramp_signal_id": "11030048926",
+    "ramp_signal_phases": [
+      {
+        "duration": "80",
+        "state": "GG"
+      },
+      {
+        "duration": "5",
+        "state": "yy"
+      },
+      {
+        "duration": "5",
+        "state": "rr"
+      }
+    ],
+    "merge_connections": [
+      {
+        "from": "462275986#1",
+        "to": "1194711693",
+        "fromLane": "0",
+        "toLane": "0",
+        "via": ":4576848790_0_0",
+        "dir": "s",
+        "state": "M"
+      },
+      {
+        "from": "462275986#1",
+        "to": "1194711693",
+        "fromLane": "0",
+        "toLane": "1",
+        "via": ":4576848790_0_1",
+        "dir": "s",
+        "state": "M"
+      },
+      {
+        "from": "485146396",
+        "to": "1194711693",
+        "fromLane": "0",
+        "toLane": "0",
+        "via": ":4576848790_2_0",
+        "dir": "s",
+        "state": "m"
+      },
+      {
+        "from": "485146396",
+        "to": "1194711693",
+        "fromLane": "1",
+        "toLane": "1",
+        "via": ":4576848790_2_1",
+        "dir": "s",
+        "state": "m"
+      }
+    ]
+  },
+  "source_sha256": {
+    "p0": "29eaca5ac2753bb560eb97a19797e48d7a2900c7cfffb5c37c4da63589560d3b",
+    "p0_evaluation": "9b90f21385ee0d1f6533442e892a87cdf987d5f90dd6018b3c893397c974a0f2",
+    "sensitivity": "86229e5b1a7b01c35d970b0cb79332209044d503a6e49ceccb59cd23872a0033",
+    "sensitivity_evaluation": "19edd124641e992b187f0aa0c50156d5b3b763ea37674cfb8c55ce7f26d8673d",
+    "no_closure": "08bf2f3fedaf24a2550f53439c8e6fddf68b98bf291cc744aad6d80be5d63f35",
+    "build": "a35d08c09d8d5f87d2f15c6a651f51076d2b71a2446bfbf4209517d71ee831be",
+    "network": "eb006b4ea09f01246ea53f163d68854e47b1be0410943f587d846388ef053e9d"
+  }
+}

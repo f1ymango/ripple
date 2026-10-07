@@ -7,7 +7,7 @@ observation or unfinished vehicle is treated as zero.
 
 import argparse
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 import hashlib
 import json
 from pathlib import Path
@@ -29,38 +29,38 @@ def sha(path):
     return digest.hexdigest()
 
 
-def bin_phase(when, begin):
+def bin_phase(when, begin, onset, all_lanes, reopen):
     second = (datetime.fromisoformat(when) - begin).total_seconds()
-    if second < 5400:
+    if second < onset:
         return "pre_incident"
-    if second < 7800:
+    if second < all_lanes:
+        if second + 300 > all_lanes:
+            return "mixed_all_transition"
         return "partial_assumed"
-    if second < 8100:
-        return "mixed_all_transition_0935"
-    if second < 9300:
-        return "all_assumed"
-    if second < 9600:
-        return "mixed_reopen_transition_1000"
-    return "recovery"
-
-
-def fcd_phase(second):
-    if second < 5400:
-        return "pre_incident"
-    if second < 7860:
-        return "partial_assumed"
-    if second < 9420:
+    if second < reopen:
+        if second + 300 > reopen:
+            return "mixed_reopen_transition"
         return "all_assumed"
     return "recovery"
 
 
-def score_rows(evaluation, begin):
+def fcd_phase(second, onset, all_lanes, reopen):
+    if second < onset:
+        return "pre_incident"
+    if second < all_lanes:
+        return "partial_assumed"
+    if second < reopen:
+        return "all_assumed"
+    return "recovery"
+
+
+def score_rows(evaluation, begin, onset, all_lanes, reopen):
     groups = defaultdict(lambda: {"count_bins": 0, "within_5": 0, "observed_count": 0,
                                   "simulated_count": 0, "observed_zero_bins": 0,
                                   "matched_zero_bins": 0, "speed_bins": 0,
                                   "speed_absolute_percentage_error_sum": 0})
     for row in evaluation["count_bins"]:
-        phase = bin_phase(row["time"], begin)
+        phase = bin_phase(row["time"], begin, onset, all_lanes, reopen)
         for detector in ("all", row["detector_id"]):
             if detector != "all" and detector not in KEY_DETECTORS:
                 continue
@@ -73,7 +73,7 @@ def score_rows(evaluation, begin):
                 group["observed_zero_bins"] += 1
                 group["matched_zero_bins"] += int(row["simulated"] == 0)
     for row in evaluation["speed_bins"]:
-        phase = bin_phase(row["time"], begin)
+        phase = bin_phase(row["time"], begin, onset, all_lanes, reopen)
         for detector in ("all", row["detector_id"]):
             if detector != "all" and detector not in KEY_DETECTORS:
                 continue
@@ -94,7 +94,7 @@ def score_rows(evaluation, begin):
     return result
 
 
-def fcd_queues(fcd, upstream_edges):
+def fcd_queues(fcd, upstream_edges, onset, all_lanes, reopen):
     phases = defaultdict(lambda: {"samples": 0, "slow_upstream_sum": 0,
                                  "slow_upstream_peak": 0, "slow_ramp_sum": 0,
                                  "slow_ramp_peak": 0, "ramp_vehicles_sum": 0,
@@ -106,7 +106,7 @@ def fcd_queues(fcd, upstream_edges):
         if timestep.tag != "timestep":
             continue
         second = float(timestep.get("time"))
-        phase = fcd_phase(second)
+        phase = fcd_phase(second, onset, all_lanes, reopen)
         upstream_slow = ramp_slow = ramp_total = 0
         for vehicle in timestep.findall("vehicle"):
             lane = vehicle.get("lane", "")
@@ -165,6 +165,11 @@ def main():
     evaluation = json.loads(args.evaluation.read_text(encoding="utf-8"))
     summary = json.loads(args.summary.read_text(encoding="utf-8"))
     audit = json.loads(args.audit.read_text(encoding="utf-8"))
+    config = json.loads(args.config.read_text(encoding="utf-8"))
+    incident = config["incident"]
+    onset = int(incident["start"])
+    all_lanes = onset + int(incident["phases"][1]["offset_seconds"])
+    reopen = onset + int(incident["duration_seconds"])
     begin = datetime.fromisoformat("2026-05-15T07:25:00+08:00")
     upstream = set()
     for path in audit["paths"]:
@@ -172,18 +177,20 @@ def main():
             path["from"], path["to"]) in (("AID01102", "AID01103"), ("AID01103", "AID01104")):
             upstream.update(path["edges"])
     upstream.discard(INCIDENT_EDGE)
-    queues, five_minute_queues, ramp_seen = fcd_queues(args.fcd, upstream)
+    queues, five_minute_queues, ramp_seen = fcd_queues(args.fcd, upstream, onset, all_lanes, reopen)
     ramp_flow = next(flow for flow in ET.parse(args.routes).getroot().findall("flow")
                      if flow.find("route").get("edges").split()[0] == RAMP_EDGE)
     output = {
         "purpose": "First bounded assumed P0 diagnostic; no plan benefit or baseline acceptance",
-        "assumptions": {"initial_lane": "44419212_0", "onset_hkt": "08:55",
-                        "all_lanes_hkt": "09:36", "reopen_hkt": "10:02",
+        "assumptions": {"initial_lane": f"{incident['edge_id']}_{incident['phases'][0]['lane_indices'][0]}",
+                        "onset_hkt": (begin + timedelta(seconds=onset)).strftime("%H:%M"),
+                        "all_lanes_hkt": (begin + timedelta(seconds=all_lanes)).strftime("%H:%M"),
+                        "reopen_hkt": (begin + timedelta(seconds=reopen)).strftime("%H:%M"),
                         "report_times_are_not_physical_transition_observations": True},
         "run_summary": summary,
         "overall_evaluation": {key: value for key, value in evaluation.items()
                                if not isinstance(value, list)},
-        "phase_detector_scores": score_rows(evaluation, begin),
+        "phase_detector_scores": score_rows(evaluation, begin, onset, all_lanes, reopen),
         "fcd_queue_proxy": queues,
         "fcd_five_minute_queue_proxy": five_minute_queues,
         "queue_proxy_definition": {

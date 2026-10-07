@@ -1,0 +1,29 @@
+{
+  "label": "p0-all-0915",
+  "begin": 0.0,
+  "requested_end": 11400.0,
+  "final_time": 11400.0,
+  "steps": 11400,
+  "step_budget": 11400,
+  "unfinished_at_horizon": 1849,
+  "teleports_total": 130,
+  "teleports_by_reason": {
+    "jam": 108,
+    "yield": 0,
+    "wrongLane": 22
+  },
+  "vehicles_loaded": 33505,
+  "vehicles_departed": 32857,
+  "vehicles_arrived": 31662,
+  "pending_departures": 648,
+  "estimated_dropped_after_departure_delay": 0,
+  "max_depart_delay_seconds": -1,
+  "fcd_output": "C:\\Users\\Arivan Patar\\.codex\\.chatgpt-projects\\g-p-6ab4b9a96c9c8191af26fc690da5f11f\\work\\team-ripple\\sim\\work\\oct07-p0-0915\\outputs\\p0.fcd.xml",
+  "statistics_output": "C:\\Users\\Arivan Patar\\.codex\\.chatgpt-projects\\g-p-6ab4b9a96c9c8191af26fc690da5f11f\\work\\team-ripple\\sim\\work\\oct07-p0-0915\\outputs\\p0-all-0915.statistics.xml",
+  "statistics_available": true,
+  "interrupted_by_user": false,
+  "simulator_connection_error": null,
+  "complete": true,
+  "horizon_capped": false,
+  "scenario_complete": true
+}

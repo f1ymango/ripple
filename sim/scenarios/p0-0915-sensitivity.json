@@ -1,0 +1,23 @@
+{
+  "purpose": "Timing sensitivity only: full closure at 09:15 is not an observed physical transition",
+  "network": "sim/work/p0-replay/network.net.xml",
+  "routes": "sim/work/p0-replay/demand.rou.xml",
+  "detector_additional": "sim/work/p0-replay/detectors.add.xml",
+  "output_dir": "sim/work/p0-0915-sensitivity/outputs",
+  "fcd_output": "sim/work/p0-0915-sensitivity/outputs/p0.fcd.xml",
+  "seed": 2026,
+  "begin": 0,
+  "end": 11400,
+  "step_length": 1,
+  "max_depart_delay": -1,
+  "fcd_period": 10,
+  "incident": {
+    "edge_id": "44419212",
+    "start": 5400,
+    "duration_seconds": 4020,
+    "phases": [
+      {"offset_seconds": 0, "lane_indices": [0]},
+      {"offset_seconds": 1200, "lane_indices": "all"}
+    ]
+  }
+}

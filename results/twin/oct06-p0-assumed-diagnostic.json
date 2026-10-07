@@ -254,7 +254,7 @@
         "speed_mape_percent": 27.806007900847852
       }
     },
-    "mixed_reopen_transition_1000": {
+    "mixed_reopen_transition": {
       "all": {
         "count_bins": 25,
         "within_5": 19,
@@ -390,7 +390,7 @@
         "speed_mape_percent": 28.055170887077324
       }
     },
-    "mixed_all_transition_0935": {
+    "mixed_all_transition": {
       "all": {
         "count_bins": 0,
         "within_5": 0,

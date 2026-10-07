@@ -140,6 +140,11 @@ outside-network vehicle. The ramp's actual signal timing is not sourced.
 
 ## Decision for the next diagnostic
 
+The [7 October follow-up](p0-followup-2026-10-07.md) compares a 09:15
+all-lane timing sensitivity and a same-input no-closure control. The
+sensitivity matches AID01104's sustained zero bins but increases teleports
+and still misses downstream flow and recovery.
+
 This run supplies the requested bounded P0 attempt but **fails incident
 validation**. Do not quote the overall GEH pass as a validated P0, use it to
 rank plans, or infer a diversion benefit. The next decision is whether the
