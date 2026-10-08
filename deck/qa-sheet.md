@@ -29,3 +29,20 @@
 | **Reader Parsing Score** | `results/reader/2026-10-01T190919941153_qwen3-8b_score.json` | Verified (Reader Owner) |
 | **Pre-Incident Simulation** | `results/twin/may15-preincident-diagnostic.json` | Provisional (Simulation Owner) |
 | **Full-Closure Savings** | N/A | **Pending Oct 14 Data Freeze** |
+
+
+---
+
+## Stakeholder Interview & Evidence Readiness (Oct 12 / Oct 15 PR Alignment)
+
+### 1. Interview Evidence Scoping
+- **Current Status**: All user feedback claims are strictly anchored to **1 anonymized, verified domain expert interview**.
+- **Governance Requirement**: Do not present qualitative findings as statistical or large-sample survey data. If additional interview feedback is obtained before Oct 15, update the index; otherwise, retain this single qualitative datapoint scope.
+
+### 2. Missing Technical Artifacts Register (10/15 PR Blockers)
+To achieve full closure for the Oct 15 presentation pack, the following technical deliverables remain pending external owner sign-off:
+- **Data Team**: Accepted incident P0 baseline and full-closure P1/P2 simulation results under `results/`. (Required for Delay Savings, CO₂ Impact, and BCR calculation).
+- **Simulation Team**: Provenance-bound plan result sidecars for network comparison.
+- **Visuals Team**: Final high-resolution console screenshots, reviewed video script, and final video MP4 export matching `deck/video-shot-list.md`.
+
+*Note: If these artifacts are not accepted by the Oct 14 Data Freeze, the Oct 15 final deck will strictly fallback to observed playback and working console workflow, omitting all speculative benefit numbers.*
