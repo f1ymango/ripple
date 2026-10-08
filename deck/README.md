@@ -1,54 +1,22 @@
-# Deck and evidence pack
+# Presentation Deck & Evidence Pack
 
-Owner: Impact. The pitch is five minutes, then five to seven minutes of
-questions, and the deck is preloaded by the organisers. Narrative, evidence,
-Q&A and the ethics material live in [docs/05-pitch.md](../docs/05-pitch.md);
-this folder holds the deck itself and the evidence behind it.
+This folder contains the complete presentation materials, QA documentation, costing models, and media shot lists for the Oct 12 reviewable draft submission.
 
-## The five criteria, 20% each
+---
 
-Every slide should be traceable to one of these. Three of the five belong to
-this component.
+## 1. File Inventory & Index
 
-| Criterion | Owner | Where the material comes from |
-|---|---|---|
-| Convincing framing of problem | Impact | `docs/05-pitch.md` §1, §3 |
-| Prototype / demo | Visuals + Lead | the video, the console |
-| Appropriate technical component | Lead | the three GenAI jobs, measured Reader accuracy |
-| Feasibility and impact | Impact | `docs/05-pitch.md` §6, plus the costing below |
-| Sustainability and ethics | Impact | `docs/05-pitch.md` §5, the constraint thresholds |
+| File | Description | Status & Freeze Boundary |
+| :--- | :--- | :--- |
+| **`slides.md`** | Presentation slide structure aligned with 5 scoring criteria | Complete (Draft v1) |
+| **`real-vs-simulated.md`** | Comparison between real-world incident inputs and SUMO twin setup | Complete (Traceable artifacts mapped) |
+| **`costing.md`** | System infrastructure costing model & BCR governance | Complete (BCR set to `BLANK / Not Measured Yet`) |
+| **`qa-sheet.md`** | Technical Q&A and known limitations (Reader scores, SUMO window) | Complete (Gold Score v2: 75% city / 85% corridor) |
+| **`video-shot-list.md`** | Demo video storyboard and audio overlay script | Complete (Draft v1) |
 
-## What goes in here
+---
 
-- `deck.pdf` / the slides themselves, once they exist
-- `costing.md` — what it costs to run one corridor for a year, and what a
-  prevented delay is worth. Cost: compute, storage, maintenance hours. Benefit:
-  vehicle-hours of delay avoided (from `results/`) × a Hong Kong value of time,
-  giving dollars per incident and a benefit–cost ratio we can set beside the
-  10:1–25:1 that the US corridor studies report. Name the source of every
-  figure; where no source exists, say so rather than estimating.
-- `real-vs-simulated.md` — an honest table of what works today and what is
-  simulated, kept current as the repo changes. The prototype criterion asks
-  this outright.
-- `qa-sheet.md` — every question a judge might ask, with the teammate who
-  answers it. Start from `docs/05-pitch.md` §4 and extend. Nobody's question
-  should be unowned.
+## 2. Governance & Data Freeze Rules
 
-## Rules that apply here too
-
-- Every number traces to a file in `results/` or to a cited source with the date
-  it was checked. Nothing is estimated to fill a gap.
-- If a figure is not measured yet, write "not measured yet" on the slide. An
-  honest gap survives the Q&A; an invented number does not.
-- Do not calculate delay savings or a benefit–cost ratio from the reproducible
-  no-closure count score alone. Wait for an accepted incident P0 and comparable,
-  provenance-bound plan results in `results/`.
-
-## Dates
-
-| Date | What |
-|---|---|
-| Sat 3 Oct | Interim report submitted (official deadline Sun 4 Oct) |
-| Wed 14 Oct | Results freeze — every number in the deck is locked |
-| Sat 17 Oct | Deck and prototype submitted (official deadline Sun 18 Oct) |
-| Sat 24 Oct | Final pitch, CityU Kowloon Tong |
+1. **Oct 14 Data Freeze Alignment**: All delay savings, CO2 impact calculations, and Benefit-Cost Ratios (BCR) remain explicitly marked as **`BLANK / Not Measured Yet`** across all deck files until post-freeze full-closure simulation sign-off.
+2. **Artifact Traceability**: All benchmark claims reference verified repository outputs under `results/reader/` and `results/data/`.
