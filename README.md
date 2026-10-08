@@ -681,6 +681,11 @@ invented speed. Pick the window in the sidebar and the bin on the slider —
 prefer a full window over a `_cov` export, which is a filtered subset meant for
 count calibration ([docs/02-data.md](docs/02-data.md) §7).
 
+For archived TD messages, the small incident arrow and optional SUMO road
+shapes, see the [observed-playback guide](docs/console-observed-playback.md).
+The arrow marks an approximate reported area; road colours are geometry
+context. Evaluated recommendations still require the reviewed run bundle.
+
 ## Rules everyone follows
 
 The full list is in [CLAUDE.md](CLAUDE.md). The ones that bite:

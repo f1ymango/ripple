@@ -165,6 +165,28 @@ def test_no_snapshot_at_all_still_draws_the_corridor(data_dir):
     assert "No speed snapshot found" in " ".join(m.value for m in at.info)
 
 
+def test_geometry_preview_can_be_disabled_without_losing_detector_map(data_dir, monkeypatch):
+    monkeypatch.setenv("RIPPLE_SUMO_NETWORK", str(FIXTURES / "mock_road_geometry.net.xml"))
+    at = _run()
+    assert not at.exception
+    next(s for s in at.selectbox if s.label == "Road view").select("Single road").run()
+    assert "not route advice" in " ".join(c.value for c in at.caption)
+    assert any(s.label == "Preview road" for s in at.selectbox)
+    toggle = next(c for c in at.checkbox if c.label == "Show road network")
+    toggle.uncheck().run()
+    assert not at.exception
+    assert not any(s.label == "Preview road" for s in at.selectbox)
+    assert "No speed snapshot found" in " ".join(m.value for m in at.info)
+
+
+def test_bad_geometry_source_leaves_console_usable(data_dir, monkeypatch):
+    monkeypatch.setenv("RIPPLE_SUMO_NETWORK", str(data_dir / "mock_missing.net.xml"))
+    at = _run()
+    assert not at.exception
+    assert "Road geometry unavailable" in " ".join(w.value for w in at.warning)
+    assert "No speed snapshot found" in " ".join(m.value for m in at.info)
+
+
 def test_a_usable_snapshot_still_colours_the_map(data_dir):
     _snapshot(data_dir, "detector_5min_20260921-0800_0900_b5.csv")
     at = _run()
@@ -369,7 +391,7 @@ def test_incident_markers_are_tds_own_times(data_dir):
 
     markers = app.load_incident_markers("2026-05-15T07:55:00+08:00",
                                         "2026-05-15T10:35:00+08:00")
-    assert list(markers["label"]) == ["IN-26-03365 reported", "IN-26-03365 cleared"]
+    assert list(markers["label"]) == ["IN-26-03365 TD report", "IN-26-03365 TD clearance report"]
     # The afternoon incident is outside the replay window and stays off it.
     assert "IN-26-03370" not in " ".join(markers["label"])
 
@@ -380,3 +402,29 @@ def test_the_chart_is_skipped_rather_than_guessed_when_times_will_not_parse():
                               "no_vehicles": 0}])
     assert app.timeline_chart(timeline, "not-a-timestamp",
                               pd.DataFrame(columns=["bin_start", "label"])) is None
+
+
+def test_may_playback_labels_archive_and_shows_real_source_text(data_dir):
+    _may_bins(data_dir)
+    shutil.copy(REAL_DETECTORS_CSV.parent / "demo_incident_messages.jsonl",
+                data_dir / "demo_incident_messages.jsonl")
+    at = _run()
+    assert not at.exception
+    assert "Archived observations · 15 May 2026" in " ".join(m.value for m in at.markdown)
+    assert "Coverage is partial" in " ".join(c.value for c in at.caption)
+    assert "part of the lanes" in " ".join(t.value for t in at.text)
+    assert "全線現已封閉" not in " ".join(t.value for t in at.text)
+
+
+def test_malformed_geometry_cannot_break_incident_playback(data_dir, monkeypatch):
+    _may_bins(data_dir)
+    shutil.copy(REAL_DETECTORS_CSV.parent / "demo_incident_messages.jsonl",
+                data_dir / "demo_incident_messages.jsonl")
+    monkeypatch.setenv("RIPPLE_SUMO_NETWORK", str(FIXTURES / "mock_unparseable_road.net.xml"))
+    at = _run()
+    assert not at.exception
+    assert "part of the lanes" in " ".join(t.value for t in at.text)
+    assert "Incident location unavailable" in " ".join(c.value for c in at.caption)
+    next(c for c in at.checkbox if c.label == "Show road network").uncheck().run()
+    assert not at.exception
+    assert "Incident location unavailable" in " ".join(c.value for c in at.caption)

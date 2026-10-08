@@ -30,6 +30,8 @@ Owner: Visuals.
 from __future__ import annotations
 
 import glob
+import hashlib
+import math
 import os
 import re
 import sys
@@ -49,7 +51,7 @@ import pandas as pd
 import pydeck as pdk
 import streamlit as st
 
-from src.console import operator_workflow, recommendation
+from src.console import incident_callout, incident_playback, operator_workflow, recommendation, road_geometry
 
 # Tests point this at a fixture directory; everything else reads the real data/.
 DATA_DIR = Path(os.environ.get("RIPPLE_DATA_DIR") or ROOT / "data")
@@ -365,26 +367,92 @@ def _as_local_time(values: pd.Series) -> pd.Series:
     return parsed.dt.tz_convert("Asia/Hong_Kong").dt.tz_localize(None)
 
 
-def load_incident_markers(first_bin: str, last_bin: str) -> pd.DataFrame:
+def load_incident_markers(first_bin: str, last_bin: str,
+                          messages: list[incident_playback.Message] | None = None) -> pd.DataFrame:
     """TD's own times for corridor incidents inside the window, from the
     loader's incident table.
 
-    Empty when that table has not been written. The console draws the times the
-    archive recorded or none at all -- it never supplies one itself.
+    Optional archived prose adds update markers. The console only draws
+    timestamps supplied by those sources, with clearance labelled as a report.
     """
-    events = []
+    events = {}
+    first, last = incident_playback.local_time(first_bin), incident_playback.local_time(last_bin)
+    columns = ["bin_start", "label", "incident_id", "kind"]
+    if first is None or last is None:
+        return pd.DataFrame(columns=columns)
     for path in sorted(glob.glob(INCIDENT_GLOB)):
         table = pd.read_csv(path)
         if not {"corridor_road", "incident_number"} <= set(table.columns):
             continue
         on_corridor = table[table["corridor_road"].fillna("").astype(str) != ""]
         for _, row in on_corridor.iterrows():
-            for column, said in (("new_at", "reported"), ("closed_at", "cleared")):
-                when = str(row.get(column) or "")
-                if when and first_bin <= when <= last_bin:
-                    events.append({"bin_start": when,
-                                   "label": f"{row['incident_number']} {said}"})
-    return pd.DataFrame(events, columns=["bin_start", "label"])
+            for column, said, kind in (("new_at", "TD report", "report"),
+                                       ("closed_at", "TD clearance report", "clearance")):
+                when = incident_playback.local_time(str(row.get(column) or ""))
+                if when is not None and first <= when <= last:
+                    incident_id = str(row["incident_number"])
+                    events[(incident_id, when)] = {
+                        "bin_start": when.isoformat(), "label": f"{incident_id} {said}",
+                        "incident_id": incident_id, "kind": kind}
+    for message in messages or []:
+        if first <= message.published <= last:
+            said = "TD report" if message.status == "NEW" else "TD update"
+            key = (message.incident_id, message.published)
+            # A table's clearance timestamp has stronger semantics than CLOSED
+            # on an old message: TD can flip historical message statuses.
+            if key not in events or events[key]["kind"] != "clearance":
+                events[key] = {"bin_start": message.published.isoformat(),
+                               "label": f"{message.incident_id} {said}",
+                               "incident_id": message.incident_id, "kind": "report"}
+    return pd.DataFrame(sorted(events.values(), key=lambda e: e["bin_start"]), columns=columns)
+
+
+def reported_clearance(message: incident_playback.Message, current_bin: str,
+                       markers: pd.DataFrame):
+    """Only show a clearance report that follows this message and the cursor has reached."""
+    current = incident_playback.local_time(current_bin)
+    clearance = markers[(markers["incident_id"] == message.incident_id)
+                        & (markers["kind"] == "clearance")]
+    times = [incident_playback.local_time(t) for t in clearance["bin_start"]]
+    return max((t for t in times if t is not None and current is not None
+                and message.published <= t <= current), default=None)
+
+
+def show_incident_card(messages: list[incident_playback.Message], current_bin: str,
+                       markers: pd.DataFrame, incident_id: str | None = None) -> None:
+    """Show archived prose by publication time, with separately sourced clearance."""
+    st.subheader("Archived TD incident message")
+    if not messages:
+        st.caption("No archived message text available for this playback day.")
+        return
+    incidents = sorted({message.incident_id for message in messages})
+    incident_id = incident_id or (incidents[0] if len(incidents) == 1 else
+                                  st.selectbox("Archived incident", incidents, key="archived_incident"))
+    message = incident_playback.latest_at(messages, incident_id, current_bin)
+    with st.container(border=True):
+        st.markdown(f"**{incident_id}**")
+        if message is None:
+            st.caption(f"No archived TD message published by {label_bin(current_bin)} HKT "
+                       "for this incident. Later message text is withheld.")
+            return
+        reported_clear = reported_clearance(message, current_bin, markers)
+        if reported_clear:
+            st.info(f"TD clearance report · {reported_clear:%H:%M} HKT. "
+                    "Earlier message text below is historical; it does not describe current lane status.")
+        st.caption(f"Published {message.published:%d %b %Y · %H:%M} HKT · "
+                   "TD source text · retrospective playback")
+        english, chinese = st.columns(2)
+        with english:
+            st.markdown("**English**")
+            st.text(message.english or "English source text unavailable.")
+        with chinese:
+            st.markdown("**繁體中文**")
+            st.text(message.chinese or "Chinese source text unavailable.")
+        st.caption("Publication time does not establish the exact physical closure time "
+                   "or when an operator received the message.")
+        with st.expander("Message source"):
+            st.text(f"demo_incident_messages.jsonl · message {message.message_id}\n"
+                    f"Feed: {message.source_feed} · archive snapshot: {message.archive_time}")
 
 
 def timeline_chart(timeline: pd.DataFrame, current_bin: str,
@@ -447,10 +515,14 @@ def timeline_chart(timeline: pd.DataFrame, current_bin: str,
 
 # --- page -----------------------------------------------------------------
 
-def build_map(detectors: pd.DataFrame) -> pdk.Deck:
+def build_map(detectors: pd.DataFrame, roads: list[dict] | None = None,
+              focus_roads: bool = False, incident: dict | None = None) -> pdk.Deck:
     """Frame both ends of the corridor, including detectors with no reading."""
+    points = detectors.copy()
+    points["tooltip"] = (points["detector_id"] + " · " + points["speed_label"]
+                         + "\n" + points["road_short"] + "\n" + points["evidence"])
     dots = pdk.Layer(
-        "ScatterplotLayer", data=detectors,
+        "ScatterplotLayer", data=points,
         get_position="[longitude, latitude]", get_fill_color="colour",
         get_radius=50, radius_min_pixels=5, radius_max_pixels=14,
         pickable=True, opacity=0.9, stroked=True, get_line_color=[255, 255, 255],
@@ -459,18 +531,82 @@ def build_map(detectors: pd.DataFrame) -> pdk.Deck:
     # Fit the two corners, not every point: the mean of an L-shaped corridor
     # favours its crowded southern end and crops the northern detectors.
     bounds = detectors[["longitude", "latitude"]].agg(["min", "max"])
+    if roads and focus_roads:
+        bounds = pd.DataFrame([p for road in roads for p in road["path"]],
+                              columns=["longitude", "latitude"]).agg(["min", "max"])
     view = pdk.data_utils.compute_view(bounds.values.tolist())
+    view.zoom = min(view.zoom, 16)
+    if roads and focus_roads:
+        # Fit fractional zoom to a conservative desktop map area, leaving
+        # room for labels. compute_view rounds down to whole zoom levels.
+        west, south = bounds.loc["min"]
+        east, north = bounds.loc["max"]
+        x_span = max((east - west) / 360, 1e-9)
+        mercator = lambda lat: math.asinh(math.tan(math.radians(lat)))
+        y_span = max((mercator(north) - mercator(south)) / (2 * math.pi), 1e-9)
+        view.zoom = min(math.log2(640 / (512 * x_span)),
+                        math.log2(400 / (512 * y_span)), 16)
     tooltip = {
-        "html": "<div style='font-size:13px'><b>{detector_id}</b>"
-                " &mdash; <b>{speed_label}</b></div>"
-                "<div style='font-size:12px;color:#ccc'>{road_short}</div>"
-                "<div style='font-size:11px;color:#999'>{evidence}</div>",
+        "text": "{tooltip}",
         "style": {"backgroundColor": "#111", "color": "white",
                   "padding": "6px 8px"},
     }
-    # Carto's street basemap keeps roads visible at every zoom, no token needed.
-    return pdk.Deck(layers=[dots], initial_view_state=view,
+    layers = []
+    if roads:
+        layers.append(pdk.Layer(
+            "PathLayer", id="sumo-road-preview", data=roads, get_path="path",
+            get_color="colour", get_width="width", width_units='"pixels"',
+            width_min_pixels=1, pickable=True, cap_rounded=True, joint_rounded=True,
+        ))
+    # Keep detector readings above the geometry and the existing detailed basemap.
+    annotations = incident_callout.layers(incident) if incident else []
+    return pdk.Deck(layers=[*layers, dots, *annotations], initial_view_state=view,
                     tooltip=tooltip, map_provider="carto", map_style="road")
+
+
+@st.cache_data(show_spinner=False)
+def cached_road_geometry(path: str, sha256: str) -> dict:
+    """The content hash invalidates the cache when the source network changes."""
+    return road_geometry.load_geometry(Path(path), sha256)
+
+
+def road_preview_controls() -> tuple[list[dict], bool]:
+    """Opt-in local preview; normal console operation needs no SUMO network."""
+    configured = os.environ.get("RIPPLE_SUMO_NETWORK")
+    if not configured:
+        return [], False
+    if not st.sidebar.checkbox("Show road network", value=True):
+        return [], False
+    try:
+        path = Path(configured).expanduser().resolve()
+        fingerprint = hashlib.sha256(path.read_bytes()).hexdigest()
+        geometry = cached_road_geometry(str(path), fingerprint)
+    except Exception as exc:
+        # A missing, malformed or unprojected preview must not break G's
+        # recorded detector map or approval workflow. Never substitute a shape.
+        st.sidebar.warning(f"Road geometry unavailable: {exc}")
+        return [], False
+    roads = geometry["roads"]
+    view = st.sidebar.selectbox("Road view", ["Corridor network", "Single road",
+                                              "Full supplied network"])
+    chosen = None
+    if view == "Single road":
+        names = sorted({r["road_name"] for r in roads})
+        initial = next((i for i, name in enumerate(names)
+                        if "Shek Pai Wan Road" in name), 0)
+        chosen = st.sidebar.selectbox("Preview road", names, index=initial)
+    selected = road_geometry.select_geometry(geometry, view, chosen)
+    if not selected:
+        st.sidebar.warning("No matching roads in the supplied network. "
+                           "Choose Full supplied network to inspect its coverage.")
+    focus = st.sidebar.checkbox("Fit map to displayed roads", value=True)
+    st.sidebar.caption("Blue: main corridor · Purple: alternative roads · "
+                       "Grey: other roads. These are network shapes, not recommendations.")
+    with st.sidebar.expander("Geometry source"):
+        st.caption(f"{path.name} · SHA-256 {geometry['network_sha256']}")
+        st.caption("OpenStreetMap contributors / SUMO. Junction curves come "
+                   "from the network's passenger-vehicle connections.")
+    return selected, focus
 
 
 def headline(detectors: pd.DataFrame) -> None:
@@ -640,7 +776,7 @@ def show_operator_briefing(comparison: dict | None) -> None:
 def main() -> None:
     st.set_page_config(page_title="Ripple — Aberdeen corridor", layout="wide")
     st.title("Ripple — Aberdeen corridor")
-    st.caption("Component G · operator console")
+    st.caption("Operator console · archived traffic observations")
 
     detectors = load_detectors()
     speed_files = find_speed_files()
@@ -695,13 +831,61 @@ def main() -> None:
     # The English name already ends in "- Eastbound"; drop it for a clean line.
     detectors["road_short"] = detectors["road_en"].str.split(" - ").str[0]
 
+    if current_bin is not None:
+        selected_time = incident_playback.local_time(current_bin)
+        if selected_time is not None:
+            st.markdown(f"**Archived observations · {selected_time:%d %b %Y} · "
+                        f"{selected_time:%H:%M} HKT**")
+        st.caption("Cursor shows the bin start; detector readings summarize the selected bin. "
+                   "Coverage is partial. Missing readings and zero recorded vehicles are distinct.")
     headline(detectors)
     colour_legend()
-    st.pydeck_chart(build_map(detectors))
+    roads, focus_roads = road_preview_controls()
+    if roads:
+        st.caption("Road network · blue: main corridor · purple: alternative roads · "
+                   "grey: other roads. Geometry only, not route advice.")
+    messages, day_reports, markers, selected_incident = [], None, None, None
+    if timeline is not None and current_bin is not None:
+        archived, archive_errors = incident_playback.read_messages(
+            DATA_DIR / "demo_incident_messages.jsonl")
+        for error in archive_errors:
+            st.warning(error)
+        messages = incident_playback.for_window(
+            archived, timeline["bin_start"].iloc[0], timeline["bin_start"].iloc[-1])
+        first = incident_playback.local_time(timeline["bin_start"].iloc[0])
+        day_start = (first.replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
+                     if first is not None else timeline["bin_start"].iloc[0])
+        # A window starting after clearance still needs that earlier report
+        # in its card, while the chart should only mark events in its own range.
+        day_reports = load_incident_markers(day_start, timeline["bin_start"].iloc[-1], messages)
+        markers = (day_reports[day_reports["bin_start"] >= first.isoformat()]
+                   if first is not None else day_reports)
+        incidents = sorted({message.incident_id for message in messages})
+        if incidents:
+            selected_incident = (incidents[0] if len(incidents) == 1 else
+                                 st.selectbox("Archived incident", incidents, key="archived_incident"))
+
+    incident = None
+    if current_bin is not None and selected_incident:
+        message = incident_playback.latest_at(messages, selected_incident, current_bin)
+        configured = os.environ.get("RIPPLE_SUMO_NETWORK")
+        if message and configured:
+            try:
+                path = Path(configured).expanduser().resolve()
+                geometry = cached_road_geometry(str(path), hashlib.sha256(path.read_bytes()).hexdigest())
+                incident = incident_callout.annotation(
+                    message, reported_clearance(message, current_bin, day_reports), geometry)
+            except Exception:
+                # SUMO/projection parsers can also raise XML or missing-field
+                # errors. An optional annotation must not stop playback.
+                incident = None
+        if message and incident is None:
+            st.caption("Incident location unavailable on this map; source details are below.")
+    st.pydeck_chart(build_map(detectors, roads, focus_roads, incident))
 
     if timeline is not None and current_bin is not None:
-        markers = load_incident_markers(timeline["bin_start"].iloc[0],
-                                        timeline["bin_start"].iloc[-1])
+        st.caption("Full archived window · orange markers are TD report times, "
+                   "not inferred physical closure times.")
         chart = timeline_chart(timeline, current_bin, markers)
         if chart is not None:
             st.altair_chart(chart, use_container_width=True)
@@ -710,6 +894,7 @@ def main() -> None:
                 "No incident times drawn: run `python -m src.loaders.fetch "
                 "incidents --start <day> --end <day>` to mark what TD said, and when."
             )
+        show_incident_card(messages, current_bin, day_reports, selected_incident)
 
     st.caption(f"{len(detectors)} detectors · data: DATA.GOV.HK / Transport Department")
 
