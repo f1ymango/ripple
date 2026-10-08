@@ -1,40 +1,44 @@
-# Presentation Deck & Evidence Pack
+# Ripple: Urban Corridor Traffic Simulation & AI Twin
 
-This folder holds the deck itself and the evidence behind it for the Oct 12 reviewable draft submission.
+This repository contains the simulation framework, AI agent pipelines, presentation materials, and technical evaluation suites for the Ripple urban corridor management project.
 
 ---
 
-## 1. The Five Criteria (20% each)
+## 1. Executive Summary & Component Ownership
 
-Every slide and artifact is traceable to one of these core criteria:
-
-| Criterion | Owner | Material Source |
+| Component Domain | Lead Owner | Current Status & Scope |
 | :--- | :--- | :--- |
-| **Convincing framing of problem** | Impact | `docs/05-pitch.md` §1, §3 |
-| **Prototype / demo** | Visuals + Lead | Demo Video, Console, `results/twin/` |
-| **Appropriate technical component** | Lead | GenAI jobs, `results/reader/` benchmark scores |
-| **Feasibility and impact** | Impact | `deck/costing.md` |
-| **Sustainability and ethics** | Impact | Constraint thresholds, `deck/qa-sheet.md` |
+| **Problem & Framing** | Impact / Pitch | **Deployed 10/12 Reviewable Draft (#50)** \| Frame & governance locked |
+| **Simulation & Twin** | Simulation | Incident AID01104 replay & SUMO network window verified |
+| **Technical / GenAI** | Technical Lead | Qwen3-8B Reader benchmarks: 75% City / 85% Corridor accuracy |
+| **Costing & Impact** | Impact / Pitch | Infrastructure model drafted; BCR set to `BLANK / Not Measured Yet` |
+| **Visuals & Media** | Visuals | Video shot list & storyboard ready (`deck/video-shot-list.md`) |
 
 ---
 
-## 2. File Inventory & Index
+## 2. Activity & Change Log
 
-| File | Description | Status & Freeze Boundary |
-| :--- | :--- | :--- |
-| **`slides.md`** | Slide structure aligned with 5 scoring criteria | Complete (Draft v1) |
-| **`real-vs-simulated.md`** | Comparison between real-world incident inputs and SUMO twin setup | Complete (Traceable artifacts mapped) |
-| **`costing.md`** | Infrastructure costing model & BCR governance | Complete (BCR set to `BLANK / Not Measured Yet`) |
-| **`qa-sheet.md`** | Technical Q&A and known limitations | Complete (Gold Score v2: 75% city / 85% corridor) |
-| **`video-shot-list.md`** | Demo video storyboard and script | Complete (Draft v1) |
+- **2026-10-12**: Merged PR #50 (deck/ draft review pack). Fully scoped single interview evidence, cost models (BCR blank), and artifact dependency register for Oct 15 presentation pack.
+- **2026-10-09**: Lead baseline decision locked; SUMO window and reader pipeline scope defined.
+- **2026-10-03**: Submitted interim project report.
 
 ---
 
-## 3. Key Dates & Governance
+## 3. Repository Structure & Presentation Deliverables
 
-- **Sat 3 Oct**: Interim report submitted
-- **Wed 14 Oct**: **Results freeze** — every number in the deck is locked
-- **Sat 17 Oct**: Deck and prototype submitted
-- **Sat 24 Oct**: Final pitch, CityU Kowloon Tong
+All presentation materials and supporting evidence live under the [`deck/`](./deck/) directory:
+
+- **[`deck/slides.md`](./deck/slides.md)**: 5-slide presentation deck covering all scoring criteria.
+- **[`deck/costing.md`](./deck/costing.md)**: Infrastructure costing model (BCR strictly blank pending freeze).
+- **[`deck/qa-sheet.md`](./deck/qa-sheet.md)**: Technical Q&A, Reader bounds, and anonymized interview evidence scope.
+- **[`deck/real-vs-simulated.md`](./deck/real-vs-simulated.md)**: Real incident vs. SUMO twin mapping.
+- **[`deck/video-shot-list.md`](./deck/video-shot-list.md)**: Storyboard and voiceover script for demo video.
+
+---
+
+## 4. Governance & Data Freeze Rules
+
+1. **Oct 14 Data Freeze**: All metrics on delay savings, CO₂ impact, and Benefit-Cost Ratio (BCR) remain explicitly **`BLANK / Not Measured Yet`** across all deck documentation until post-freeze full-closure sign-off.
+2. **Artifact Provenance**: Every quantitative claim must reference a verified file under `results/`.
 
 > **Governance Note**: All delay savings, CO2 impact calculations, and Benefit-Cost Ratios (BCR) remain explicitly marked as **`BLANK / Not Measured Yet`** across all deck files until post-freeze full-closure simulation sign-off on Oct 14.
