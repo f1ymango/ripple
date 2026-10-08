@@ -77,4 +77,6 @@ approval gates remain in force. No shared JSON contract is changed.
 
 Owner: Visuals (G and video). The silent rough cut remains a separate local
 review artifact; narration and final export follow the Lead's scope decision.
+The [video shot list](../deck/video-shot-list.md) maps the current cut to its
+sources and includes draft timed narration for recording.
 Retain Transport Department / DATA.GOV.HK and OpenStreetMap / CARTO attribution.

@@ -1,0 +1,69 @@
+1
+00:00:00,500 --> 00:00:05,200
+Ripple is an incident co-pilot
+for Hong Kong traffic operators.
+
+2
+00:00:05,500 --> 00:00:11,000
+This is archived playback of a May fifteenth
+incident on Wong Chuk Hang Road flyover.
+
+3
+00:00:11,100 --> 00:00:17,000
+The arrow marks the approximate reported area.
+The message is from the Transport Department.
+
+4
+00:00:17,500 --> 00:00:23,000
+We can rewind to observations
+from before that report was published.
+
+5
+00:00:23,100 --> 00:00:29,000
+The road curves provide map context.
+They are not recommended routes.
+
+6
+00:00:29,500 --> 00:00:37,000
+The map shows recorded detector conditions.
+Missing speed is not a speed of zero.
+
+7
+00:00:37,100 --> 00:00:45,000
+These three detectors have partial archive coverage.
+Their counts do not tell us which detour drivers took.
+
+8
+00:00:45,500 --> 00:00:52,000
+The later TD update reports all lanes closed.
+The callout changes as playback reaches the report.
+
+9
+00:00:52,100 --> 00:00:59,000
+Publication time does not establish
+the exact physical closure time.
+
+10
+00:00:59,500 --> 00:01:05,500
+Later, the console shows the clearance report
+alongside the recorded conditions.
+
+11
+00:01:05,600 --> 00:01:11,000
+These remain partial samples,
+not continuous monitoring or live traffic.
+
+12
+00:01:11,500 --> 00:01:18,500
+Plan comparison is waiting for validated runs.
+We are not presenting a recommended route yet.
+
+13
+00:01:18,600 --> 00:01:25,500
+The goal is to compare operator responses
+and explain their measured trade-offs.
+
+14
+00:01:25,600 --> 00:01:32,000
+The next step is a jointly reviewed run bundle.
+Benefit figures remain not measured yet.
