@@ -42,7 +42,7 @@ Same network, demand, seed and scorer in all three
 | Still waiting to enter at 10:35 | 840 (2.5%) | 642 (1.9%) | 447 (1.3%) |
 | Teleports (wrong-lane) | 72 (9) | 170 (25) | 35 (0) |
 | Scenario file | [first](../sim/scenarios/evaluator_IN-26-03365.json) | [timing](../sim/scenarios/evaluator_IN-26-03365_detector-timing.json) | [rerouted](../sim/scenarios/evaluator_IN-26-03365_detector-timing-rerouted.json) |
-| Result | [results/runs](../results/runs/2026-05-15_ABD_P0_c50_t67_assumed-0855-0936.json) | [diagnostic](../results/evaluator-diagnostics/runs/2026-05-15_ABD_P0_c50_t66_detector-0854-0900.json) | [results/runs](../results/runs/2026-05-15_ABD_P0_c50_t66_detector-0854-0900-rerouted.json) |
+| Result | [diagnostic](../results/evaluator-diagnostics/runs/2026-05-15_ABD_P0_c50_t67_assumed-0855-0936.json) | [diagnostic](../results/evaluator-diagnostics/runs/2026-05-15_ABD_P0_c50_t66_detector-0854-0900.json) | [diagnostic](../results/evaluator-diagnostics/runs/2026-05-15_ABD_P0_c50_t66_detector-0854-0900-rerouted.json) |
 
 Vehicles counted in the ten valid bins 09:05–09:55:
 
@@ -62,8 +62,13 @@ Vehicles counted in the ten valid bins 09:05–09:55:
 - **The first P0 looks better past the flyover (675) only because it left the
   road half open until 09:36.**
 
-The rerouted run is the baseline to build on. It is in `results/runs/` beside
-the first P0, which stays as the record of what the TD-message timing gave.
+The rerouted run is the baseline to build on. It is kept with the first P0,
+which stays as the record of what the TD-message timing gave.
+
+> **8 October:** both moved, unchanged, from `results/runs/` to
+> `results/evaluator-diagnostics/`. The replay P0 has the same compliance,
+> clearance and seed as the rerouted run, and the console refuses to compare
+> plans while two P0 results share those three values.
 
 ## 3. What is still wrong
 

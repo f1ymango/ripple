@@ -5,6 +5,36 @@ touch someone else's. **Nothing in your files has been changed.** Each note
 says what we found, where the proof is, and what we suggest. Pick them up when
 you are next in that code; strike a note through when it is done.
 
+## 9 Oct 2026
+
+### For the Lead, answering your 9 Oct review of the E branch
+
+**27. P0 go/no-go: Data says no-go for comparing plans by 14 October.**
+[The review](evaluator-p0-go-no-go-2026-10-09.md) covers each check you
+listed. Three findings would change which plan comes out best: the tunnel-side
+flow (36 of 65 failing count bins), the on-ramp backlog (26% of P0's delay,
+present with no closure), and the refreshed speed signs, which P1 and P2
+inherit from the do-nothing morning. Simulation's half of the review is a
+blank table in section 4. Until it is filled in, please treat the
+observed-only scope ([#54](https://github.com/f1ymango/ripple/pull/54)) as
+staying.
+
+**28. Your two integration fixes are done.**
+1. The v2 context no longer names
+   `sim/scenarios/evaluator_IN-26-03365_signals.add.xml`, which was never
+   committed. The +20 s at Tong Bin Lane is marked an assumed network control
+   in the context's table and in the scenario, so every run report says so. A
+   test fails if any plan context names a missing source.
+2. Every `run_id` now ends with the plan set (`--plan-set`, required), and the
+   rehearsal results moved to `results/evaluator-rehearsal/`. `results/runs/`
+   is empty, kept for your plans. `batch` no longer skips an existing
+   `run_id`; it keeps a result only if that result binds the same plans,
+   generation inputs and simulation inputs, and stops otherwise. Suggested
+   name for your set: `lead-v1`. The command is in section 5 of the review.
+
+**29. The E branch for its own PR.** `data/evaluator-e-oct07` sits on `main`
+and carries none of #46's commits. Opened separately from #46.
+
 ## 8 Oct 2026
 
 All four come from [the replay note](evaluator-replay-2026-10-08.md).
@@ -50,6 +80,37 @@ evidence, and section 3 of the note shows the score without each. The
 20 minutes after reopening are the weakest: AID01104 shows both flyover lanes
 in use from 10:04, so E's closed lane only stands for a narrowing at the
 scene. None of your files is changed.
+
+### For the Lead, from testing E's edges (8 Oct, later)
+
+**24. Far from the morning's own clearance, P0 fails validation, so F and
+the console will not rank plans there.** E scores P0 against the real morning.
+At 66 minutes, the clearance IN-26-03365 had, P0 meets both targets; at 80 it
+still does (86.82%, 14.61%). At 5 minutes the same P0 scores 38.98% speed
+error, because the twin no longer has the morning's closure, and every P1 and
+P2 at that clearance inherits the fail. So the "plans × compliance ×
+clearance" batch in CLAUDE.md can only be ranked near the observed clearance,
+and a what-if P0 passing or failing says little about the model either way.
+One reading of the contract is that the model is validated once, at the
+observed clearance, and each what-if P0 points to that. That would change what
+`validation` means in `result.json`, so it is your call, not ours.
+
+**25. The E commands in CLAUDE.md are not E's.** `python -m src.evaluator.run
+--incident ...` and `python -m src.evaluator.batch --incident ...` do not
+exist. E takes `--plans`, `--plan`, `--scenario`, `--compliance` and
+`--clearance`; [E's README](../src/evaluator/README.md#run-it) has the
+commands that work.
+
+### For Visuals
+
+**26. The console keys a comparison by compliance, clearance and seed only.**
+Two scenarios with different assumptions but the same three values look like
+one, and the console withholds the comparison ("More than one P0 run has this
+scenario"). That happened on 8 Oct: the 7 Oct P0 sat in `results/runs/` beside
+the replay's. Data moved the old results to `results/evaluator-diagnostics/`,
+and E's README now says to keep one plan set on one scenario per folder. If you want
+the console to hold several, the sidecar's `simulation_inputs` tells scenarios
+apart; `run_id` ends with the scenario's label too.
 
 ## 4 Oct 2026
 

@@ -12,6 +12,14 @@ is quoted:
    by up to 5%, which is about the size of the difference between two random
    seeds.
 
+> **9 October:** the Lead asked for a P0 go/no-go; Data's position is
+> no-go for comparing plans by 14 October, in
+> [evaluator-p0-go-no-go-2026-10-09.md](evaluator-p0-go-no-go-2026-10-09.md).
+> Every `run_id` now ends with the plan set it evaluates (`_rehearsal` here),
+> and these results moved from `results/runs/` to `results/evaluator-rehearsal/`,
+> which leaves `results/runs/` for the Lead's plans. All runs were made again
+> with the final code; every number is unchanged (section 6).
+
 Everything here follows [the 7 October note](evaluator-p0-2026-10-07.md). The
 scenario is
 [evaluator_IN-26-03365_replay.json](../sim/scenarios/evaluator_IN-26-03365_replay.json);
@@ -20,8 +28,8 @@ how to run it is in [E's README](../src/evaluator/README.md).
 ## 1. Result
 
 P0 against the 15 May detectors, seed 2026
-([result](../results/runs/2026-05-15_ABD_P0_c50_t66_replay.json),
-[report](../results/evaluator/2026-05-15_ABD_P0_c50_t66_replay.report.json)):
+([result](../results/evaluator-rehearsal/runs/2026-05-15_ABD_P0_c50_t66_replay_rehearsal.json),
+[report](../results/evaluator-rehearsal/evaluator/2026-05-15_ABD_P0_c50_t66_replay_rehearsal.report.json)):
 
 | | GEH < 5 (target 85%) | Speed error (target 15%) |
 |---|---|---|
@@ -40,7 +48,7 @@ identical result file, and the 7 October baseline still reproduces to the
 byte with the new code.
 
 The three plans at three compliance levels, seed 2026
-([results](../results/runs/)):
+([results](../results/evaluator-rehearsal/runs/)):
 
 | Plan | Compliance | Delay, vehicle-hours | Against P0 | In the network | Waiting to enter | Left the corridor (assumed 20 min each) | Corridor travel time, 95th pct |
 |---|---|---|---|---|---|---|---|
@@ -74,7 +82,7 @@ quarter-hour predicts the next, not the model.
 
 The same run with ordinary-morning signs everywhere, so that no speed from
 15 May goes in
-([result](../results/evaluator-diagnostics/runs/2026-05-15_ABD_P0_c50_t66_ordinary-signs.json)):
+([result](../results/evaluator-diagnostics/runs/2026-05-15_ABD_P0_c50_t66_ordinary-signs_rehearsal.json)):
 
 | | GEH < 5 | Speed error | Where the model makes the speed | Where a sign sets it |
 |---|---|---|---|---|
@@ -219,35 +227,116 @@ in the queue, and green time cannot add a lane. A plan with more effect needs
 something the twin does not have: a second route, or a way to take trips off
 the road.
 
-## 6. Reproduce
+## 6. Format and edge checks (8 October, later)
+
+**What goes in.** E reads D's plan folder and runs a plan only if it is exactly
+what D's validator returns for the saved `generation-inputs.json`, and only on
+a scenario file that passes the schema in
+[scenario.py](../src/evaluator/scenario.py).
+
+**What comes out.** Every result in `results/evaluator-rehearsal/runs/` and
+`results/evaluator-diagnostics/runs/` was checked by script against
+[the contract](03-architecture.md#resultjson--output-of-e): F's result schema,
+the contract's keys in the contract's order, a `run_id` equal to the file name
+that encodes the plan, compliance and clearance in the result, P0 with
+`delay_vs_do_nothing_pct` 0 and both validation figures, P1 and P2 with empty
+`validation` and a change against the P0 of the same compliance, clearance and
+seed. Each sidecar holds exactly the eight contract fields, verifies against
+its plan and the generation inputs, and its simulation-input hashes equal the
+files in the repository now. All 32 current results pass. The three 7 October
+records verify against their own plan folder and that day's code.
+F's checks (`prepare_comparison`, what `--check-only` runs) and the console's
+comparison accept all three compliance levels. The contract's GEH target is for the pre-incident hour: before the
+closure P0 scores 96.77% of 217 bins.
+
+**Edges, run in SUMO:**
+
+| Case | Expected | Result |
+|---|---|---|
+| P1 at compliance 0 | the same as P0 | identical metrics and measurement detail |
+| P1 at clearance 5: the road reopens at 08:59, before the 09:01 report | the same as P0, and the report says the plan could not act | identical; the report says "none: the first lane reopens at second 5640, before the plan can act at second 5760". P0 there misses the speed target, 38.98%: note 24 |
+| P1 at compliance 100% | runs | +8.3%: waiting at the tunnel on-ramp rises from 448.7 to 706.4 vehicle-hours, the artefact of section 5 |
+| P2 at compliance 100% | runs | −2.0% |
+| P2 that only extends the green | the program switches at 09:01 and back at 10:00 | phase 0 goes from 24 s in a 90 s cycle to 44 s in 110 s at second 5760 (09:01) and back at 9300 (10:00); delay +0.2% |
+| Clearance 80, the longest whole minute that reopens every lane before the run ends | runs | delay 1,939.6; GEH 86.82%, speed error 14.61%: still meets both targets |
+| Clearance 81 and 82 | refused before SUMO starts | refused in under a second |
+| Run from another folder | the same result | identical to the run from the repository |
+| P0 run twice | byte-identical | byte-identical, sidecar too |
+| The 7 October baseline with today's code | the same result | identical apart from the `run_id`'s plan-set suffix |
+| All 32 committed runs again with today's code | the same numbers | every number identical; only the `run_id` (now ending `_rehearsal`), the sidecars' hashes of E's code and scenario, and the relabelled signal assumption changed |
+
+**What the checks changed in E.** None of these changes a committed number
+(last row above); each would have mattered for other plans or settings.
+
+1. **Two routes for one od group:** E applied the first route's share and
+   never the second. Now one draw per driver splits the group by the shares.
+   The replay has one detour, so no result was affected.
+2. **A plan compared with a P0 that had been edited, or made from other
+   plans:** E checked only the simulation inputs. It now verifies the P0
+   result against its sidecar, `P0.json` and `generation-inputs.json` first.
+3. **Settings outside the contract** (compliance 1.1, clearance 0, NaN) ran
+   for two minutes before the result schema refused them. They are now refused
+   before SUMO starts, and so is a clearance whose last lane reopens at the
+   run's final second, which never simulated an open road.
+4. **Two compliance values, one `run_id`:** `c12.3457` stands for 0.1234567
+   and 0.1234571. E refuses values with more decimals than the `run_id` shows.
+5. **A closure phase due in the second the road reopens** (clearance 2.001
+   minutes in a test scenario) was applied together with the reopening. It
+   now never starts.
+6. **A scenario that places a route badly:** a route that does not start on
+   the road its od group avoids did nothing, and two junctions on one traffic
+   light were extended twice and never restored. Both are now refused, and a
+   green phase the light does not have stops the run.
+7. **The console withheld the 50% comparison:** the 7 October P0 shared its
+   compliance, clearance and seed with the replay's. Moved, unchanged, to
+   `results/evaluator-diagnostics/`.
+8. **A batch for a new plan set would have kept the old plan set's results**
+   (the Lead, 9 October): `batch` skipped any `run_id` that had a result. Now
+   every `run_id` ends with `--plan-set`, and `batch` keeps a result only if
+   it binds the same plans, generation inputs and simulation inputs.
+9. **The v2 context named a source that was never committed**
+   (the Lead, 9 October). Removed; a test now fails if any plan context names
+   a missing file.
+
+`tests/test_evaluator.py` has 81 cases, up from 44, for these and the
+contract's edges. What other owners should know is in
+[notes-from-data.md](notes-from-data.md), notes 24 to 26: far from the
+morning's own clearance P0 fails validation, so plans cannot be ranked at such
+a what-if clearance; CLAUDE.md's E commands do not exist; and the console's
+scenario key.
+
+## 7. Reproduce
 
 Inputs once, as in [E's README](../src/evaluator/README.md). Then:
 
 ```bash
 python -m src.evaluator.rehearsal_plans --incident data/generated-plans/IN-26-03365-p0-only/generation-inputs.json \
     --context data/plan-context/IN-26-03365_first-report-v2.json --out-dir data/generated-plans/IN-26-03365-rehearsal
-python -m src.evaluator.batch --plans data/generated-plans/IN-26-03365-rehearsal \
-    --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --clearance 66
+python -m src.evaluator.batch --plans data/generated-plans/IN-26-03365-rehearsal --plan-set rehearsal \
+    --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --clearance 66 \
+    --results-dir results/evaluator-rehearsal
 # a seed or a one-change variant
-python -m src.evaluator.batch --plans data/generated-plans/IN-26-03365-rehearsal \
+python -m src.evaluator.batch --plans data/generated-plans/IN-26-03365-rehearsal --plan-set rehearsal \
     --scenario sim/scenarios/evaluator-diagnostics/replay_seed1.json --clearance 66 --compliance 0.5 \
     --results-dir results/evaluator-diagnostics
-python -m src.evaluator.run --plans data/generated-plans/IN-26-03365-rehearsal --plan P0 \
+python -m src.evaluator.run --plans data/generated-plans/IN-26-03365-rehearsal --plan-set rehearsal --plan P0 \
     --scenario sim/scenarios/evaluator-diagnostics/replay_ordinary-signs.json --compliance 0.5 --clearance 66 \
     --results-dir results/evaluator-diagnostics
 # the ordinary-signs variant needs its own sign file first: every detector named after --ordinary-only
 ```
 
 The plans folder already exists in the repository; the first command is how it
-was made. Run on Linux, Python 3.13.16, SUMO 1.27.1. Not run on Windows.
+was made (again on 9 October, from the corrected context: the plans are
+unchanged, `generation-inputs.json` lost the missing source). Run on Linux, Python 3.13.16, SUMO 1.27.1. Not run on Windows.
 
-## 7. Open
+## 8. Open
 
 1. **Lead — how the validation is worded.** Section 2. The whole-run numbers
    meet the targets only with speeds refreshed from 15 May.
 2. **Lead — D's own plans.** Generate P0/P1/P2 from the version 2 context and
-   evaluate those. E refuses a plan that uses public transport or a junction
-   the scenario does not place.
+   evaluate those under their own `--plan-set`, once P0 is accepted
+   ([go/no-go](evaluator-p0-go-no-go-2026-10-09.md)). E refuses a plan that
+   uses public transport or a junction the scenario does not place.
 3. **Lead — one seed or several.** The contract has one seed per result. Plan
    differences here are within seed noise, so the briefing should either say
    so or compare several seeds.
@@ -257,3 +346,5 @@ was made. Run on Linux, Python 3.13.16, SUMO 1.27.1. Not run on Windows.
 5. **Simulation — review of the scene assumptions in section 3,** as for the
    7 October P0 setup.
 6. **Data — the 20 minutes.** No source. It does not change the order here.
+7. **Lead — plans at other clearances.** Section 6 and note 24: at 5
+   minutes P0 fails the targets, so nothing can be ranked there.
