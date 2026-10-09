@@ -8,8 +8,8 @@ Lead-generated plans are compared against, and briefed from, before the
 
 **Data's position: NO-GO for comparing or ranking plans by 14 October.** The
 P0 stays an internal diagnostic. Visuals and Impact should keep the
-observed-only scope. Simulation's review is in section 4; this is not a joint
-decision until it is filled in.
+observed-only scope. **Simulation agrees with this no-go in section 4,
+completed 9 October HKT.** Lead retains the scope/integration decision.
 
 The evidence is the replay P0, seed 2026, clearance 66, compliance 50%
 ([result](../results/evaluator-rehearsal/runs/2026-05-15_ABD_P0_c50_t66_replay_rehearsal.json),
@@ -64,18 +64,34 @@ When P0 passes these, the hand-off to the Lead is ready to run (section 5).
 
 ## 4. Simulation's review
 
-To be filled in by Simulation: agree or disagree with each row of section 1,
-and the go/no-go.
+Reviewed by Simulation on 9 October against Data branch commit `3b67a1b`.
+The recorded P0 result, plan and generation-input provenance verified; every
+simulation input hash matches the locally reconstructed files and E code.
+This verifies input identity, not an independent successful rerun. The local
+SUMO executable failed before startup, including on `sumo --version`; the
+launch attempts produced no scored run. Details and the bounded candidate
+command are in [Simulation's technical review](simulation-evaluator-review-2026-10-09.md).
 
 | Check | Simulation's view |
 |---|---|
-| Scene assumptions | |
-| Speed refresh | |
-| Tunnel-side flow and AID01106 mapping | |
-| Queue timing and recovery | |
-| Ramp backlog `46766432` | |
-| Wrong-lane teleport | |
-| **Go / no-go** | |
+| Validation targets | **Agree on the reported scores; disagree that the whole-run pass accepts P0.** Closure GEH is 82.02%, and the scores on detectors used to set scene speeds are calibration fit rather than independent validation. |
+| Scene assumptions | **Change before any acceptance.** Keep 4.7 and 7 km/h only as explicitly fitted replay parameters, not measured capacities or independent queue predictions. Reject a physical one-lane closure through 10:20: both lanes carry traffic at AID01104 from 10:04. That does not rule out a restriction elsewhere, but no source locates one. Use the existing one-stage diagnostic and, if needed, a labelled 10:04 all-open sensitivity. Neither 6.5 m nor the 5 m default is a measured fleet mix; retain both as sensitivity cases, not a selected value because it passes MAPE. |
+| Speed refresh | **Agree with the no-go for counterfactual plans using incident-day speed caps on affected roads.** Technical correction: a variable speed sign sets a limit; traffic may go slower, so it does not fix every realised speed. It can nevertheless cap a plan's improvement at the do-nothing speed. Use the same ordinary-morning inputs for P0/P1/P2, or justify that refreshed edges cannot be affected by any plan. Report the 16.75% ordinary-sign error as a miss; do not inherit the 14.54% replay claim. |
+| Tunnel-side flow and AID01106 mapping | **Agree; physical placement is not confirmed.** The model places both loops at 0.10 m on `1198101443`, at the tunnel entrance, 20.73 m from the registry point. The nearby upstream road has four model lanes; the feed has two. This supports a candidate tunnel cross-section but cannot certify it. Surface Wong Chuk Hang Road and Ocean Park Road connect after the flyover, with additional surface entries; their incident volumes are unknown. E now reroutes during full closure, so Simulation's older finding of no through-surface routes does not fully explain this newer run. No invented join or relocation is approved. |
+| Queue timing and recovery | **Agree on the discrepancies, but reject “mostly” as acceptance.** One or two bins matter to intervention timing; the 7 km/h approach is prescribed from the same observations. The 10:20 surge is tied to an unsupported second opening. Remove that stage for a diagnostic and compare lane readings, both upstream detectors, flow and recovery through 10:35; a smooth curve alone is insufficient. |
+| Ramp backlog `46766432` | **Agree it blocks ranking.** The compiled two-lane ramp feeds minor-priority connections into `1194711693`; mainline connections have priority. That can starve the ramp as diverted traffic rises. The 80/5/5 signal upstream does not remove the downstream merge conflict. Actual priority, control and demand still need evidence. Qualify section 3: zero no-closure backlog is not required if real queues exist, and merely subtracting ramp waiting cannot validate the whole-corridor ranking. Report it separately and compare paired no-closure/P0 cases without hiding plan-induced spillback. |
+| Wrong-lane teleport | **Agree it remains a failed diagnostic check; likely move-over feasibility, not proof of a missing connection.** Correct section 1's lane label: `1198059119_1` is the **middle** of three approach lanes. It connects via `1198059120_1` to the closed flyover slow lane `_0`; approach `_2` leads to the open fast lane `_1`. The 77.11 m warning leaves little space to change lane. A 330.96 m warning sensitivity is prepared, with no connection edit, but has not run successfully. |
+| Seed noise | **Agree that one seed cannot support ranking.** Use paired P0/P1/P2 seeds and uncertainty on each plan-minus-P0 difference. The six paired signs are useful diagnostic evidence; comparing a benefit only with P0's standalone standard deviation is not a formal acceptance test. Model bias remains even with more seeds. |
+| **Go / no-go** | **NO-GO for comparing or recommending plans by the 14 October freeze.** Agree with Data and retain observed-only public scope (#54). Reopening and awareness-distance diagnostics can be prepared by Monday 12 October; no evidence currently supports promising a physically reviewed tunnel mapping, new local flow or ramp-priority correction by then. Data can run the bounded candidate if SUMO is available, with a Tuesday 13 October review, but no score improvement alone reverses this decision. |
+
+Simulation agrees to **one provisional surface detour in this model**:
+Wong Chuk Hang Road under the flyover, using the exact `replace`/`with` edge
+lists in `evaluator_IN-26-03365_replay.json`. This is graph feasibility, not a
+public recommended route or proof that it is the only real-world alternative.
+The Tong Bin Lane **+20 s green remains an assumed network control**; no
+real signal timing or operator authority has been established. Retain that
+label in context, plans, results and any illustration. No route or incident
+assumption here authorises public benefit claims.
 
 ## 5. Hand-off to the Lead, when P0 is accepted
 
