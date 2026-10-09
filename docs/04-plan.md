@@ -109,6 +109,36 @@ diagnostic setup, not an accepted speed baseline or an incident result.
   unsupported benefit claims. Reassess the contingency without assuming that
   the simplified model is already validated.
 
+**Lead demo-scope decision — Fri 9 Oct (HKT): narrow the submission demo now.**
+Show the archived TD messages, observed detector playback and road graph for
+IN-26-03365, the Reader with its evaluation caveats, and the operator workflow
+as a clearly labelled capability demonstration. A fixture-driven comparison or
+briefing must be identified as such, not presented as a validated recommendation
+for this incident. Do not highlight a recommended diversion route or animate
+evaluated vehicles, and do not publish incident-specific delay, travel-time,
+CO₂ or benefit-cost improvements from the current P1/P2 runs.
+
+This is a **claims and video scope** decision, not a stop-work decision for SUMO
+or E. Data's [8 Oct evaluator replay](https://github.com/f1ymango/ripple/blob/3d68b298/docs/evaluator-replay-2026-10-08.md)
+has P0/P1/P2 results and sidecars on an unmerged branch. Its P0 whole-run
+89.29% GEH<5 and 14.54% speed MAPE use preceding-quarter-hour measured speeds
+at 21 of 25 detectors; crash-stretch speed error, tunnel flow and recovery
+remain problematic. P1/P2 use rehearsal stand-ins rather than Lead-generated
+plans. Simulation's latest [P0 blocker review](https://github.com/f1ymango/ripple/blob/ec3d740/docs/p0-core-blocker-2026-10-07.md)
+does not accept an incident baseline or plan comparison, and it has not signed
+off on Data's newer replay. Numeric thresholds or provenance hashes alone do
+not establish behavioural validity.
+
+The public scope may expand **only after** Simulation reviews and accepts the
+incident P0 against closure flow, upstream queues, recovery and run health;
+Data, Simulation and Lead agree the supported context/routes and compare Lead-generated
+plans using the same scenario and provenance-bound inputs; and the matching
+briefing and visuals are reviewed against those accepted runs. Until then,
+continue the diagnostic work but keep route, ranking and benefit claims out of
+the demo. The simplified model remains an unvalidated contingency, not an
+automatic replacement. Missing acceptance by the 14 Oct results freeze means
+the corresponding figures stay unmeasured in the submission.
+
 The 14 Oct results freeze and 17 Oct internal submission target stay in place.
 
 ### Week 3 — 5–11 Oct · Plans and results
