@@ -4,11 +4,14 @@ Runs one validated plan through the twin and writes the contracted
 `result.json` with its provenance sidecar
 ([contract](../../docs/03-architecture.md#resultjson--output-of-e)).
 
-**Status, 8 Oct:** E runs P0, P1 and P2. The current scenario is the
+**Status, 9 Oct:** E runs P0, P1 and P2, and its results pass F's and the
+console's checks. The current scenario is the
 [replay](../../sim/scenarios/evaluator_IN-26-03365_replay.json) of
 IN-26-03365; what it scores, what it assumes and what it cannot tell apart are
 in [the note](../../docs/evaluator-replay-2026-10-08.md). The plans it has been
-run on are stand-ins written by `rehearsal_plans.py`, not D's.
+run on are stand-ins written by `rehearsal_plans.py`, not D's. Whether the
+replay's P0 is good enough to compare plans on is
+[under review](../../docs/evaluator-p0-go-no-go-2026-10-09.md).
 
 ## Run it
 
@@ -31,13 +34,19 @@ python -m src.evaluator.speed_signs --build sim/work/p0-replay-build \
     --drop-edge 44419212 "814979901#0" 1198059118 1198059119 1198059120 \
     --out sim/work/p0-replay-build/speeds-replay.add.xml
 
-# P0, P1 and P2 at 30%, 50% and 70% compliance
-python -m src.evaluator.batch --plans data/generated-plans/IN-26-03365-rehearsal \
-    --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --clearance 66
+# P0, P1 and P2 of the rehearsal plans at 30%, 50% and 70% compliance
+python -m src.evaluator.batch --plans data/generated-plans/IN-26-03365-rehearsal --plan-set rehearsal \
+    --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --clearance 66 \
+    --results-dir results/evaluator-rehearsal
 
 # or one run; P0 first, because P1 and P2 are compared with it
-python -m src.evaluator.run --plans data/generated-plans/IN-26-03365-rehearsal --plan P0 \
-    --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --compliance 0.5 --clearance 66
+python -m src.evaluator.run --plans data/generated-plans/IN-26-03365-rehearsal --plan-set rehearsal \
+    --plan P0 --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --compliance 0.5 --clearance 66 \
+    --results-dir results/evaluator-rehearsal
+
+# the Lead's plan set, once it exists and P0 is accepted: its own name, into results/runs/
+python -m src.evaluator.batch --plans <the Lead's plans folder> --plan-set <its name, e.g. lead-v1> \
+    --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --clearance 66
 ```
 
 The two built files must have these SHA-256 values, which the scenario also
@@ -46,21 +55,64 @@ states: `demand.rou.xml` `5cbf6f6c…b955e`, `speeds-replay.add.xml`
 provenance sidecar.
 
 `--plans` is the folder D wrote (`P0.json`, `P1.json`, `P2.json`,
-`generation-inputs.json`). `--clearance` is minutes from closure onset to the
-first lane reopening; 66 is 08:54 to 10:00, when AID01104 carried traffic
-again. `--results-dir` sends a diagnostic somewhere other than `results/`, so
-it does not sit beside the baseline. A run takes about two minutes and prints
-SUMO's warnings as it goes; they are also kept in the run's `sumo.log`.
+`generation-inputs.json`). `--plan-set` names that folder in the `run_id`
+(lower-case letters, digits and hyphens), so results of two plan sets never
+share an ID: `2026-05-15_ABD_P1_c50_t66_replay_rehearsal` is P1 of the
+rehearsal plans at 50% compliance and 66 minutes' clearance on the replay
+scenario. Use one name per plans folder. `--compliance` is a share from 0 to 1.
+`--clearance` is minutes from closure onset to the first lane reopening; 66 is
+08:54 to 10:00, when AID01104 carried traffic again. With the replay's
+20-minute second stage the longest clearance that fits the run is 80.
+`--results-dir` is the folder the run writes into (default `results/`). A run
+takes about two minutes and prints SUMO's warnings as it goes; they are also
+kept in the run's `sumo.log`.
+
+**Where results go.** Each folder holds one plan set on one scenario: the
+console groups runs by compliance, clearance and seed only, and withholds a
+comparison when two P0 results share them.
+
+| Folder | What |
+|---|---|
+| `results/runs/` | the plan set the briefing and console compare; F reads only this folder. Empty until the Lead's plans are evaluated |
+| `results/evaluator-rehearsal/` | the stand-in rehearsal plans on the replay. Not for the briefing |
+| `results/evaluator-diagnostics/` | other seeds, one-change scenarios, and the 7 October P0 records |
+
+Before E keeps an existing result, `batch` checks that it binds these plans,
+their generation inputs and today's simulation inputs, and stops if not.
+
+To see the rehearsal results in the console:
+
+```bash
+RIPPLE_RESULTS_DIR=results/evaluator-rehearsal/runs RIPPLE_PLANS_DIR=data/generated-plans/IN-26-03365-rehearsal \
+    streamlit run src/console/app.py
+```
 
 Each run writes three files and never overwrites one:
 
 | File | What |
 |---|---|
-| `results/runs/<run_id>.json` | the contracted result |
-| `results/runs/<run_id>.provenance.json` | hashes of the plan, generation inputs, result and every simulation input |
-| `results/evaluator/<run_id>.report.json` | run health, score by phase, assumptions, what the plan did, how each metric was measured |
+| `<results-dir>/runs/<run_id>.json` | the contracted result |
+| `<results-dir>/runs/<run_id>.provenance.json` | hashes of the plan, generation inputs, result and every simulation input |
+| `<results-dir>/evaluator/<run_id>.report.json` | run health, score by phase, assumptions, what the plan did, how each metric was measured |
 
 Nothing is written if the run does not reach its end time.
+
+E refuses, before SUMO starts and without writing anything:
+
+- a compliance outside 0 to 1, or a clearance that is not a positive number
+  of minutes;
+- a clearance with which some lane would still be closed when the run ends;
+- a compliance or clearance with more decimals than the `run_id` shows
+  (`c12.3457` cannot tell 0.1234567 from 0.1234571), or a plan-set name with
+  anything but lower-case letters, digits and hyphens;
+- a plan that is not exactly what D's validator returns for the saved inputs;
+- a plan whose od group, route or junction the scenario does not place, a
+  route that does not start on the road it avoids, or two junctions that are
+  one traffic light in the network;
+- for P1 or P2: a missing P0, a P0 without its sidecar or run report, a P0
+  that no longer matches its sidecar, `P0.json` or `generation-inputs.json`,
+  or a P0 made from other simulation inputs;
+- a `run_id` that already has a result.
 
 ## How it works
 
@@ -85,11 +137,12 @@ Nothing is written if the run does not reach its end time.
 ## What E models of a plan
 
 Between the plan context's `active_from` and `active_until`, or until the
-first lane reopens if that is earlier:
+first lane reopens if that is earlier. If the road reopens before
+`active_from`, the plan does nothing and its run report says so:
 
 | In the plan | In the twin |
 |---|---|
-| `diversions` | A driver of the od group follows the advice with probability share × compliance, takes the advised route from wherever they are, and does not leave the corridor at an exit. When the advice stops, drivers still short of the detour go back to the reopened road. |
+| `diversions` | A driver of the od group follows the advice with probability share × compliance, takes the advised route from wherever they are, and does not leave the corridor at an exit. With two routes for one od group, one draw per driver splits the group by the shares. When the advice stops, drivers still short of the detour go back to the reopened road. |
 | `signals` | The junction's green for the advised route runs `green_extend_s` longer; the cycle grows by as much. |
 | `vms` | Nothing of their own: a sign is one way the advice reaches drivers. |
 | `pt_nudge` | Not modelled. E refuses the plan. |

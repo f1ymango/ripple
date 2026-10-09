@@ -102,7 +102,7 @@ def evaluate(tmp_path, plans, monkeypatch):
     monkeypatch.setattr(metrics, "read_net", lambda path: MockNet())
 
     def call(plan_id="P0", scenario=SCENARIO):
-        return run.evaluate(plans, plan_id, scenario, 0.5, 5.0,
+        return run.evaluate(plans, "mock-plans", plan_id, scenario, 0.5, 5.0,
                             results_dir=tmp_path / "results", work_root=tmp_path / "work")
     return call
 
@@ -130,7 +130,7 @@ def test_closure_steps_follow_the_clearance():
     assert scenarios.closure_steps(scenario, 1.5) == [(300, [0]), (390, [])]   # reopens before phase two
     with pytest.raises(ValueError, match="within the run"):
         scenarios.closure_steps(scenario, 11)
-    assert scenarios.run_id(scenario, "P0", 0.5, 5.0) == "mock_P0_c50_t5_mock-closure"
+    assert scenarios.run_id(scenario, "P0", 0.5, 5.0, "mock-plans") == "mock_P0_c50_t5_mock-closure_mock-plans"
 
 
 def test_drivers_reroute_only_while_every_lane_is_closed(tmp_path):
@@ -273,7 +273,7 @@ def test_expected_demand_over_the_closed_edge_by_exit():
 def test_p0_result_meets_the_contract_and_its_sidecar_verifies(evaluate, plans, tmp_path):
     result, report, path = evaluate()
     validate(result, RESULT_SCHEMA)
-    assert path == tmp_path / "results" / "runs" / "mock_P0_c50_t5_mock-closure.json"
+    assert path == tmp_path / "results" / "runs" / "mock_P0_c50_t5_mock-closure_mock-plans.json"
     assert load_json(path) == result
     assert result["scenario"] == {"compliance": 0.5, "clearance_min": 5.0, "seed": 42}
     assert result["metrics"]["delay_vs_do_nothing_pct"] == 0
@@ -283,7 +283,7 @@ def test_p0_result_meets_the_contract_and_its_sidecar_verifies(evaluate, plans, 
             "code:src/evaluator/metrics.py", "code:src/twin/evaluate.py"} <= set(files)
     assert report["validation_targets_met"] is True
     assert report["assumptions"] and report["metric_definitions"]["max_queue_m"]
-    assert (tmp_path / "results" / "evaluator" / "mock_P0_c50_t5_mock-closure.report.json").is_file()
+    assert (tmp_path / "results" / "evaluator" / "mock_P0_c50_t5_mock-closure_mock-plans.report.json").is_file()
 
 
 def test_results_are_never_overwritten(evaluate):
@@ -623,7 +623,7 @@ def evaluate_plans(tmp_path, plans, monkeypatch):
 
     def call(plan_id, trips=TRIPS, scenario=scenario_path):
         monkeypatch.setattr(simulate, "run", mock_run(trips=trips))
-        return run.evaluate(plans, plan_id, scenario, 0.5, 5.0,
+        return run.evaluate(plans, "mock-plans", plan_id, scenario, 0.5, 5.0,
                             results_dir=tmp_path / "results", work_root=tmp_path / "work")
     return call
 
@@ -653,6 +653,200 @@ def test_a_plan_is_refused_if_its_p0_was_made_from_other_inputs(evaluate_plans, 
     (tmp_path / "mock_full.json").write_text(json.dumps(scenario))
     with pytest.raises(ValueError, match="different simulation inputs"):
         evaluate_plans("P1")
+
+
+@pytest.mark.parametrize("missing", ["sidecar", "report"])
+def test_a_plan_is_refused_if_its_p0_lost_its_sidecar_or_report(evaluate_plans, tmp_path, missing):
+    _, _, path = evaluate_plans("P0")
+    report = tmp_path / "results" / "evaluator" / f"{path.stem}.report.json"
+    (sidecar_path(path) if missing == "sidecar" else report).unlink()
+    with pytest.raises(ValueError, match="missing its provenance sidecar or run report"):
+        evaluate_plans("P1")
+
+
+def test_a_plan_is_refused_if_its_p0_no_longer_matches_its_sidecar_or_plans(evaluate_plans, plans):
+    _, _, path = evaluate_plans("P0")
+    edited = load_json(path)
+    edited["metrics"]["total_vehicle_hours_delay"] += 100                 # a hand-edited baseline
+    path.write_text(json.dumps(edited))
+    with pytest.raises(ValueError, match="does not match its sidecar"):
+        evaluate_plans("P1")
+
+
+# --- settings at and beyond the edges of the contract ------------------------------------
+
+@pytest.mark.parametrize("compliance,clearance,plan_set", [
+    (-0.1, 5.0, "p"), (1.1, 5.0, "p"), (float("nan"), 5.0, "p"), (float("inf"), 5.0, "p"), (True, 5.0, "p"),
+    ("0.5", 5.0, "p"), (0.5, 0, "p"), (0.5, -5.0, "p"), (0.5, float("nan"), "p"), (0.5, float("inf"), "p"),
+    (0.5, False, "p"),
+    (0.5, 10.0, "p"), (0.5, 10.5, "p"),                # reopens as the run ends, or after it
+    (0.1234567, 5.0, "p"), (0.5, 5.0000001, "p"),      # the run_id would not tell them from nearby values
+    (0.5, 5.0, ""), (0.5, 5.0, "Lead_v1"), (0.5, 5.0, None),   # no plan set, or one that would split the run_id
+])
+def test_settings_the_contract_cannot_hold_are_refused_before_anything_runs(
+        tmp_path, plans, monkeypatch, compliance, clearance, plan_set):
+    monkeypatch.setattr(simulate, "run", lambda *args: pytest.fail("simulated a refused setting"))
+    with pytest.raises(ValueError):
+        run.evaluate(plans, plan_set, "P0", SCENARIO, compliance, clearance,
+                     results_dir=tmp_path / "results", work_root=tmp_path / "work")
+    assert not (tmp_path / "results").exists() and not (tmp_path / "work").exists()
+
+
+@pytest.mark.parametrize("compliance,clearance", [(0, 5.0), (1, 5.0), (0.5, 9.5), (0.5, 0.5)])
+def test_settings_at_the_edges_run_and_meet_the_contract(tmp_path, plans, monkeypatch, compliance, clearance):
+    monkeypatch.setattr(simulate, "run", mock_run())
+    monkeypatch.setattr(metrics, "read_net", lambda path: MockNet())
+    result, _, _ = run.evaluate(plans, "mock-plans", "P0", SCENARIO, compliance, clearance,
+                                results_dir=tmp_path / "results", work_root=tmp_path / "work")
+    validate(result, RESULT_SCHEMA)
+    assert result["scenario"] == {"compliance": compliance, "clearance_min": clearance, "seed": 42}
+
+
+def test_run_ids_name_compliance_and_clearance_exactly():
+    scenario = scenarios.load(SCENARIO)
+    assert scenarios.run_id(scenario, "P1", 0.3, 66.0, "lead-v1") == "mock_P1_c30_t66_mock-closure_lead-v1"
+    assert scenarios.run_id(scenario, "P1", 0.07, 66.5, "rehearsal") == "mock_P1_c7_t66.5_mock-closure_rehearsal"
+    assert scenarios.run_id(scenario, "P1", 0.125, 0.5, "r2") == "mock_P1_c12.5_t0.5_mock-closure_r2"
+    for compliance, clearance in ((0.5, 66.0000001), (0.1234567, 66.0), (0.5, 1 / 60)):
+        with pytest.raises(ValueError, match="nearby values"):
+            scenarios.run_id(scenario, "P1", compliance, clearance, "rehearsal")
+
+
+def test_a_phase_due_when_the_road_reopens_never_starts(tmp_path):
+    scenario = scenarios.load(SCENARIO)                                   # slow lane at 300, both lanes at 420
+    assert scenarios.closure_steps(scenario, 1) == [(300, [0]), (360, [])]
+    assert scenarios.closure_steps(scenario, 2.001) == [(300, [0]), (420, [])]   # 120.06 s rounds to 120
+    assert scenarios.closure_steps(scenario, 2.01) == [(300, [0]), (420, [0, 1]), (421, [])]
+    rerouted, _ = full_scenario(tmp_path)
+    assert scenarios.reroute_window(rerouted, 2.001) is None              # never every lane: nobody turned off
+    assert scenarios.lane_closures(rerouted, 2.001) == [(300, 420, [0]), (420, 540, [0])]
+
+
+def test_a_plan_does_nothing_if_the_road_reopens_before_the_operator_can_act(tmp_path, mock_plans):
+    plans, context = mock_plans
+    scenario, _ = full_scenario(tmp_path)
+    late = {**context, "active_from": "2026-05-15T09:10:00+08:00"}       # second 660; the road reopens at 600
+    plan = {**plans["P1"], "signals": [{"junction_id": "MOCK-J", "green_extend_s": 10}]}
+    road, actions = Road(), PlanActions(plan, late, scenario, 1.0, 5)
+    road.put("early.0", "far", THROUGH)
+    for now in (0, 120, 599, 600, 660, 661, 899):
+        actions.step(road, now)
+    assert road.routes["early.0"] == THROUGH and road.program == "0" and not actions.rerouted
+    assert actions.report()["active_seconds"].startswith("none: the first lane reopens at second 600")
+
+
+PLACES_TWO = {**PLACES, "routes": {**PLACES["routes"], "Mock Alternative": {"replace": ["closed"], "with": ["alt"]}}}
+
+
+@pytest.mark.parametrize("compliance", [1.0, 0.5])
+def test_two_routes_for_one_od_group_split_its_drivers_by_share(tmp_path, mock_plans, compliance):
+    plans, context = mock_plans                                           # P2: Detour 0.5, Alternative 0.25
+    scenario, _ = full_scenario(tmp_path, plan_actions=PLACES_TWO)
+    road, actions = Road(), PlanActions(plans["P2"], context, scenario, compliance, 5)
+    for i in range(4000):
+        road.put(f"f.{i}", "far", THROUGH)
+    actions.step(road, 120)
+    took = [road.routes[f"f.{i}"][2] for i in range(4000)]
+    assert abs(took.count("under1") / 4000 - 0.5 * compliance) < 0.03
+    assert abs(took.count("alt") / 4000 - 0.25 * compliance) < 0.03
+    assert took.count("closed") == 4000 - took.count("under1") - took.count("alt")
+    assert all(actions.follows(f"f.{i}", road.routes[f"f.{i}"], 121) == (took[i] != "closed") for i in range(4000))
+
+
+def test_routes_and_junctions_the_network_cannot_take_are_refused(tmp_path, mock_plans):
+    plans, context = mock_plans
+    starts_early = {**PLACES, "routes": {"Mock Detour": {"replace": ["in", "closed"], "with": ["under1"]}}}
+    scenario, _ = full_scenario(tmp_path, plan_actions=starts_early)
+    with pytest.raises(NotImplementedError, match="does not start on the road"):
+        PlanActions(plans["P1"], context, scenario, 0.5, 5)
+    one_light = {**PLACES, "signals": {"MOCK-J": {"tls_id": "tls", "green_phases": [0]},
+                                       "MOCK-K": {"tls_id": "tls", "green_phases": [1]}}}
+    scenario, _ = full_scenario(tmp_path, plan_actions=one_light)
+    plan = {**plans["P0"], "plan_id": "P2", "signals": [{"junction_id": "MOCK-J", "green_extend_s": 10},
+                                                         {"junction_id": "MOCK-K", "green_extend_s": 5}]}
+    with pytest.raises(NotImplementedError, match="one traffic light"):
+        PlanActions(plan, context, scenario, 0.5, 5)
+
+
+def test_a_green_phase_the_light_does_not_have_stops_the_run(tmp_path, mock_plans):
+    plans, context = mock_plans
+    scenario, _ = full_scenario(tmp_path, plan_actions={**PLACES, "signals": {"MOCK-J": {"tls_id": "tls",
+                                                                                         "green_phases": [2]}}})
+    plan = {**plans["P0"], "plan_id": "P2", "signals": [{"junction_id": "MOCK-J", "green_extend_s": 10}]}
+    actions = PlanActions(plan, context, scenario, 0.5, 5)
+    with pytest.raises(ValueError, match="has 2 phases"):
+        actions.step(Road(), 120)
+
+
+def test_withdrawing_advice_leaves_drivers_whose_route_changed_or_who_have_gone(tmp_path, mock_plans):
+    plans, context = mock_plans
+    scenario, _ = full_scenario(tmp_path)
+    road, actions = Road(), PlanActions(plans["P1"], context, scenario, 1.0, 5)
+    for vehicle in ("changed.0", "gone.0", "short.0"):
+        road.put(vehicle, "far", THROUGH)
+    actions.step(road, 120)
+    assert actions.rerouted == {"changed.0", "gone.0", "short.0"}
+    road.routes["changed.0"] = ["far", "in", "elsewhere"]                 # SUMO rerouted it since
+    road.on["far"].remove("gone.0")                                       # it has left the network
+    actions.step(road, 600)
+    assert road.routes["changed.0"] == ["far", "in", "elsewhere"] and road.routes["short.0"] == THROUGH
+    assert actions.report()["of_them_back_on_the_reopened_road"] == 1
+
+
+def test_a_batch_keeps_a_result_only_if_it_binds_these_plans_and_inputs(evaluate_plans, plans, tmp_path, monkeypatch):
+    from src.evaluator import batch
+    full_scenario(tmp_path, plan_actions=PLACES_TWO)
+    monkeypatch.setattr(simulate, "run", mock_run())
+    argv = ["batch", "--plans", str(plans), "--plan-set", "mock-plans", "--scenario", str(tmp_path / "mock_full.json"),
+            "--clearance", "5", "--compliance", "0.5", "--results-dir", str(tmp_path / "results")]
+    monkeypatch.setattr(sys, "argv", argv)
+    batch.main()                                                          # P0, P1 and P2, through the mock run
+    first = sorted(p.name for p in (tmp_path / "results" / "runs").iterdir())
+    assert len(first) == 6 and all("_mock-closure_mock-plans" in name for name in first)
+    batch.main()                                                          # the same plans again: all three kept
+    assert sorted(p.name for p in (tmp_path / "results" / "runs").iterdir()) == first
+    inputs = load_json(plans / "generation-inputs.json")
+    inputs["policy_context"]["sources"].append("another plan set's source")
+    (plans / "generation-inputs.json").write_text(json.dumps(inputs))      # another plan set, same --plan-set name
+    with pytest.raises(ValueError, match="another plan or plan inputs"):
+        batch.main()
+    monkeypatch.setattr(sys, "argv", [*argv[:4], "lead-v1", *argv[5:]])
+    batch.main()                                                          # its own name: its own three runs
+    assert len(list((tmp_path / "results" / "runs").glob("*_lead-v1.json"))) == 3
+
+
+def test_a_batch_will_not_keep_a_result_made_from_other_simulation_inputs(evaluate_plans, plans, tmp_path):
+    _, _, path = evaluate_plans("P0")
+    scenario_path = tmp_path / "mock_full.json"
+    run.kept_result(plans, "P0", scenario_path, scenarios.load(scenario_path), path)
+    edited = load_json(scenario_path)
+    edited["assumptions"][0]["choice"] = "Edited after P0 was run"
+    scenario_path.write_text(json.dumps(edited))
+    with pytest.raises(ValueError, match="other simulation inputs"):
+        run.kept_result(plans, "P0", scenario_path, scenarios.load(scenario_path), path)
+
+
+# --- E's output into F and G --------------------------------------------------------------
+
+def test_e_results_are_accepted_by_the_briefing_and_the_console(evaluate_plans, plans, tmp_path):
+    from src.briefing.writer import prepare_comparison
+    from src.console.recommendation import load_comparison, scenarios_for, read_objects
+    full_scenario(tmp_path, plan_actions=PLACES_TWO)                      # P2 also names Mock Alternative
+    def time_lost(share):
+        return [(i, d, w, a, t, loss * share, co2) for i, d, w, a, t, loss, co2 in TRIPS]
+    paths = [evaluate_plans("P0")[2], evaluate_plans("P1", trips=time_lost(0.75))[2],
+             evaluate_plans("P2", trips=time_lost(0))[2]]
+    runs_dir = tmp_path / "results" / "runs"
+    results, errors = read_objects(runs_dir)
+    assert not errors and scenarios_for(results, "MOCK-INCIDENT") == [(0.5, 5.0, 42)]
+    comparison, why = load_comparison(runs_dir, plans, "MOCK-INCIDENT", (0.5, 5.0, 42))
+    assert why == "" and comparison["winner"]["plan_id"] == "P2"
+    inputs = load_json(plans / "generation-inputs.json")
+    saved = [load_json(plans / f"P{i}.json") for i in range(3)]
+    plan, result, baseline, sources = prepare_comparison(saved, paths, generation_inputs=inputs,
+                                                         results_root=runs_dir)
+    assert plan["plan_id"] == result["plan_id"] == "P2" and baseline["plan_id"] == "P0"
+    assert len(sources) == 6                                              # three results and their sidecars
 
 
 # --- speed signs and the rehearsal plans -------------------------------------------------
@@ -686,6 +880,13 @@ def test_sign_file_keeps_ordinary_speeds_where_the_queue_must_form_by_itself():
     assert steps == {"vss_a": [("0", "13.89"), ("900", "5.00")], "vss_b": [("0", "20.00"), ("900", "20.00")]}
     assert report["detectors"]["D1"]["kind"] == "refreshed" and report["detectors"]["D2"]["kind"] == "ordinary only"
     assert report["edges_left_unsigned"] == ["c"]
+
+
+def test_every_source_a_plan_context_names_is_in_the_repository():
+    root = Path(__file__).parent.parent
+    for path in sorted((root / "data" / "plan-context").glob("*.json")):
+        missing = [source for source in load_json(path)["sources"] if not (root / source).is_file()]
+        assert not missing, f"{path.name} names sources that are not in the repository: {missing}"
 
 
 def test_rehearsal_plans_pass_ds_checks_and_differ(mock_plans):

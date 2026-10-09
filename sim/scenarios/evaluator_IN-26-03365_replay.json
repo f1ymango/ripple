@@ -233,7 +233,7 @@
     },
     {
       "choice": "Plan actions. The od groups are the flyover's traffic by where it leaves the network: the Canal Road Flyover (485146382) or Wong Nai Chung Road (1194711688). 'Wong Chuk Hang Road' is the road under the flyover, off at edge 1198059138 and back on at 1198059128. 'Wong Chuk Hang Road / Tong Bin Lane' is the second signal on it; its green for Wong Chuk Hang Road eastbound is phase 0 of the network's program.",
-      "status": "the routes are the only detour the network contains. The signal's program is netconvert's guess, 24 s of green in 90 s; the real timing is not in any source we have, and in this model the signal is not what limits the surface road",
+      "status": "the routes are the only detour the network contains. The signal is an ASSUMED NETWORK CONTROL, not a sourced TD control: its program is netconvert's guess, 24 s of green in 90 s, the real timing and whether TD can extend it are not in any source we have, and in this model the signal is not what limits the surface road",
       "source": "data/plan-context/IN-26-03365_first-report-v2.md; sim/work/p0-replay/network.net.xml"
     },
     {

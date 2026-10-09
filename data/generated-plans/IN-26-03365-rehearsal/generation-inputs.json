@@ -33,7 +33,6 @@
       "docs/00-brief.md",
       "docs/02-data.md",
       "sim/scenarios/evaluator_IN-26-03365_replay.json",
-      "sim/scenarios/evaluator_IN-26-03365_signals.add.xml",
       "data/plan-context/IN-26-03365_first-report-v2.md"
     ],
     "active_from": "2026-05-15T09:01:00+08:00",

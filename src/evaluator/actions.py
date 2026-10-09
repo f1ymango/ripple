@@ -45,12 +45,19 @@ class PlanActions:
                 "routes and junctions are in the network")
         try:
             self.advice = [{**places["od_groups"][d["od_group"]], **places["routes"][d["via"]],
-                            "od_group": d["od_group"], "probability": d["share"] * compliance}
+                            "od_group": d["od_group"], "via": d["via"], "probability": d["share"] * compliance}
                            for d in plan["diversions"]]
             self.signals = [{**places["signals"][s["junction_id"]], "junction_id": s["junction_id"],
                              "extend": s["green_extend_s"]} for s in plan["signals"]]
         except KeyError as missing:
             raise NotImplementedError(f"The scenario's plan_actions block does not place {missing}") from None
+        for advice in self.advice:
+            if advice["replace"][0] != advice["via_edge"]:
+                raise NotImplementedError(f"Route {advice['via']!r} does not start on the road od group "
+                                          f"{advice['od_group']!r} is advised to avoid ({advice['via_edge']})")
+        tls_ids = [signal["tls_id"] for signal in self.signals]
+        if len(tls_ids) != len(set(tls_ids)):
+            raise NotImplementedError("Two of the plan's junctions are one traffic light in this network")
         self.seed = scenario["seed"]
         self.start = seconds_into_run(scenario, context["active_from"])
         self.end = min(seconds_into_run(scenario, context["active_until"]), reopen_second(scenario, clearance_min))
@@ -59,15 +66,26 @@ class PlanActions:
         self.group_of = {}                                  # a rerouted driver's route no longer names the closed road
         self.returned = 0
 
-    def group(self, route):
-        return next((a for a in self.advice if a["via_edge"] in route and route[-1] == a["to_edge"]), None)
+    def choice(self, vehicle, route):
+        """The advice this driver follows, or None. Fixed per driver by the run's seed.
+
+        One draw per driver, split over the od group's routes by their shares:
+        with shares 0.5 and 0.25 at compliance 1, a driver drawing under 0.5
+        takes the first route, from 0.5 to 0.75 the second, and above that neither.
+        """
+        u, below = draw(self.seed, vehicle, "advice"), 0.0
+        for advice in self.advice:
+            if advice["via_edge"] in route and route[-1] == advice["to_edge"]:
+                below += advice["probability"]
+                if u < below:
+                    return advice
+        return None
 
     def follows(self, vehicle, route, now):
-        """Does this driver follow the plan's route advice at `now`? Fixed per driver by the run's seed."""
+        """Does this driver follow the plan's route advice at `now`?"""
         if not self.start <= now < self.end:
             return False
-        advice = self.group(route) or self.group_of.get(vehicle)
-        return bool(advice) and draw(self.seed, vehicle, "advice") < advice["probability"]
+        return vehicle in self.group_of or self.choice(vehicle, route) is not None
 
     def step(self, traci, now):
         active = self.start <= now < self.end
@@ -92,8 +110,8 @@ class PlanActions:
 
     def advise(self, traci, vehicle, now):
         route = traci.vehicle.getRoute(vehicle)
-        advice = self.group(route)
-        if not advice or draw(self.seed, vehicle, "advice") >= advice["probability"]:
+        advice = self.choice(vehicle, route)
+        if not advice:
             return
         here, first = traci.vehicle.getRouteIndex(vehicle), route.index(advice["via_edge"])
         after = first + len(advice["replace"])
@@ -111,6 +129,8 @@ class PlanActions:
         """The advice has stopped: a driver still short of the detour takes the reopened road again."""
         advice = self.group_of[vehicle]
         route, here = traci.vehicle.getRoute(vehicle), traci.vehicle.getRouteIndex(vehicle)
+        if advice["with"][0] not in route:
+            return                                          # its route has changed since; leave it
         first = route.index(advice["with"][0])
         if here >= first:
             return                                          # already on the detour
@@ -125,6 +145,9 @@ class PlanActions:
         tls = signal["tls_id"]
         current = traci.trafficlight.getProgram(tls)
         logic = next(l for l in traci.trafficlight.getAllProgramLogics(tls) if l.programID == current)
+        if max(signal["green_phases"]) >= len(logic.phases):
+            raise ValueError(f"Junction {signal['junction_id']!r}: the scenario names green phase "
+                             f"{max(signal['green_phases'])}, but {tls} has {len(logic.phases)} phases")
         phases = [traci.trafficlight.Phase(phase.duration + (signal["extend"] if i in signal["green_phases"] else 0),
                                            phase.state) for i, phase in enumerate(logic.phases)]
         self.base_program[tls] = current
@@ -133,7 +156,8 @@ class PlanActions:
 
     def report(self):
         return {
-            "active_seconds": [self.start, self.end],
+            "active_seconds": [self.start, self.end] if self.start < self.end else
+            f"none: the first lane reopens at second {self.end:g}, before the plan can act at second {self.start:g}",
             "diversions": [{"od_group": a["od_group"], "probability_a_driver_follows": round(a["probability"], 4)}
                            for a in self.advice],
             "vehicles_that_took_the_advised_route": len(self.rerouted),

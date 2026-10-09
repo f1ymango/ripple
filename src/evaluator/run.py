@@ -1,21 +1,25 @@
 """Run one validated plan through the twin and save its contracted result.
 
-    python -m src.evaluator.run --plans data/generated-plans/IN-26-03365-rehearsal --plan P0 \\
-        --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --compliance 0.5 --clearance 66
+    python -m src.evaluator.run --plans data/generated-plans/IN-26-03365-rehearsal --plan-set rehearsal \\
+        --plan P0 --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --compliance 0.5 --clearance 66 \\
+        --results-dir results/evaluator-rehearsal
 
-Writes results/runs/<run_id>.json, its .provenance.json sidecar, and a run
-report in results/evaluator/ with the run's health, the scenario's assumptions
-and how each metric was measured. Nothing is written if the run does not finish.
+Writes <results-dir>/runs/<run_id>.json, its .provenance.json sidecar, and a
+run report in <results-dir>/evaluator/ with the run's health, the scenario's
+assumptions and how each metric was measured. Nothing is written if the run
+does not finish. `--plan-set` names the plans folder in the run_id, so two plan
+sets never share one.
 
 Run P0 first. P1 and P2 are compared with the P0 result of the same scenario,
-compliance and clearance, and are refused if it is missing or was made from
-different simulation inputs.
+plan set, compliance and clearance, and are refused if it is missing or was
+made from other plans or simulation inputs.
 """
 import argparse
+import math
 import shutil
 
 from src.briefing.schema import RESULT_SCHEMA
-from src.evaluation_provenance import capture_inputs, sidecar_path, write_result
+from src.evaluation_provenance import capture_inputs, sidecar_path, verify_result, write_result
 from src.evaluator import metrics, scenario as scenarios, simulate
 from src.evaluator.actions import PlanActions, has_actions
 from src.evaluator.behaviour import DriversLeave
@@ -52,26 +56,72 @@ def load_plan(plans_dir, plan_id, scenario):
     return plan, generation_inputs
 
 
-def do_nothing_baseline(results_dir, scenario, compliance, clearance_min, captured):
-    """The P0 result and report a plan is compared with: same scenario, compliance, clearance and inputs."""
-    run_id = scenarios.run_id(scenario, "P0", compliance, clearance_min)
+def do_nothing_baseline(results_dir, scenario, plan_set, compliance, clearance_min, captured, p0_plan,
+                        generation_inputs):
+    """The P0 result and report a plan is compared with: same scenario, compliance, clearance and inputs.
+
+    The P0 result must still match its sidecar, the P0 plan and the generation
+    inputs this plan came with, as F will check when it compares them.
+    """
+    run_id = scenarios.run_id(scenario, "P0", compliance, clearance_min, plan_set)
     path = resolve(results_dir) / "runs" / f"{run_id}.json"
+    report = resolve(results_dir) / "evaluator" / f"{run_id}.report.json"
     if not path.is_file():
         raise ValueError(f"Run P0 first: {run_id} has no result to compare this plan with")
-    if load_json(sidecar_path(path))["simulation_inputs"] != captured["simulation_inputs"]:
+    if not (sidecar_path(path).is_file() and report.is_file()):
+        raise ValueError(f"{run_id} is missing its provenance sidecar or run report; "
+                         "run P0 again in a new results folder")
+    result = load_json(path)
+    try:
+        inputs = verify_result(path, result, p0_plan, generation_inputs)
+    except ValueError as exc:
+        raise ValueError(f"{run_id} does not match its sidecar, P0.json or generation-inputs.json in the plans "
+                         f"folder ({exc}); run P0 again from these plans") from None
+    if inputs != captured["simulation_inputs"]:
         raise ValueError(f"{run_id} was made from different simulation inputs; run P0 again before this plan")
-    return load_json(path), load_json(resolve(results_dir) / "evaluator" / f"{run_id}.report.json")
+    if result["scenario"] != {"compliance": compliance, "clearance_min": clearance_min, "seed": scenario["seed"]}:
+        raise ValueError(f"{run_id} holds another compliance, clearance or seed: {result['scenario']}")
+    return result, load_json(report)
 
 
-def evaluate(plans_dir, plan_id, scenario_path, compliance, clearance_min,
+def kept_result(plans_dir, plan_id, scenario_path, scenario, path):
+    """Refuse to keep an existing result unless it binds this plan, its plan inputs and today's simulation inputs."""
+    plan, generation_inputs = load_plan(plans_dir, plan_id, scenario)
+    captured = capture_inputs(plan, generation_inputs, simulation_files(scenario_path, scenario))
+    try:
+        inputs = verify_result(path, load_json(path), plan, generation_inputs)
+    except (OSError, ValueError) as exc:
+        raise ValueError(f"{path.name} was made from another plan or plan inputs ({exc}); "
+                         "give this plan set its own --plan-set name") from None
+    if inputs != captured["simulation_inputs"]:
+        raise ValueError(f"{path.name} was made from other simulation inputs (scenario, input files or E's code); "
+                         "run the set again in a new --results-dir")
+
+
+def number(value):
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
+
+def check_run_settings(scenario, plan_set, compliance, clearance_min):
+    """Refuse settings the result contract or the scenario cannot hold, before anything is simulated."""
+    if not (number(compliance) and 0 <= compliance <= 1):
+        raise ValueError(f"Compliance must be a share from 0 to 1, not {compliance!r}")
+    if not (number(clearance_min) and clearance_min > 0):
+        raise ValueError(f"Clearance must be a positive number of minutes, not {clearance_min!r}")
+    scenarios.closure_steps(scenario, clearance_min)           # raises if the road would not reopen within the run
+    scenarios.run_id(scenario, "P0", compliance, clearance_min, plan_set)   # raises if it would not tell runs apart
+
+
+def evaluate(plans_dir, plan_set, plan_id, scenario_path, compliance, clearance_min,
              results_dir="results", work_root="sim/work/evaluator"):
     scenario = scenarios.load(resolve(scenario_path))
+    check_run_settings(scenario, plan_set, compliance, clearance_min)
     plan, generation_inputs = load_plan(plans_dir, plan_id, scenario)
     actions = (PlanActions(plan, generation_inputs["policy_context"], scenario, compliance, clearance_min)
                if has_actions(plan) else None)
     leaving = DriversLeave(scenario, actions) if "drivers_leave" in scenario else None
     controllers = [c for c in (actions, leaving) if c]      # advice first: a driver who follows it does not leave
-    run_id = scenarios.run_id(scenario, plan_id, compliance, clearance_min)
+    run_id = scenarios.run_id(scenario, plan_id, compliance, clearance_min, plan_set)
     result_path = resolve(results_dir) / "runs" / f"{run_id}.json"
     report_path = resolve(results_dir) / "evaluator" / f"{run_id}.report.json"
     if any(path.exists() for path in (result_path, sidecar_path(result_path), report_path)):
@@ -79,7 +129,8 @@ def evaluate(plans_dir, plan_id, scenario_path, compliance, clearance_min,
     files = simulation_files(scenario_path, scenario)
     captured = capture_inputs(plan, generation_inputs, files)        # before the simulator starts
     baseline = (None if plan_id == "P0" else
-                do_nothing_baseline(results_dir, scenario, compliance, clearance_min, captured))
+                do_nothing_baseline(results_dir, scenario, plan_set, compliance, clearance_min, captured,
+                                    load_plan(plans_dir, "P0", scenario)[0], generation_inputs))
 
     work = resolve(work_root) / run_id
     if work.exists():
@@ -145,6 +196,8 @@ def evaluate(plans_dir, plan_id, scenario_path, compliance, clearance_min,
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--plans", required=True, help="Folder D wrote: P0.json ... and generation-inputs.json")
+    parser.add_argument("--plan-set", required=True,
+                        help="Short name of that folder for the run_id, e.g. rehearsal; one name per plan set")
     parser.add_argument("--plan", required=True, choices=["P0", "P1", "P2"])
     parser.add_argument("--scenario", required=True)
     parser.add_argument("--compliance", type=float, required=True, help="Share of advised drivers who divert, 0 to 1")
@@ -152,8 +205,8 @@ def main():
     parser.add_argument("--results-dir", default="results",
                         help="Use another folder for a diagnostic that must not sit beside the baseline in results/runs/")
     args = parser.parse_args()
-    result, report, path = evaluate(args.plans, args.plan, args.scenario, args.compliance, args.clearance,
-                                    results_dir=args.results_dir)
+    result, report, path = evaluate(args.plans, args.plan_set, args.plan, args.scenario, args.compliance,
+                                    args.clearance, results_dir=args.results_dir)
     health, measured = report["run_health"], result["metrics"]
     check = result["validation"] or report["compared_with"]["validation"]
     print(f"{result['run_id']}: {health['vehicles_inserted']} of {health['vehicles_loaded']} vehicles entered, "

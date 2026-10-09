@@ -15,6 +15,7 @@ Four blocks are optional. A scenario without them runs exactly as before:
                   network. Without it E can only run P0.
 """
 import hashlib
+import re
 from datetime import datetime
 
 from src.generation import load_json, validate
@@ -90,6 +91,7 @@ SCENARIO_SCHEMA = obj({
     }),
 })
 optional(SCENARIO_SCHEMA, "vehicles", "drivers_leave", "plan_actions", "speed_assessment_detectors")
+LABEL = re.compile(r"[a-z0-9][a-z0-9-]*")      # no underscore: it separates the parts of a run_id
 STEP_SECONDS = 1        # every twin run so far uses a one-second step
 BIN_SECONDS = 300       # detector observations and edge statistics are five-minute bins
 
@@ -118,6 +120,8 @@ def load(path):
     scenario = load_json(path)
     validate(scenario, SCENARIO_SCHEMA)
     run, closure = scenario["run"], scenario["closure"]
+    if not LABEL.fullmatch(scenario["run_label"]):
+        raise ValueError("run_label is lower-case letters, digits and hyphens")
     if datetime.fromisoformat(run["begin"]).utcoffset() is None:
         raise ValueError("run.begin needs a time zone")
     if run["warmup_seconds"] % BIN_SECONDS or run["end_seconds"] % BIN_SECONDS:
@@ -149,18 +153,18 @@ def draw(seed, *parts):
 def closure_steps(scenario, clearance_min):
     """[(simulation second, lane indices closed from then on)], ending with the reopening ([])."""
     closure = scenario["closure"]
-    reopen = closure["onset_seconds"] + round(clearance_min * 60)
-    if reopen > scenario["run"]["end_seconds"]:
+    reopen = reopen_second(scenario, clearance_min)
+    if reopen >= scenario["run"]["end_seconds"]:            # the last second simulated is end_seconds - 1
         raise ValueError("The closure must reopen within the run; a longer clearance needs a longer run")
     steps = [(closure["onset_seconds"] + phase["offset_seconds"],
               lane_indices(phase["lanes"], closure["lanes_total"]))
              for phase in closure["phases"]
-             if phase["offset_seconds"] < clearance_min * 60]
+             if closure["onset_seconds"] + phase["offset_seconds"] < reopen]    # a phase due at reopening never starts
     reopening = closure.get("scene", {}).get("reopening")
     if not reopening:
         return steps + [(reopen, [])]
     last = reopen + round(reopening["minutes"] * 60)       # the road reopens in two stages
-    if last > scenario["run"]["end_seconds"]:
+    if last >= scenario["run"]["end_seconds"]:
         raise ValueError("Every lane must reopen within the run")
     return steps + [(reopen, lane_indices(reopening["lanes"], closure["lanes_total"])), (last, [])]
 
@@ -220,6 +224,16 @@ def scene_speeds(scenario, clearance_min, now):
     return scene["open_kmh"], scene["open_kmh"]
 
 
-def run_id(scenario, plan_id, compliance, clearance_min):
-    return (f"{scenario['run_prefix']}_{plan_id}_c{compliance * 100:g}_t{clearance_min:g}"
-            f"_{scenario['run_label']}")
+def run_id(scenario, plan_id, compliance, clearance_min, plan_set):
+    """date_corridor_plan_c<compliance %>_t<clearance min>_<scenario label>_<plan set>.
+
+    e.g. 2026-05-15_ABD_P1_c50_t66_replay_rehearsal. The plan set names the
+    folder of plans the run evaluates, so that two plan sets never share a run_id.
+    """
+    if not isinstance(plan_set, str) or not LABEL.fullmatch(plan_set):
+        raise ValueError(f"A plan set is named in lower-case letters, digits and hyphens, not {plan_set!r}")
+    percent, minutes = f"{compliance * 100:g}", f"{clearance_min:g}"
+    if abs(float(percent) - compliance * 100) > 1e-9 or abs(float(minutes) - clearance_min) > 1e-9:
+        raise ValueError(f"A run_id cannot tell compliance {compliance!r} or clearance {clearance_min!r} "
+                         "from nearby values; use fewer decimals")
+    return f"{scenario['run_prefix']}_{plan_id}_c{percent}_t{minutes}_{scenario['run_label']}_{plan_set}"
