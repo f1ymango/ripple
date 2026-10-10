@@ -143,10 +143,20 @@ Simulation's view on them:
 
 | 10 October change | Data's evidence | Simulation's view |
 |---|---|---|
-| Correction 1: drivers turned away go round by Wong Chuk Hang Road and keep their route (`closure.detour`, the exact `replace`/`with` edges Simulation agreed above) | SUMO's own rerouting sent 96 of 111 vehicles on the Wong Nai Chung Road exit, all Canal Road-bound, into Happy Valley streets that jammed until the end of the run; AID01108 counted 11 a bin in the model, 96 real | |
-| Correction 2: the AID01108→AID01109 join enters on the main line, not by ramp `46766432` | Pre-crash backlog from 07:45 (448.7 veh-h) while AID01109 counted 19% under the detector. Without it, P0's ramp waiting grows to 762.5 veh-h and P2's sign flips | |
-| The drivers-leave rule (40% at the exits, the entry rule), through which both plans now act | Calibrated to AID01101 and AID01102; no source | |
-| Wrong-lane teleports, now 3 (`f145.50`, `f145.80`, `f146.78`) | All on `1198059119`/`1198059120` before the fork | |
+| Correction 1: drivers turned away go round by Wong Chuk Hang Road and keep their route (`closure.detour`, the exact `replace`/`with` edges Simulation agreed above) | SUMO's own rerouting sent 96 of 111 vehicles on the Wong Nai Chung Road exit, all Canal Road-bound, into Happy Valley streets that jammed until the end of the run; AID01108 counted 11 a bin in the model, 96 real | **Agree as a correction to this bounded model, not as an observed route choice.** The 96-vehicle trace identifies an unwanted Happy Valley loop; `send_round` replaces the closed flyover edges with the agreed graph-feasible surface path and retains the rest of each vehicle's route. TD named Wong Chuk Hang Road as an alternative. The corrected AID01108 count is still about 46 versus 96 observed during closure, so neither the route's real-world use nor tunnel-side flow is validated. Retain the exact edge list and hash in provenance; do not infer a diversion share from the remaining gap. |
+| Correction 2: the AID01108→AID01109 join enters on the main line, not by ramp `46766432` | Pre-crash backlog from 07:45 (448.7 veh-h) while AID01109 counted 19% under the detector. Without it, P0's ramp waiting grows to 762.5 veh-h and P2's sign flips | **Agree that the compiled ramp merge produces a serious, pre-incident model problem; do not accept the new main-line origin as a physical fact.** `main_line_join.py` starts flow `f22` at `1194711693`, removing its approach on `46766432` while preserving the number and timing of vehicles. AID01109's deficit shows insufficient modeled discharge but cannot distinguish an incorrect ramp connection, missing priority/control, demand placement, or detector cross-section. The 762.5 veh-h sensitivity and P2 sign reversal make this a ranking blocker. Keep both input variants and their sidecars; obtain independent road/entry evidence before selecting one for accepted P0/P1/P2. No source-backed geometry or priority fix can be promised by Monday. |
+| The drivers-leave rule (40% at the exits, the entry rule), through which both plans now act | Calibrated to AID01101 and AID01102; no source | **Do not accept as measured behaviour.** These are fitted probabilities, and the plan effect depends on them. The 30%, 50%, nobody-leaves and no-entry-rule diagnostics bound some sensitivity but do not identify actual exit choice or re-entry. Report the rule prominently with the result; seek independent turning/entry counts or trajectory evidence. Do not tune it again to make the tunnel bins or plan ranking pass. |
+| Wrong-lane teleports, now 3 (`f145.50`, `f145.80`, `f146.78`) | All on `1198059119`/`1198059120` before the fork | **Still fails the no-wrong-lane diagnostic check.** Our independent 330.96 m move-over run left `f145.50` on `1198059119_1` at the same second, so warning distance alone did not solve it. The other two events need their lane/time/route and lane-change trace checked against the actual open-lane connections; the aggregate teleport count is insufficient to assign a cause. A bounded trace by Monday is feasible, but a physically justified connection or behaviour fix is not yet evidenced. Do not disable teleports or silently drop those vehicles. |
+
+**Simulation's 10 October disposition:** the corrected P0 remains a useful
+internal diagnostic, but **NO-GO for accepted plan comparison by 14 October**.
+The six-seed whole-run pass does not resolve closure-phase GEH (83.15%),
+ordinary-sign speed error (16.94%), the tunnel-side flow deficit, or the
+ramp-dependent reversal of P2. By Monday, Simulation can review the three
+teleport trajectories and the source network/entry geometry, and Data can
+rerun a clearly labelled sensitivity if that review yields a source-backed
+change. Independent entry/turning evidence and physical AID01106 placement
+remain external evidence gates; do not promise an accepted P0 by Tuesday.
 
 ## 5. Hand-off to the Lead, when P0 is accepted
 
