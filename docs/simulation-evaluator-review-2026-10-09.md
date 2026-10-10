@@ -141,3 +141,50 @@ Reopening and warning-distance checks are feasible; a measured surface input,
 physically confirmed detector cross-section and ramp-priority correction
 cannot be promised from current evidence. Retain the agreed no-go for public
 plan comparison and the observed-only scope while those questions remain.
+
+## 10 October independent bounded replay
+
+SUMO 1.27.1 subsequently started normally. Simulation reconstructed the
+committed P0 inputs from Data's packet and checked the network, demand and
+speed-sign hashes against the original provenance sidecar before running.
+Both runs used seed 2026, compliance 0.5, clearance 66, the same 11,400-second
+horizon and an external 240-second wall guard. The control command was:
+
+```powershell
+python -m src.evaluator.run --plans data/generated-plans/IN-26-03365-rehearsal --plan-set rehearsal --plan P0 --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --compliance 0.5 --clearance 66 --results-dir results/simulation-review-oct10-control
+```
+
+The sensitivity used the command above with `--scenario
+sim/scenarios/evaluator-diagnostics/earlier-move-over.json --results-dir
+results/simulation-review-oct10-move-over`. The external wall guard covered
+the entire subprocess, including TraCI startup. Both completed to 11,400 s
+within the guard (187.8 s control, 135.7 s sensitivity). Their generated
+[control result](../results/simulation-review-oct10-control/runs/2026-05-15_ABD_P0_c50_t66_replay_rehearsal.json),
+[control report](../results/simulation-review-oct10-control/evaluator/2026-05-15_ABD_P0_c50_t66_replay_rehearsal.report.json),
+[sensitivity result](../results/simulation-review-oct10-move-over/runs/2026-05-15_ABD_P0_c50_t66_earlier-move-over_rehearsal.json)
+and [sensitivity report](../results/simulation-review-oct10-move-over/evaluator/2026-05-15_ABD_P0_c50_t66_earlier-move-over_rehearsal.report.json)
+are accompanied by their original generated provenance sidecars in the same
+`runs/` directories. These are internal diagnostics, not accepted results.
+
+| Measure | Control | Earlier awareness |
+|---|---:|---:|
+| Whole-run GEH < 5 / count bins | 89.29% / 607 | 88.79% / 607 |
+| Closure-phase GEH < 5 / count bins | 82.02% / 267 | 82.02% / 267 |
+| Whole-run speed MAPE / speed bins | 14.54% / 787 | 13.94% / 787 |
+| Speed MAPE where model makes speed | 31.24% / 115 | 27.39% / 115 |
+| Total delay | 1,702.1 veh-h | 1,713.1 veh-h |
+| Waiting to enter at ramp `46766432` | 448.7 veh-h | 452.5 veh-h |
+| Vehicles waiting to enter at end | 96 | 129 |
+| Teleports: wrong lane / jam | 1 / 2 | 1 / 0 |
+| Maximum queue, AID01103 path | 1,095 m | 1,094 m |
+
+The control independently reproduces Data's scores and wrong-lane event.
+The longer warning removes two jam teleports, but `f145.50` still teleports
+from `1198059119_1` at 08:59:04. This rejects earlier warning **alone** as a
+fix. The unchanged 82.02% closure score, persistent tunnel-side discrepancy,
+and slightly higher ramp waiting leave P0 **NO-GO** for plan ranking. The
+original 9 October failed-launch account above remains an accurate dated log.
+The vehicle's lane trajectory and an independently observed local entry flow
+would be needed before changing connections or adding demand. A reopening
+sensitivity may examine the 10:20 surge, but its score alone cannot settle
+the detector cross-section, ramp control or counterfactual speed signs.

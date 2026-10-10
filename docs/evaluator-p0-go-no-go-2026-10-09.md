@@ -72,6 +72,15 @@ SUMO executable failed before startup, including on `sumo --version`; the
 launch attempts produced no scored run. Details and the bounded candidate
 command are in [Simulation's technical review](simulation-evaluator-review-2026-10-09.md).
 
+**10 October update:** SUMO 1.27.1 became available and Simulation completed
+independent, bounded control and earlier move-over runs using the verified
+inputs. The control reproduces Data's headline scores and the same wrong-lane
+teleport. Moving awareness from 77.11 m to 330.96 m still teleports `f145.50`
+at 08:59:04 on `1198059119_1`. Closure count GEH remains 82.02%; ramp-entry
+waiting rises from 448.7 to 452.5 vehicle-hours. The comparison and generated
+run artifacts are in [the technical review](simulation-evaluator-review-2026-10-09.md).
+The failed 9 October launch statement above is retained as dated history.
+
 | Check | Simulation's view |
 |---|---|
 | Validation targets | **Agree on the reported scores; disagree that the whole-run pass accepts P0.** Closure GEH is 82.02%, and the scores on detectors used to set scene speeds are calibration fit rather than independent validation. |
@@ -80,9 +89,9 @@ command are in [Simulation's technical review](simulation-evaluator-review-2026-
 | Tunnel-side flow and AID01106 mapping | **Agree; physical placement is not confirmed.** The model places both loops at 0.10 m on `1198101443`, at the tunnel entrance, 20.73 m from the registry point. The nearby upstream road has four model lanes; the feed has two. This supports a candidate tunnel cross-section but cannot certify it. Surface Wong Chuk Hang Road and Ocean Park Road connect after the flyover, with additional surface entries; their incident volumes are unknown. E now reroutes during full closure, so Simulation's older finding of no through-surface routes does not fully explain this newer run. No invented join or relocation is approved. |
 | Queue timing and recovery | **Agree on the discrepancies, but reject “mostly” as acceptance.** One or two bins matter to intervention timing; the 7 km/h approach is prescribed from the same observations. The 10:20 surge is tied to an unsupported second opening. Remove that stage for a diagnostic and compare lane readings, both upstream detectors, flow and recovery through 10:35; a smooth curve alone is insufficient. |
 | Ramp backlog `46766432` | **Agree it blocks ranking.** The compiled two-lane ramp feeds minor-priority connections into `1194711693`; mainline connections have priority. That can starve the ramp as diverted traffic rises. The 80/5/5 signal upstream does not remove the downstream merge conflict. Actual priority, control and demand still need evidence. Qualify section 3: zero no-closure backlog is not required if real queues exist, and merely subtracting ramp waiting cannot validate the whole-corridor ranking. Report it separately and compare paired no-closure/P0 cases without hiding plan-induced spillback. |
-| Wrong-lane teleport | **Agree it remains a failed diagnostic check; likely move-over feasibility, not proof of a missing connection.** Correct section 1's lane label: `1198059119_1` is the **middle** of three approach lanes. It connects via `1198059120_1` to the closed flyover slow lane `_0`; approach `_2` leads to the open fast lane `_1`. The 77.11 m warning leaves little space to change lane. A 330.96 m warning sensitivity is prepared, with no connection edit, but has not run successfully. |
+| Wrong-lane teleport | **Agree it remains a failed diagnostic check.** Correct section 1's lane label: `1198059119_1` is the **middle** of three approach lanes. It connects via `1198059120_1` to the closed flyover slow lane `_0`; approach `_2` leads to the open fast lane `_1`. The 330.96 m warning sensitivity completed on 10 October with no connection edit; the same vehicle teleports on the same lane at the same second. Earlier warning alone is therefore insufficient, and the individual lane-change cause remains unresolved. |
 | Seed noise | **Agree that one seed cannot support ranking.** Use paired P0/P1/P2 seeds and uncertainty on each plan-minus-P0 difference. The six paired signs are useful diagnostic evidence; comparing a benefit only with P0's standalone standard deviation is not a formal acceptance test. Model bias remains even with more seeds. |
-| **Go / no-go** | **NO-GO for comparing or recommending plans by the 14 October freeze.** Agree with Data and retain observed-only public scope (#54). Reopening and awareness-distance diagnostics can be prepared by Monday 12 October; no evidence currently supports promising a physically reviewed tunnel mapping, new local flow or ramp-priority correction by then. Data can run the bounded candidate if SUMO is available, with a Tuesday 13 October review, but no score improvement alone reverses this decision. |
+| **Go / no-go** | **NO-GO for comparing or recommending plans by the 14 October freeze.** Agree with Data and retain observed-only public scope (#54). The awareness-distance diagnostic has now run and failed to clear the wrong-lane check or closure flow gap. A reopening sensitivity is still possible by Monday 12 October, but no evidence currently supports promising a physically reviewed tunnel mapping, new local flow or ramp-priority correction by then. A Tuesday 13 October review can examine any new evidence; no headline score improvement alone reverses this decision. |
 
 Simulation agrees to **one provisional surface detour in this model**:
 Wong Chuk Hang Road under the flyover, using the exact `replace`/`with` edge
