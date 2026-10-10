@@ -5,6 +5,44 @@ touch someone else's. **Nothing in your files has been changed.** Each note
 says what we found, where the proof is, and what we suggest. Pick them up when
 you are next in that code; strike a note through when it is done.
 
+## 10 Oct 2026
+
+All from [the 10 October note](evaluator-replay-fixes-2026-10-10.md); the
+[go/no-go review](evaluator-p0-go-no-go-2026-10-09.md) is updated with it.
+
+### For Simulation
+
+**30. Two corrections to the replay need your review, and they change the
+go/no-go evidence.**
+1. Drivers turned away from the shut flyover now take Wong Chuk Hang Road and
+   keep their route (`closure.detour`). SUMO had sent 96 Canal Road-bound
+   drivers into Happy Valley streets, which jammed until the end of the run
+   and blocked the tunnel exit; AID01108 counted 11 a bin in the model against
+   96 real.
+2. The join between AID01108 and AID01109 enters on the main line. On ramp
+   `46766432` the merge held vehicles up to 27 minutes from 07:45, before the
+   crash, while AID01109 shows the real ramp let them in.
+P0 now meets both targets in all six seeds (89.45%, 14.44% for seed 2026).
+With signs that plans cannot inherit it scores 16.29%. Section 4 of the review
+has two new rows for these corrections and one for the drivers-leave rule.
+
+**31. Where did the extra tunnel traffic come from?** During the closure
+AID01106 counted 90 a bin, the model sends 47, and only 28 to 50 passed
+AID01103. It cannot be the drivers who left at the Aberdeen exits: in the
+network no road leads from them to the tunnel without the fork. That leaves
+your three: a join between AID01103 and the fork hidden by net flows (for
+instance from Ap Lei Chau), more capacity under the flyover, or where
+AID01106 stands. This gap is now the main reason plans cannot be compared.
+
+### For the Lead
+
+**32. The 8 October plan gains were artefacts.** Corrected, both rehearsal
+plans add delay in all six seeds (P1 +7 to +10%, P2 +2.5 to +5% at 50%):
+advised drivers stop leaving at the exits and queue for the one detour, which
+is full. Data's stance stays no-go for comparing plans by 14 October, for the
+reasons in section 2 of the review. For your plans: in this model a plan that
+only points drivers at Wong Chuk Hang Road cannot help.
+
 ## 9 Oct 2026
 
 ### For the Lead, answering your 9 Oct review of the E branch

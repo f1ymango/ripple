@@ -12,6 +12,16 @@ is quoted:
    by up to 5%, which is about the size of the difference between two random
    seeds.
 
+> **10 October: the numbers in sections 1 to 5 are superseded.** Two of the
+> model's behaviours were simulator artefacts: SUMO sent drivers turned away
+> from the flyover into Happy Valley streets, which jammed, and the north
+> on-ramp's merge held vehicles for up to 27 minutes from before the crash.
+> Both are corrected in the replay scenario and every result here was made
+> again ([the 10 October note](evaluator-replay-fixes-2026-10-10.md)). P0 still
+> meets both targets, but **the P1 and P2 gains in sections 1 and 5 came from
+> those artefacts: corrected, both plans add delay.** The result links below
+> now open the corrected results.
+>
 > **9 October:** the Lead asked for a P0 go/no-go; Data's position is
 > no-go for comparing plans by 14 October, in
 > [evaluator-p0-go-no-go-2026-10-09.md](evaluator-p0-go-no-go-2026-10-09.md).

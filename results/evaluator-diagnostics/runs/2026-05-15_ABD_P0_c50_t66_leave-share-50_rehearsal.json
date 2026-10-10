@@ -8,19 +8,19 @@
     "seed": 2026
   },
   "metrics": {
-    "total_vehicle_hours_delay": 1652.1,
+    "total_vehicle_hours_delay": 842.6,
     "delay_vs_do_nothing_pct": 0,
     "max_queue_m": {
       "AID01103": 1095
     },
-    "corridor_tt_p95_min": 76.7,
+    "corridor_tt_p95_min": 38.8,
     "emergency_tt_min": 2.9,
-    "co2_kg": 15607,
-    "residential_delay_share_pct": 0.1,
-    "vehicles_completed": 26144
+    "co2_kg": 13314,
+    "residential_delay_share_pct": 0.0,
+    "vehicles_completed": 26587
   },
   "validation": {
-    "geh_under_5_pct": 89.78,
-    "speed_mape_pct": 14.47
+    "geh_under_5_pct": 89.95,
+    "speed_mape_pct": 15.29
   }
 }

@@ -4,8 +4,9 @@ Runs one validated plan through the twin and writes the contracted
 `result.json` with its provenance sidecar
 ([contract](../../docs/03-architecture.md#resultjson--output-of-e)).
 
-**Status, 9 Oct:** E runs P0, P1 and P2, and its results pass F's and the
-console's checks. The current scenario is the
+**Status, 10 Oct:** E runs P0, P1 and P2, and its results pass F's and the
+console's checks. Two simulator artefacts in the replay were corrected on
+10 October ([note](../../docs/evaluator-replay-fixes-2026-10-10.md)). The current scenario is the
 [replay](../../sim/scenarios/evaluator_IN-26-03365_replay.json) of
 IN-26-03365; what it scores, what it assumes and what it cannot tell apart are
 in [the note](../../docs/evaluator-replay-2026-10-08.md). The plans it has been
@@ -33,6 +34,8 @@ python -m src.evaluator.speed_signs --build sim/work/p0-replay-build \
     --ordinary-only AID01101 AID01102 AID01103 AID01104 \
     --drop-edge 44419212 "814979901#0" 1198059118 1198059119 1198059120 \
     --out sim/work/p0-replay-build/speeds-replay.add.xml
+python -m src.evaluator.main_line_join --routes sim/work/p0-replay-build/demand.rou.xml \
+    --flow f22 --from-edge 1194711693 --out sim/work/p0-replay-build/demand-main-line-join.rou.xml
 
 # P0, P1 and P2 of the rehearsal plans at 30%, 50% and 70% compliance
 python -m src.evaluator.batch --plans data/generated-plans/IN-26-03365-rehearsal --plan-set rehearsal \
@@ -49,10 +52,12 @@ python -m src.evaluator.batch --plans <the Lead's plans folder> --plan-set <its 
     --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --clearance 66
 ```
 
-The two built files must have these SHA-256 values, which the scenario also
-states: `demand.rou.xml` `5cbf6f6c…b955e`, `speeds-replay.add.xml`
-`a8734743…b8792`. A different file gives a different result and a different
-provenance sidecar.
+The replay runs on `demand-main-line-join.rou.xml`: the same demand with the
+join north of the tunnel on the main line. The built files must have these
+SHA-256 values, which the scenario also states: `demand.rou.xml`
+`5cbf6f6c…b955e`, `demand-main-line-join.rou.xml` `8caed739…f0ad0f43`,
+`speeds-replay.add.xml` `a8734743…b8792`. A different file gives a different
+result and a different provenance sidecar.
 
 `--plans` is the folder D wrote (`P0.json`, `P1.json`, `P2.json`,
 `generation-inputs.json`). `--plan-set` names that folder in the `run_id`
@@ -162,7 +167,7 @@ into each run report. [scenario.py](scenario.py) lists every field.
 | [evaluator_IN-26-03365.json](../../sim/scenarios/evaluator_IN-26-03365.json) | TD-message timing: 08:55, all lanes 09:36, reopen 10:02 | keep their routes | P0 only |
 | [..._detector-timing.json](../../sim/scenarios/evaluator_IN-26-03365_detector-timing.json) | AID01104 readings: 08:54:00, all lanes 09:00:30, reopen 10:00:00 | keep their routes | P0 only |
 | [..._detector-timing-rerouted.json](../../sim/scenarios/evaluator_IN-26-03365_detector-timing-rerouted.json) | the same | go round while every lane is closed | P0 only |
-| [..._replay.json](../../sim/scenarios/evaluator_IN-26-03365_replay.json), **current** | the same, with the speeds around the crash and a two-stage reopening | go round, and some leave at the Aberdeen exits when they meet the queue | P0, P1, P2 |
+| [..._replay.json](../../sim/scenarios/evaluator_IN-26-03365_replay.json), **current** | the same, with the speeds around the crash and a two-stage reopening | go round by Wong Chuk Hang Road and keep their route (`closure.detour`, since 10 Oct), and some leave at the Aberdeen exits when they meet the queue | P0, P1, P2 |
 
 [evaluator-diagnostics/](../../sim/scenarios/evaluator-diagnostics/) holds
 copies of the replay with one thing changed each, named for the change. Their
@@ -184,6 +189,13 @@ results are in `results/evaluator-diagnostics/`.
 - [speed_signs.py](speed_signs.py) writes the speed signs. It decides which
   detectors' speeds go in from the morning itself and which the model must
   produce. Read its first lines before quoting a speed error.
+- [main_line_join.py](main_line_join.py) copies a demand file so that named
+  flows join on the main line instead of by their on-ramp. The replay uses it
+  for the join north of the tunnel, whose ramp merge held vehicles back
+  ([10 October note](../../docs/evaluator-replay-fixes-2026-10-10.md)).
+- `speed_signs.py --hold-from HH:MM` writes signs that show nothing measured
+  after that time; [the 10 October note](../../docs/evaluator-replay-fixes-2026-10-10.md)
+  compares it with the other sign files.
 - [rehearsal_plans.py](rehearsal_plans.py) writes a P0, P1 and P2 from the
   reviewed context without a model, checked by D's validator.
   [do_nothing_plan.py](do_nothing_plan.py) writes P0 alone. When D generates
