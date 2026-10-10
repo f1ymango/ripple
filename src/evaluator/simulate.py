@@ -29,7 +29,7 @@ def rerouters(scenario, clearance_min):
     closure = scenario["closure"]
     edges, out = " ".join(closure.get("reroute_at_edges", [])), ""
     window = reroute_window(scenario, clearance_min)
-    if window:
+    if window and "detour" not in closure:                  # with a named detour, Closure sends drivers round itself
         out += (f'<rerouter id="closure" edges="{edges}"><interval begin="{window[0]}" end="{window[1]}">'
                 f'<closingReroute id="{closure["edge_id"]}"/></interval></rerouter>')
     lanes = lane_closures(scenario, clearance_min)
@@ -92,6 +92,7 @@ class Closure:
         self.steps = closure_steps(scenario, clearance_min)
         self.edge = scenario["closure"]["edge_id"]
         self.original, self.closed, self.set, self.approach = {}, set(), {}, None
+        self.window, self.sent_round = reroute_window(scenario, clearance_min), set()
 
     def step(self, traci, now):
         if "scene" in self.scenario["closure"]:
@@ -117,6 +118,26 @@ class Closure:
             if self.set.get(lane) != speed:
                 traci.lane.setMaxSpeed(lane, speed)
                 self.set[lane] = speed
+        if "detour" in closure and self.window and self.window[0] <= now < self.window[1]:
+            self.send_round(traci, closure)
+
+    def send_round(self, traci, closure):
+        """Every lane is shut: a driver on `reroute_at_edges` heading for it takes the detour, then their own route."""
+        replace, detour = closure["detour"]["replace"], closure["detour"]["with"]
+        for edge in closure["reroute_at_edges"]:
+            for vehicle in traci.edge.getLastStepVehicleIDs(edge):
+                route, here = traci.vehicle.getRoute(vehicle), traci.vehicle.getRouteIndex(vehicle)
+                if replace[0] not in route[here:]:
+                    continue
+                first = route.index(replace[0], here)
+                if list(route[first:first + len(replace)]) != replace:
+                    continue
+                try:
+                    traci.vehicle.setRoute(vehicle, list(route[here:first]) + detour
+                                           + list(route[first + len(replace):]))
+                except traci.TraCIException:
+                    continue                                # on a junction just now: tried again next second
+                self.sent_round.add(vehicle)
 
 
 def run(scenario, files, work, clearance_min, controllers=()):
@@ -167,6 +188,7 @@ def run(scenario, files, work, clearance_min, controllers=()):
         "closure_steps": [{"second": second, "lanes_closed": [f"{edge}_{i}" for i in lanes]}
                           for second, lanes in closure.steps],
         "drivers_rerouted_during_seconds": reroute_window(scenario, clearance_min),
+        **({"drivers_sent_round_by_the_detour": len(closure.sent_round)} if "detour" in scenario["closure"] else {}),
         "vehicles_loaded": int(vehicles["loaded"]),
         "vehicles_inserted": int(vehicles["inserted"]),
         "vehicles_running_at_end": int(vehicles["running"]),

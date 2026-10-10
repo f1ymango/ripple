@@ -27,6 +27,11 @@ Three kinds of road come out:
   no sign         `--drop-edge` edges keep the network's limit. E sets the
                   speed of the closed edge and of the crash scene itself.
 
+With `--hold-from HH:MM`, a refreshed sign shows nothing measured after that
+time: from then on it keeps the last speed it showed before it. Set it to the
+crash, and the signs carry only what a live twin knew when the crash happened,
+so a plan's run inherits no speed from the do-nothing morning that followed.
+
 A sidecar `<out>.json` lists every detector's kind and, for a refreshed one,
 each quarter-hour's speed against the ordinary mornings'.
 """
@@ -72,7 +77,19 @@ def refreshed(ordinary, own):
     return profile, ratios
 
 
-def build(signs_root, detector_by_edge, inputs, observations, ordinary_only, drop_edges, begin, end_seconds):
+def held(profile, ratios, hold_from):
+    """The profile with every slot from `hold_from` on showing the last value before it."""
+    keys = sorted(profile)
+    before = [key for key in keys if key < hold_from]
+    if not before:
+        return profile, ratios
+    last = profile[before[-1]]
+    return ({key: (last if key >= hold_from else kmh) for key, kmh in profile.items()},
+            {key: ratio for key, ratio in ratios.items() if key < hold_from})
+
+
+def build(signs_root, detector_by_edge, inputs, observations, ordinary_only, drop_edges, begin, end_seconds,
+          hold_from=None):
     """(additional element, report). `signs_root` is flow_balance_demand's speeds file, parsed."""
     minutes = inputs["speed_profile_minutes"]
     own = own_profile(observations, minutes)
@@ -84,8 +101,10 @@ def build(signs_root, detector_by_edge, inputs, observations, ordinary_only, dro
             kind = "ordinary only" if detector in ordinary_only else "ordinary only: no speed measured on the replay morning"
             profiles[detector], ratios = dict(ordinary), {}
         else:
-            kind = "refreshed"
+            kind = "refreshed" if not hold_from else f"refreshed until {hold_from}, then held"
             profiles[detector], ratios = refreshed(ordinary, own[detector])
+            if hold_from:
+                profiles[detector], ratios = held(profiles[detector], ratios, hold_from)
         report[detector] = {"kind": kind, "speed_over_ordinary": ratios, "edges": 0}
     out = ET.Element("additional")
     for sign in signs_root.iter("variableSpeedSign"):
@@ -112,6 +131,7 @@ def main():
     parser.add_argument("--observations", required=True, help="The replay morning's five-minute observations")
     parser.add_argument("--ordinary-only", nargs="*", default=[], metavar="DETECTOR")
     parser.add_argument("--drop-edge", nargs="*", default=[], metavar="EDGE")
+    parser.add_argument("--hold-from", metavar="HH:MM", help="Refreshed signs keep their last speed from this time on")
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
     build_dir = resolve(args.build)
@@ -119,7 +139,7 @@ def main():
     signs, report = build(ET.parse(build_dir / "speeds.add.xml").getroot(), made["speed_detector_by_edge"],
                           load_json(resolve(args.inputs)), load_json(resolve(args.observations)),
                           set(args.ordinary_only), set(args.drop_edge),
-                          dt.datetime.fromisoformat(made["begin"]), made["end_seconds"])
+                          dt.datetime.fromisoformat(made["begin"]), made["end_seconds"], args.hold_from)
     out = resolve(args.out)
     if out.exists():
         raise ValueError(f"{out} exists; a sign file is a hashed simulation input and is never overwritten")
@@ -127,9 +147,10 @@ def main():
     ET.indent(signs)
     ET.ElementTree(signs).write(out, encoding="utf-8", xml_declaration=True)
     out.with_suffix(out.suffix + ".json").write_text(json.dumps(report, indent=1) + "\n", encoding="utf-8")
-    kinds = [row["kind"].split(":")[0] for row in report["detectors"].values() if row["edges"]]
-    print(f"{len(signs)} signs -> {out}: {kinds.count('refreshed')} detectors refreshed, "
-          f"{kinds.count('ordinary only')} ordinary only")
+    kinds = [row["kind"] for row in report["detectors"].values() if row["edges"]]
+    print(f"{len(signs)} signs -> {out}: {sum(k.startswith('refreshed') for k in kinds)} detectors refreshed"
+          f"{f' until {args.hold_from}' if args.hold_from else ''}, "
+          f"{sum(k.startswith('ordinary only') for k in kinds)} ordinary only")
 
 
 if __name__ == "__main__":

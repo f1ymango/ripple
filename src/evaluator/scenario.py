@@ -77,7 +77,8 @@ SCENARIO_SCHEMA = obj({
                              "onset_seconds": SECONDS,
                              "phases": array(obj({"offset_seconds": SECONDS, "lanes": LANES}), minItems=1),
                              "reroute_at_edges": EDGES,          # see reroute_window
-                             "scene": SCENE}), "reroute_at_edges", "scene"),
+                             "detour": obj({"replace": EDGES, "with": EDGES}),   # the road round it; default SUMO's choice
+                             "scene": SCENE}), "reroute_at_edges", "detour", "scene"),
     "vehicles": obj({"type": NAME, "length_m": POSITIVE}),
     "drivers_leave": DRIVERS_LEAVE,
     "plan_actions": PLAN_ACTIONS,
@@ -137,6 +138,9 @@ def load(path):
     if scene:
         if "reroute_at_edges" not in closure:
             raise ValueError("A scene needs closure.reroute_at_edges: where drivers move over or turn off")
+    if "detour" in closure and ("reroute_at_edges" not in closure
+                                or closure["detour"]["replace"][0] != closure["edge_id"]):
+        raise ValueError("closure.detour needs reroute_at_edges and must replace the closed edge onwards")
         if "reopening" in scene:
             still = lane_indices(scene["reopening"]["lanes"], closure["lanes_total"])
             if len(still) == closure["lanes_total"]:
@@ -178,8 +182,9 @@ def reroute_window(scenario, clearance_min):
     """(from, until) in simulation seconds while every lane is closed, if the scenario reroutes drivers.
 
     With the whole edge shut nobody can get through, so a driver entering one of
-    `reroute_at_edges` takes another road; SUMO picks it. Drivers do not reroute
-    while a lane is still open.
+    `reroute_at_edges` takes another road: `closure.detour` if the scenario names
+    one, otherwise the one SUMO picks. Drivers do not reroute while a lane is
+    still open.
     """
     closure = scenario["closure"]
     if "reroute_at_edges" not in closure:

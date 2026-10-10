@@ -2,12 +2,12 @@
   "incident_id": "IN-26-03365",
   "run_prefix": "2026-05-15_ABD",
   "run_label": "replay",
-  "status": "INCIDENT REPLAY CALIBRATED TO THE 15 MAY DETECTORS. Twenty of the 25 detectors' speeds are inputs, refreshed from their own previous quarter-hour; the model makes the speed itself only on AID01101 to AID01104. Read validation with speed_error_by_source in the run report",
+  "status": "INCIDENT REPLAY CALIBRATED TO THE 15 MAY DETECTORS. Twenty of the 25 detectors' speeds are inputs, refreshed from their own previous quarter-hour; the model makes the speed itself only on AID01101 to AID01104. Read validation with speed_error_by_source in the run report. 10 October: drivers go round the full closure by Wong Chuk Hang Road and then their own route (closure.detour), and the join north of the tunnel enters on the main line",
   "sumo_version": "1.27.1",
   "seed": 2026,
   "inputs": {
     "network": "sim/work/p0-replay/network.net.xml",
-    "routes": "sim/work/p0-replay-build/demand.rou.xml",
+    "routes": "sim/work/p0-replay-build/demand-main-line-join.rou.xml",
     "detector_loops": "sim/work/p0-replay/detectors.add.xml",
     "observations": "sim/work/p0-replay/detectors.json",
     "speed_signs": "sim/work/p0-replay-build/speeds-replay.add.xml"
@@ -43,6 +43,23 @@
       "1198059119",
       "1198059120"
     ],
+    "detour": {
+      "replace": [
+        "44419212",
+        "44419216"
+      ],
+      "with": [
+        "1198059138",
+        "1470218115",
+        "770629127#0",
+        "1470218117",
+        "92245534",
+        "1198059130",
+        "1198059131",
+        "1198059126",
+        "1198059128"
+      ]
+    },
     "scene": {
       "approach_edges": [
         "814979901#0",
@@ -172,6 +189,11 @@
       "source": "src/twin/flow_balance_demand.py (VTYPE); src/evaluator/README.md, Run it"
     },
     {
+      "choice": "The ordinary mornings' join between AID01108 and AID01109 (flow f22, 783.5 veh/h) enters on the main line at edge 1194711693, where on-ramp 46766432 meets it, instead of by the ramp: sim/work/p0-replay-build/demand-main-line-join.rou.xml, SHA-256 8caed7394039f64155dc7605458366507481ca8abd494193ff6c606130ad0f43, made from the demand file above by src/evaluator/main_line_join.py. Nothing else in the demand differs.",
+      "status": "model correction, 10 October. By the ramp, the network's merge let far fewer in than the detector downstream shows: vehicles waited up to 27 minutes to enter from 07:45, before the crash, 448.7 vehicle-hours in all, and AID01109 counted 19% under the detector before the crash",
+      "source": "docs/evaluator-replay-fixes-2026-10-10.md section 1"
+    },
+    {
       "choice": "Speed signs: sim/work/p0-replay-build/speeds-replay.add.xml, SHA-256 a8734743f90363ef9a7eedbb0f99e3ed2f9cac0c0411d15818f9087f1c9b8792. On 20 detectors' roads each quarter-hour shows the speed that detector measured in the quarter-hour before, on 15 May itself. On the roads of AID01101, AID01102 and AID01103 upstream of the scene the signs show the ordinary mornings' speed all morning. The last 330 m before the fork and the flyover have no sign: E sets their speed.",
       "status": "INPUT, NOT PREDICTION, for the 20 refreshed detectors: their speed error says how well a quarter-hour predicts the next. The model makes the speed itself only at AID01101 to AID01104, and the run report gives their error separately. The note gives the score with ordinary-morning signs everywhere, which takes no speed from 15 May",
       "source": "src/evaluator/speed_signs.py; sim/work/p0-replay-build/speeds-replay.add.xml.json lists every detector; docs/evaluator-replay-2026-10-08.md section 2"
@@ -197,9 +219,9 @@
       "source": "results/data/closed-lanes_AID01104_20260515-0840_1010.md"
     },
     {
-      "choice": "While both lanes are closed nobody new gets onto the flyover: a driver entering the last 365 m before the fork (edges 814979900 to 1198059120) whose route crosses it takes another route, chosen by SUMO. The only one is Wong Chuk Hang Road under the flyover. The few vehicles already on the flyover drive off it.",
-      "status": "assumed behaviour, supported by the detectors: AID01104 on the flyover counted 17 vehicles in ten bins while AID01103 before the fork kept passing 350 to 550 veh/h",
-      "source": "results/data/closed-lanes_AID01103_20260515-0840_1035.md; docs/evaluator-p0-2026-10-07.md section 1"
+      "choice": "While both lanes are closed nobody new gets onto the flyover: a driver entering the last 365 m before the fork (edges 814979900 to 1198059120) whose route crosses it takes Wong Chuk Hang Road under the flyover (closure.detour, the same edges as the plan route) and then the rest of their own route. The few vehicles already on the flyover drive off it.",
+      "status": "assumed behaviour, supported by the detectors: AID01104 on the flyover counted 17 vehicles in ten bins while AID01103 before the fork kept passing 350 to 550 veh/h, and AID01108 kept counting 96 a bin on the Canal Road route. Until 10 October SUMO chose the new route: it sent 96 of the 111 vehicles that used the Wong Nai Chung Road exit between 09:00 and 09:30, all bound for the Canal Road Flyover, into Happy Valley streets, which jammed at 1 to 2 km/h until the end of the run and blocked the tunnel exit. TD's 09:36 message advised Wong Chuk Hang Road",
+      "source": "docs/evaluator-replay-fixes-2026-10-10.md section 1; data/demo_incident_messages.jsonl"
     },
     {
       "choice": "While both lanes are closed, traffic in the last 330 m before the fork (edges 814979901#0 to 1198059120) crawls past the scene at 7 km/h.",
@@ -258,8 +280,8 @@
     },
     {
       "choice": "Not modelled: traffic that reaches the Aberdeen Tunnel without crossing the flyover. During the closure AID01106 and AID01107 counted 895 and 824 vehicles in ten bins, about twice what AID01103 passed.",
-      "status": "KNOWN GAP. The demand has almost no traffic joining after the flyover, because the ordinary mornings' net change there is near zero. The model sends far fewer than were counted, which fails count bins at AID01106 to AID01110",
-      "source": "docs/evaluator-p0-2026-10-07.md section 3; docs/evaluator-replay-2026-10-08.md section 4"
+      "status": "KNOWN GAP. The demand has almost no traffic joining after the flyover, because the ordinary mornings' net change there is small. The model sends far fewer than were counted, which fails count bins at AID01106 and AID01107. Where the extra came from is for Simulation: a gross join between AID01103 and the fork that the net changes hide, more capacity on the road under the flyover, or where AID01106 stands. Drivers who left at the Aberdeen exits cannot be it: in the network no road leads from those exits to the tunnel without the fork",
+      "source": "docs/evaluator-p0-2026-10-07.md section 3; docs/evaluator-replay-fixes-2026-10-10.md section 3"
     }
   ],
   "metrics": {

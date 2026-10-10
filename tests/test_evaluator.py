@@ -826,6 +826,45 @@ def test_a_batch_will_not_keep_a_result_made_from_other_simulation_inputs(evalua
         run.kept_result(plans, "P0", scenario_path, scenarios.load(scenario_path), path)
 
 
+# --- 10 October: a named detour, and joins on the main line ---------------------------------
+
+DETOUR = {"replace": ["closed"], "with": ["under1", "under2"]}
+
+
+def test_with_a_named_detour_drivers_go_round_it_and_keep_their_own_route(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    scenario["closure"]["detour"] = DETOUR
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    road.put("early.0", "in", THROUGH)
+    road.put("local.0", "in", ["far", "in", "home"])
+    closure.step(road, 300)                                               # one lane shut: nobody turns off
+    assert road.routes["early.0"] == THROUGH
+    closure.step(road, 420)                                               # every lane shut
+    assert road.routes["early.0"] == ["in", "under1", "under2", "out"] and road.routes["local.0"] == ["far", "in", "home"]
+    assert closure.sent_round == {"early.0"}
+    assert "closingReroute" not in simulate.rerouters(scenario, 5)        # SUMO no longer picks the road
+    assert "closingLaneReroute" in simulate.rerouters(scenario, 5)
+
+
+def test_a_detour_must_start_at_the_closed_edge(tmp_path):
+    with pytest.raises(ValueError, match="detour"):
+        full_scenario(tmp_path, closure={**load_json(MOCK / "mock_scenario.json")["closure"],
+                                         "reroute_at_edges": ["in"], "detour": {"replace": ["in"], "with": ["x"]}})
+
+
+def test_a_join_can_be_moved_from_its_ramp_to_the_main_line():
+    import xml.etree.ElementTree as ET
+    from src.evaluator.main_line_join import join_on_main_line
+    root = ET.fromstring('<routes><flow id="f1"><route edges="ramp merge main out"/></flow>'
+                         '<flow id="f2"><route edges="a main out"/></flow></routes>')
+    assert join_on_main_line(root, {"f1"}, "main") == {"f1": ["ramp", "merge"]}
+    assert [f.find("route").get("edges") for f in root.iter("flow")] == ["main out", "a main out"]
+    with pytest.raises(ValueError, match="does not pass"):
+        join_on_main_line(root, {"f2"}, "elsewhere")
+    with pytest.raises(ValueError, match="No flow"):
+        join_on_main_line(root, {"f9"}, "main")
+
+
 # --- E's output into F and G --------------------------------------------------------------
 
 def test_e_results_are_accepted_by_the_briefing_and_the_console(evaluate_plans, plans, tmp_path):
@@ -862,6 +901,13 @@ def test_refreshed_signs_show_the_speed_measured_in_the_quarter_hour_before():
     profile, ratios = speed_signs.refreshed(ordinary, own["D1"])
     assert profile == {"07:45": 60.0, "08:00": 50.0, "08:15": 20.0, "08:30": 45.0}   # no reading before 08:30: ordinary
     assert ratios == {"08:15": 0.5}
+
+
+def test_held_signs_show_nothing_measured_after_the_hold():
+    profile = {"08:30": 60.0, "08:45": 55.0, "09:00": 20.0, "09:15": 10.0}
+    ratios = {"08:45": 0.9, "09:00": 0.4, "09:15": 0.2}
+    assert speed_signs.held(profile, ratios, "09:00") == ({"08:30": 60.0, "08:45": 55.0, "09:00": 55.0, "09:15": 55.0},
+                                                         {"08:45": 0.9})
 
 
 def test_sign_file_keeps_ordinary_speeds_where_the_queue_must_form_by_itself():
