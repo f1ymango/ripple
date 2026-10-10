@@ -2,13 +2,17 @@
 
 Prepared by Data. Follows [the 8 October replay note](evaluator-replay-2026-10-08.md)
 and [the 9 October go/no-go review](evaluator-p0-go-no-go-2026-10-09.md),
-which is updated with these numbers.
+which is updated with these numbers. Simulation's
+[technical review](simulation-evaluator-review-2026-10-09.md) of the
+uncorrected replay came in the same day; where it bears on these corrections
+it is quoted below.
 
 **In short:** two things in the 8 October replay were simulator artefacts, not
 traffic. Corrected, P0 still meets both validation targets, now in all six
 seeds. But the rehearsal plans' benefit disappears: **both plans add delay**,
 in every seed and at every compliance level. The 8 October plan gains came
-from the artefacts.
+from the artefacts. How the north on-ramp is modelled still decides whether
+P2 adds or saves delay overall.
 
 ## 1. The two corrections
 
@@ -43,6 +47,13 @@ ramp meets the main line. Nothing else in the demand changed.
 
 Neither correction was chosen for the score. Alone, the first moves whole-run
 GEH from 89.29% to 89.45% and the second to 88.30%.
+
+Simulation's review agrees the detour's exact edges as the one provisional
+surface detour in this model. On the ramp it warns that the merge's minor
+priority is not proof that real priority or capacity is wrong, and that ramp
+delay can be a real consequence of diversion. Correction 2 rests on AID01109's
+pre-crash counts, which Simulation has not yet reviewed; section 4 shows what
+the plans do without it.
 
 ## 2. P0 after the corrections
 
@@ -131,10 +142,18 @@ The same stand-in plans as on 8 October
 | | 50% | 915.5 | +5.2% | 481.2 | 72.0 | 362.4 (1,035) | 51.0 |
 | | 70% | 942.6 | +8.3% | 491.2 | 88.3 | 363.1 (1,033) | 50.5 |
 
-Six seeds at 50%: P1 +7.2% to +10.4%, P2 +2.5% to +5.2%, P2 below P1 in all
-six. The gaps are several times P0's 1.4% spread, so this ranking is not seed
-noise. It also holds whatever a driver who leaves is charged: from 0 to 90
-minutes instead of 20, P1 stays 6.7% to 14.4% worse and P2 4.6% to 5.8%.
+Six seeds at 50%, paired by seed: P1 − P0 +8.5% (95% interval +7.0 to
++10.1), P2 − P0 +4.2% (+3.2 to +5.2), P1 − P2 +4.3% (+3.1 to +5.5), with the
+same sign in all six. So the ranking is not seed noise. It also holds
+whatever a driver who leaves is charged: from 0 to 90 minutes instead of 20,
+P1 stays 6.7% to 14.4% worse and P2 4.6% to 5.8%.
+
+**But it depends on correction 2.** With only correction 1, the ramp's merge
+kept, P0's waiting at the ramp grows to 762.5 vehicle-hours (nothing drains
+it any more), and the plans reduce it: P1 comes out +1.4% and P2 **−2.7%**
+([results](../results/evaluator-diagnostics/runs/)). Delay inside the network
+rises with both plans either way (P1 +6.4%, P2 +4.5% without correction 2).
+So which representation of the ramp is right decides P2's sign.
 
 **Why.** The road under the flyover is the only way round and it is already
 full. An advised driver stops taking the Aberdeen exits and joins the queue
@@ -143,21 +162,22 @@ queue then reaches the network's entry, where 616 drivers give up waiting,
 against 356. So more vehicles queue and more are kept out. Advice to use a
 road that has no spare capacity makes the morning worse.
 
-**Two cautions.** The effect works through the drivers-leave rule, whose 40%
-share and entry rule are calibrated, not sourced. And it lands on the tunnel
-side, where the model is weakest. So this is a finding about the model, not
-yet a finding about the road.
+**Three cautions.** The effect works through the drivers-leave rule, whose
+40% share and entry rule are calibrated, not sourced. It lands on the tunnel
+side, where the model is weakest. And P2's sign turns on the ramp. So this is
+a finding about the model, not yet a finding about the road.
 
 ## 5. What this changes
 
 - **The 8 October plan gains were artefacts.** Its tables of P1 and P2 should
   not be quoted. The 8 October note now says so at the top.
-- **P0 itself is better:** it passes in all six seeds, with two blockers of the
-  go/no-go review fixed. The review's stance is updated in its section 2.
+- **P0 itself is better:** it passes in all six seeds, and its pre-crash ramp
+  backlog is gone. The review's stance, now joint with Simulation's, is
+  updated in its section 2: still no-go.
 - **For D's plans:** with one detour that is already full, a plan that only
-  points drivers at it cannot help in this model. A useful plan needs another
-  route or fewer trips (03-architecture.md lists `pt_nudge`; E does not model
-  it).
+  points drivers at it adds delay inside the network in this model. A useful
+  plan needs another route or fewer trips (03-architecture.md lists
+  `pt_nudge`; E does not model it).
 
 ## 6. Reproduce
 

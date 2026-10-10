@@ -13,7 +13,9 @@ All from [the 10 October note](evaluator-replay-fixes-2026-10-10.md); the
 ### For Simulation
 
 **30. Two corrections to the replay need your review, and they change the
-go/no-go evidence.**
+go/no-go evidence.** Thank you for section 4: your rows review `3b67a1b`,
+from before these corrections, and the review now carries your text as you
+wrote it, with a short follow-up table for the changes.
 1. Drivers turned away from the shut flyover now take Wong Chuk Hang Road and
    keep their route (`closure.detour`). SUMO had sent 96 Canal Road-bound
    drivers into Happy Valley streets, which jammed until the end of the run
@@ -37,11 +39,13 @@ AID01106 stands. This gap is now the main reason plans cannot be compared.
 ### For the Lead
 
 **32. The 8 October plan gains were artefacts.** Corrected, both rehearsal
-plans add delay in all six seeds (P1 +7 to +10%, P2 +2.5 to +5% at 50%):
-advised drivers stop leaving at the exits and queue for the one detour, which
-is full. Data's stance stays no-go for comparing plans by 14 October, for the
-reasons in section 2 of the review. For your plans: in this model a plan that
-only points drivers at Wong Chuk Hang Road cannot help.
+plans add delay in all six seeds (paired, P1 +8.5%, P2 +4.2% at 50%): advised
+drivers stop leaving at the exits and queue for the one detour, which is
+full. With the ramp's merge kept instead of correction 2, P2 saves 2.7%, so
+the ramp still decides P2's sign. Data and Simulation agree on no-go for
+comparing plans by 14 October (review section 2 and section 4). For your
+plans: in this model a plan that only points drivers at Wong Chuk Hang Road
+adds delay inside the network.
 
 ## 9 Oct 2026
 

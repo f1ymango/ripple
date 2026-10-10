@@ -1,0 +1,758 @@
+{
+  "purpose": "Static evidence only; lane-change failure and real ramp priority remain unverified",
+  "sources": {
+    "network": {
+      "path": "sim\\work\\p0-replay\\network.net.xml",
+      "sha256": "eb006b4ea09f01246ea53f163d68854e47b1be0410943f587d846388ef053e9d"
+    },
+    "osm": {
+      "path": "..\\sim\\work\\osm\\aberdeen_bbox.osm.xml",
+      "sha256": "c6d3333d803ef19db9707ae1ac9dc958121d7bd19941a555a8db0ec50e62b09f"
+    }
+  },
+  "edges": [
+    {
+      "edge_id": "814979901#0",
+      "length_m": 187.5,
+      "osm_tags": {
+        "carriageway:foot": "discouraged",
+        "foot": "use_sidepath",
+        "foot:signed": "none",
+        "highway": "trunk",
+        "lanes": "3",
+        "maxspeed": "50",
+        "name": "\u9ec3\u7af9\u5751\u9053 Wong Chuk Hang Road",
+        "name:en": "Wong Chuk Hang Road",
+        "name:zh": "\u9ec3\u7af9\u5751\u9053",
+        "network": "HK",
+        "network:area": "national",
+        "network:guid": "HK",
+        "network:name": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda Hong Kong Strategic Routes",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "network:name:zh": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda",
+        "network:wikidata": "Q115916223",
+        "oneway": "yes",
+        "ref": "1",
+        "sidewalk:left": "separate",
+        "sidewalk:left:foot": "yes",
+        "surface": "asphalt"
+      },
+      "lanes": [
+        {
+          "lane_id": "814979901#0_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198059118_0",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "814979901#0_1",
+          "index": 1,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198059118_1",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "814979901#0_2",
+          "index": 2,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198059118_2",
+              "state": "M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge_id": "1198059118",
+      "length_m": 66.35,
+      "osm_tags": {
+        "carriageway:foot": "discouraged",
+        "foot": "use_sidepath",
+        "foot:signed": "none",
+        "highway": "trunk",
+        "lanes": "3",
+        "maxspeed": "50",
+        "name": "\u9ec3\u7af9\u5751\u9053 Wong Chuk Hang Road",
+        "name:en": "Wong Chuk Hang Road",
+        "name:zh": "\u9ec3\u7af9\u5751\u9053",
+        "network": "HK",
+        "network:area": "national",
+        "network:guid": "HK",
+        "network:name": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda Hong Kong Strategic Routes",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "network:name:zh": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda",
+        "network:wikidata": "Q115916223",
+        "oneway": "yes",
+        "ref": "1",
+        "sidewalk:left": "separate",
+        "sidewalk:left:foot": "yes",
+        "surface": "asphalt"
+      },
+      "lanes": [
+        {
+          "lane_id": "1198059118_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198059119_0",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "1198059118_1",
+          "index": 1,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198059119_1",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "1198059118_2",
+          "index": 2,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198059119_2",
+              "state": "M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge_id": "1198059119",
+      "length_m": 58.79,
+      "osm_tags": {
+        "carriageway:foot": "discouraged",
+        "change:advisory": "no",
+        "change:lanes": "yes|not_right|yes",
+        "foot": "use_sidepath",
+        "foot:signed": "none",
+        "highway": "trunk",
+        "lanes": "3",
+        "maxspeed": "50",
+        "name": "\u9ec3\u7af9\u5751\u9053 Wong Chuk Hang Road",
+        "name:en": "Wong Chuk Hang Road",
+        "name:zh": "\u9ec3\u7af9\u5751\u9053",
+        "network": "HK",
+        "network:area": "national",
+        "network:guid": "HK",
+        "network:name": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda Hong Kong Strategic Routes",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "network:name:zh": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda",
+        "network:wikidata": "Q115916223",
+        "oneway": "yes",
+        "ref": "1",
+        "sidewalk:left": "separate",
+        "sidewalk:left:foot": "yes",
+        "surface": "asphalt"
+      },
+      "lanes": [
+        {
+          "lane_id": "1198059119_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198059120_0",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "1198059119_1",
+          "index": 1,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198059120_1",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "1198059119_2",
+          "index": 2,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198059120_2",
+              "state": "M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge_id": "1198059120",
+      "length_m": 18.32,
+      "osm_tags": {
+        "carriageway:foot": "discouraged",
+        "change:lanes": "no|no|yes",
+        "foot": "use_sidepath",
+        "foot:signed": "none",
+        "highway": "trunk",
+        "lanes": "3",
+        "maxspeed": "50",
+        "name": "\u9ec3\u7af9\u5751\u9053 Wong Chuk Hang Road",
+        "name:en": "Wong Chuk Hang Road",
+        "name:zh": "\u9ec3\u7af9\u5751\u9053",
+        "network": "HK",
+        "network:area": "national",
+        "network:guid": "HK",
+        "network:name": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda Hong Kong Strategic Routes",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "network:name:zh": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda",
+        "network:wikidata": "Q115916223",
+        "oneway": "yes",
+        "ref": "1",
+        "sidewalk:left": "separate",
+        "sidewalk:left:foot": "yes",
+        "surface": "asphalt"
+      },
+      "lanes": [
+        {
+          "lane_id": "1198059120_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198059138_0",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "1198059120_1",
+          "index": 1,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "44419212_0",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "1198059120_2",
+          "index": 2,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "44419212_1",
+              "state": "M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge_id": "44419212",
+      "length_m": 543.17,
+      "osm_tags": {
+        "bicycle": "no",
+        "bridge:name": "\u9ec3\u7af9\u5751\u9053\u5929\u6a4b Wong Chuk Hang Road flyover",
+        "bridge:name:en": "Wong Chuk Hang Road flyover",
+        "bridge:name:zh": "\u9ec3\u7af9\u5751\u9053\u5929\u6a4b",
+        "buffer:left": "transition",
+        "buffer:left:marking": "chevrons",
+        "buffer:left:marking:colour": "white",
+        "foot": "no",
+        "highway": "trunk",
+        "highway:name": "\u9ec3\u7af9\u5751\u9053 Wong Chuk Hang Road",
+        "highway:name:en": "Wong Chuk Hang Road",
+        "highway:name:zh": "\u9ec3\u7af9\u5751\u9053",
+        "lanes": "2",
+        "marking:left": "solid_line",
+        "marking:left:colour": "white",
+        "maxspeed": "50",
+        "name": "\u9ec3\u7af9\u5751\u9053\u5929\u6a4b Wong Chuk Hang Road flyover",
+        "name:en": "Wong Chuk Hang Road flyover",
+        "name:zh": "\u9ec3\u7af9\u5751\u9053\u5929\u6a4b",
+        "network": "HK",
+        "network:area": "national",
+        "network:guid": "HK",
+        "network:name": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda Hong Kong Strategic Routes",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "network:name:zh": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda",
+        "network:wikidata": "Q115916223",
+        "oneway": "yes",
+        "ref": "1",
+        "separation:left": "no",
+        "street:name": "\u9ec3\u7af9\u5751\u9053 Wong Chuk Hang Road",
+        "street:name:en": "Wong Chuk Hang Road",
+        "street:name:zh": "\u9ec3\u7af9\u5751\u9053",
+        "surface": "asphalt",
+        "traffic_mode:left": "vehicle"
+      },
+      "lanes": [
+        {
+          "lane_id": "44419212_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "44419216_0",
+              "state": "M"
+            },
+            {
+              "lane": "44419216_1",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "44419212_1",
+          "index": 1,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "44419216_2",
+              "state": "M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge_id": "1198101497",
+      "length_m": 30.13,
+      "osm_tags": {
+        "highway": "trunk",
+        "lanes": "4",
+        "maxspeed": "50",
+        "name": "\u9ec3\u7af9\u5751\u9053 Wong Chuk Hang Road",
+        "name:en": "Wong Chuk Hang Road",
+        "name:zh": "\u9ec3\u7af9\u5751\u9053",
+        "network": "HK",
+        "network:area": "national",
+        "network:guid": "HK",
+        "network:name": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda Hong Kong Strategic Routes",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "network:name:zh": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda",
+        "network:wikidata": "Q115916223",
+        "oneway": "yes",
+        "ref": "1",
+        "sidewalk:left": "separate",
+        "sidewalk:right": "no",
+        "surface": "asphalt"
+      },
+      "lanes": [
+        {
+          "lane_id": "1198101497_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198101444_0",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "1198101497_1",
+          "index": 1,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198101444_1",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "1198101497_2",
+          "index": 2,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198101444_2",
+              "state": "M"
+            },
+            {
+              "lane": "1198101443_0",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "1198101497_3",
+          "index": 3,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198101443_1",
+              "state": "M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge_id": "1198101443",
+      "length_m": 12.52,
+      "osm_tags": {
+        "bicycle": "no",
+        "buffer:left": "transition",
+        "buffer:left:marking": "chevrons",
+        "buffer:left:marking:colour": "white",
+        "charge": "8 HKD",
+        "charge:start_date": "2025-09-21",
+        "destination": "Wan Chai;Kawloon",
+        "destination:motorroad:tunnel": "yes",
+        "destination:symbol": "tunnel",
+        "foot": "no",
+        "hazmat:HK:1": "no",
+        "hazmat:HK:2": "no",
+        "hazmat:HK:3": "no",
+        "hazmat:HK:3A": "no",
+        "hazmat:HK:5": "no",
+        "highway": "trunk",
+        "lanes": "2",
+        "marking:left": "solid_line",
+        "marking:left:colour": "white",
+        "maxheight": "4.6",
+        "maxspeed": "50",
+        "motor_vehicle:conditional": "no @ (hazmat:HK:1; hazmat:HK:2; hazmat:HK:3; hazmat:HK:3A; hazmat:HK:5); no @ (learner)",
+        "motorroad": "yes",
+        "motorway": "no",
+        "name": "\u9999\u6e2f\u4ed4\u96a7\u9053 Aberdeen Tunnel",
+        "name:en": "Aberdeen Tunnel",
+        "name:zh": "\u9999\u6e2f\u4ed4\u96a7\u9053",
+        "network": "HK",
+        "network:area": "national",
+        "network:guid": "HK",
+        "network:name": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda Hong Kong Strategic Routes",
+        "network:name:en": "Hong Kong Strategic Routes",
+        "network:name:zh": "\u9999\u6e2f\u4e3b\u8981\u5e79\u7dda",
+        "network:wikidata": "Q115916223",
+        "oneway": "yes",
+        "placement": "transition",
+        "ref": "1",
+        "separation:left": "no",
+        "share_taxi": "no",
+        "shoulder": "no",
+        "street:name": "\u9ec3\u7af9\u5751\u9053 Wong Chuk Hang Road",
+        "street:name:en": "Wong Chuk Hang Road",
+        "street:name:zh": "\u9ec3\u7af9\u5751\u9053",
+        "supervised": "yes",
+        "surface": "asphalt",
+        "surveillance": "yes",
+        "toll": "yes",
+        "toll:bus:conditional": "no @ (franchised)",
+        "traffic_mode:left": "vehicle",
+        "traffic_signals": "lane"
+      },
+      "lanes": [
+        {
+          "lane_id": "1198101443_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198101443.40_0",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "1198101443_1",
+          "index": 1,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1198101443.40_1",
+              "state": "M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge_id": "46766432",
+      "length_m": 178.47,
+      "osm_tags": {
+        "bicycle": "no",
+        "buffer:left": "transition",
+        "buffer:left:marking": "chevrons",
+        "buffer:left:marking:colour": "white",
+        "foot": "no",
+        "highway": "trunk_link",
+        "lanes": "2",
+        "marking:left": "solid_line",
+        "marking:left:colour": "white",
+        "maxspeed": "70",
+        "oneway": "yes",
+        "separation:left": "no",
+        "surface": "concrete",
+        "traffic_mode:left": "motor_vehicle"
+      },
+      "lanes": [
+        {
+          "lane_id": "46766432_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "46766434#1_0",
+              "state": "O"
+            }
+          ]
+        },
+        {
+          "lane_id": "46766432_1",
+          "index": 1,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "46766434#1_1",
+              "state": "O"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge_id": "46766434#1",
+      "length_m": 20.03,
+      "osm_tags": {
+        "bicycle": "no",
+        "bridge": "yes",
+        "foot": "no",
+        "highway": "trunk_link",
+        "incline": "up",
+        "lanes": "2",
+        "layer": "1",
+        "maxspeed": "70",
+        "oneway": "yes",
+        "surface": "asphalt"
+      },
+      "lanes": [
+        {
+          "lane_id": "46766434#1_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "485146396_0",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "46766434#1_1",
+          "index": 1,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "485146396_1",
+              "state": "M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge_id": "485146396",
+      "length_m": 0.2,
+      "osm_tags": {
+        "bicycle": "no",
+        "bridge": "yes",
+        "change:lanes": "no|yes",
+        "foot": "no",
+        "highway": "trunk_link",
+        "lanes": "2",
+        "layer": "1",
+        "marking:right": "no",
+        "maxspeed": "70",
+        "oneway": "yes",
+        "parking:restriction:lanes": "no_blocking|no_blocking",
+        "separation:right": "no",
+        "surface": "asphalt",
+        "traffic_mode:right": "motor_vehicle"
+      },
+      "lanes": [
+        {
+          "lane_id": "485146396_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1194711693_0",
+              "state": "m"
+            }
+          ]
+        },
+        {
+          "lane_id": "485146396_1",
+          "index": 1,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1194711693_1",
+              "state": "m"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge_id": "462275986#1",
+      "length_m": 0.2,
+      "osm_tags": {
+        "access_control": "full",
+        "alt_name": "\u5805\u62ff\u9053\u5929\u6a4b Canal Road Flyover",
+        "alt_name:en": "Canal Road Flyover",
+        "alt_name:zh": "\u5805\u62ff\u9053\u5929\u6a4b",
+        "bicycle": "no",
+        "bridge": "yes",
+        "buffer:right": "transition",
+        "buffer:right:marking": "chevrons",
+        "buffer:right:marking:colour": "white",
+        "charge": "8 HKD",
+        "charge:start_date": "2025-09-21",
+        "destination": "\u4e2d\u74b0;Central",
+        "foot": "no",
+        "from:motorroad": "yes",
+        "from:motorroad:tunnel": "yes",
+        "hazmat:HK:1": "no",
+        "hazmat:HK:2": "no",
+        "hazmat:HK:3": "no",
+        "hazmat:HK:3A": "no",
+        "hazmat:HK:5": "no",
+        "highway": "trunk",
+        "lanes": "1",
+        "layer": "1",
+        "loc_name": "\u9d5d\u9838\u6a4b",
+        "loc_name:zh": "\u9d5d\u9838\u6a4b",
+        "marking:right": "solid_line",
+        "marking:right:colour": "white",
+        "maxheight": "4.6",
+        "maxspeed": "70",
+        "motor_vehicle:conditional": "no @ (hazmat:HK:1; hazmat:HK:2; hazmat:HK:3; hazmat:HK:3A; hazmat:HK:5); no @ (learner)",
+        "motorroad": "no",
+        "motorroad:tunnel": "no",
+        "motorway": "no",
+        "name": "\u9ec3\u6ce5\u6d8c\u5cfd\u5929\u6a4b Wong Nai Chung Gap Flyover",
+        "name:en": "Wong Nai Chung Gap Flyover",
+        "name:zh": "\u9ec3\u6ce5\u6d8c\u5cfd\u5929\u6a4b",
+        "oneway": "yes",
+        "placement": "transition",
+        "ref": "1",
+        "separation:right": "no",
+        "supervised": "yes",
+        "surface": "asphalt",
+        "surveillance": "yes",
+        "toll": "yes",
+        "toll:bus:conditional": "no @ (franchised)",
+        "traffic_control": "no",
+        "traffic_mode:right": "motor_vehicle",
+        "traffic_signals": "lane"
+      },
+      "lanes": [
+        {
+          "lane_id": "462275986#1_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "1194711693_0",
+              "state": "M"
+            },
+            {
+              "lane": "1194711693_1",
+              "state": "M"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "edge_id": "1194711693",
+      "length_m": 14.74,
+      "osm_tags": {
+        "alt_name": "\u5805\u62ff\u9053\u5929\u6a4b Canal Road Flyover",
+        "alt_name:en": "Canal Road Flyover",
+        "alt_name:zh": "\u5805\u62ff\u9053\u5929\u6a4b",
+        "bridge": "yes",
+        "change:lanes": "no|yes",
+        "destination:lanes": "\u4e2d\u74b0 Central|\u4e5d\u9f8d Kowloon",
+        "highway": "trunk",
+        "lanes": "2",
+        "layer": "1",
+        "loc_name": "\u9d5d\u9838\u6a4b",
+        "loc_name:zh": "\u9d5d\u9838\u6a4b",
+        "maxspeed": "70",
+        "name": "\u9ec3\u6ce5\u6d8c\u5cfd\u5929\u6a4b Wong Nai Chung Gap Flyover",
+        "name:en": "Wong Nai Chung Gap Flyover",
+        "name:zh": "\u9ec3\u6ce5\u6d8c\u5cfd\u5929\u6a4b",
+        "oneway": "yes",
+        "parking:restriction:lanes": "no_blocking|no_blocking",
+        "separation:right": "traffic_island",
+        "surface": "asphalt",
+        "traffic_mode:right": "motor_vehicle"
+      },
+      "lanes": [
+        {
+          "lane_id": "1194711693_0",
+          "index": 0,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "462275985_0",
+              "state": "M"
+            }
+          ]
+        },
+        {
+          "lane_id": "1194711693_1",
+          "index": 1,
+          "passenger_allowed": true,
+          "outgoing": [
+            {
+              "lane": "462275985_1",
+              "state": "M"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "late_warning_edge_length_m": 77.11,
+  "earlier_warning_edge_length_m": 330.96,
+  "ramp_signal_programs": [
+    {
+      "id": "11030048926",
+      "phases": [
+        {
+          "duration": "80",
+          "state": "GG"
+        },
+        {
+          "duration": "5",
+          "state": "yy"
+        },
+        {
+          "duration": "5",
+          "state": "rr"
+        }
+      ]
+    }
+  ]
+}
