@@ -4,15 +4,15 @@
 
 ### Q1: Why are Delay Savings, CO2 Reduction, and Benefit-Cost Ratio (BCR) left blank?
 > **Answer**: 
-> The project adheres strictly to the **Oct 14 Data Freeze** governance rule. The current simulation artifacts in `results/twin/` reflect early pre-incident diagnostic runs (07:55–08:55) rather than validated full-closure runs. To avoid false or unverified claims, all delay-saving, environmental, and financial ratio metrics remain explicitly labeled as **`Not Measured Yet`** until full-closure simulation runs are completed and signed off before October 14.
+> The 14 Oct results freeze locks the evidence used in the submission. Data has produced an incident P0 replay and P1/P2 rehearsal runs on [PR #55](https://github.com/f1ymango/ripple/pull/55), but Data and Simulation jointly find them unsuitable for public plan comparison. In particular, the plan effect changes with a disputed ramp representation. We therefore make no incident-specific delay, emissions or benefit-cost claim. The freeze does not guarantee validation.
 
 ### Q2: What is the accuracy of the Reader Agent in parsing traffic incident reports?
 > **Answer**: 
-> According to our Reader benchmark results (`results/reader/2026-10-01T190919941153_qwen3-8b_score.json`), the current Qwen3-8B model achieves a Gold Score v2 of **75% citywide accuracy** and **85% corridor accuracy**. Prompts and schemas continue to be refined to handle complex edge cases prior to final evaluation.
+> The initial held-out all-fields-correct evaluation scored **50% citywide** (40/80) and **75% corridor** (15/20). After prompt and label corrections, the development evaluation scored **75% citywide** (60/80) and **85% corridor** (17/20; `results/reader/2026-09-25T0048_qwen3-8b_score.json`). Those latter figures are not a fresh held-out score. A separate, unadopted 1 Oct prompt experiment scored 62.5% and 60% (`results/reader/2026-10-01T190919941153_qwen3-8b_score.json`). See `data/labelled_incidents/LABELLING.md` for the score history.
 
 ### Q3: How was the SUMO Digital Twin calibrated, and what is its current scope?
 > **Answer**: 
-> SUMO demand fitting and flow balancing are calibrated using real-world loop detector data (`results/data/flow-balance_20260515-0755_0855.json`). The current verified window covers the pre-incident period leading up to queue onset. Full incident propagation and lane closure replay are under active validation for the post-freeze release.
+> Demand fitting uses archived detector counts (`results/data/flow-balance_20260515-0755_0855.json`). The corrected incident P0 replay on PR #55 scores 89.45% GEH<5 and 14.44% speed MAPE over the whole run, but closure-phase counts, tunnel-side flow, queue timing, speed inputs, ramp behaviour and wrong-lane teleports prevent acceptance for comparing plans. The scores describe a model diagnostic, not validated plan benefits. See [Data and Simulation's joint review](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md).
 
 ### Q4: Are the visual clips in the presentation fully validated against the May 15 incident?
 > **Answer**: 
@@ -24,8 +24,8 @@
 
 | Claim / Topic | Primary Source Artifact | Current Verification Status |
 | :--- | :--- | :--- |
-| **Observed Lane Closures** | `results/data/closed-lanes_AID01104_20260515-0840_1010.json` | Verified (Data Owner) |
+| **Lane-phase inference** | `results/data/closed-lanes_AID01104_20260515-0840_1010.md`; `data/demo_incident_messages.jsonl` | Detector-inferred initial lane/onset and observed TD report times; physical phase remains assumed |
 | **Flow Balance Inputs** | `results/data/flow-balance_20260515-0755_0855.json` | Verified (Data Owner) |
-| **Reader Parsing Score** | `results/reader/2026-10-01T190919941153_qwen3-8b_score.json` | Verified (Reader Owner) |
-| **Pre-Incident Simulation** | `results/twin/may15-preincident-diagnostic.json` | Provisional (Simulation Owner) |
-| **Full-Closure Savings** | N/A | **Pending Oct 14 Data Freeze** |
+| **Reader Parsing Score** | `results/reader/2026-09-25T0048_qwen3-8b_score.json`; `data/labelled_incidents/LABELLING.md` | Development score after prompt/label corrections (Reader Owner) |
+| **Incident P0 diagnostic** | [PR #55 P0 review](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md) and its linked generated results | Joint Data/Simulation NO-GO for public plan comparison |
+| **Incident-specific savings** | No accepted result set | No public claim at the 14 Oct freeze unless the stated acceptance conditions are met |

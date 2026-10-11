@@ -141,6 +141,27 @@ the corresponding figures stay unmeasured in the submission.
 
 The 14 Oct results freeze and 17 Oct internal submission target stay in place.
 
+**Status update — Sun 11 Oct (HKT).** The 9 Oct public demo scope remains in
+force. [Visuals PR #53](https://github.com/f1ymango/ripple/pull/53) has merged
+the observed-message playback, road geometry and scene callout; it is a console
+capability, while the final video is still being prepared. Data's
+[evaluator PR #55](https://github.com/f1ymango/ripple/pull/55) contains E code,
+provenance-bound diagnostic P0 and separate rehearsal P1/P2 results. Its
+[corrected-replay assessment](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md)
+reports 89.45% GEH<5 and 14.44% speed MAPE for seed-2026 whole-run P0. Data
+and Simulation jointly retain **NO-GO for public plan comparison by 14 Oct**:
+closure and tunnel-side flow, counterfactual speed inputs, queue timing, the
+on-ramp representation and wrong-lane teleports remain unresolved. Correcting
+two simulator artefacts reversed the older rehearsal-plan benefit; neither the
+old saving nor the corrected delay increase is a verified road effect. P1/P2
+are stand-ins, not Lead-generated plans. PR #55 may be reviewed for software
+integration without accepting its model for recommendations. Deck/video work
+should show observed TD messages and detectors, Reader with its evaluation
+caveats, and a labelled operator-workflow demonstration. There is no accepted
+route recommendation, evaluated-vehicle animation or incident-specific benefit
+figure. Results freeze 14 Oct; internal submission target 17 Oct; official
+deadline 18 Oct.
+
 ### Week 3 — 5–11 Oct · Plans and results
 | Who | Task |
 |---|---|
