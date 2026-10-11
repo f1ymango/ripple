@@ -80,3 +80,50 @@ review artifact; narration and final export follow the Lead's scope decision.
 The [video shot list](../deck/video-shot-list.md) maps the current cut to its
 sources and includes draft timed narration for recording.
 Retain Transport Department / DATA.GOV.HK and OpenStreetMap / CARTO attribution.
+
+## 11 October Lead rehearsal on the laptop
+
+The full May five-minute detector export and same-day incident timeline were
+rebuilt with the two commands above. The detector archive served 80 of 113
+listed snapshots; 33 were unavailable. It yielded 896 five-minute detector
+bins across 28 detectors, with 36% mean coverage. Only 607 bins met the
+loader's count-calibration filter; the console uses the full export for
+retrospective playback and labels its partial coverage. The incident loader
+read 158 English, 156 Traditional Chinese and 114 Simplified Chinese listed
+snapshots; its CSV records IN-26-03365's 09:01 report and 10:02 closure.
+
+On this Windows checkout, launch the observed view with:
+
+```powershell
+.\.venv\Scripts\python.exe -m streamlit run src/console/app.py
+```
+
+For a provisional road overlay, set `RIPPLE_SUMO_NETWORK` to the absolute path
+of a separately inspected `.net.xml` before launching. The network is not
+needed for TD messages or detector playback. The committed Reader example is
+`results/reader/2026-09-29T1608_qwen3-8b.jsonl` (messages 138270 and 138272);
+its first free-text note is known to overdescribe the direction bracket. Keep
+Reader output visibly distinct from the archived TD source card. The operator
+comparison fixtures remain under `tests/fixtures/mock_recommendation/` and
+must be labelled as a capability demonstration.
+
+With those inputs, the local console was checked at 08:50 (no future TD text),
+09:05 (09:01 bilingual partial-lane report), 09:40 (09:36 bilingual all-lanes
+update) and 10:05 (10:02 clearance banner, with older closure prose marked
+historical). Rewinding to 07:55 hid the future messages and clearance again.
+The plan panel correctly said that no completed plan runs exist in
+`results/runs/`; its approval controls were disabled.
+
+For an optional local geometry check, only `sim/work/aberdeen.net.xml` was
+extracted from the committed
+`results/twin/oct04-provisional-replay-inputs.zip` to an ignored scratch
+directory. Its SHA-256 is
+`e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e`,
+different from the network used for the screenshot above. The corridor-road
+view loaded, retained the geometry-only/not-route-advice label, and showed an
+approximate 09:36 incident callout near Yip Kan Street. The callout remained
+visible after zooming, and the console's Geometry source panel displayed the
+same SHA-256. This is a visual
+rehearsal of provisional map geometry, not an accepted simulation network or
+evidence of route feasibility. A final video export and deck export were not
+present in this workspace on 11 October.

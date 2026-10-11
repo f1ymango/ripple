@@ -1,13 +1,15 @@
 # Costing & Financial Feasibility Analysis
 
-## 1. System Architecture & Resource Framework
+## 1. Resource questions for a deployment estimate
 
-| Component | Infrastructure / API | Estimated Monthly Cost (USD) | Notes & Status |
-| :--- | :--- | :--- | :--- |
-| **Reader Agent (LLM)** | Local / Edge GPU (e.g., Qwen3-8B) | ~$150 – $300 | Local container execution for parser pipeline |
-| **Digital Twin (SUMO)** | Cloud VM (Multi-core CPU) | ~$100 – $200 | Batch replay & diagnostic simulation runs |
-| **Data Storage & Pipeline** | Cloud Storage & Database | ~$50 – $100 | Traceability log storage & caching |
-| **Total Estimated Operating Cost** | - | **~$300 – $600 / month** | Baseline system operational footprint |
+| Component | Prototype choice | Evidence needed for a monthly estimate |
+| :--- | :--- | :--- |
+| **Reader (LLM)** | Local Qwen3-8B | Hardware price, power/hosting, model-call volume and support time |
+| **Digital twin (SUMO)** | Local batch runs | Validated run frequency, CPU time, hosting price and storage |
+| **Data storage and pipeline** | Archive/cache plus logs | Retention period, data volume, hosting and maintenance |
+
+No deployed configuration or measured operating cost is available. The earlier
+USD 300–600/month range lacked a price or usage source and is withdrawn.
 
 ---
 
@@ -15,14 +17,14 @@
 
 | Metric | Status / Value | Source / Traceability |
 | :--- | :--- | :--- |
-| **Operational Infrastructure Cost** | Measured (Framework above) | Project deployment model |
-| **Delay Savings ($ Value)** | **BLANK / Not Measured Yet** | Pending Oct 14 Data Freeze & Full-Closure Run |
-| **CO2 Reduction Benefits ($ Value)** | **BLANK / Not Measured Yet** | Pending Oct 14 Data Freeze & Full-Closure Run |
-| **Benefit-Cost Ratio (BCR)** | **BLANK / Not Measured Yet** | Pending Oct 14 Data Freeze & Full-Closure Run |
+| **Operational infrastructure cost** | Not measured | Requires a priced deployment configuration |
+| **Delay savings ($ value)** | No accepted benefit claim | Incident P0 and plan comparison remain unaccepted |
+| **CO₂ reduction benefits ($ value)** | No accepted benefit claim | Incident P0 and plan comparison remain unaccepted |
+| **Benefit-cost ratio (BCR)** | Not calculated | Requires sourced costs and accepted benefits |
 
 ---
 
 ## 3. Financial Feasibility Governance Rules
 
 1. **No Speculative Benefit Calculations**: Benefit-Cost Ratio must **not** be calculated using partial, pre-incident, or unvalidated simulation metrics.
-2. **Freeze Boundary Alignment**: Financial return claims are strictly omitted from public slide drafts until full-closure validation is finalized before the Oct 14 data freeze.
+2. **Freeze Boundary Alignment**: The 14 Oct freeze locks supported figures. If the incident comparison remains unaccepted, financial return claims stay out of the submission.
