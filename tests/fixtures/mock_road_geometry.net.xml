@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic geometry for projection and non-stitching tests only. -->
+<net version="1.20">
+  <location netOffset="1000,2000" convBoundary="1114,2022,1115,2023" origBoundary="114,22,115,23" projParameter="+proj=longlat +datum=WGS84 +no_defs"/>
+  <edge id="mock_bend" from="a" to="b" name="Mock curved road" priority="1">
+    <lane id="mock_bend_0" index="0" speed="10" length="100" allow="passenger" shape="1114.14,2022.25 1114.145,2022.253 1114.15,2022.25"/>
+  </edge>
+  <edge id="mock_separate" from="b" to="d" name="Mock curved road" priority="1">
+    <lane id="mock_separate_0" index="0" speed="10" length="100" allow="passenger" shape="1114.16,2022.26 1114.17,2022.26"/>
+  </edge>
+  <edge id=":b_0" function="internal">
+    <lane id=":b_0_0" index="0" speed="10" length="100" allow="passenger" shape="1114.15,2022.25 1114.152,2022.257 1114.155,2022.258"/>
+  </edge>
+  <edge id=":b_1" function="internal">
+    <lane id=":b_1_0" index="0" speed="10" length="100" allow="passenger" shape="1114.155,2022.258 1114.158,2022.259 1114.16,2022.26"/>
+  </edge>
+  <edge id="mock_walk" from="a" to="c" name="Mock footpath" priority="1">
+    <lane id="mock_walk_0" index="0" speed="1" length="100" allow="pedestrian" shape="1114.14,2022.25 1114.16,2022.26"/>
+  </edge>
+  <junction id="a" type="dead_end" x="1114.14" y="2022.25" incLanes="" intLanes="" shape=""/>
+  <junction id="b" type="priority" x="1114.15" y="2022.25" incLanes="mock_bend_0" intLanes=":b_0_0 :b_1_0" shape=""/>
+  <junction id="c" type="dead_end" x="1114.16" y="2022.26" incLanes="mock_walk_0" intLanes="" shape=""/>
+  <junction id="d" type="dead_end" x="1114.17" y="2022.26" incLanes="mock_separate_0" intLanes="" shape=""/>
+  <connection from="mock_bend" to="mock_separate" fromLane="0" toLane="0" via=":b_0_0" dir="s" state="M"/>
+  <connection from=":b_0" to="mock_separate" fromLane="0" toLane="0" via=":b_1_0" dir="s" state="M"/>
+  <connection from=":b_1" to="mock_separate" fromLane="0" toLane="0" dir="s" state="M"/>
+</net>

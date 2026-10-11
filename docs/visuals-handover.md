@@ -1,5 +1,37 @@
 # Visuals handover — 29 Sep 2026
 
+## Observed playback and road map — 8 October 2026
+
+The console now labels archived observations, gates bilingual TD prose on its
+publication time, and shows report/update/clearance markers. Optional SUMO
+shapes follow actual road and junction geometry. A compact callout points to
+the approximate reported May incident area near Yip Kan Street; the full
+source card stays available. Rewinding removes later messages and clearance.
+
+Setup, evidence limits, the review screenshot and checks are in
+[the observed-playback guide](console-observed-playback.md) and
+[the geometry guide](../src/console/ROAD_GEOMETRY.md). Visuals owns the video;
+the local silent rough cut is prepared for scope review. Recommended routes,
+evaluated trajectories and benefit figures still await one jointly reviewed
+bundle. Comparison/approval gates and shared contracts are unchanged.
+
+Review validation: 463 tests passed locally (446 in the full-suite run and
+17 local-HTTP tests retried with socket permission). A regression test covers
+malformed optional geometry with an incident loaded; the console now retains
+its observations and source card. The focused Windows CI job also includes
+the new geometry/playback tests. Both Linux and Windows CI passed on
+`c479594`, and Lead approved [PR #53](https://github.com/f1ymango/ripple/pull/53)
+on 9 October after 67 focused local tests. The capability can merge separately
+from the final video; the silent rough cut and narration draft are preparation
+artifacts, not the final submission.
+
+The [9 October scope decision](04-plan.md) keeps the public cut on archived
+TD messages, observed detector playback, road graph, Reader with evaluation
+caveats, and a clearly labelled operator-workflow capability demonstration.
+Recommended routes, evaluated vehicles and benefit claims require accepted
+incident and plan results before the 14 October results freeze. Final video
+editing and delivery follow, targeting 17 October internally.
+
 Rorath owns component G: the Streamlit operator console and the roughly
 90-second demo video. The working arrangement is for the coding assistant to
 write and explain readable code, with Rorath guiding visual decisions and video
