@@ -19,7 +19,18 @@ Review validation: 463 tests passed locally (446 in the full-suite run and
 17 local-HTTP tests retried with socket permission). A regression test covers
 malformed optional geometry with an incident loaded; the console now retains
 its observations and source card. The focused Windows CI job also includes
-the new geometry/playback tests; a Windows runner result is still pending.
+the new geometry/playback tests. Both Linux and Windows CI passed on
+`c479594`, and Lead approved [PR #53](https://github.com/f1ymango/ripple/pull/53)
+on 9 October after 67 focused local tests. The capability can merge separately
+from the final video; the silent rough cut and narration draft are preparation
+artifacts, not the final submission.
+
+The [9 October scope decision](04-plan.md) keeps the public cut on archived
+TD messages, observed detector playback, road graph, Reader with evaluation
+caveats, and a clearly labelled operator-workflow capability demonstration.
+Recommended routes, evaluated vehicles and benefit claims require accepted
+incident and plan results before the 14 October results freeze. Final video
+editing and delivery follow, targeting 17 October internally.
 
 Rorath owns component G: the Streamlit operator console and the roughly
 90-second demo video. The working arrangement is for the coding assistant to
