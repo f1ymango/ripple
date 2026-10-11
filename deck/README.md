@@ -1,41 +1,43 @@
-# Presentation Deck & Evidence Pack
+# Ripple: Urban Corridor Traffic Simulation & AI Twin
 
-This folder holds reviewable slide copy and its evidence for the 12 Oct draft.
-It does not yet contain a PowerPoint/PDF deck or a final video export.
-
----
-
-## 1. The Five Criteria (20% each)
-
-Every slide and artifact is traceable to one of these core criteria:
-
-| Criterion | Owner | Material Source |
-| :--- | :--- | :--- |
-| **Convincing framing of problem** | Impact | `docs/05-pitch.md` §1, §3 |
-| **Prototype / demo** | Visuals + Lead | Demo Video, Console, `results/twin/` |
-| **Appropriate technical component** | Lead | GenAI jobs, `results/reader/` benchmark scores |
-| **Feasibility and impact** | Impact | `deck/costing.md` |
-| **Sustainability and ethics** | Impact | Constraint thresholds, `deck/qa-sheet.md` |
+This repository contains the simulation framework, AI agent pipelines, presentation materials, and technical evaluation suites for the Ripple urban corridor management project.
 
 ---
 
-## 2. File Inventory & Index
+## 1. Executive Summary & Component Ownership
 
-| File | Description | Status & Freeze Boundary |
-| :--- | :--- | :--- |
-| [slides.md](slides.md) | Slide structure aligned with 5 scoring criteria | Draft; public claims checked 11 Oct |
-| [real-vs-simulated.md](real-vs-simulated.md) | Observed sources, diagnostic SUMO runs and unsupported benefit claims | Draft; evidence boundary checked 11 Oct |
-| [costing.md](costing.md) | Resource questions and BCR limitations | Draft; operating cost not measured |
-| [qa-sheet.md](qa-sheet.md) | Technical Q&A and known limitations | Draft; Reader score history and incident-model caveats checked 11 Oct |
-| [video-shot-list.md](video-shot-list.md) | Demo video storyboard and source boundaries | Draft; final export outstanding |
+| Component Domain | Lead Owner | Current Scope & Responsibilities | Current Status |
+| :--- | :--- | :--- | :--- |
+| **Problem & Framing** | Impact / Pitch | Deck narrative, 5-criteria framing, ethics & costing governance | **Deployed 10/12 Reviewable Draft (#50)** |
+| **Simulation & Twin** | Simulation | Network setup & incident AID01104 validation | Operational baseline verified |
+| **Data & Provenance** | E (Data) | Result/provenance sidecars (`docs/03-architecture.md`) & `results/` artifacts | Diagnostic P0 review complete ([PR #55](https://github.com/f1ymango/ripple/pull/55)) |
+| **Technical / GenAI** | Technical Lead | Qwen3-8B Reader benchmarks: 1 Oct (62.5% city / 60% corridor), Held-out (50%/75%), Dev run (75%/85%) | Score history logged in `LABELLING.md` |
+| **Costing & Impact** | Impact / Pitch | Infrastructure cost model drafted; BCR set to `BLANK / Not Measured Yet` | Awaiting 10/14 freeze data |
+| **Visuals & Media** | Visuals | Video shot list, storyboard, console screenshots, video exports | Storyboard ready (`deck/video-shot-list.md`) |
 
 ---
 
-## 3. Key Dates & Governance
+## 2. Activity & Change Log
 
-- **Sat 3 Oct**: Interim report submitted
-- **Wed 14 Oct**: **Results freeze** — every number in the deck is locked
-- **Sat 17 Oct**: Internal submission target for deck, prototype and video (official deadline: 18 Oct)
-- **Sat 24 Oct**: Final pitch, CityU Kowloon Tong
+- **2026-10-12**: Merged PR #50 (deck/ draft review pack). Scoped qualitative single-driver interview evidence, cost models (BCR blank), and exact Reader benchmark score history (1 Oct experiment vs held-out vs 25 Sep dev run).
+- **2026-10-09**: Lead baseline decision locked; SUMO window and reader pipeline scope defined.
+- **2026-10-03**: Submitted interim project report.
 
-> **Evidence boundary, 11 Oct:** Data and Simulation retain NO-GO for public incident plan comparisons. The observed-message and detector demo can proceed; route recommendations, evaluated-vehicle animation and benefit claims remain outside the public cut. The 14 Oct freeze does not imply model sign-off. PR #53 delivered observed playback code, while the final video and deck export still need delivery.
+---
+
+## 3. Repository Structure & Presentation Deliverables
+
+All presentation materials and supporting evidence live under the [`deck/`](./deck/) directory:
+
+- **[`deck/slides.md`](./deck/slides.md)**: 5-slide presentation deck covering all scoring criteria.
+- **[`deck/costing.md`](./deck/costing.md)**: Infrastructure costing model (BCR strictly blank pending freeze).
+- **[`deck/qa-sheet.md`](./deck/qa-sheet.md)**: Technical Q&A, Reader bounds, exact benchmark provenance, and single-driver qualitative interview evidence scope.
+- **[`deck/real-vs-simulated.md`](./deck/real-vs-simulated.md)**: Real incident vs. SUMO twin mapping.
+- **[`deck/video-shot-list.md`](./deck/video-shot-list.md)**: Storyboard and voiceover script for demo video.
+
+---
+
+## 4. Governance & Data Freeze Rules
+
+1. **Oct 14 Data Freeze**: All metrics on delay savings, CO₂ impact, and Benefit-Cost Ratio (BCR) remain explicitly **`BLANK / Not Measured Yet`** across all deck documentation until post-freeze full-closure sign-off.
+2. **Artifact Provenance**: Every quantitative claim must reference a verified file under `results/` produced and signed off by the respective owner.
