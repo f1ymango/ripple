@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Tue 6 Oct 2026** · Week 3 in progress
+**Last updated: Fri 9 Oct 2026** · Week 3 in progress
 · Weekly sync / stand-up: Wednesday afternoon
 
 > **Model decision — Lead, Mon 5 Oct (HKT):** Continue flow-balance SUMO as the
@@ -26,6 +26,13 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 > This is a limited count-baseline claim, not acceptance of incident queues,
 > recovery or plan benefits. The [decision and next gates](docs/04-plan.md)
 > remain separate from incident lane/timing assumptions.
+
+> **Demo-scope decision — Lead, Fri 9 Oct (HKT):** Show the observed incident
+> playback, road graph, Reader and clearly labelled operator workflow. Continue
+> SUMO/E diagnostics, but do not present a recommended diversion, evaluated
+> vehicle trajectory or delay/travel-time/CO₂/BCR benefit until the incident
+> replay and matching plan results pass the [acceptance gates](docs/04-plan.md).
+> The 14 Oct results freeze and 17 Oct internal submission target are unchanged.
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
@@ -46,7 +53,8 @@ this chain.
 | Sun 27 Sep | 🔒 Lock the primary demo incident and backup | ✅ 28 Sep — Lead selected [IN-26-03365](data/demo_shortlist.md) as primary; IN-26-06391 as backup |
 | Sat 3 Oct | 📤 Submit interim report (official deadline Sun 4 Oct) | ✅ Lead confirmed the online form was submitted. The repository keeps the [technical draft](docs/interim-report.md) and [23-question answer bank](docs/interim-report-submission.md); the exact submitted answers and receipt are not archived |
 | Mon 5 Oct (HKT) | 🚦 Decide whether to continue with SUMO or use the simplified fallback | ✅ Lead chose conditional SUMO continuation for an incident P0 diagnostic, with fallback retained. Simulation independently reproduced the no-closure count score; speed and incident acceptance remain open ([review](docs/sumo-flow-balance-review-2026-10-05.md), [decision](docs/04-plan.md)) |
-| Tue 6 Oct (HKT) | Agree the evidence-labelled P0 setup for IN-26-03365 | 🟡 Data supplied the proposed edge, detector-inferred initial lane and phase times; Simulation's explicit sign-off and the bounded P0 run remain pending ([lane evidence](results/data/closed-lanes_AID01104_20260515-0840_1010.md), [handoff](docs/04-plan.md)) |
+| Tue 6 Oct (HKT) | Agree the evidence-labelled P0 setup for IN-26-03365 | 🟡 Data supplied the proposed edge, detector-inferred initial lane and phase times. A bounded P0 diagnostic ran on 7 Oct, but Simulation did not accept it; review of Data's newer replay remains open ([lane evidence](results/data/closed-lanes_AID01104_20260515-0840_1010.md), [Simulation blocker](https://github.com/f1ymango/ripple/blob/ec3d740/docs/p0-core-blocker-2026-10-07.md)) |
+| Fri 9 Oct (HKT) | Lock demo scope against accepted evidence | ✅ Lead narrowed the public demo to observed playback and a clearly labelled operator-workflow demonstration. SUMO/E diagnostic work continues, but no incident-specific route, trajectory or benefit claim is approved ([decision](docs/04-plan.md)) |
 | Mon 12 Oct | Pitching workshop, everyone (HKU Innovation Wing 2, 14:00–17:30) | ⚪ |
 | Wed 14 Oct | 🔒 **Results freeze**: bug fixes only after this, every number locked | ⚪ |
 | Sat 17 Oct | 📤 Submit deck + prototype (official deadline Sun 18 Oct) | ⚪ |
@@ -59,12 +67,12 @@ this chain.
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md). Week 2 checks on the demo morning: usable calibration bins per threshold ([bin survival](results/data/bin-survival_20260515-0755_1035.md)), which lane closed first ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)), and IN-26-03365 re-screened after the 29 Sep screen fixes ([re-check](results/data/candidates_2026-05-15.md)). For the twin: [flow balance](results/data/flow-balance_20260515-0755_0855.md) and [free-flow speeds](results/data/free-flow_20260508_20260424_0730-1100.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Week 2 evaluation complete on 100 hand-labelled messages. Initial held-out all-field accuracy: citywide **50%**, corridor **75%**. After prompt and label corrections informed by those results, development scores reached 75% and 85%; these are not fresh held-out results. An October prompt experiment performed worse and was not adopted. Output preservation regressions protect evidence ([score history](data/labelled_incidents/LABELLING.md#score-history), [Lead work](docs/2026-10-01-lead-work.md)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Simulation independently reproduced Data's 15 May no-closure **96.7% GEH<5** of 242 count bins and **15.7% speed MAPE** of 299 bins, with 238 of 16,601 vehicles waiting and zero teleports. A no-speed-sign control retained 96.7% count GEH but reached 41.2% speed MAPE and 523 waiting. Data's separate 97.5% / 13.2% refresh uses each detector's preceding-quarter-hour speed. On the distinct, still-unmerged [PR #46](https://github.com/f1ymango/ripple/pull/46) inputs, Simulation's [6 Oct proposal](https://github.com/f1ymango/ripple/blob/32373d6/docs/p0-setup-proposal-2026-10-06.md) reports provisional no-closure 95.5% / 15.8% with speed signs and 96.3% / 40.1% without signs and with default drivers; neither is an incident P0. The limited count claim is reproducible; toll-lane, inferred-join and ramp assumptions, incident queues, recovery and diversions remain unvalidated ([independent review](docs/sumo-flow-balance-review-2026-10-05.md), [Data study](docs/sumo-flow-balance-2026-10-04.md)). |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Simulation independently reproduced the 15 May no-closure count fit (**96.7% GEH<5**), while ordinary-morning speed MAPE was **15.7%** with imposed speeds ([review](docs/sumo-flow-balance-review-2026-10-05.md)). Its [7 Oct incident P0 diagnostic](https://github.com/f1ymango/ripple/blob/ec3d740/docs/p0-core-blocker-2026-10-07.md) was not accepted. Data's newer [8 Oct replay](https://github.com/f1ymango/ripple/blob/3d68b298/docs/evaluator-replay-2026-10-08.md) is unreviewed by Simulation: refreshed-speed inputs help the whole-run score, but crash-stretch speed, tunnel flow, queue recovery and the ramp remain concerns. No incident baseline or plan benefit is accepted. |
 | D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | 🟡 P0/P1/P2 generation, schema checks and all five documented constraints are implemented with offline tests. A model-free `--check-only` path now validates the incident/context handoff before generation. Real-model quality and reviewed C/E routes, demand and controls remain outstanding ([handoff](docs/lead-pipeline-handoff.md)) |
-| E | Evaluator: runs every plan, writes metrics to `results/` | Data | 🟡 No `src/evaluator/` implementation or real P0/P1/P2 results are on main yet. [PR #35](https://github.com/f1ymango/ripple/pull/35) was closed as superseded; its older fallback calibration was not accepted. [PR #46](https://github.com/f1ymango/ripple/pull/46) revises the no-closure inputs but is still under review, not an evaluator result. E must write comparable contracted results and provenance sidecars before F/G can recommend a plan; compliance/clearance sensitivity remains outstanding ([handoff](docs/lead-pipeline-handoff.md)) |
+| E | Evaluator: runs every plan, writes metrics to `results/` | Data | 🟡 An [unmerged branch](https://github.com/f1ymango/ripple/tree/3d68b298) now has `src/evaluator/`, P0/P1/P2 result files and provenance sidecars; none is on main. The [8 Oct report](https://github.com/f1ymango/ripple/blob/3d68b298/docs/evaluator-replay-2026-10-08.md) gives whole-run P0 89.29% GEH<5 and 14.54% speed MAPE, conditional on refreshed speed inputs. P1/P2 use rehearsal stand-ins, not Lead-generated plans, and cannot support a ranked recommendation. Simulation review, supported routes, same-input Lead-plan evaluation and an integration PR are outstanding. [PR #46](https://github.com/f1ymango/ripple/pull/46) remains changes-requested. |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Bilingual drafting, saved-result selection, metric-token insertion, provenance verification and VMS limits are implemented with offline tests. A model-free handoff check revalidates plans and comparable results before an LLM call. Real validated E results and human language review remain outstanding ([handoff](docs/lead-pipeline-handoff.md), [Lead next steps](docs/2026-10-03-lead-next-steps.md)) |
-| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 [PR #41](https://github.com/f1ymango/ripple/pull/41) merged 4 Oct after Lead review: the console has the 28-detector map and archived incident playback plus provenance-checked plan comparisons, matching bilingual briefings and identified operator decisions with cross-platform audit locking. Real accepted plan outputs and an end-to-end operator review are still missing. Trajectory replay remains deferred until C/E can bind FCD output to evaluated runs ([operator integration](src/console/OPERATOR_WORKFLOW.md)). |
-| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Interim form submitted. Repository evidence includes sourced problem research, one qualitative [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md), the [technical draft](docs/interim-report.md) and [answer bank](docs/interim-report-submission.md). Additional interviews, accepted validation/results, deck and video evidence remain outstanding |
+| G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 The provenance-checked operator workflow is merged ([PR #41](https://github.com/f1ymango/ripple/pull/41)). [PR #53](https://github.com/f1ymango/ripple/pull/53) adds observed-message playback, road geometry and an approximate scene callout; it is open with passing CI. Its rough-cut video is local, not a committed final artifact. Recommended-route highlighting and evaluated-vehicle replay remain gated on accepted C/E outputs ([operator integration](src/console/OPERATOR_WORKFLOW.md)). |
+| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Interim form submitted; one qualitative [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md) is documented. [PR #49](https://github.com/f1ymango/ripple/pull/49) and [PR #50](https://github.com/f1ymango/ripple/pull/50) merged reviewable Markdown deck/evidence drafts, not a PPTX/PDF or final video. The deck needs source and claim corrections before presentation; accepted incident results, additional interviews and final impact figures remain open ([deck index](deck/README.md)). |
 
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
@@ -73,10 +81,10 @@ The JSON contracts between modules are in
 
 | Owner | Deliverable | Next evidence |
 |---|---|---|
-| Data + Simulation | Confirm Data's evidence-labelled incident setup; attempt a bounded P0 diagnostic by 7 Oct while Data builds E | 🟡 Data proposed edge `44419212`, the detector-inferred initial slow lane, assumed 08:55 onset, and TD-reported 09:36/10:02 phase times. Simulation's explicit acceptance remains pending. Neither incident queues nor plan effects are validated; E and contracted results are still missing from main ([lane evidence](results/data/closed-lanes_AID01104_20260515-0840_1010.md), [handoff](docs/04-plan.md)) |
-| Lead | Hold conditional SUMO decision and validate C/E context and real D/F handoffs | 🟡 Model route decided for the bounded P0 step, with fallback retained. Reader evaluation, interim submission and model-free D/F checks are complete. Reviewed context, real plan quality, comparable results and bilingual briefing remain unverified ([decision](docs/04-plan.md), [handoff](docs/lead-pipeline-handoff.md)) |
-| Visuals | Connect the merged comparison and briefing workflow to accepted outputs | 🟡 [PR #41](https://github.com/f1ymango/ripple/pull/41) merged with green Linux and Windows checks. The observed playback remains available; trajectory replay awaits C/E output provenance and real operator review ([operator integration](src/console/OPERATOR_WORKFLOW.md)) |
-| Impact | Continue interviews and build the final evidence pack and deck | 🟡 Interim form submitted 3 Oct; additional interviews, validated results and final impact claims remain open ([interim draft](docs/interim-report.md)) |
+| Data + Simulation | Review the 8 Oct E replay and its incident assumptions; resolve closure flow, tunnel mapping, recovery and ramp behaviour before accepting P0 | 🟡 [Data's candidate results and sidecars](https://github.com/f1ymango/ripple/blob/3d68b298/docs/evaluator-replay-2026-10-08.md) are unmerged. Numeric whole-run targets pass only with same-morning refreshed speeds at most detectors; [Simulation's prior P0 review](https://github.com/f1ymango/ripple/blob/ec3d740/docs/p0-core-blocker-2026-10-07.md) remains a no-go. Provide a clear acceptance decision and integration PR, or retain diagnostic-only status. |
+| Lead | Apply the 9 Oct demo-scope decision; review context, real D plans, same-input E results and F briefings before any recommendation claim | 🟡 The [public scope is narrowed](docs/04-plan.md). Real model quality, jointly reviewed route/context, accepted comparable results and matching bilingual briefing remain unverified ([handoff](docs/lead-pipeline-handoff.md)). |
+| Visuals | Prepare the observed-playback/video cut without unverified route or trajectory claims | 🟡 [PR #53](https://github.com/f1ymango/ripple/pull/53) is open; observed-message playback and road geometry are reviewable. Evaluated trajectory and route highlighting await accepted C/E output; the rough cut remains local. |
+| Impact | Correct deck evidence and build the scoped final pack | 🟡 [Markdown drafts](deck/README.md) merged on 8 Oct. Fix Reader source attribution, cost-estimate labelling and freeze/benefit wording before presentation; leave unsupported benefit figures blank. Additional interviews and final video evidence remain open. |
 
 ### Week 1 outcomes (21–27 Sep)
 
@@ -96,6 +104,10 @@ The console framing, theme and playback control fixes are merged in
 console playback (PR #29), Component C source audits (PR #30), and Data's
 [week 2 checks (PR #32)](https://github.com/f1ymango/ripple/pull/32) are merged.
 The operator workflow is merged in [PR #41](https://github.com/f1ymango/ripple/pull/41).
+Impact's Markdown deck drafts are merged in
+[PR #49](https://github.com/f1ymango/ripple/pull/49) and
+[PR #50](https://github.com/f1ymango/ripple/pull/50); Visuals' observed-playback
+[PR #53](https://github.com/f1ymango/ripple/pull/53) remains open.
 The provisional October replay inputs are archived in
 [results/twin/oct04-provisional-replay-inputs.zip](results/twin/oct04-provisional-replay-inputs.zip),
 but the standalone network and E1 loops are not reviewed releases.
@@ -110,7 +122,8 @@ but the standalone network and E1 loops are not reviewed releases.
   no slow-lane vehicles while the fast lane carried traffic. This is an
   assumption, not confirmation of the physical lane; AID01105 was unavailable
   that morning ([lane evidence](results/data/closed-lanes_AID01104_20260515-0840_1010.md)).
-  Simulation's explicit sign-off on this rule is pending. A general default
+  Simulation ran a bounded 7 Oct P0 but did not accept the incident baseline;
+  its review of Data's newer 8 Oct replay is pending. A general default
   lane and no-evidence behaviour for other incidents are still unagreed.
   Data also proposed an **assumed** 08:55 physical onset. TD first reported
   partial closure at 09:01, all lanes at 09:36 and incident end at 10:02;
@@ -214,6 +227,23 @@ but the standalone network and E1 loops are not reviewed releases.
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Fri 9 Oct**
+- Lead narrowed the public demo to observed incident playback, road graph,
+  Reader and a clearly labelled operator workflow. SUMO/E diagnostics continue,
+  but route, trajectory, plan ranking and benefit claims remain gated by
+  accepted incident P0 and comparable provenance-bound Lead-plan results
+  ([decision](docs/04-plan.md)).
+
+**Thu 8 Oct**
+- Data's [unmerged evaluator branch](https://github.com/f1ymango/ripple/blob/3d68b298/docs/evaluator-replay-2026-10-08.md)
+  produced P0/P1/P2 diagnostics and sidecars. Whole-run P0 passed the numeric
+  gates with refreshed detector speeds, but incident behaviour and rehearsal
+  plan comparisons need Simulation and Lead review.
+- Impact's [deck PR #49](https://github.com/f1ymango/ripple/pull/49) and
+  [draft PR #50](https://github.com/f1ymango/ripple/pull/50) merged as Markdown;
+  Visuals' [observed-playback PR #53](https://github.com/f1ymango/ripple/pull/53)
+  opened. Neither a final video nor accepted benefit evidence is committed.
 
 **Tue 6 Oct**
 - Data proposed a case-specific P0 setup for IN-26-03365 using the revised
