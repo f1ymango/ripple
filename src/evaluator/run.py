@@ -18,6 +18,8 @@ import argparse
 import math
 import shutil
 
+from jsonschema import ValidationError
+
 from src.briefing.schema import RESULT_SCHEMA
 from src.evaluation_provenance import capture_inputs, sidecar_path, verify_result, write_result
 from src.evaluator import metrics, scenario as scenarios, simulate
@@ -84,12 +86,39 @@ def do_nothing_baseline(results_dir, scenario, plan_set, compliance, clearance_m
     return result, load_json(report)
 
 
-def kept_result(plans_dir, plan_id, scenario_path, scenario, path):
-    """Refuse to keep an existing result unless it binds this plan, its plan inputs and today's simulation inputs."""
+def kept_result(plans_dir, plan_id, scenario_path, scenario, path, *, plan_set, compliance, clearance_min):
+    """Keep only a complete result/report pair for the requested run and current inputs."""
+    check_run_settings(scenario, plan_set, compliance, clearance_min)
+    run_id = scenarios.run_id(scenario, plan_id, compliance, clearance_min, plan_set)
+    path = resolve(path)
+    if path.name != f"{run_id}.json":
+        raise ValueError(f"{path.name} is not the requested run {run_id}")
+    report_path = path.parent.parent / "evaluator" / f"{run_id}.report.json"
+    if not report_path.is_file():
+        raise ValueError(f"{run_id} is missing its run report; do not keep an incomplete result")
+    try:
+        result = load_json(path)
+        validate(result, RESULT_SCHEMA)
+    except (OSError, ValueError, ValidationError) as exc:
+        raise ValueError(f"{path.name} is not a valid result ({exc})") from None
+    if (result["run_id"] != run_id or result["plan_id"] != plan_id
+            or result["incident_id"] != scenario["incident_id"]):
+        raise ValueError(f"{path.name} does not describe the requested run, plan and incident")
+    expected_settings = {"compliance": compliance, "clearance_min": clearance_min, "seed": scenario["seed"]}
+    if result["scenario"] != expected_settings:
+        raise ValueError(f"{path.name} has other compliance, clearance or seed settings")
+    try:
+        report = load_json(report_path)
+    except (OSError, ValueError) as exc:
+        raise ValueError(f"{run_id} has an unreadable run report ({exc})") from None
+    if (not isinstance(report, dict) or report.get("run_id") != run_id
+            or not isinstance(report.get("run_health"), dict)
+            or report["run_health"].get("complete") is not True):
+        raise ValueError(f"{run_id} has a mismatched or incomplete run report")
     plan, generation_inputs = load_plan(plans_dir, plan_id, scenario)
     captured = capture_inputs(plan, generation_inputs, simulation_files(scenario_path, scenario))
     try:
-        inputs = verify_result(path, load_json(path), plan, generation_inputs)
+        inputs = verify_result(path, result, plan, generation_inputs)
     except (OSError, ValueError) as exc:
         raise ValueError(f"{path.name} was made from another plan or plan inputs ({exc}); "
                          "give this plan set its own --plan-set name") from None
@@ -132,7 +161,11 @@ def evaluate(plans_dir, plan_set, plan_id, scenario_path, compliance, clearance_
                 do_nothing_baseline(results_dir, scenario, plan_set, compliance, clearance_min, captured,
                                     load_plan(plans_dir, "P0", scenario)[0], generation_inputs))
 
-    work = resolve(work_root) / run_id
+    root = resolve(work_root).resolve()
+    work = root / run_id
+    target = work.resolve()
+    if target == root or not target.is_relative_to(root) or target != work:
+        raise ValueError(f"Unsafe evaluator scratch path for {run_id}: {work}")
     if work.exists():
         shutil.rmtree(work)                                           # scratch from an unfinished attempt
     health = simulate.run(scenario, {name: files[name] for name in scenario["inputs"]},

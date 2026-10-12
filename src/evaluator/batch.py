@@ -34,7 +34,8 @@ def main():
             run_id = scenarios.run_id(scenario, plan_id, compliance, args.clearance, args.plan_set)
             path = resolve(args.results_dir) / "runs" / f"{run_id}.json"
             if path.exists():
-                kept_result(args.plans, plan_id, args.scenario, scenario, path)
+                kept_result(args.plans, plan_id, args.scenario, scenario, path,
+                            plan_set=args.plan_set, compliance=compliance, clearance_min=args.clearance)
                 print(f"{run_id}: kept, it already has a result from these plans and inputs")
                 continue
             result, report, _ = evaluate(args.plans, args.plan_set, plan_id, args.scenario, compliance,
