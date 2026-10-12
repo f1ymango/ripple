@@ -93,6 +93,7 @@ SCENARIO_SCHEMA = obj({
 })
 optional(SCENARIO_SCHEMA, "vehicles", "drivers_leave", "plan_actions", "speed_assessment_detectors")
 LABEL = re.compile(r"[a-z0-9][a-z0-9-]*")      # no underscore: it separates the parts of a run_id
+RUN_PREFIX = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]*")
 STEP_SECONDS = 1        # every twin run so far uses a one-second step
 BIN_SECONDS = 300       # detector observations and edge statistics are five-minute bins
 
@@ -121,6 +122,9 @@ def load(path):
     scenario = load_json(path)
     validate(scenario, SCENARIO_SCHEMA)
     run, closure = scenario["run"], scenario["closure"]
+    if not RUN_PREFIX.fullmatch(scenario["run_prefix"]):
+        raise ValueError("run_prefix may contain only letters, digits, underscores and hyphens, "
+                         "and must start with a letter or digit")
     if not LABEL.fullmatch(scenario["run_label"]):
         raise ValueError("run_label is lower-case letters, digits and hyphens")
     if datetime.fromisoformat(run["begin"]).utcoffset() is None:
@@ -138,13 +142,13 @@ def load(path):
     if scene:
         if "reroute_at_edges" not in closure:
             raise ValueError("A scene needs closure.reroute_at_edges: where drivers move over or turn off")
-    if "detour" in closure and ("reroute_at_edges" not in closure
-                                or closure["detour"]["replace"][0] != closure["edge_id"]):
-        raise ValueError("closure.detour needs reroute_at_edges and must replace the closed edge onwards")
         if "reopening" in scene:
             still = lane_indices(scene["reopening"]["lanes"], closure["lanes_total"])
             if len(still) == closure["lanes_total"]:
                 raise ValueError("At reopening at least one lane must open")
+    if "detour" in closure and ("reroute_at_edges" not in closure
+                                or closure["detour"]["replace"][0] != closure["edge_id"]):
+        raise ValueError("closure.detour needs reroute_at_edges and must replace the closed edge onwards")
     return scenario
 
 

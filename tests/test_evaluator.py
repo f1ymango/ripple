@@ -11,7 +11,7 @@ from pathlib import Path
 import pytest
 
 from src.briefing.schema import RESULT_SCHEMA
-from src.evaluation_provenance import sidecar_path, verify_result
+from src.evaluation_provenance import json_hash, sidecar_path, verify_result
 from src.evaluator import metrics, od_demand, run, scenario as scenarios, simulate, speed_signs
 from src.evaluator.actions import PlanActions
 from src.evaluator.behaviour import LEFT_FILE, DriversLeave
@@ -153,6 +153,46 @@ def test_scenario_must_resolve_unspecified_lanes(tmp_path):
     path.write_text(json.dumps(scenario))
     with pytest.raises(ValueError, match="unspecified"):
         scenarios.load(path)
+
+
+@pytest.mark.parametrize("prefix", ["../outside", "..\\outside", "/outside", "C:\\outside",
+                                     ".", "..", "a/b", "a\\b"])
+def test_run_prefix_cannot_escape_the_scratch_folder(tmp_path, prefix):
+    scenario = load_json(MOCK / "mock_scenario.json")
+    scenario["run_prefix"] = prefix
+    path = tmp_path / "mock_bad_prefix.json"
+    path.write_text(json.dumps(scenario))
+    with pytest.raises(ValueError, match="run_prefix"):
+        scenarios.load(path)
+
+
+@pytest.mark.parametrize("prefix", ["mock", "2026-05-15_ABD"])
+def test_run_prefix_keeps_existing_safe_names(tmp_path, prefix):
+    scenario = load_json(MOCK / "mock_scenario.json")
+    scenario["run_prefix"] = prefix
+    path = tmp_path / "mock_safe_prefix.json"
+    path.write_text(json.dumps(scenario))
+    assert scenarios.load(path)["run_prefix"] == prefix
+
+
+def test_redirected_scratch_path_is_refused_before_cleanup(evaluate, tmp_path, monkeypatch):
+    root = tmp_path / "work"
+    outside = tmp_path / "outside"
+    root.mkdir()
+    outside.mkdir()
+    sentinel = outside / "keep.txt"
+    sentinel.write_text("do not remove")
+    redirected = root / "mock_P0_c50_t5_mock-closure_mock-plans"
+    try:
+        redirected.symlink_to(outside, target_is_directory=True)
+    except (OSError, NotImplementedError) as exc:
+        pytest.skip(f"This platform does not permit a directory symlink: {exc}")
+    monkeypatch.setattr(run.shutil, "rmtree", lambda path: pytest.fail("scratch cleanup must not run"))
+    monkeypatch.setattr(simulate, "run", lambda *args, **kwargs: pytest.fail("simulation must not run"))
+    with pytest.raises(ValueError, match="Unsafe evaluator scratch path"):
+        evaluate()
+    assert sentinel.read_text() == "do not remove"
+    assert not (tmp_path / "results").exists()
 
 
 # --- simulate: closure timing against a stand-in for TraCI ---------------------
@@ -381,6 +421,18 @@ def test_a_scene_needs_somewhere_for_drivers_to_turn_off(tmp_path):
     path = tmp_path / "mock_scene_only.json"
     path.write_text(json.dumps(scenario))
     with pytest.raises(ValueError, match="reroute_at_edges"):
+        scenarios.load(path)
+
+
+@pytest.mark.parametrize("lanes", [["all"], ["slow", "fast"]])
+def test_reopening_must_open_at_least_one_lane(tmp_path, lanes):
+    scenario = load_json(MOCK / "mock_scenario.json")
+    scene = json.loads(json.dumps(SCENE))
+    scene["reopening"]["lanes"] = lanes
+    scenario["closure"].update(reroute_at_edges=["in"], scene=scene)
+    path = tmp_path / "mock_closed_reopening.json"
+    path.write_text(json.dumps(scenario))
+    with pytest.raises(ValueError, match="At reopening at least one lane must open"):
         scenarios.load(path)
 
 
@@ -793,6 +845,12 @@ def test_withdrawing_advice_leaves_drivers_whose_route_changed_or_who_have_gone(
     assert actions.report()["of_them_back_on_the_reopened_road"] == 1
 
 
+def keep_mock_result(plans, tmp_path, path, *, plan_id="P0", compliance=0.5, clearance_min=5.0):
+    scenario_path = tmp_path / "mock_full.json"
+    return run.kept_result(plans, plan_id, scenario_path, scenarios.load(scenario_path), path,
+                           plan_set="mock-plans", compliance=compliance, clearance_min=clearance_min)
+
+
 def test_a_batch_keeps_a_result_only_if_it_binds_these_plans_and_inputs(evaluate_plans, plans, tmp_path, monkeypatch):
     from src.evaluator import batch
     full_scenario(tmp_path, plan_actions=PLACES_TWO)
@@ -818,12 +876,88 @@ def test_a_batch_keeps_a_result_only_if_it_binds_these_plans_and_inputs(evaluate
 def test_a_batch_will_not_keep_a_result_made_from_other_simulation_inputs(evaluate_plans, plans, tmp_path):
     _, _, path = evaluate_plans("P0")
     scenario_path = tmp_path / "mock_full.json"
-    run.kept_result(plans, "P0", scenario_path, scenarios.load(scenario_path), path)
+    keep_mock_result(plans, tmp_path, path)
     edited = load_json(scenario_path)
     edited["assumptions"][0]["choice"] = "Edited after P0 was run"
     scenario_path.write_text(json.dumps(edited))
     with pytest.raises(ValueError, match="other simulation inputs"):
-        run.kept_result(plans, "P0", scenario_path, scenarios.load(scenario_path), path)
+        keep_mock_result(plans, tmp_path, path)
+
+
+def test_a_batch_will_not_keep_a_result_without_its_report(evaluate_plans, plans, tmp_path):
+    _, _, path = evaluate_plans("P0")
+    (tmp_path / "results" / "evaluator" / f"{path.stem}.report.json").unlink()
+    with pytest.raises(ValueError, match="missing its run report"):
+        keep_mock_result(plans, tmp_path, path)
+
+
+@pytest.mark.parametrize("damage", ["wrong_id", "incomplete", "unreadable"])
+def test_a_batch_will_not_keep_a_result_with_a_bad_report(evaluate_plans, plans, tmp_path, damage):
+    _, _, path = evaluate_plans("P0")
+    report_path = tmp_path / "results" / "evaluator" / f"{path.stem}.report.json"
+    report = load_json(report_path)
+    if damage == "wrong_id":
+        report["run_id"] = "another-run"
+    elif damage == "incomplete":
+        report["run_health"]["complete"] = False
+    else:
+        report_path.write_text("not JSON")
+    if damage != "unreadable":
+        report_path.write_text(json.dumps(report))
+    with pytest.raises(ValueError, match="run report"):
+        keep_mock_result(plans, tmp_path, path)
+
+
+def test_a_batch_will_not_keep_a_misfiled_result_pair(evaluate_plans, plans, tmp_path):
+    _, report, c50 = evaluate_plans("P0")
+    c30 = c50.with_name(c50.name.replace("_c50_", "_c30_"))
+    shutil.copy(c50, c30)
+    shutil.copy(sidecar_path(c50), sidecar_path(c30))
+    c30_run_id = c30.stem
+    report["run_id"] = c30_run_id
+    (tmp_path / "results" / "evaluator" / f"{c30_run_id}.report.json").write_text(json.dumps(report))
+    with pytest.raises(ValueError, match="does not describe the requested run"):
+        keep_mock_result(plans, tmp_path, c30, compliance=0.3)
+
+
+@pytest.mark.parametrize("setting,wrong", [("compliance", 0.3), ("clearance_min", 6.0), ("seed", 43)])
+def test_a_batch_will_not_keep_a_result_with_other_settings(evaluate_plans, plans, tmp_path, setting, wrong):
+    _, _, path = evaluate_plans("P0")
+    result = load_json(path)
+    result["scenario"][setting] = wrong
+    path.write_text(json.dumps(result))
+    sidecar = load_json(sidecar_path(path))
+    sidecar["result_sha256"] = json_hash(result)
+    sidecar_path(path).write_text(json.dumps(sidecar))
+    with pytest.raises(ValueError, match="other compliance, clearance or seed"):
+        keep_mock_result(plans, tmp_path, path)
+
+
+@pytest.mark.parametrize("field,wrong", [("run_id", "another-run"), ("plan_id", "P1"),
+                                          ("incident_id", "OTHER-INCIDENT")])
+def test_a_batch_will_not_keep_a_result_with_other_identity(evaluate_plans, plans, tmp_path, field, wrong):
+    _, _, path = evaluate_plans("P0")
+    result = load_json(path)
+    result[field] = wrong
+    path.write_text(json.dumps(result))
+    sidecar = load_json(sidecar_path(path))
+    sidecar[field] = wrong
+    sidecar["result_sha256"] = json_hash(result)
+    sidecar_path(path).write_text(json.dumps(sidecar))
+    with pytest.raises(ValueError, match="does not describe the requested run"):
+        keep_mock_result(plans, tmp_path, path)
+
+
+def test_a_batch_will_not_keep_a_result_outside_the_result_schema(evaluate_plans, plans, tmp_path):
+    _, _, path = evaluate_plans("P0")
+    result = load_json(path)
+    del result["metrics"]["co2_kg"]
+    path.write_text(json.dumps(result))
+    sidecar = load_json(sidecar_path(path))
+    sidecar["result_sha256"] = json_hash(result)
+    sidecar_path(path).write_text(json.dumps(sidecar))
+    with pytest.raises(ValueError, match="not a valid result"):
+        keep_mock_result(plans, tmp_path, path)
 
 
 # --- 10 October: a named detour, and joins on the main line ---------------------------------
