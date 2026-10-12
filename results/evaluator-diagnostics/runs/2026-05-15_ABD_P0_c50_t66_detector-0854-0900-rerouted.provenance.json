@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "plan_id": "P0",
+  "incident_id": "IN-26-03365",
+  "plan_sha256": "c3ded53272305981581de87811e446d8d2029b5a31b10ea45a82b84640c99469",
+  "generation_inputs_sha256": "81084546ffd50fbace1bc0edd5deb6f3a649ad51c2bf88808ee661bdf0e4ca93",
+  "simulation_inputs": {
+    "code:src/evaluator/metrics.py": "c370908324887a9456a59db24b38cd60038e25eb95812971df1bed941409feff",
+    "code:src/evaluator/run.py": "f3920bef9aacc414d159cd172a57309ee215562151eaafd7094bc7a3e9f71cf1",
+    "code:src/evaluator/scenario.py": "00a9daf783c29ceb8ecfd675827a02465bf0be37823a28824ec13ebe3586671c",
+    "code:src/evaluator/simulate.py": "926d2d658d3f0dad6e007f91ea01372950095f0d11b1bf90944cbaafa923d6dc",
+    "code:src/twin/evaluate.py": "15fdc70d33e6919a147f358483466b69e3bd36aa517454db3e3f61abc81ed80b",
+    "detector_loops": "df4f18a398bf26a9849fcd5ba9beaed78a39c3f0e873924c6631b421d86a43e2",
+    "network": "eb006b4ea09f01246ea53f163d68854e47b1be0410943f587d846388ef053e9d",
+    "observations": "a1d842a25ff872091b47fb3e7bcad566fe9932af0bc5452be3f79fc1462a4605",
+    "routes": "1a0acd0ac0baa0dc24dfd6e6f7c87b78ea418403af4fa583d35e1329470597b0",
+    "scenario": "4250393364eed1e1ea85786cefabaa3e44e621a34fe5e84351fbd2d0125d4564"
+  },
+  "run_id": "2026-05-15_ABD_P0_c50_t66_detector-0854-0900-rerouted",
+  "result_sha256": "6d28d9f94a4ac7a21b6ad104e2f29491bcd6e9ba4e51ea2b51cab1d091b645ba"
+}
