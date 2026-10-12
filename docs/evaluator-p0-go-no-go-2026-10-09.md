@@ -1,4 +1,4 @@
-# IN-26-03365 P0: go/no-go for comparing plans (9 October, updated 10 October)
+# IN-26-03365 P0: go/no-go for comparing plans (9 October, updated 10 and 13 October)
 
 Asked for by the Lead on 9 October, after
 [#54](https://github.com/f1ymango/ripple/pull/54) kept public claims to the
@@ -177,3 +177,26 @@ Already in place on this branch, so nothing waits on Data:
   level.
 - **For the plans themselves:** with one detour that is already full, a plan
   that only points drivers at it adds delay inside the network in this model.
+
+## 6. 13 October: replay version 3 (Data)
+
+Details in [the 13 October note](evaluator-replay-v3-2026-10-13.md), sections 8
+and 9. Simulation's section 4 above is unchanged and reviews earlier commits.
+
+| Section 3 item | Version 3 | Met? |
+|---|---|---|
+| 1. Tunnel side | Closure GEH 91.80% (91.3 to 93.4% in every seed and setting). Most of the gap was the 7 km/h crawl holding the detour to AID01103's count, which slow traffic biases low | Yes |
+| 2. On-ramp | Congested mornings: the ramp loses 0.51 vehicles per extra main-line vehicle. Both representations run as bounds; P2's sign the same under both | Bounded |
+| 3. Speeds on shared ordinary signs | 24.83%; 14.9% without AID01102 and AID01103; 12.99% where measured ≥ 30 km/h | No, as written |
+| 4. Reopening | Both lanes at 10:00, and a 10:04 run | Yes |
+| 5. Wrong-lane teleports | 1 to 3, at the instant a lane shuts | No, as written |
+| 6. Seeds | Six, paired, both ramp bounds, both reopening times | Yes |
+| 7. Drivers-leave rule | 0.2, refitted to when the queue reached AID01101 (0.4 rested on slow-traffic counts) | Partly |
+
+**Data's position: still no-go for ranking plans against doing nothing.** On
+the stand-ins, P2 saves 2.4% if both lanes reopened at 10:00 and adds 3.7% if
+at 10:04, in all six seeds each way. A conditional go for using version 3 as
+P0 for the Lead's plans needs three decisions from the Lead and Simulation: the
+slow-count rule, how the queue's speed is scored, and whether teleports at the
+instant a lane shuts count. Any ranking then holds only if it holds in every
+cell of the grid (note, section 9).

@@ -1,0 +1,157 @@
+{
+ "main": "AID01108",
+ "after": "AID01109",
+ "days_read": [
+  "20260223",
+  "20260227",
+  "20260302",
+  "20260306",
+  "20260309",
+  "20260313",
+  "20260316",
+  "20260320",
+  "20260323",
+  "20260327",
+  "20260328",
+  "20260402",
+  "20260410",
+  "20260411",
+  "20260416",
+  "20260417",
+  "20260418",
+  "20260424",
+  "20260425",
+  "20260501",
+  "20260502",
+  "20260508",
+  "20260522",
+  "20260529",
+  "20260605",
+  "20260721",
+  "20260728",
+  "20260804",
+  "20260811",
+  "20260818",
+  "20260819",
+  "20260823",
+  "20260824",
+  "20260825",
+  "20260826",
+  "20260830",
+  "20260831",
+  "20260901",
+  "20260902",
+  "20260906",
+  "20260907",
+  "20260909",
+  "20260913",
+  "20260914",
+  "20260916",
+  "20260918",
+  "20260920",
+  "20260921"
+ ],
+ "days_excluded": [
+  "20260515"
+ ],
+ "states": {
+  "congested": {
+   "quarter_hours": 142,
+   "days": 36,
+   "slope_join_per_main_vehicle": -0.51,
+   "bands": [
+    {
+     "main_veh_h": "250-499",
+     "quarter_hours": 1,
+     "join_veh_h": 1520,
+     "after_veh_h": 1870
+    },
+    {
+     "main_veh_h": "750-999",
+     "quarter_hours": 5,
+     "join_veh_h": 1295,
+     "after_veh_h": 2234
+    },
+    {
+     "main_veh_h": "1000-1249",
+     "quarter_hours": 22,
+     "join_veh_h": 1087,
+     "after_veh_h": 2260
+    },
+    {
+     "main_veh_h": "1250-1499",
+     "quarter_hours": 56,
+     "join_veh_h": 946,
+     "after_veh_h": 2314
+    },
+    {
+     "main_veh_h": "1500-1749",
+     "quarter_hours": 54,
+     "join_veh_h": 891,
+     "after_veh_h": 2488
+    },
+    {
+     "main_veh_h": "1750-1999",
+     "quarter_hours": 4,
+     "join_veh_h": 861,
+     "after_veh_h": 2644
+    }
+   ]
+  },
+  "free-flowing": {
+   "quarter_hours": 416,
+   "days": 44,
+   "slope_join_per_main_vehicle": 0.45,
+   "bands": [
+    {
+     "main_veh_h": "0-249",
+     "quarter_hours": 42,
+     "join_veh_h": 223,
+     "after_veh_h": 334
+    },
+    {
+     "main_veh_h": "250-499",
+     "quarter_hours": 25,
+     "join_veh_h": 825,
+     "after_veh_h": 1197
+    },
+    {
+     "main_veh_h": "500-749",
+     "quarter_hours": 20,
+     "join_veh_h": 613,
+     "after_veh_h": 1238
+    },
+    {
+     "main_veh_h": "750-999",
+     "quarter_hours": 33,
+     "join_veh_h": 755,
+     "after_veh_h": 1618
+    },
+    {
+     "main_veh_h": "1000-1249",
+     "quarter_hours": 99,
+     "join_veh_h": 1039,
+     "after_veh_h": 2186
+    },
+    {
+     "main_veh_h": "1250-1499",
+     "quarter_hours": 141,
+     "join_veh_h": 1038,
+     "after_veh_h": 2399
+    },
+    {
+     "main_veh_h": "1500-1749",
+     "quarter_hours": 50,
+     "join_veh_h": 919,
+     "after_veh_h": 2538
+    },
+    {
+     "main_veh_h": "1750-1999",
+     "quarter_hours": 6,
+     "join_veh_h": 722,
+     "after_veh_h": 2529
+    }
+   ]
+  }
+ }
+}
