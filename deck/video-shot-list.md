@@ -1,10 +1,9 @@
 # Observed incident demo — video shot list
 
-Owner: Visuals. Updated 8 October against the existing 92.6-second silent rough
-cut. This is the observed-playback scope approved in the Lead's reply relayed
-by Rorath; final scope remains subject to the 9 October decision. The recording
-is local, separate from Git. This table replaces the earlier proposed sequence
-with the shots actually captured.
+Owner: Visuals. Updated 12 October against the existing 92.6-second silent rough
+cut. This follows the approved [9 October observed-playback scope](../docs/04-plan.md).
+The recording is local, separate from Git. This table describes the shots
+already captured; the required Reader pickup below is not yet integrated.
 
 ## Current cut
 
@@ -28,13 +27,32 @@ establish evaluated-run provenance.
 and recording script, not a transcript of an existing audio track: the rough
 cut is silent. Re-time it after Rorath records the voice track and reviews pacing.
 
-## Optional later shots — require a scope decision
+## Required GenAI evidence pickup — not yet captured
 
-- **Reader:** show a saved model output beside its actual input, labelled as
-  recorded inference. The current map card displays archived TD prose; it is
-  not a new Reader execution. If quoting Reader accuracy, retain the held-out
-  versus development distinction and the correct artifact described in
-  [the evidence review notes](video-evidence-review.md).
+The current cut shows archived TD prose, detector observations and the waiting
+state; none of those screens visibly demonstrates model inference. Add a short
+input/output shot using the already saved Reader evidence:
+
+- Put the raw archived message beside its corresponding parsed JSON for message
+  IDs `138270` and `138272`.
+- Input: `data/demo_incident_messages.jsonl`.
+- Output: `results/reader/2026-09-29T1608_qwen3-8b.jsonl`.
+- Call record: `evidence/ai-log/2026-09-29.jsonl`.
+- On-screen label: **Recorded Qwen3:8b inference — not a live model call.**
+- Show the useful change from `lanes_closed: ["unspecified"]` in the first
+  report to `["all"]` in the later update. Keep source prose and model output
+  visually distinct.
+- Do not silently edit the first saved output's free-text note, which
+  overdescribes the direction bracket. Retain it or add a visible limitation.
+- A selected two-message example is not an accuracy benchmark. If scores are
+  shown, distinguish initial held-out 50%/75% from corrected-prompt development
+  75%/85%; the 1 October experiment was not adopted.
+
+Re-time the cut and `video-narration.srt` only after the edited media is
+available for review. No new Ollama call is needed for this pickup.
+
+## Optional later shots — require accepted evidence
+
 - **SUMO:** `results/twin/aberdeen-diagnostic.gif` belongs to the September
   IN-26-06481 diagnostic, not the May pre-incident window. Omit it from this
   May observed-playback cut. If separately approved as a technical excerpt,
@@ -54,4 +72,4 @@ cut is silent. Re-time it after Rorath records the voice track and reviews pacin
 - Prepare the reviewable draft for 12 October; target internal submission on
   17 October ahead of the 18 October deadline. Follow `docs/04-plan.md`.
 - Check narration, subtitle timing, map readability and the delivery format
-  on the submission platform after the final scope decision.
+  on the submission platform before final delivery.

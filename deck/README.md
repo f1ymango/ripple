@@ -1,7 +1,9 @@
 # Presentation Deck & Evidence Pack
 
 This folder holds reviewable slide copy and its evidence for the 12 Oct draft.
-It does not yet contain a PowerPoint/PDF deck or a final video export.
+It does not yet contain a PowerPoint/PDF deck or a final video export. The
+[submission manifest](submission-manifest.md) distinguishes source material,
+local-only artifacts and deliverables that are still missing.
 
 ---
 
@@ -17,6 +19,17 @@ Every slide and artifact is traceable to one of these core criteria:
 | **Feasibility and impact** | Impact | `deck/costing.md` |
 | **Sustainability and ethics** | Impact | Constraint thresholds, `deck/qa-sheet.md` |
 
+### Current ownership and status
+
+| Area | Owner | Evidence status |
+| :--- | :--- | :--- |
+| Problem, pitch and evidence pack | Impact | Markdown sources are reviewable; rendered deck is not yet delivered |
+| Observed incident prototype | Visuals + Lead | Merged and locally rehearsed; no route recommendation or validated plan comparison |
+| Reader / GenAI evidence | Lead | Saved input, output, call log and evaluation exist; video pickup remains |
+| Evaluator and provenance | Data | Diagnostic implementation remains in PR #55 under software review |
+| Simulation validation | Simulation | Joint incident review remains NO-GO for public plan ranking |
+| Video | Visuals | Shot list and captions are versioned; playable export and source manifest are not delivered here |
+
 ---
 
 ## 2. File Inventory & Index
@@ -28,6 +41,7 @@ Every slide and artifact is traceable to one of these core criteria:
 | [costing.md](costing.md) | Resource questions and BCR limitations | Draft; operating cost not measured |
 | [qa-sheet.md](qa-sheet.md) | Technical Q&A and known limitations | Draft; Reader score history and incident-model caveats checked 11 Oct |
 | [video-shot-list.md](video-shot-list.md) | Demo video storyboard and source boundaries | Draft; final export outstanding |
+| [submission-manifest.md](submission-manifest.md) | Deliverable, evidence, owner and claims inventory | Checked 12 Oct; missing exports are explicit |
 
 ---
 
