@@ -15,7 +15,7 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ## Tracker
 
-**Last updated: Fri 9 Oct 2026** · Week 3 in progress
+**Last updated: Mon 12 Oct 2026** · Week 4 in progress
 · Weekly sync / stand-up: Wednesday afternoon
 
 > **Model decision — Lead, Mon 5 Oct (HKT):** Continue flow-balance SUMO as the
@@ -36,9 +36,14 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
-**Critical path:** ✅ demo incident chosen → ⚪ baseline matches reality →
-⚪ three plans compared → ⚪ video. If anything slips, cut features and protect
-this chain.
+**Original scientific path (unmet and deferred from the public cut):**
+✅ demo incident chosen → ⚪ accepted incident baseline → ⚪ comparable real
+plans → ⚪ validated recommendation.
+
+**Current submission path:** ✅ observed incident playback → ✅ saved Reader
+evidence → 🟡 reviewed deck/video sources → ⚪ rendered deliverables and access
+check. The original targets remain recorded below; diagnostic results do not
+silently count as acceptance.
 
 > **Keeping this current.** In the same pull request as your work, update your
 > rows and add a line to the [update log](#update-log). A status only counts if
@@ -72,19 +77,19 @@ this chain.
 | E | Evaluator: runs every plan, writes metrics to `results/` | Data | 🟡 [PR #55](https://github.com/f1ymango/ripple/pull/55) contains `src/evaluator/`, provenance-bound diagnostic P0 and rehearsal P1/P2 results, and Data/Simulation's corrected replay review. Rehearsal results are separate from `results/runs/`; the latter is reserved for actual Lead plans. The PR has [software integration blockers](docs/2026-10-11-evaluator-integration-review.md), and its model is **NO-GO** for public plan ranking by 14 Oct. [PR #46](https://github.com/f1ymango/ripple/pull/46) remains changes-requested; it has unique historical input/provenance material absent from #55, so it is only partly superseded. |
 | F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Bilingual drafting, saved-result selection, metric-token insertion, provenance verification and VMS limits are implemented with offline tests. A model-free handoff check revalidates plans and comparable results before an LLM call. Real validated E results and human language review remain outstanding ([handoff](docs/lead-pipeline-handoff.md), [Lead next steps](docs/2026-10-03-lead-next-steps.md)) |
 | G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 The provenance-checked operator workflow ([PR #41](https://github.com/f1ymango/ripple/pull/41)) and observed-message playback, road geometry and approximate scene callout ([PR #53](https://github.com/f1ymango/ripple/pull/53)) are merged. The focused Windows CI and 67 local tests passed for PR #53. Its rough-cut video is local, not a committed final artifact. Recommended-route highlighting and evaluated-vehicle replay remain gated on accepted C/E outputs ([operator integration](src/console/OPERATOR_WORKFLOW.md)). |
-| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Interim form submitted; one qualitative [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md) is documented. [PR #49](https://github.com/f1ymango/ripple/pull/49) and [PR #50](https://github.com/f1ymango/ripple/pull/50) merged reviewable Markdown deck/evidence drafts, not a PPTX/PDF or final video. The deck needs source and claim corrections before presentation; accepted incident results, additional interviews and final impact figures remain open ([deck index](deck/README.md)). |
+| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Interim form submitted; one qualitative [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md) is documented. [PR #49](https://github.com/f1ymango/ripple/pull/49) and [PR #50](https://github.com/f1ymango/ripple/pull/50) merged reviewable Markdown sources; PR #56 corrected their evidence boundaries. The [submission manifest](deck/submission-manifest.md) distinguishes those sources from the still-missing rendered deck and playable final video. Additional interviews and accepted benefit figures remain open. |
 
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
 
-### Week 3 priorities (5–11 Oct)
+### Week 4 priorities (12–18 Oct)
 
 | Owner | Deliverable | Next evidence |
 |---|---|---|
-| Data + Simulation | Review corrected E replay and the specific model blockers before any P0 acceptance | 🟡 [PR #55's joint review](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md) gives a clear NO-GO for public plan comparison by 14 Oct. Closing numerical gates did not settle closure flow, speed inputs, ramp behaviour, queue timing or wrong-lane teleports. E software integration can proceed separately after review. |
-| Lead | Apply the 9 Oct demo-scope decision; review context, real D plans, same-input E results and F briefings before any recommendation claim | 🟡 The [public scope is narrowed](docs/04-plan.md). Real model quality, jointly reviewed route/context, accepted comparable results and matching bilingual briefing remain unverified ([handoff](docs/lead-pipeline-handoff.md)). |
-| Visuals | Finish the observed-playback/video cut without unverified route or trajectory claims | 🟡 [PR #53](https://github.com/f1ymango/ripple/pull/53) is merged. Evaluated trajectory and route highlighting await accepted C/E output; final rendered video, captions and evidence manifest remain to be delivered. |
-| Impact | Correct deck evidence and build the scoped final pack | 🟡 [Markdown drafts](deck/README.md) merged on 8 Oct. Fix Reader source attribution, cost-estimate labelling and freeze/benefit wording before presentation; leave unsupported benefit figures blank. Additional interviews and final video evidence remain open. |
+| Data + Simulation | Preserve the joint P0 disposition and provide any final accepted evidence status by the freeze | 🟡 [PR #55's joint review](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md) remains NO-GO for public plan comparison. State explicitly if no further accepted bundle will arrive; do not spend the submission window manufacturing a positive result. |
+| Lead | Assemble the evidence index, show recorded Reader inference and resolve bounded software blockers separately from scientific acceptance | 🟡 The [submission manifest](deck/submission-manifest.md) and Reader pickup now define the handoff. PR #55 still needs the three [software guardrail fixes](docs/2026-10-11-evaluator-integration-review.md). |
+| Visuals | Integrate the recorded-Reader pickup and deliver the scoped observed-playback video | 🟡 [PR #53](https://github.com/f1ymango/ripple/pull/53) is merged and locally rehearsed. A playable cut, narration/captions and matching source manifest remain to be delivered; route/trajectory claims remain excluded. |
+| Impact | Render and review the five-criteria deck from the corrected source pack | 🟡 Evidence wording, Reader attribution, links and costing boundaries are corrected. A rendered deck/editable source, final visual review and delivery link remain open; benefit figures stay blank. |
 
 ### Week 1 outcomes (21–27 Sep)
 
@@ -122,9 +127,10 @@ but the standalone network and E1 loops are not reviewed releases.
   no slow-lane vehicles while the fast lane carried traffic. This is an
   assumption, not confirmation of the physical lane; AID01105 was unavailable
   that morning ([lane evidence](results/data/closed-lanes_AID01104_20260515-0840_1010.md)).
-  Simulation ran a bounded 7 Oct P0 but did not accept the incident baseline;
-  its review of Data's newer 8 Oct replay is pending. A general default
-  lane and no-evidence behaviour for other incidents are still unagreed.
+  Simulation ran a bounded 7 Oct P0 and later reviewed Data's corrected replay
+  with Data; their joint disposition remains NO-GO for public plan comparison.
+  A general default lane and no-evidence behaviour for other incidents are
+  still unagreed.
   Data also proposed an **assumed** 08:55 physical onset. TD first reported
   partial closure at 09:01, all lanes at 09:36 and incident end at 10:02;
   the latter two are observed *report times*, not observed physical transition
@@ -209,7 +215,11 @@ but the standalone network and E1 loops are not reviewed releases.
   volume, so it cannot support GEH, but it is the better series for the speed
   side of validation ([docs/02-data.md](docs/02-data.md) §3).
 
-### Definition of done
+### Original definition of done
+
+These are the original product goals. Unmet simulation-dependent items remain
+visible and deferred; they are not prerequisites for the approved observed-only
+submission and are not marked complete by diagnostic or fixture evidence.
 
 - [ ] One real archived incident replayed end to end
 - [ ] Validation chart: simulated vs observed, with a stated error
@@ -224,9 +234,31 @@ but the standalone network and E1 loops are not reviewed releases.
 - [ ] Deck covering all five criteria
 - [ ] Every number traceable to a file in `results/`
 
+### Current submission checklist
+
+- [x] Observed TD-message and detector playback implemented and locally rehearsed
+- [x] Saved Reader input, output and complete AI call log identified for an on-screen demonstration
+- [x] Fixture-backed operator workflow explicitly separated from real incident evidence
+- [x] Public route, ranking and benefit claims excluded under the 9 Oct decision
+- [x] Markdown deck source covers all five judging criteria with evidence limitations
+- [x] Submission/evidence manifest records owners, allowed claims and missing artifacts
+- [ ] Recorded-Reader pickup integrated into the actual video
+- [ ] Narrated/captioned video inspected and delivered through an accessible link or file
+- [ ] Rendered deck and editable source inspected and delivered
+- [ ] Final claim/source pass confirms every presented number is traceable
+- [ ] Prototype/deck/video access, uploader and submission receipt confirmed
+
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Mon 12 Oct**
+- Added a [submission manifest](deck/submission-manifest.md), a required
+  recorded-Reader pickup and a scoped delivery checklist. The repository still
+  contains source drafts rather than a rendered deck or playable final video.
+- Impact PR #57 is content-ready at its reviewed head with green CI; PR #58
+  still overstates simulation acceptance, breaks deck-relative links and
+  weakens the freeze boundary. Neither documentation PR supplies final media.
 
 **Sun 11 Oct**
 - Visuals' [observed-playback PR #53](https://github.com/f1ymango/ripple/pull/53)

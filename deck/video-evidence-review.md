@@ -4,6 +4,12 @@ Local review notes for Lead and Impact; no message has been sent. Checked
 against main `34e0829` after PRs #49 and #50. The Visuals shot list is corrected
 in this branch. Other deck files remain available for their owners to revise.
 
+> **12 October status:** PR #56 corrected the Reader sources, cost and freeze
+> wording identified below. The [submission manifest](submission-manifest.md)
+> now tracks the remaining rendered deck/video delivery, and the shot list
+> requires a recorded-Reader pickup. This table is retained as dated review
+> history, not as a current open-finding list.
+
 | Finding in the merged draft | Verified evidence | Requested alignment |
 | --- | --- | --- |
 | Reader figures 75% citywide / 85% corridor cite the October 1 score in `slides.md`, `qa-sheet.md`, `real-vs-simulated.md`. | That October artifact has all-field scores 50/80 (62.5%) citywide and 12/20 (60%) corridor. The 75% / 85% scores are 60/80 and 17/20 in `results/reader/2026-09-25T0048_qwen3-8b_score.json`. | Use the correct September source and explicitly call these development scores after prompt/label corrections. They are not a fresh held-out evaluation. Retain the initial held-out 50% / 75% context from `data/labelled_incidents/LABELLING.md` and the interim report. |

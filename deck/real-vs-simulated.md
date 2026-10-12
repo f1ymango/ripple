@@ -20,4 +20,7 @@
 - **Traceability**: Every number traces to an explicit artifact in `results/` or a cited source with its check date.
 - **Results freeze**: On 14 Oct, lock only figures supported by accepted evidence. Do not compute or claim benefits from no-closure count scores or the unaccepted incident rehearsal.
 - **Visuals Constraints**: Visualizations may utilize real incident playback and working console interfaces, but must **not** promise recommended-route highlights or evaluated-vehicle animations until validated.
-- **Omitted Metrics**: Delay-saving, CO2-saving, travel-time benefit, and route-recommendation claims are strictly omitted unless full-closure results are accepted before the Oct 14 freeze.
+- **Omitted Metrics**: Delay-saving, CO2-saving, travel-time benefit and
+  route-recommendation claims remain omitted unless the complete multi-owner
+  [acceptance gates](../docs/04-plan.md) are met before the 14 Oct freeze. A
+  full-closure result alone is insufficient.

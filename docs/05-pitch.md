@@ -124,8 +124,11 @@ Use these verbatim. Do not paraphrase numbers upward.
 > It never produces a number. It reads the message, proposes candidate plans and
 > writes the explanation. The simulator computes every outcome, a validator
 > rejects plans that break our constraints before they're even simulated, and a
-> human approves before anything is published. We also measure the reader: [X]%
-> accuracy on 100 hand-labelled real messages.
+> human approves before anything is published. We also measure the Reader on
+> 100 hand-labelled real messages: the initial held-out all-fields-correct
+> result was 50% citywide and 75% on the corridor. After prompt and label
+> corrections informed by that evaluation, the development result was 75% and
+> 85%; it is not a fresh held-out score.
 >
 > On repeatability: the simulator is seeded, so its numbers repeat exactly. The
 > model runs locally, and local inference is not bit-identical across different
@@ -194,11 +197,11 @@ highway operators, then large fleets.
   Shenzhen Bay Bridge and the Hong Kong–Zhuhai–Macao Bridge Link Road. The
   method transfers wherever there are detectors and an incident feed.
 
-**Costs are small because we stand on open data and open-source simulation** —
-no sensor deployment, no proprietary model. The recurring cost is compute and
-maintenance, not infrastructure. Contrast with USD 4–75M for a full ICM
-programme, or the USD 400M–1B cost of the conventional alternative (a new lane,
-longer trains) that the same US study cited.
+**The prototype uses open data and open-source simulation and does not require
+us to install new sensors.** Deployment cost is not yet measured: it needs a
+priced compute configuration, usage, storage and maintenance assumptions.
+That boundary matters when contrasting a prototype with the cited cost of a
+full ICM programme or conventional infrastructure.
 
 **Impact metrics we would track in deployment:** vehicle-hours of delay avoided
 per incident · reduction in secondary incidents · emergency-vehicle travel time
@@ -209,7 +212,7 @@ within 10 minutes.
 
 | Horizon | Step |
 |---|---|
-| Now | One corridor, one incident type, replay + live injection |
+| Now | One corridor, archived observed replay, recorded Reader evidence and a labelled fixture workflow; no accepted live incident-injection claim |
 | 3 months | All Aberdeen-district incidents; automatic nightly backtest against every archived incident |
 | 6 months | Second corridor (Tsing Yi / airport — the 29 Jul case, needs sensor coverage); camera-based verification |
 | 12 months | Integration pilot with an operator; real sign and app delivery; measured before/after |

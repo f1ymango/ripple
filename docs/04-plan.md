@@ -162,6 +162,20 @@ route recommendation, evaluated-vehicle animation or incident-specific benefit
 figure. Results freeze 14 Oct; internal submission target 17 Oct; official
 deadline 18 Oct.
 
+**Submission status — Mon 12 Oct (HKT).** The observed-playback code is merged
+and was locally rehearsed on the May detector/incident exports. The reviewable
+deck copy, shot list and captions are versioned, but no rendered deck or
+playable video is present in the Lead checkout. The current rough cut described
+by Visuals shows archived source prose and observations, not visible model
+inference. Add a short pickup using the existing logged Reader input/output,
+then inspect the actual edited media. The
+[submission manifest](../deck/submission-manifest.md) records each artifact,
+owner, evidence category, allowed claim and missing acceptance step. Impact PR
+#57 is content-ready at the reviewed head; PR #58 still needs claim, date, link
+and freeze-boundary corrections. PR #55 is unchanged and retains three
+[software integration blockers](2026-10-11-evaluator-integration-review.md).
+These packaging and software tasks do not reopen the joint scientific NO-GO.
+
 ### Week 3 — 5–11 Oct · Plans and results
 | Who | Task |
 |---|---|
@@ -180,6 +194,12 @@ deadline 18 Oct.
 | Wed–Fri | Visuals + Lead record and edit the ~90-second video. Impact finishes the deck; Sim writes the validation slide. |
 | **Sat 17 Oct** | **📤 Submit** (deadline Sun 18 Oct) |
 
+Current execution order: assemble the evidence manifest and recorded-Reader
+pickup; render/review the deck and video; freeze only accepted claims; confirm
+access, uploader and receipt. Data/Simulation should state explicitly if no
+additional accepted incident bundle will arrive. Missing model acceptance does
+not block the observed-only package and does not justify a post-freeze promise.
+
 ### Week 5 — 19–24 Oct · Rehearse
 - Impact + Lead write and rehearse the 5-minute pitch.
 - Everyone drills Q&A; **each person owns the questions on their own area**.
@@ -187,14 +207,23 @@ deadline 18 Oct.
 
 ---
 
-## 3. Critical path
+## 3. Critical paths
+
+The original scientific path remains an unmet product goal:
 
 ```
-demo incident chosen  →  baseline matches reality  →  three plans compared  →  video
+demo incident chosen  →  accepted incident baseline  →  comparable real plans  →  validated recommendation
 ```
 
-If anything slips, **cut features, protect this chain.** Everything else —
-what-if box, live segment, second incident, prettier map — is optional.
+The approved submission path after the 9 October scope decision is:
+
+```
+observed incident playback  →  recorded Reader evidence  →  reviewed deck/video  →  delivery/access check
+```
+
+Protect evidence honesty on both paths. Do not substitute diagnostic results
+or fixture workflows for an accepted recommendation. A what-if box, live
+segment, second incident and prettier map remain optional.
 
 ## 4. Cadence
 
@@ -207,7 +236,11 @@ what-if box, live segment, second incident, prettier map — is optional.
 - If you have midterms in mid-October, say so **now** and shift your share into
   week 2.
 
-## 5. Definition of done for the whole project
+## 5. Original definition of done for the whole project
+
+These original ambitions remain as historical product goals. The simulation-
+dependent items are unmet/deferred from the public cut, not silently completed
+by rehearsal results or made prerequisites for the scoped submission.
 
 - [ ] One real archived incident replayed end to end
 - [ ] Validation chart: simulated vs observed, with a stated error
@@ -221,3 +254,19 @@ what-if box, live segment, second incident, prettier map — is optional.
 - [ ] ~90-second video
 - [ ] Deck covering all five criteria
 - [ ] Every number traceable to a file in `results/`
+
+### Definition of done for the scoped submission
+
+- [x] Real archived TD messages and detector observations play back with source,
+      time, coverage and approximate-location labels.
+- [x] Saved Reader input, model output and complete AI log are identified for a
+      visible recorded-inference demonstration.
+- [x] Fixture operator workflow is explicitly separated from real incident
+      evidence; no recommendation or benefit is implied.
+- [x] Deck source covers all five judging criteria and keeps unmeasured benefits,
+      BCR and operating cost blank.
+- [x] Evidence manifest records owners, artifact paths, allowed claims and gaps.
+- [ ] Reader pickup is integrated into the actual video and visually reviewed.
+- [ ] Narrated/captioned video and rendered deck are inspected and accessible.
+- [ ] Final claim/source pass confirms every displayed number and attribution.
+- [ ] Prototype/deck/video permissions, uploader and submission receipt are confirmed.
