@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Aberdeen Tunnel toll plaza towards Wan Chai, leaving the franchised-bus lane closed to general traffic.
+
+     Replaces aberdeen-flow-balance.con.xml for the reviewed baseline (5 October). OSM tags the
+     nearside lane of 1198101424 and 1233513875 motor_vehicle:lanes=no|yes|yes|yes and
+     bus:lanes=private|yes|yes|yes, so lane 0 of both edges keeps no onward connection, as in the
+     base network. Only lane 1 of 1233513875#0, which OSM tags open and the import left
+     unconnected, is connected; lane 2 moves over so the three open lanes share the two tunnel lanes.
+
+     netconvert -s sim/work/aberdeen.net.xml -x sim/scenarios/aberdeen-flow-balance-buslane.con.xml
+         -e sim/scenarios/aberdeen-flow-balance.edg.xml -o <new network>
+         -lefthand true -output.street-names true          (two dashes before each long option) -->
+<connections>
+    <connection from="1233513875#0" to="770641604#0" fromLane="1" toLane="0"/>
+    <delete from="1233513875#0" to="770641604#0" fromLane="2" toLane="0"/>
+    <connection from="1233513875#0" to="770641604#0" fromLane="2" toLane="1"/>
+</connections>
