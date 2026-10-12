@@ -29,3 +29,19 @@
 | **Reader Parsing Score** | `results/reader/2026-09-25T0048_qwen3-8b_score.json`; `data/labelled_incidents/LABELLING.md` | Development score after prompt/label corrections (Reader Owner) |
 | **Incident P0 diagnostic** | [PR #55 P0 review](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md) and its linked generated results | Joint Data/Simulation NO-GO for public plan comparison |
 | **Incident-specific savings** | No accepted result set | No public claim at the 14 Oct freeze unless the stated acceptance conditions are met |
+
+---
+
+## 3. Stakeholder Interview & Evidence Readiness
+
+### 1. Interview Evidence Scoping
+- **Current Scope**: Qualitative evidence from **1 anonymous experienced green-minibus driver interview**.
+- **Governance Requirement**: Qualitative only. Do not refer to this as a "verified domain-expert interview" without separate independent verification.
+
+### 2. Missing Technical Artifacts Register (10/15 PR Blockers)
+To achieve full closure for the Oct 15 presentation pack, the following technical deliverables remain pending external owner sign-off:
+- **E (Data)**: Result and provenance sidecars produced under `docs/03-architecture.md`, including accepted incident P0 baseline and full-closure P1/P2 simulation results under `results/`. (Required for Delay Savings, CO₂ Impact, and BCR calculation).
+- **Simulation**: Network setup and incident validation (note: sidecar production is owned by E/Data, not Simulation).
+- **Visuals**: Final high-resolution console screenshots, reviewed video script, and final video MP4 export matching `deck/video-shot-list.md`.
+
+*Note: The 15 Oct evidence pack remains strictly conditional on artifacts accepted by the 14 Oct results freeze and the observed-demo scope recorded in PR #54. If no accepted P0/P1/P2 set exists by the freeze, the final deck strictly falls back to observed playback and working console workflow, omitting speculative benefit numbers.*
