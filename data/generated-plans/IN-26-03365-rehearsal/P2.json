@@ -1,0 +1,42 @@
+{
+  "plan_id": "P2",
+  "label": "Advise part of the traffic to use Wong Chuk Hang Road and lengthen its green",
+  "rationale": "Rehearsal stand-in: the detour advised to part of each od group, and the junctions on it given their full green extension.",
+  "diversions": [
+    {
+      "od_group": "Aberdeen->Canal Road Flyover",
+      "via": "Wong Chuk Hang Road",
+      "share": 0.5
+    },
+    {
+      "od_group": "Aberdeen->Wong Nai Chung Road",
+      "via": "Wong Chuk Hang Road",
+      "share": 0.5
+    }
+  ],
+  "signals": [
+    {
+      "junction_id": "Wong Chuk Hang Road / Tong Bin Lane",
+      "green_extend_s": 20
+    }
+  ],
+  "vms": [],
+  "pt_nudge": {
+    "mode": "",
+    "intent": ""
+  },
+  "priority_corridor": {
+    "od": "Aberdeen->Queen Mary Hospital",
+    "keep_clear": [
+      "Pok Fu Lam Road",
+      "Shek Pai Wan Road"
+    ]
+  },
+  "constraints_checked": [
+    "residential_share_under_15pct",
+    "no_school_street_peak",
+    "emergency_corridor_clear",
+    "od_shares_at_most_one",
+    "no_blocked_road"
+  ]
+}

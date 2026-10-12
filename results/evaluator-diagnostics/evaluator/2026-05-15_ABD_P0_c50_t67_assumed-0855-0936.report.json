@@ -1,0 +1,161 @@
+{
+  "run_id": "2026-05-15_ABD_P0_c50_t67_assumed-0855-0936",
+  "status": "ASSUMED CLOSURE, AGREED WITH SIMULATION FOR A DIAGNOSTIC ONLY. NOT A VALIDATED INCIDENT REPLAY; DO NOT RANK PLANS AGAINST IT",
+  "validation_targets_met": false,
+  "validation_targets": "GEH < 5 for at least 85% of count bins and speed MAPE at most 15% (03-architecture.md §4)",
+  "validation_by_phase": {
+    "before_closure": {
+      "count_bins": 242,
+      "geh_under_5_pct": 96.28,
+      "speed_bins": 299,
+      "speed_mape_pct": 39.58
+    },
+    "during_closure": {
+      "count_bins": 267,
+      "geh_under_5_pct": 80.9,
+      "speed_bins": 341,
+      "speed_mape_pct": 60.31
+    },
+    "after_reopening": {
+      "count_bins": 98,
+      "geh_under_5_pct": 81.63,
+      "speed_bins": 150,
+      "speed_mape_pct": 33.27
+    }
+  },
+  "validation_bins": {
+    "count": 607,
+    "speed": 790,
+    "unmatched_count": 0,
+    "missing_detectors": []
+  },
+  "run_health": {
+    "complete": true,
+    "final_time_seconds": 11400.0,
+    "wall_seconds": 109.4,
+    "sumo_version": "SUMO 1.27.1",
+    "closure_steps": [
+      {
+        "second": 5400,
+        "lanes_closed": [
+          "44419212_0"
+        ]
+      },
+      {
+        "second": 7860,
+        "lanes_closed": [
+          "44419212_0",
+          "44419212_1"
+        ]
+      },
+      {
+        "second": 9420,
+        "lanes_closed": []
+      }
+    ],
+    "vehicles_loaded": 33505,
+    "vehicles_inserted": 32665,
+    "vehicles_running_at_end": 1035,
+    "vehicles_waiting_to_enter_at_end": 840,
+    "teleports": {
+      "total": 72,
+      "jam": 63,
+      "yield": 0,
+      "wrongLane": 9
+    }
+  },
+  "measurement_detail": {
+    "vehicles_in_scope": 28023,
+    "vehicles_in_scope_still_driving": 1035,
+    "vehicles_in_scope_never_entered": 840,
+    "delay_hours_in_network": 1149.4,
+    "delay_hours_waiting_to_enter": 1434.5,
+    "queue_path_m": {
+      "AID01104": 1971
+    },
+    "queue_share_of_path_pct": {
+      "AID01104": 99.5
+    },
+    "corridor_vehicles": 2284,
+    "corridor_vehicles_still_driving": 102,
+    "emergency_route_edges": 40,
+    "emergency_route_edges_with_traffic": 8,
+    "measurement_bin_seconds": 300
+  },
+  "metric_definitions": {
+    "total_vehicle_hours_delay": "Sum over in-scope vehicles of SUMO timeLoss (time lost against each vehicle's own free speed) plus departDelay (time waiting to enter), up to the end of the run.",
+    "delay_vs_do_nothing_pct": "Change in total_vehicle_hours_delay against the P0 run of the same scenario; zero for P0.",
+    "max_queue_m": "Per named path: largest distance over the run from the downstream end of the path's first edge back to the last waiting vehicle, following SUMO's queue output upstream edge by edge for as long as each edge's queue reaches its upstream end. Sampled every 10 seconds. It cannot exceed the path's length: near 100% in queue_share_of_path_pct means the queue ran off the path.",
+    "corridor_tt_p95_min": "95th percentile (nearest rank) of time in the network for in-scope vehicles on the scenario's corridor route. A vehicle still driving at the end counts with its time so far.",
+    "emergency_tt_min": "Length of each emergency-route edge divided by the mean speed of all traffic on it from closure onset to the end of the run, summed. An edge no vehicle used counts at its speed limit. General traffic, not blue-light running.",
+    "co2_kg": "Sum of SUMO's CO2 for in-scope vehicles, default emission class for every vehicle. Vehicles waiting outside the network emit nothing.",
+    "residential_delay_share_pct": "Share of all edge timeLoss after the warm-up that falls on edges of the scenario's residential types. Excludes time waiting to enter.",
+    "vehicles_completed": "In-scope vehicles that finished their trip before the run ended.",
+    "validation": "src/twin/evaluate.py, unchanged, over every observed bin after the warm-up (P0 only), rounded to two decimals towards failing."
+  },
+  "assumptions": [
+    {
+      "choice": "Inputs are Simulation's 7 Oct P0 packet, unchanged: results/twin/oct07-p0-replay-inputs.zip at 4ec5afe on sim/e1-evaluation-correctness, SHA-256 52b298aa73eb7e8621fce28223fc6b798100979f5735d0605ee62c2198b68505. Flow-balance demand from PR #46 (647b13c), no speed signs, SUMO default drivers.",
+      "status": "model choice; the no-closure version of this setup scored 96.3% GEH<5 but 40.1% speed MAPE",
+      "source": "docs/p0-setup-proposal-2026-10-06.md on sim/e1-evaluation-correctness"
+    },
+    {
+      "choice": "TD's first message says 'part of the lanes' (lanes_closed: unspecified). E closes the slow lane, 44419212_0.",
+      "status": "inferred from five AID01104 readings 08:54-09:00 with no slow-lane vehicles while the fast lane carried traffic; not a confirmed physical lane. AID01105 was unavailable",
+      "source": "results/data/closed-lanes_AID01104_20260515-0840_1010.md"
+    },
+    {
+      "choice": "The closure starts at 08:55 (5,400 s).",
+      "status": "assumed; TD's first report is 09:01",
+      "source": "data/demo_shortlist.md"
+    },
+    {
+      "choice": "Both lanes close at 09:36 (offset 2,460 s).",
+      "status": "TD's all-lanes message time, used as the physical time; AID01104 counted 17 vehicles in 09:05-09:30, so the road may have been blocked earlier",
+      "source": "data/demo_incident_messages.jsonl"
+    },
+    {
+      "choice": "Reopening is set by --clearance, counted from the 08:55 onset. 67 minutes reproduces TD's 10:02 incident end.",
+      "status": "TD's report time, used as the physical time",
+      "source": "data/demo_shortlist.md"
+    },
+    {
+      "choice": "The whole 543 m edge lane is closed by setting its speed limit to zero, as in src/twin/run_scenario.py.",
+      "status": "spatial approximation; the crash position on the edge is not observed",
+      "source": "docs/p0-setup-proposal-2026-10-06.md on sim/e1-evaluation-correctness"
+    },
+    {
+      "choice": "Queue path AID01104: from the downstream end of edge 44419212 back along the main eastbound route to the network entry on Aberdeen Praya Road.",
+      "status": "measurement choice",
+      "source": "sim/work/p0-replay/demand.rou.xml, route of flow f2"
+    },
+    {
+      "choice": "Corridor travel time: vehicles from the Aberdeen Praya Road entry (1197689855) over the flyover (44419212) to the Canal Road Flyover exit (485146382).",
+      "status": "measurement choice",
+      "source": "sim/work/p0-replay/demand.rou.xml"
+    },
+    {
+      "choice": "Emergency route: fastest free-flow path in this network from Aberdeen Praya Road (edge 1197441895) by Shek Pai Wan Road to the northbound Pok Fu Lam Road edge nearest Queen Mary Hospital (944309310).",
+      "status": "CANDIDATE, NOT REVIEWED. The hospital's position is not from a repository source. Only 8 of the 40 edges carry modelled traffic, so the figure is close to free-flow time",
+      "source": "docs/00-brief.md (Queen Mary Hospital on the western alternative); docs/02-data.md section 5"
+    },
+    {
+      "choice": "Residential streets are edges tagged highway.residential or highway.living_street in the OSM-built network.",
+      "status": "OSM tags, not a land-use survey",
+      "source": "sim/work/p0-replay/network.net.xml"
+    }
+  ],
+  "plan_effects_modelled": "none: P0 applies no operator action; compliance has no effect on this run",
+  "simulation_inputs": {
+    "code:src/evaluator/metrics.py": "src/evaluator/metrics.py",
+    "code:src/evaluator/run.py": "src/evaluator/run.py",
+    "code:src/evaluator/scenario.py": "src/evaluator/scenario.py",
+    "code:src/evaluator/simulate.py": "src/evaluator/simulate.py",
+    "code:src/twin/evaluate.py": "src/twin/evaluate.py",
+    "detector_loops": "sim/work/p0-replay/detectors.add.xml",
+    "network": "sim/work/p0-replay/network.net.xml",
+    "observations": "sim/work/p0-replay/detectors.json",
+    "routes": "sim/work/p0-replay/demand.rou.xml",
+    "scenario": "sim/scenarios/evaluator_IN-26-03365.json"
+  }
+}

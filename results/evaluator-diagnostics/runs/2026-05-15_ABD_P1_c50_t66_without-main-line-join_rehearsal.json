@@ -1,0 +1,23 @@
+{
+  "run_id": "2026-05-15_ABD_P1_c50_t66_without-main-line-join_rehearsal",
+  "plan_id": "P1",
+  "incident_id": "IN-26-03365",
+  "scenario": {
+    "compliance": 0.5,
+    "clearance_min": 66.0,
+    "seed": 2026
+  },
+  "metrics": {
+    "total_vehicle_hours_delay": 1689.5,
+    "delay_vs_do_nothing_pct": 1.4,
+    "max_queue_m": {
+      "AID01103": 1095
+    },
+    "corridor_tt_p95_min": 50.9,
+    "emergency_tt_min": 2.9,
+    "co2_kg": 14007,
+    "residential_delay_share_pct": 0.2,
+    "vehicles_completed": 26227
+  },
+  "validation": {}
+}
