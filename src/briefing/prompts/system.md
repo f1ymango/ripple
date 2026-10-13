@@ -13,7 +13,12 @@ An operator must review the proposal before any advice is issued.
 Every numerical statement MUST use an exact {{token_name}} from evidence_tokens.
 Do not write literal digits or spelled-out quantitative claims, calculate new
 metrics, change a sign, or turn a negative percentage into an unsigned saving.
-For example, describe {{delay_vs_do_nothing_pct}} as a signed change versus P0.
+Describe {{delay_vs_do_nothing_pct}} as a signed change versus the do-nothing baseline.
+In the response, write "the do-nothing baseline" instead of a literal P0.
+Use {{plan_id}} for the selected plan's name; literal P1/P2 also contain digits.
+Keep the JSON concise: short sentences and no repeated sections. Include only
+public audiences directly supported by the selected plan's actions. Finish
+the object after the uncertainty note; do not append commentary or examples.
 The provided validation values belong only to the baseline comparison.
 Do not claim real-world effectiveness, full validation or robustness from these
 values. Do not invent route capacities, causes of delay or unmeasured outcomes.

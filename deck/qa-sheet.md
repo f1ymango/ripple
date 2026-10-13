@@ -4,7 +4,7 @@
 
 ### Q1: Why are Delay Savings, CO2 Reduction, and Benefit-Cost Ratio (BCR) left blank?
 > **Answer**: 
-> The 14 Oct results freeze locks the evidence used in the submission. Data has produced an incident P0 replay and P1/P2 rehearsal runs on [PR #55](https://github.com/f1ymango/ripple/pull/55), but Data and Simulation jointly find them unsuitable for public plan comparison. In particular, the plan effect changes with a disputed ramp representation. We therefore make no incident-specific delay, emissions or benefit-cost claim. The freeze does not guarantee validation.
+> The provisional 16 Oct results freeze (Lead update, 13 Oct) locks the evidence used in the submission. Data's incident P0 replay and P1/P2 rehearsal runs were integrated through [PR #61](https://github.com/f1ymango/ripple/pull/61), but Data and Simulation jointly find them unsuitable for public plan comparison. In particular, the plan effect changes with a disputed ramp representation. We therefore make no incident-specific delay, emissions or benefit-cost claim. The freeze does not guarantee validation.
 
 ### Q2: What is the accuracy of the Reader Agent in parsing traffic incident reports?
 > **Answer**: 
@@ -28,7 +28,7 @@
 | **Flow Balance Inputs** | `results/data/flow-balance_20260515-0755_0855.json` | Verified (Data Owner) |
 | **Reader Parsing Score** | `results/reader/2026-09-25T0048_qwen3-8b_score.json`; `data/labelled_incidents/LABELLING.md` | Development score after prompt/label corrections (Reader Owner) |
 | **Incident P0 diagnostic** | [PR #55 P0 review](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md) and its linked generated results | Joint Data/Simulation NO-GO for public plan comparison |
-| **Incident-specific savings** | No accepted result set | No public claim at the 14 Oct freeze unless the stated acceptance conditions are met |
+| **Incident-specific savings** | No accepted result set | No public claim at the provisional 16 Oct freeze unless the stated acceptance conditions are met |
 
 ---
 
@@ -44,4 +44,8 @@ To achieve full closure for the Oct 15 presentation pack, the following technica
 - **Simulation**: Network setup and incident validation (note: sidecar production is owned by E/Data, not Simulation).
 - **Visuals**: Final high-resolution console screenshots, reviewed video script, and final video MP4 export matching `deck/video-shot-list.md`.
 
-*Note: The 15 Oct evidence pack remains strictly conditional on artifacts accepted by the 14 Oct results freeze and the observed-demo scope recorded in PR #54. If no accepted P0/P1/P2 set exists by the freeze, the final deck strictly falls back to observed playback and working console workflow, omitting speculative benefit numbers.*
+*Lead update, 13 Oct: deliver the 15 Oct evidence pack with the evidence then
+available; it need not wait for accepted simulation benefits. The provisional
+16 Oct freeze permits a reviewed final delta. Retain the observed-demo scope
+and label GenAI draft/fixture demonstrations. If incident P0/P1/P2 remain
+unaccepted, omit their benefit claims from the final deck.*

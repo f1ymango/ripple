@@ -27,4 +27,4 @@ USD 300–600/month range lacked a price or usage source and is withdrawn.
 ## 3. Financial Feasibility Governance Rules
 
 1. **No Speculative Benefit Calculations**: Benefit-Cost Ratio must **not** be calculated using partial, pre-incident, or unvalidated simulation metrics.
-2. **Freeze Boundary Alignment**: The 14 Oct freeze locks supported figures. If the incident comparison remains unaccepted, financial return claims stay out of the submission.
+2. **Freeze Boundary Alignment**: The provisional 16 Oct freeze (Lead update, 13 Oct) locks supported figures; the 15 Oct delivery checkpoint remains. If the incident comparison remains unaccepted, financial return claims stay out of the submission.

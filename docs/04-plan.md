@@ -4,6 +4,19 @@ Team: 3 × Year 2 CSE, 1 × Year 2 PHYS, 1 × Year 1 DDP (CSE + QFin).
 Everyone is taking courses. Budget **6–8 hours per person per week**; weeks 2
 and 3 are the heavy ones.
 
+**Current Lead update — 13 October:** provisional results/claims freeze moves
+from 14 to **16 October**; no cutoff hour is agreed. Keep the **15 October**
+evidence and export checkpoint and **17 October** internal submission target.
+Earlier dated decisions below retain their original deadlines as history.
+The joint incident P0 NO-GO still applies; extra time does not accept a model.
+
+PRs #57/#59/#60/#61/#62 are merged, including #55's evaluator integration;
+#46/#51/#52/#58 are closed or superseded. The four evaluator integrity fixes
+are complete. The [13 October GenAI handoff](lead-genai-handoff-2026-10-13.md)
+contains actual Lead-generated draft plans and the current evidence status.
+Rendered deck, playable video, access and uploader confirmation still need
+delivery. Continue those tasks while any bounded diagnostic work proceeds.
+
 ---
 
 ## 1. Roles
@@ -190,7 +203,8 @@ These packaging and software tasks do not reopen the joint scientific NO-GO.
 | Date | What |
 |---|---|
 | Mon 12 Oct | **Everyone** attends the pitching workshop (HKU Innovation Wing 2, 14:00–17:30) |
-| **Wed 14 Oct** | **🔒 RESULTS FREEZE.** No new features after this — bug fixes only. Every number in the deck is locked. |
+| **Thu 15 Oct** | Deliver reviewable evidence pack, editable deck/export and accessible video; identify missing artifacts explicitly. |
+| **Fri 16 Oct (provisional)** | **🔒 RESULTS/CLAIMS FREEZE.** Review the final delta and lock supported figures; cutoff hour unconfirmed. Bug fixes only afterward. |
 | Wed–Fri | Visuals + Lead record and edit the ~90-second video. Impact finishes the deck; Sim writes the validation slide. |
 | **Sat 17 Oct** | **📤 Submit** (deadline Sun 18 Oct) |
 

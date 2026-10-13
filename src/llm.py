@@ -19,6 +19,7 @@ LOG_DIR = Path("evidence/ai-log")
 OLLAMA_URL = "http://localhost:11434/api/chat"
 SEED = 42              # runs are seeded (CLAUDE.md rule 7)
 CONTEXT_TOKENS = 8192  # room for prompt + message: Ollama silently cuts whatever overflows
+MAX_OUTPUT_TOKENS = 2048  # bound malformed/repeating structured replies before context shifting
 
 
 def complete_json(*, component: str, model: str, system: str, user: str,
@@ -35,6 +36,7 @@ def complete_json(*, component: str, model: str, system: str, user: str,
         "model": model,
         "temperature": temperature,
         "seed": SEED,
+        "max_output_tokens": MAX_OUTPUT_TOKENS,
         "system": system,
         "user": user,
     }
@@ -51,9 +53,9 @@ def complete_json(*, component: str, model: str, system: str, user: str,
 def _send(*, model: str, system: str, user: str, schema: dict, temperature: float) -> str:
     """Send one request to the local Ollama server and return the model's reply text.
 
-    `format` makes Ollama constrain the output to `schema`, so the reply always
-    parses and only uses allowed values. Whether the values are right is still
-    for the caller to check.
+    `format` requests schema-constrained output. Truncation or model failures
+    can still produce an invalid reply; parsing and validation belong to the
+    caller. The output limit bounds repetitive generation.
     """
     resp = requests.post(OLLAMA_URL, timeout=600, json={
         "model": model,
@@ -62,7 +64,8 @@ def _send(*, model: str, system: str, user: str, schema: dict, temperature: floa
         "format": schema,
         "think": False,  # Qwen3's "thinking" mode is for reasoning; this is extraction
         "stream": False,
-        "options": {"temperature": temperature, "seed": SEED, "num_ctx": CONTEXT_TOKENS},
+        "options": {"temperature": temperature, "seed": SEED, "num_ctx": CONTEXT_TOKENS,
+                    "num_predict": MAX_OUTPUT_TOKENS},
     })
     resp.raise_for_status()
     return resp.json()["message"]["content"]

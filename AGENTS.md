@@ -8,7 +8,7 @@
 
 **Ripple** — an AI incident co-pilot for Hong Kong traffic operators.
 Hackathon project for hack4sdg 2026, Track 1 (Green Transport & Smart Mobility).
-**Submission 18 Oct 2026. Internal results freeze 14 Oct 2026.**
+**Submission 18 Oct 2026; internal target 17 Oct. Provisional results freeze 16 Oct (Lead update, 13 Oct; hour unconfirmed).**
 
 Before doing anything substantial, read:
 - `docs/00-brief.md` — the product, the components, and what is out of scope

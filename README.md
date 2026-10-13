@@ -32,7 +32,13 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 > SUMO/E diagnostics, but do not present a recommended diversion, evaluated
 > vehicle trajectory or delay/travel-time/CO₂/BCR benefit until the incident
 > replay and matching plan results pass the [acceptance gates](docs/04-plan.md).
-> The 14 Oct results freeze and 17 Oct internal submission target are unchanged.
+> The original 14 Oct freeze was superseded by the Lead update below.
+
+> **Lead update — Tue 13 Oct:** Provisional results/claims freeze is now
+> **16 Oct** (hour unconfirmed). Keep the **15 Oct** evidence/export checkpoint
+> and **17 Oct** internal submission target. The [GenAI handoff](docs/lead-genai-handoff-2026-10-13.md)
+> supplies actual model-generated draft P0/P1/P2. Incident acceptance remains
+> separate, and the joint P0 NO-GO is unchanged.
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
@@ -61,7 +67,8 @@ silently count as acceptance.
 | Tue 6 Oct (HKT) | Agree the evidence-labelled P0 setup for IN-26-03365 | 🟡 Data supplied the proposed edge, detector-inferred initial lane and phase times. A bounded P0 diagnostic ran on 7 Oct; Data and Simulation's later [joint corrected-replay review](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md) retains NO-GO for public plan comparison ([lane evidence](results/data/closed-lanes_AID01104_20260515-0840_1010.md)) |
 | Fri 9 Oct (HKT) | Lock demo scope against accepted evidence | ✅ Lead narrowed the public demo to observed playback and a clearly labelled operator-workflow demonstration. SUMO/E diagnostic work continues, but no incident-specific route, trajectory or benefit claim is approved ([decision](docs/04-plan.md)) |
 | Mon 12 Oct | Pitching workshop, everyone (HKU Innovation Wing 2, 14:00–17:30) | ⚪ |
-| Wed 14 Oct | 🔒 **Results freeze**: bug fixes only after this, every number locked | ⚪ |
+| Thu 15 Oct | Reviewable evidence pack, deck/export and video handoff | ⚪ |
+| Fri 16 Oct (provisional) | 🔒 **Results/claims freeze**: lock supported figures; hour unconfirmed | ⚪ |
 | Sat 17 Oct | 📤 Submit deck + prototype (official deadline Sun 18 Oct) | ⚪ |
 | Thu 22 Oct | Finalists announced | ⚪ |
 | Sat 24 Oct | Final pitch, CityU Kowloon Tong | ⚪ |
@@ -73,9 +80,9 @@ silently count as acceptance.
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md). Week 2 checks on the demo morning: usable calibration bins per threshold ([bin survival](results/data/bin-survival_20260515-0755_1035.md)), which lane closed first ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)), and IN-26-03365 re-screened after the 29 Sep screen fixes ([re-check](results/data/candidates_2026-05-15.md)). For the twin: [flow balance](results/data/flow-balance_20260515-0755_0855.md) and [free-flow speeds](results/data/free-flow_20260508_20260424_0730-1100.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Week 2 evaluation complete on 100 hand-labelled messages. Initial held-out all-field accuracy: citywide **50%**, corridor **75%**. After prompt and label corrections informed by those results, development scores reached 75% and 85%; these are not fresh held-out results. An October prompt experiment performed worse and was not adopted. Output preservation regressions protect evidence ([score history](data/labelled_incidents/LABELLING.md#score-history), [Lead work](docs/2026-10-01-lead-work.md)) |
 | C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Simulation independently reproduced the no-closure count fit (**96.7% GEH<5**), but ordinary-morning speed MAPE was **15.7%** with imposed speeds ([review](docs/sumo-flow-balance-review-2026-10-05.md)). Corrected incident P0 reports **89.45% GEH<5 / 14.44% speed MAPE**; the [joint NO-GO](docs/evaluator-p0-go-no-go-2026-10-09.md) and [10 Oct follow-up](docs/evaluator-replay-fixes-2026-10-10.md) still withhold public plan ranking. The detour is a bounded correction, while the proposed main-line join lacks physical entry evidence; closure flow, counterfactual speeds, queue timing, driver exits and wrong-lane teleports remain unresolved ([technical review](docs/simulation-evaluator-review-2026-10-09.md)). |
-| D | Plan Generator (GenAI #2): 3–5 plans + constraint validator | Lead | 🟡 P0/P1/P2 generation, schema checks and all five documented constraints are implemented with offline tests. A model-free `--check-only` path now validates the incident/context handoff before generation. Real-model quality and reviewed C/E routes, demand and controls remain outstanding ([handoff](docs/lead-pipeline-handoff.md)) |
-| E | Evaluator: runs every plan, writes metrics to `results/` | Data | 🟡 The integration branch includes [Data's evaluator](https://github.com/f1ymango/ripple/pull/55), a provenance-bound diagnostic P0 and separate rehearsal P1/P2 outputs, plus the [three software guardrails](https://github.com/f1ymango/ripple/pull/60). `results/runs/` still has no accepted real plan set; historical diagnostics are not revalidated merely by merging code. Data/Simulation retain **NO-GO** for public plan ranking by 14 Oct. [PR #46](https://github.com/f1ymango/ripple/pull/46) still has unique provisional replay evidence to preserve separately. |
-| F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Bilingual drafting, saved-result selection, metric-token insertion, provenance verification and VMS limits are implemented with offline tests. A model-free handoff check revalidates plans and comparable results before an LLM call. Real validated E results and human language review remain outstanding ([handoff](docs/lead-pipeline-handoff.md), [Lead next steps](docs/2026-10-03-lead-next-steps.md)) |
+| D | Plan Generator (GenAI #2): P0/P1/P2 + constraint validator | Lead | 🟡 Actual Qwen3:8b draft P0/P1/P2 generated on 13 Oct and passed all five constraints plus E action-mapping construction. Context is retrospective and assumption-based; P1's misleading title is flagged. No simulation benefit or general model reliability is established ([review and artifacts](docs/lead-genai-handoff-2026-10-13.md)). |
+| E | Evaluator: runs every plan, writes metrics to `results/` | Data | 🟡 [PR #61](https://github.com/f1ymango/ripple/pull/61) merged Data's evaluator, diagnostics and integrity fixes. [PR #62](https://github.com/f1ymango/ripple/pull/62) preserved #46's unique provisional input ledger. No accepted real plan set exists in `results/runs/`; Data/Simulation retain **NO-GO** for public plan ranking. |
+| F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Provenance, metric tokens and VMS checks are implemented. The 13 Oct real-model fixture exercise failed its bounded attempts; no accepted bilingual output was saved. Failure logs, fixture helper and output-token bound are recorded in the [GenAI handoff](docs/lead-genai-handoff-2026-10-13.md). Real E acceptance and human language review remain outstanding. |
 | G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 The provenance-checked operator workflow ([PR #41](https://github.com/f1ymango/ripple/pull/41)) and observed-message playback, road geometry and approximate scene callout ([PR #53](https://github.com/f1ymango/ripple/pull/53)) are merged. The focused Windows CI and 67 local tests passed for PR #53. Its rough-cut video is local, not a committed final artifact. Recommended-route highlighting and evaluated-vehicle replay remain gated on accepted C/E outputs ([operator integration](src/console/OPERATOR_WORKFLOW.md)). |
 | H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Interim form submitted; one qualitative [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md) is documented. [PR #49](https://github.com/f1ymango/ripple/pull/49) and [PR #50](https://github.com/f1ymango/ripple/pull/50) merged reviewable Markdown sources; PR #56 corrected their evidence boundaries. The [submission manifest](deck/submission-manifest.md) distinguishes those sources from the still-missing rendered deck and playable final video. Additional interviews and accepted benefit figures remain open. |
 
@@ -87,7 +94,7 @@ The JSON contracts between modules are in
 | Owner | Deliverable | Next evidence |
 |---|---|---|
 | Data + Simulation | Preserve the joint P0 disposition and provide any final accepted evidence status by the freeze | 🟡 [PR #55's joint review](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md) remains NO-GO for public plan comparison. State explicitly if no further accepted bundle will arrive; do not spend the submission window manufacturing a positive result. |
-| Lead | Assemble the evidence index, show recorded Reader inference and resolve bounded software blockers separately from scientific acceptance | 🟡 The [submission manifest](deck/submission-manifest.md) and Reader pickup define the handoff. [PR #60](https://github.com/f1ymango/ripple/pull/60) fixed the three reviewed E guardrails; main integration and scientific acceptance remain separate. |
+| Lead | Deliver logged GenAI artifacts, capture handoff and final access/uploader checks | 🟡 Evaluator integration and four integrity fixes are complete in #61. The [GenAI handoff](docs/lead-genai-handoff-2026-10-13.md) records actual draft plans; media capture/export and human review remain. |
 | Visuals | Integrate the recorded-Reader pickup and deliver the scoped observed-playback video | 🟡 [PR #53](https://github.com/f1ymango/ripple/pull/53) is merged and locally rehearsed. A playable cut, narration/captions and matching source manifest remain to be delivered; route/trajectory claims remain excluded. |
 | Impact | Render and review the five-criteria deck from the corrected source pack | 🟡 Evidence wording, Reader attribution, links and costing boundaries are corrected. A rendered deck/editable source, final visual review and delivery link remain open; benefit figures stay blank. |
 
@@ -253,6 +260,11 @@ submission and are not marked complete by diagnostic or fixture evidence.
 Newest first. One line per change that matters, with a link to the proof.
 
 **Tue 13 Oct**
+- Real local Qwen3:8b produced constraint-validated retrospective P0/P1/P2
+  drafts; the [GenAI handoff](docs/lead-genai-handoff-2026-10-13.md) records
+  exact files, failed attempts, limitations and owner pickup instructions.
+  Lead provisionally moves the freeze to 16 Oct, retaining 15 Oct delivery
+  and 17 Oct internal submission. No accepted traffic benefit is claimed.
 - Mark's corrected [QA sheet](https://github.com/f1ymango/ripple/pull/57) and
   the [submission evidence pack](https://github.com/f1ymango/ripple/pull/59)
   merged. They are source material, not rendered deck or video exports.
