@@ -1349,3 +1349,14 @@ def test_closure_counts_score_the_hourly_flow_that_five_minute_geh_lets_through(
 def metrics_geh(m, c):
     from src.evaluator.closure_counts import geh
     return geh(m, c)
+
+
+def test_queue_onset_and_recovery_are_read_from_30_kmh_crossings():
+    from src.evaluator import p0_checks
+    speeds = {"08:25": 10, "08:30": 60, "09:05": 12, "09:30": 8, "10:00": 35, "10:05": 25, "10:10": 40, "10:15": 45,
+              "10:30": 50}
+    assert p0_checks.onset_and_recovery(speeds) == ("09:05", "10:10")    # 10:00 dips again at 10:05
+    rows = [{"detector_id": d, "time": f"2026-05-15T{t}:00+08:00", "observed_kmh": v, "simulated_kmh": v - 30 * (t == "10:10")}
+            for d in p0_checks.QUEUE_DETECTORS for t, v in speeds.items()]
+    timing = p0_checks.queue_timing({"speed_bins": rows})
+    assert timing["AID01103"]["minutes_late"] == [0, 5]                  # the model's queue lasts one bin longer
