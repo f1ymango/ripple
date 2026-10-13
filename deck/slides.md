@@ -41,7 +41,8 @@
   under working assumptions, with no measured benefit or reliability claim
   ([actual outputs and review](../docs/lead-genai-handoff-2026-10-13.md)).
 - **Briefing boundary**: F's provenance and metric-token checks work in offline
-  tests, but the 13 Oct real-model fixture attempts did not pass validation.
+  tests. A later token-first trial produced structurally valid synthetic drafts,
+  but both failed [semantic review](../docs/lead-genai-follow-up-2026-10-13.md).
   No accepted new bilingual briefing is claimed; rejected responses are logged.
 
 ---

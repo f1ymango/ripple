@@ -35,9 +35,11 @@ input/output shot using the already saved Reader evidence:
 
 - Put the raw archived message beside its corresponding parsed JSON for message
   IDs `138270` and `138272`.
-- Input: `data/demo_incident_messages.jsonl`.
-- Output: `results/reader/2026-09-29T1608_qwen3-8b.jsonl`.
-- Call record: `evidence/ai-log/2026-09-29.jsonl`.
+- Capture aid: the [offline recorded B/D page](../evidence/demo/README.md),
+  which shows the selected source and output together and keeps its status
+  banner visible. The underlying input is `data/demo_incident_messages.jsonl`,
+  output is `results/reader/2026-09-29T1608_qwen3-8b.jsonl`, and call record is
+  `evidence/ai-log/2026-09-29.jsonl`.
 - On-screen label: **Recorded Qwen3:8b inference — not a live model call.**
 - Show the useful change from `lanes_closed: ["unspecified"]` in the first
   report to `["all"]` in the later update. Keep source prose and model output
@@ -53,13 +55,15 @@ available for review. No new Ollama call is needed for this pickup.
 
 ## Optional GenAI capability pickup — review before capture
 
-For the separate GenAI capability pickup, use the
-[13 October Lead handoff](../docs/lead-genai-handoff-2026-10-13.md): it identifies
+For the separate GenAI capability pickup, use the same
+[offline recorded B/D page](../evidence/demo/README.md) and the
+[13 October Lead handoff](../docs/lead-genai-handoff-2026-10-13.md): they identify
 the real generated D artifacts and limitations. Show the inputs and candidate
 actions, labelled **Recorded GenAI draft — retrospective working assumptions;
 not evaluated**. Do not turn this into the plan-comparison shot below. Capture
 and integration remain pending; the current-cut timestamps above are unchanged.
-F's 13 October real-model fixture attempts failed validation. Do not add a
+F's later 13 October synthetic retries passed structural validation but failed
+[semantic review](../docs/lead-genai-follow-up-2026-10-13.md). Do not add a
 successful F-generation shot from those calls. Existing fixture UI may be
 shown only as tested synthetic capability, not a new generated briefing.
 

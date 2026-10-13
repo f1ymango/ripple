@@ -11,7 +11,8 @@ from src import llm
 from src.evaluation_provenance import capture_inputs, write_result, verify_result
 from src.briefing import run as briefing_run
 from src.briefing.results import load_results, select
-from src.briefing.writer import assemble, check_vms, prepare_comparison, render_text, write_briefing
+from src.briefing.writer import (assemble, check_vms, evidence_tokens, model_context,
+                                 prepare_comparison, render_text, write_briefing)
 from src.generation import load_json, save_json
 from src.plans import run as plans_run
 from src.plans.generator import generate, validate_plans
@@ -234,6 +235,54 @@ def test_selection_can_recommend_baseline_and_keeps_actual_sources(inputs):
     plan, result, baseline, sources = select(checked(inputs), records)
     assert plan["plan_id"] == result["plan_id"] == baseline["plan_id"] == "P0"
     assert sources == sorted(p for p, _ in records)
+
+
+def test_model_context_keeps_actions_and_token_names_without_metric_values(inputs):
+    plan, result, baseline, _ = select(checked(inputs), artifacts())
+    payload = model_context(plan)
+    selected = payload["selected_plan"]
+    assert selected["mode"] == "proposed intervention awaiting operator review"
+    assert selected["plan_id"] == "{{plan_id}}"
+    assert selected["diversions"] == [
+        {"od_group": item["od_group"], "via": item["via"]}
+        for item in plan["diversions"]]
+    assert selected["signals"] == []
+    assert selected["vms"] == plan["vms"]
+    assert selected["pt_nudge"] == plan["pt_nudge"]
+    assert selected["priority_corridor"] == plan["priority_corridor"]
+    assert {item["token"] for item in payload["evidence_tokens"]} == {
+        "{{" + name + "}}" for name in evidence_tokens(result, baseline)}
+    serialized = json.dumps(payload)
+    for private_field in ("selected_result", "baseline_result", "metrics", "scenario",
+                          "run_id", "green_extend_s"):
+        assert private_field not in serialized
+    assert all("share" not in item for item in selected["diversions"])
+    assert result["metrics"]["total_vehicle_hours_delay"] == 80
+    assert "80" not in serialized
+
+
+def test_baseline_briefing_with_no_signs_can_assemble(inputs):
+    records = artifacts()
+    records[0][1]["metrics"]["total_vehicle_hours_delay"] = 70
+    plan, result, baseline, sources = select(checked(inputs), records)
+    draft = load_json(FIXTURES / "mock_briefing_reply.json")
+    draft["vms_messages"] = []
+    draft["public_messages"] = []
+    output = assemble(draft, plan, result, baseline, sources)
+    assert output["recommended_plan_id"] == "P0"
+    assert output["vms_messages"] == []
+    assert model_context(plan)["selected_plan"]["mode"] == "no intervention baseline"
+
+
+def test_model_context_retains_signal_and_pt_meaning_without_quantities(inputs):
+    plan = deepcopy(checked(inputs)[2])
+    plan["signals"] = [{"junction_id": "MOCK-J", "green_extend_s": 8}]
+    plan["pt_nudge"] = {"mode": "Mock rail", "intent": "Propose optional shift"}
+    selected = model_context(plan)["selected_plan"]
+    assert selected["signals"] == [{"junction_id": "MOCK-J",
+                                    "action": "proposed green extension"}]
+    assert selected["pt_nudge"] == plan["pt_nudge"]
+    assert "green_extend_s" not in json.dumps(selected)
 
 
 def test_briefing_inserts_source_numbers_and_counts_rendered_signs(inputs):

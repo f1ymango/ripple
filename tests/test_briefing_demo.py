@@ -1,4 +1,5 @@
 """Fixture model demonstration stays outside real result publication."""
+from copy import deepcopy
 import json
 
 import pytest
@@ -19,7 +20,15 @@ def test_demo_checks_saved_provenance_and_logs_model_call(tmp_path, monkeypatch)
     assert result["recommended_plan_id"] == "P2"
     assert "{{" not in result["operator_briefing_en"]
     log = next((tmp_path / "ai-log").glob("*.jsonl"))
-    assert json.loads(log.read_text(encoding="utf-8"))["component"] == "briefing"
+    call = json.loads(log.read_text(encoding="utf-8"))
+    assert call["component"] == "briefing"
+    payload = json.loads(call["user"])["input"]
+    assert set(payload) == {"selected_plan", "evidence_tokens"}
+    assert payload["selected_plan"]["vms"] == [{
+        "sign_id": "MOCK-VMS", "intent": "Synthetic test advice"}]
+    assert "{{delay_hours}}" in {item["token"] for item in payload["evidence_tokens"]}
+    assert "total_vehicle_hours_delay" not in call["user"]
+    assert "\"delay_hours\": 80" not in call["user"]
 
 
 @pytest.mark.parametrize("name", ["real.json", "mock_demo.txt", "outside/mock_demo.json"])
@@ -38,3 +47,32 @@ def test_demo_preserves_existing_output_before_model_call(tmp_path, monkeypatch)
     with pytest.raises(ValueError, match="new fixture output"):
         demo.demo(out)
     assert out.read_text(encoding="utf-8") == "existing evidence"
+
+
+@pytest.mark.parametrize("failure", ["duplicate_sign", "literal_metric", "missing_uncertainty",
+                                      "malformed", "truncated"])
+def test_demo_rejects_invalid_replies_without_saving_output(tmp_path, monkeypatch, failure):
+    reply = deepcopy(load_json(demo.FIXTURES / "mock_briefing_reply.json"))
+    if failure == "duplicate_sign":
+        reply["vms_messages"].append(deepcopy(reply["vms_messages"][0]))
+    elif failure == "literal_metric":
+        reply["operator_briefing_en"] = reply["operator_briefing_en"].replace(
+            "{{delay_hours}}", "80")
+    elif failure == "missing_uncertainty":
+        reply["uncertainty_note_en"] = "Assumptions require review."
+    raw = json.dumps(reply, ensure_ascii=False)
+    if failure == "malformed":
+        raw = "{"
+    elif failure == "truncated":
+        raw = raw[:50]
+    replies = [raw, raw]
+    monkeypatch.setattr(demo, "FIXTURES", tmp_path)
+    monkeypatch.setattr(llm, "LOG_DIR", tmp_path / "ai-log")
+    monkeypatch.setattr(llm, "_send", lambda **kwargs: replies.pop(0))
+    out = tmp_path / "mock_invalid.json"
+    with pytest.raises(ValueError, match="after two attempts"):
+        demo.demo(out)
+    assert not out.exists()
+    calls = [json.loads(line) for log in (tmp_path / "ai-log").glob("*.jsonl")
+             for line in log.read_text(encoding="utf-8").splitlines()]
+    assert len(calls) == 2
