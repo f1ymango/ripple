@@ -1,22 +1,26 @@
 # Presentation Q&A Sheet & Claims Verification
 
-## 1. Technical & Model Limitations (Data Freeze Governance)
+## 1. Technical & Model Limitations (Data Freeze & Milestone Governance)
 
 ### Q1: Why are Delay Savings, CO2 Reduction, and Benefit-Cost Ratio (BCR) left blank?
 > **Answer**: 
-> The provisional 16 Oct results freeze (Lead update, 13 Oct) locks the evidence used in the submission. Data's incident P0 replay and P1/P2 rehearsal runs were integrated through [PR #61](https://github.com/f1ymango/ripple/pull/61), but Data and Simulation jointly find them unsuitable for public plan comparison. In particular, the plan effect changes with a disputed ramp representation. We therefore make no incident-specific delay, emissions or benefit-cost claim. The freeze does not guarantee validation.
+> Performance metrics remain strictly **BLANK / Not Measured Yet**. As noted in the 13 Oct Simulation Diagnostic ([`sim/lead-plans-diagnostic-oct13` at a48b8c9](https://github.com/f1ymango/ripple/commit/a48b8c9)), current P1/P2 simulation runs are unsuitable for public plan comparison due to closure-phase traffic deficits and entry-ramp sensitivity. No incident-specific delay, emissions, or benefit claims are made prior to post-freeze evidence sign-off.
 
-### Q2: What is the accuracy of the Reader Agent in parsing traffic incident reports?
+### Q2: What is the current diagnostic status of AI-generated response plans (P1/P2) versus baseline (P0)?
 > **Answer**: 
-> The initial held-out all-fields-correct evaluation scored **50% citywide** (40/80) and **75% corridor** (15/20). After prompt and label corrections, the development evaluation scored **75% citywide** (60/80) and **85% corridor** (17/20; `results/reader/2026-09-25T0048_qwen3-8b_score.json`). Those latter figures are not a fresh held-out score. A separate, unadopted 1 Oct prompt experiment scored 62.5% and 60% (`results/reader/2026-10-01T190919941153_qwen3-8b_score.json`). See `data/labelled_incidents/LABELLING.md` for the score history.
+> The system provides a working incident-analysis prototype that generates and ranks candidate plans. However, current diagnostic evaluations show that P1 performs worse than P0, while P2 ties P0 (establishing no traffic benefit). Furthermore, P0 contains empty plan actions (no added advisory instructions), distinct from both the simulator's automatic closure rerouting and the Transport Department's (TD) later observed advice.
 
-### Q3: How was the SUMO Digital Twin calibrated, and what is its current scope?
+### Q3: What is the timeline and criteria for locking final presentation claims?
 > **Answer**: 
-> Demand fitting uses archived detector counts (`results/data/flow-balance_20260515-0755_0855.json`). The corrected incident P0 replay on PR #55 scores 89.45% GEH<5 and 14.44% speed MAPE over the whole run, but closure-phase counts, tunnel-side flow, queue timing, speed inputs, ramp behaviour and wrong-lane teleports prevent acceptance for comparing plans. The scores describe a model diagnostic, not validated plan benefits. See [Data and Simulation's joint review](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md).
+> - **15 Oct**: Evidence & Export Checkpoint (Final Presentation Pack)
+> - **16 Oct**: Provisional Claims Freeze
+> - **17 Oct**: Internal Submission Target
+> 
+> Unless a source-supported P0 baseline passes joint Data/Simulation validation before the checkpoint, the 15 Oct presentation pack will strictly fallback to observed playback and working console workflow, omitting route recommendations and savings figures.
 
-### Q4: Are the visual clips in the presentation fully validated against the May 15 incident?
+### Q4: What is the accuracy of the Reader Agent in parsing traffic incident reports?
 > **Answer**: 
-> No. Visual clips like `results/twin/aberdeen-diagnostic.gif` are early September diagnostic excerpts (run under SUMO 1.27.1) used strictly to demonstrate the simulator pipeline capabilities. They do not represent final validated outputs for the May 15 demo incident.
+> The initial held-out all-fields-correct evaluation scored **50% citywide** (40/80) and **75% corridor** (15/20). After prompt and label corrections, the development evaluation scored **75% citywide** (60/80) and **85% corridor** (17/20; `results/reader/2026-09-25T0048_qwen3-8b_score.json`). A separate 1 Oct prompt experiment scored 62.5% and 60%. See `data/labelled_incidents/LABELLING.md`.
 
 ---
 
@@ -24,11 +28,11 @@
 
 | Claim / Topic | Primary Source Artifact | Current Verification Status |
 | :--- | :--- | :--- |
-| **Lane-phase inference** | `results/data/closed-lanes_AID01104_20260515-0840_1010.md`; `data/demo_incident_messages.jsonl` | Detector-inferred initial lane/onset and observed TD report times; physical phase remains assumed |
+| **Lane-phase inference** | `results/data/closed-lanes_AID01104_20260515-0840_1010.md` | Detector-inferred initial lane/onset (physical phase remains assumed) |
 | **Flow Balance Inputs** | `results/data/flow-balance_20260515-0755_0855.json` | Verified (Data Owner) |
-| **Reader Parsing Score** | `results/reader/2026-09-25T0048_qwen3-8b_score.json`; `data/labelled_incidents/LABELLING.md` | Development score after prompt/label corrections (Reader Owner) |
-| **Incident P0 diagnostic** | [PR #55 P0 review](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md) and its linked generated results | Joint Data/Simulation NO-GO for public plan comparison |
-| **Incident-specific savings** | No accepted result set | No public claim at the provisional 16 Oct freeze unless the stated acceptance conditions are met |
+| **Reader Parsing Score** | `results/reader/2026-09-25T0048_qwen3-8b_score.json` | Development score after prompt/label corrections (Reader Owner) |
+| **13 Oct Root Cause Assessment** | `docs/component-c-validation-root-cause-2026-10-13.md` | Logged on branch `sim/lead-plans-diagnostic-oct13` at `a48b8c9` |
+| **Incident-specific savings** | No accepted result set | **BLANK / Not Claimed** |
 
 ---
 
@@ -36,16 +40,9 @@
 
 ### 1. Interview Evidence Scoping
 - **Current Scope**: Qualitative evidence from **1 anonymous experienced green-minibus driver interview**.
-- **Governance Requirement**: Qualitative only. Do not refer to this as a "verified domain-expert interview" without separate independent verification.
+- **Governance Requirement**: Qualitative only. Do not refer to this as a "verified domain-expert interview".
 
-### 2. Missing Technical Artifacts Register (10/15 PR Blockers)
-To achieve full closure for the Oct 15 presentation pack, the following technical deliverables remain pending external owner sign-off:
-- **E (Data)**: Result and provenance sidecars produced under `docs/03-architecture.md`, including accepted incident P0 baseline and full-closure P1/P2 simulation results under `results/`. (Required for Delay Savings, CO₂ Impact, and BCR calculation).
-- **Simulation**: Network setup and incident validation (note: sidecar production is owned by E/Data, not Simulation).
-- **Visuals**: Final high-resolution console screenshots, reviewed video script, and final video MP4 export matching `deck/video-shot-list.md`.
-
-*Lead update, 13 Oct: deliver the 15 Oct evidence pack with the evidence then
-available; it need not wait for accepted simulation benefits. The provisional
-16 Oct freeze permits a reviewed final delta. Retain the observed-demo scope
-and label GenAI draft/fixture demonstrations. If incident P0/P1/P2 remain
-unaccepted, omit their benefit claims from the final deck.*
+### 2. Missing Technical Artifacts Register (15 Oct Checkpoint Blockers)
+- **E (Data)**: Result and provenance sidecars (`docs/03-architecture.md`).
+- **Simulation**: Network setup, ramp behavior, and incident validation.
+- **Visuals**: Final high-resolution console screenshots, reviewed video script, and video MP4 export matching `deck/video-shot-list.md`.
