@@ -6,15 +6,18 @@ Runs one validated plan through the twin and writes the contracted
 
 **Status, 13 Oct:** E runs P0, P1 and P2, and its results pass F's and the
 console's software/provenance checks. That is not scientific acceptance of a
-plan comparison. Two simulator artefacts in the replay were corrected on
-10 October ([note](../../docs/evaluator-replay-fixes-2026-10-10.md)). The current scenario is the
-[replay](../../sim/scenarios/evaluator_IN-26-03365_replay.json) of
-IN-26-03365; what it scores, what it assumes and what it cannot tell apart are
-in [the note](../../docs/evaluator-replay-2026-10-08.md). The plans it has been
-run on are stand-ins written by `rehearsal_plans.py`, not D's. Data and
-Simulation's current [P0 decision](../../docs/evaluator-p0-go-no-go-2026-10-09.md)
-is **NO-GO for incident plan comparison**. Do not present these rehearsal
-results as a recommended operator response or supported benefit.
+plan comparison. The current scenario is version 3 of the replay of
+IN-26-03365 ([scenario](../../sim/scenarios/evaluator_IN-26-03365_replay-v3.json),
+[note](../../docs/evaluator-replay-v3-2026-10-13.md)): it sets no speed at a
+scored detector, shows ordinary-morning speeds on every sign, opens both lanes
+at 10:00, and does not score counts measured under 30 km/h, which these
+detectors undercount. Its P0 meets the count target in every phase and seed and
+still misses the speed target (24.8%). The earlier replay and its notes
+([10 Oct](../../docs/evaluator-replay-fixes-2026-10-10.md),
+[8 Oct](../../docs/evaluator-replay-2026-10-08.md)) stay as dated history.
+Data and Simulation's current [P0 decision](../../docs/evaluator-p0-go-no-go-2026-10-09.md)
+is **NO-GO for incident plan comparison**. Do not present rehearsal or
+diagnostic results as a recommended operator response or supported benefit.
 
 ## Run it
 
@@ -49,6 +52,11 @@ python -m src.evaluator.run --plans data/generated-plans/IN-26-03365-rehearsal -
     --plan P0 --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --compliance 0.5 --clearance 66 \
     --results-dir results/evaluator-rehearsal
 
+# replay version 3 (13 Oct): two more inputs first, commands in docs/evaluator-replay-v3-2026-10-13.md section 10
+python -m src.evaluator.batch --plans data/generated-plans/IN-26-03365-rehearsal --plan-set rehearsal \
+    --scenario sim/scenarios/evaluator_IN-26-03365_replay-v3.json --clearance 66 \
+    --results-dir results/evaluator-rehearsal-v3
+
 # the Lead's plan set, once it exists and P0 is accepted: its own name, into results/runs/
 python -m src.evaluator.batch --plans <the Lead's plans folder> --plan-set <its name, e.g. lead-v1> \
     --scenario sim/scenarios/evaluator_IN-26-03365_replay.json --clearance 66
@@ -81,8 +89,9 @@ comparison when two P0 results share them.
 | Folder | What |
 |---|---|
 | `results/runs/` | the plan set the briefing and console compare; F reads only this folder. Empty until the Lead's plans are evaluated |
-| `results/evaluator-rehearsal/` | the stand-in rehearsal plans on the replay. Not for the briefing |
-| `results/evaluator-diagnostics/` | other seeds, one-change scenarios, and the 7 October P0 records |
+| `results/evaluator-rehearsal/` | the stand-in rehearsal plans on the 10 October replay. Not for the briefing |
+| `results/evaluator-rehearsal-v3/` | the stand-in rehearsal plans on replay version 3. Not for the briefing |
+| `results/evaluator-diagnostics/` | other seeds, one-change scenarios (version 3's labels start `v3-`), and the 7 October P0 records |
 
 Before E keeps an existing result, `batch` checks that it binds these plans,
 their generation inputs and today's simulation inputs, and stops if not.

@@ -1107,3 +1107,45 @@ def test_rehearsal_plans_pass_ds_checks_and_differ(mock_plans):
     assert p2["signals"] == [{"junction_id": "MOCK-J", "green_extend_s": 10}]
     with pytest.raises(ValueError, match="exactly one detour"):
         rehearsal_plans(inputs["incident"], {**context, "routes": mock_plans[1]["routes"][:2]}, 0.5)
+
+
+def test_a_driver_stuck_at_the_end_of_a_lane_that_leads_nowhere_on_its_way_is_let_in(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    scenario["closure"]["scene"] = {**SCENE, "let_in_after_seconds": 60}
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    # "in" has two lanes; only lane 0 leads to "out" (by "closed" lane 0); lane 1 leads to "closed" lane 1, which is shut
+    road.put("stuck.0", "in", THROUGH, lane=1)
+    road.put("behind.0", "in", THROUGH, lane=0)
+    links = {"in_0": [("closed_0",)], "in_1": [("closed_1",)], "closed_0": [("out_0",)], "closed_1": [("out_1",)]}
+    shut = {"closed_1"}
+    waiting, speeds, changes, held, modes = {"stuck.0": 61.0, "behind.0": 0.0}, {"behind.0": 1.0}, [], [], []
+    road.lane = types.SimpleNamespace(setMaxSpeed=road.lane_speeds.__setitem__, getLinks=lambda lane: links.get(lane, []),
+                                      getLength=lambda lane: 100.0,
+                                      getDisallowed=lambda lane: ["passenger"] if lane in shut else [],
+                                      getAllowed=lambda lane: [])
+    road.vehicle.getWaitingTime = waiting.__getitem__
+    road.vehicle.getLanePosition = lambda v: 95.0
+    road.vehicle.getSpeed = speeds.__getitem__
+    road.vehicle.getNeighbors = lambda v, mode: [("behind.0", 4.0)] if mode == 0b001 else []
+    road.vehicle.slowDown = lambda v, speed, duration: held.append(v)
+    road.vehicle.setLaneChangeMode = lambda v, mode: modes.append(mode)
+    road.vehicle.changeLane = lambda v, lane, duration: changes.append((v, lane))
+    closure.step(road, 5)
+    assert changes == [("stuck.0", 0)] and held == ["behind.0"] and modes == [simulate.LET_IN_MODE]
+    assert closure.let_in_now == {"stuck.0"}
+    changes.clear()
+    waiting["stuck.0"] = 30.0                               # moving again, or not stuck long enough
+    closure.step(road, 10)
+    assert changes == []
+    shut.clear()                                            # its own lane leads on again: nothing to do
+    waiting["stuck.0"] = 90.0
+    closure.step(road, 15)
+    assert changes == []
+
+
+def test_without_the_let_in_rule_nobody_is_moved(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    road.put("stuck.0", "in", THROUGH, lane=1)
+    closure.step(road, 5)                                   # Road has no getWaitingTime: it would fail if asked
+    assert closure.let_in_now == set()

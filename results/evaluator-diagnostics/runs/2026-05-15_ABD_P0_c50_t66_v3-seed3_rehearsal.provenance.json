@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "plan_id": "P0",
+  "incident_id": "IN-26-03365",
+  "plan_sha256": "c3ded53272305981581de87811e446d8d2029b5a31b10ea45a82b84640c99469",
+  "generation_inputs_sha256": "a766be1b9ee75a3371293de430b943e947093d2a77db4b65403648b493708783",
+  "simulation_inputs": {
+    "code:src/evaluator/actions.py": "3cec539abc926c98325abb701c951207c31c8a2238c556e8f82ddf537bc1ac64",
+    "code:src/evaluator/behaviour.py": "b15ba3cfe005d785907ec62a56bec58e1a7b38c99293aea9542796292b5c4a86",
+    "code:src/evaluator/metrics.py": "f0025b97e4bd70b3de59c69b3db4e30838b2813c1e9c24cdd438ad6c02d9fa97",
+    "code:src/evaluator/run.py": "ae1979c18ccee4aa585eb492a9f7b37445a0903fb851b276e2410e402764248b",
+    "code:src/evaluator/scenario.py": "a874ca7191a887a52301ba87aa3244b4a3cc54e6d9482f695e850bda9cc0f04a",
+    "code:src/evaluator/simulate.py": "398640ee61e991886e81205cf0330728d5b96ef8eba5660c756079d466095fbd",
+    "code:src/twin/evaluate.py": "15fdc70d33e6919a147f358483466b69e3bd36aa517454db3e3f61abc81ed80b",
+    "detector_loops": "df4f18a398bf26a9849fcd5ba9beaed78a39c3f0e873924c6631b421d86a43e2",
+    "network": "eb006b4ea09f01246ea53f163d68854e47b1be0410943f587d846388ef053e9d",
+    "observations": "5ad28fea5616c4ce80123362d95f83c24730231824c419f276abc55f26ca8d40",
+    "routes": "8caed7394039f64155dc7605458366507481ca8abd494193ff6c606130ad0f43",
+    "scenario": "339e10d4c167bf8f88913ff26c60085d88c8ad162abbad223cd5a2662a23542f",
+    "speed_signs": "bc56f6905074fad41974df35f71526d3102a8758a8a37fc900e49b1ca490947a"
+  },
+  "run_id": "2026-05-15_ABD_P0_c50_t66_v3-seed3_rehearsal",
+  "result_sha256": "ddc4f5445eb46b29b7415b3b45bb19b9d7a3f4bb900592157cade6ab0bace26f"
+}

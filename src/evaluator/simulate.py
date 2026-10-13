@@ -22,6 +22,28 @@ from src.twin.common import require_command
 from src.twin.network_sources import sha256
 
 QUEUE_PERIOD_SECONDS = 10
+LET_IN_CHECK_SECONDS = 5
+# SUMO's lane-change mode with a TraCI request obeyed while still avoiding a
+# collision (bits 8-9 = 01); the default (1621) also waits for a safe gap, which
+# a queue that never opens one does not give.
+LET_IN_MODE = 0b10101010101
+LANE_END_M = 20          # "at the end of a lane": this close to where it stops
+LOOK_AHEAD_EDGES = 3     # how far along its route a lane must lead (the scene's last edges are short)
+HOLD_WITHIN_M = 30       # a driver behind in the wanted lane closer than this ...
+HOLD_BELOW_MS = 3.0      # ... and already this slow holds back; a faster one is left alone
+
+
+def leads_on(traci, lane, edges):
+    """Whether `lane` connects, lane by lane through open lanes, along `edges` (as far as they go)."""
+    if not edges:
+        return True
+    for link in traci.lane.getLinks(lane):
+        to = link[0]
+        if to.rsplit("_", 1)[0] == edges[0] and "passenger" not in traci.lane.getDisallowed(to) \
+                and (not traci.lane.getAllowed(to) or "passenger" in traci.lane.getAllowed(to)):
+            if leads_on(traci, to, edges[1:]):
+                return True
+    return False
 
 
 def rerouters(scenario, clearance_min):
@@ -93,6 +115,7 @@ class Closure:
         self.edge = scenario["closure"]["edge_id"]
         self.original, self.closed, self.set, self.approach = {}, set(), {}, None
         self.window, self.sent_round = reroute_window(scenario, clearance_min), set()
+        self.let_in_now = set()                             # every driver let in, for the run report
 
     def step(self, traci, now):
         if "scene" in self.scenario["closure"]:
@@ -120,6 +143,41 @@ class Closure:
                 self.set[lane] = speed
         if "detour" in closure and self.window and self.window[0] <= now < self.window[1]:
             self.send_round(traci, closure)
+        wait = closure["scene"].get("let_in_after_seconds")
+        if wait and now % LET_IN_CHECK_SECONDS == 0:
+            self.let_in(traci, closure, wait)
+
+    def let_in(self, traci, closure, wait):
+        """A driver stopped `wait` seconds at the end of a lane that cannot take it on its way is let in.
+
+        Without this SUMO lifts such a driver off the road after five minutes (a
+        wrong-lane teleport) and the lane behind it stands still meanwhile. On
+        the road the queue beside it lets it in: a slow driver just behind in the
+        lane it needs holds back for a few seconds, and it moves over one lane as
+        soon as that leaves room. It is asked again at the next check while it
+        still needs to.
+        """
+        edges = dict.fromkeys(closure["scene"]["approach_edges"] + closure.get("reroute_at_edges", []))
+        for edge in edges:
+            for vehicle in traci.edge.getLastStepVehicleIDs(edge):
+                if traci.vehicle.getWaitingTime(vehicle) < wait:
+                    continue
+                lane = traci.vehicle.getLaneIndex(vehicle)
+                if traci.lane.getLength(f"{edge}_{lane}") - traci.vehicle.getLanePosition(vehicle) > LANE_END_M:
+                    continue
+                route, here = traci.vehicle.getRoute(vehicle), traci.vehicle.getRouteIndex(vehicle)
+                ahead = list(route[here + 1:here + 1 + LOOK_AHEAD_EDGES])
+                usable = [i for i in range(traci.edge.getLaneNumber(edge)) if leads_on(traci, f"{edge}_{i}", ahead)]
+                if not usable or lane in usable:
+                    continue
+                target = min(usable, key=lambda i: abs(i - lane))
+                step = lane + (1 if target > lane else -1)
+                for follower, gap in traci.vehicle.getNeighbors(vehicle, 0b001 if step < lane else 0b000):
+                    if gap < HOLD_WITHIN_M and traci.vehicle.getSpeed(follower) < HOLD_BELOW_MS:
+                        traci.vehicle.slowDown(follower, 0.0, float(LET_IN_CHECK_SECONDS))
+                traci.vehicle.setLaneChangeMode(vehicle, LET_IN_MODE)
+                traci.vehicle.changeLane(vehicle, step, float(LET_IN_CHECK_SECONDS))
+                self.let_in_now.add(vehicle)
 
     def send_round(self, traci, closure):
         """Every lane is shut: a driver on `reroute_at_edges` heading for it takes the detour, then their own route."""
@@ -189,6 +247,8 @@ def run(scenario, files, work, clearance_min, controllers=()):
                           for second, lanes in closure.steps],
         "drivers_rerouted_during_seconds": reroute_window(scenario, clearance_min),
         **({"drivers_sent_round_by_the_detour": len(closure.sent_round)} if "detour" in scenario["closure"] else {}),
+        **({"drivers_let_in_at_a_lane_end": len(closure.let_in_now)}
+           if scenario["closure"].get("scene", {}).get("let_in_after_seconds") else {}),
         "vehicles_loaded": int(vehicles["loaded"]),
         "vehicles_inserted": int(vehicles["inserted"]),
         "vehicles_running_at_end": int(vehicles["running"]),
