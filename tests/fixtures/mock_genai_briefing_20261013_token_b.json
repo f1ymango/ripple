@@ -1,0 +1,35 @@
+{
+  "operator_briefing_en": "The proposed intervention aims to reduce delays by redirecting traffic through alternative routes. The evidence shows a -20% change in delay compared to no action. A tradeoff involves increased travel time for some users, and the operator should monitor traffic flow on the detour routes. The plan is awaiting review before any action is taken.",
+  "operator_briefing_zh": "此提案旨在透過替代路線減少延誤。與不採取行動相比，延誤變化為-20%。此計畫涉及部分用戶的行駛時間增加，運營者應監測替代路線的交通流量。此計畫尚待審查後才能執行。",
+  "vms_messages": [
+    {
+      "sign_id": "MOCK-VMS",
+      "text_en": "Consider using Mock Alternative // For reduced delay",
+      "text_zh": "考慮使用_mock_替代路線 // 減少延誤",
+      "chars_en": 52
+    }
+  ],
+  "public_messages": [
+    {
+      "audience": "residential",
+      "text_en": "Some routes may experience increased travel time.",
+      "text_zh": "部分路線可能行駛時間增加。"
+    },
+    {
+      "audience": "emergency",
+      "text_en": "Emergency travel time remains at 10 minutes.",
+      "text_zh": "緊急行駛時間維持在10分鐘。"
+    }
+  ],
+  "uncertainty_note_en": "Assumes 50% compliance and 60 minutes to clear; lane and timing assumptions require review.",
+  "run_id": "mock_P2_c50_t60",
+  "recommended_plan_id": "P2",
+  "sources": [
+    "results/runs/mock_p0_result.json",
+    "results/runs/mock_p0_result.provenance.json",
+    "results/runs/mock_p1_result.json",
+    "results/runs/mock_p1_result.provenance.json",
+    "results/runs/mock_p2_result.json",
+    "results/runs/mock_p2_result.provenance.json"
+  ]
+}

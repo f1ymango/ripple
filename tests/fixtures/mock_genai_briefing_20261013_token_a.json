@@ -1,0 +1,30 @@
+{
+  "operator_briefing_en": "The proposed intervention involves diverting traffic from Mock origin->Mock destination via Mock Detour and Mock Alternative. The evidence shows a delay change of -20% compared to no action. This plan balances reduced congestion with potential impacts on emergency travel times. Monitor compliance and clearance assumptions for accuracy.",
+  "operator_briefing_zh": "此提案涉及將Mock origin->Mock destination的車流改道至Mock Detour和Mock Alternative。證據顯示與不採取行動相比，延誤變化為-20%。此計畫在減少擁塞與可能影響緊急行駛時間之間取得平衡。請監測合規性與清障假設的準確性。",
+  "vms_messages": [
+    {
+      "sign_id": "MOCK-VMS",
+      "text_en": "Route diversion proposed. Please review.",
+      "text_zh": "建議改道路線。請審閱。",
+      "chars_en": 40
+    }
+  ],
+  "public_messages": [
+    {
+      "audience": "drivers",
+      "text_en": "Route diversion proposed. Please review.",
+      "text_zh": "建議改道路線。請審閱。"
+    }
+  ],
+  "uncertainty_note_en": "Assumes 50% compliance and 60 minutes to clear; lane and timing assumptions require review.",
+  "run_id": "mock_P2_c50_t60",
+  "recommended_plan_id": "P2",
+  "sources": [
+    "results/runs/mock_p0_result.json",
+    "results/runs/mock_p0_result.provenance.json",
+    "results/runs/mock_p1_result.json",
+    "results/runs/mock_p1_result.provenance.json",
+    "results/runs/mock_p2_result.json",
+    "results/runs/mock_p2_result.provenance.json"
+  ]
+}
