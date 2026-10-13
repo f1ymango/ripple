@@ -1,0 +1,239 @@
+{
+ "incident_id": "IN-26-03365",
+ "plans": "data/plan-experiments/IN-26-03365-lead-p2-20261013/lead-p2-nosignal-oct13",
+ "plan_set": "lead-p2-nosignal-oct13",
+ "why": "DIAGNOSTIC SCREEN (incident P0 not accepted). The same 33 cells as lead-draft-20261013-b. Replay version 3.1 (sim/scenarios/evaluator_IN-26-03365_replay-v3-1.json): seed 2026, compliance 50%, one-stage reopening at 10:00 (clearance 66), 20% of drivers leave at the queue, 6.5 m mean vehicle length, the ramp joining the main line (correction 2). Each other cell changes one of these: seeds 1-5; the reopening as a clearing stage (fast lane at 4.7 km/h 10:00-10:04, slow lane shut) or fully at 10:04 (clearance 70); the ramp as built; compliance 30% and 70% (03-architecture.md section 4); 0, 10, 30 and 40% of drivers leaving; 5 m vehicles. Agreed by the team on 13 October 2026; docs/evaluator-replay-v3-2026-10-13.md gives where each choice comes from.",
+ "cells": [
+  {
+   "name": "main",
+   "scenario": "sim/scenarios/evaluator_IN-26-03365_replay-v3-1.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "seed1",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed1.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "seed2",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed2.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "seed3",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed3.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "seed4",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed4.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "seed5",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed5.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "clearing",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "clearing-seed1",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing-seed1.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "clearing-seed2",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing-seed2.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "clearing-seed3",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing-seed3.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "clearing-seed4",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing-seed4.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "clearing-seed5",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing-seed5.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "ramp",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "ramp-seed1",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp-seed1.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "ramp-seed2",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp-seed2.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "ramp-seed3",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp-seed3.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "ramp-seed4",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp-seed4.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "ramp-seed5",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp-seed5.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "reopen-10:04",
+   "scenario": "sim/scenarios/evaluator_IN-26-03365_replay-v3-1.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "reopen-10:04-seed1",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed1.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "reopen-10:04-seed2",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed2.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "reopen-10:04-seed3",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed3.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "reopen-10:04-seed4",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed4.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "reopen-10:04-seed5",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed5.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "compliance-30",
+   "scenario": "sim/scenarios/evaluator_IN-26-03365_replay-v3-1.json",
+   "compliance": 0.3,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "compliance-70",
+   "scenario": "sim/scenarios/evaluator_IN-26-03365_replay-v3-1.json",
+   "compliance": 0.7,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "leave-0",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-leave0.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "leave-10",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-leave10.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "leave-30",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-leave30.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "leave-40",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-leave40.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "length-5m",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-length5.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "length-5m-seed1",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-length5-seed1.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  },
+  {
+   "name": "length-5m-seed2",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-length5-seed2.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-nosignal-oct13"
+  }
+ ]
+}

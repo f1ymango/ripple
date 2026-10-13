@@ -1,0 +1,176 @@
+{
+ "incident_id": "IN-26-03365",
+ "plans": "data/plan-experiments/IN-26-03365-lead-p2-20261013/lead-p2-half-nosignal-oct13",
+ "plan_set": "lead-p2-half-nosignal-oct13",
+ "why": "DIAGNOSTIC CONFIRMATION (incident P0 not accepted). Reserved on 13 October before any result of the Lead's P2 diagnostics was seen: seeds 6 to 11, never run before, under the one-stage reopening at 10:00, the clearing stage, both lanes at 10:04 and the ramp as built. Run only for a variant the screen puts before both P0 and P1.",
+ "cells": [
+  {
+   "name": "confirm-seed6",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed6.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-clearing-seed6",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-clearing-seed6.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-reopen-10:04-seed6",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed6.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-ramp-seed6",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-ramp-seed6.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-seed7",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed7.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-clearing-seed7",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-clearing-seed7.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-reopen-10:04-seed7",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed7.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-ramp-seed7",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-ramp-seed7.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-seed8",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed8.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-clearing-seed8",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-clearing-seed8.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-reopen-10:04-seed8",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed8.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-ramp-seed8",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-ramp-seed8.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-seed9",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed9.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-clearing-seed9",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-clearing-seed9.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-reopen-10:04-seed9",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed9.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-ramp-seed9",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-ramp-seed9.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-seed10",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed10.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-clearing-seed10",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-clearing-seed10.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-reopen-10:04-seed10",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed10.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-ramp-seed10",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-ramp-seed10.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-seed11",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed11.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-clearing-seed11",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-clearing-seed11.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-reopen-10:04-seed11",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-seed11.json",
+   "compliance": 0.5,
+   "clearance_min": 70,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  },
+  {
+   "name": "confirm-ramp-seed11",
+   "scenario": "sim/scenarios/evaluator-diagnostics/v3-1-confirm/v3-1-ramp-seed11.json",
+   "compliance": 0.5,
+   "clearance_min": 66,
+   "results_dir": "results/evaluator-lead-p2-half-nosignal-oct13-confirm"
+  }
+ ]
+}
