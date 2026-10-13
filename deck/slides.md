@@ -1,4 +1,4 @@
-# Presentation Deck Draft (12 Oct evidence review)
+# Presentation Deck Draft (13 Oct GenAI and schedule update)
 
 ---
 
@@ -22,7 +22,7 @@
 ## Slide 2: Technical Innovation — appropriate GenAI
 
 - **Why GenAI**: Qwen3:8b turns variable bilingual incident prose into a fixed,
-  validated JSON contract. The video uses an existing logged input/output pair,
+  validated JSON contract. The planned video pickup uses a saved input/output pair,
   visibly labelled as recorded inference rather than a live call
   ([saved output](../results/reader/2026-09-29T1608_qwen3-8b.jsonl)).
 - **Measured Reader performance**: the initial held-out all-fields-correct
@@ -35,6 +35,14 @@
   it never supplies a metric the simulator can compute. Prompts and calls are
   logged, strict schemas are validated, and the evaluator owns numerical
   outcomes ([architecture](../docs/03-architecture.md)).
+- **Plan generation exercised on 13 Oct**: local Qwen3:8b produced a saved
+  P0/P1/P2 draft after validation retries. P2 proposes different advice shares
+  and a supplied model signal adjustment. This is a retrospective example
+  under working assumptions, with no measured benefit or reliability claim
+  ([actual outputs and review](../docs/lead-genai-handoff-2026-10-13.md)).
+- **Briefing boundary**: F's provenance and metric-token checks work in offline
+  tests, but the 13 Oct real-model fixture attempts did not pass validation.
+  No accepted new bilingual briefing is claimed; rejected responses are logged.
 
 ---
 
@@ -49,7 +57,7 @@
   operator decisions and audit logging are implemented and tested with clearly
   named fixtures. Fixture screens must remain visibly labelled
   ([workflow guide](../src/console/OPERATOR_WORKFLOW.md)).
-- **Diagnostic only**: Data's evaluator PR includes an incident P0 and rehearsal
+- **Diagnostic only**: the merged evaluator includes an incident P0 and rehearsal
   P1/P2, but the rehearsal plans are stand-ins and Data/Simulation retain
   NO-GO for public plan ranking ([PR #55 review](../docs/2026-10-11-evaluator-integration-review.md)).
 - **Reproducibility**: saved results and provenance sidecars bind plans,
@@ -68,7 +76,7 @@
   at at least 40% archive coverage and 90% valid lane readings. Missing data is
   labelled, never converted to zero traffic ([data rules](../docs/02-data.md)).
 - **Delay saving, travel-time benefit and CO2 reduction**: no accepted
-  incident-specific claim. **BCR**: not calculated. The 14 October freeze locks
+  incident-specific claim. **BCR**: not calculated. The provisional 16 October freeze locks
   supported evidence; it does not imply outstanding validation will succeed.
 
 ---
@@ -94,8 +102,9 @@
 
 - **12 Oct**: review the observed-data demo, recorded-Reader pickup, deck,
   evidence manifest and Q&A wording.
-- **14 Oct**: freeze accepted results and the claims they support. Unsupported
-  plan benefits remain omitted.
+- **15 Oct**: deliver the reviewable evidence pack, editable deck/export and video.
+- **16 Oct (provisional)**: freeze accepted results and claims; review the final
+  package delta. Cutoff hour is unconfirmed. Unsupported benefits remain omitted.
 - **17 Oct**: internal submission target for deck, prototype and video;
   official deadline 18 October.
 - Current artifact status and owners are tracked in the

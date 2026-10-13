@@ -51,7 +51,19 @@ input/output shot using the already saved Reader evidence:
 Re-time the cut and `video-narration.srt` only after the edited media is
 available for review. No new Ollama call is needed for this pickup.
 
-## Optional later shots — require accepted evidence
+## Optional GenAI capability pickup — review before capture
+
+For the separate GenAI capability pickup, use the
+[13 October Lead handoff](../docs/lead-genai-handoff-2026-10-13.md): it identifies
+the real generated D artifacts and limitations. Show the inputs and candidate
+actions, labelled **Recorded GenAI draft — retrospective working assumptions;
+not evaluated**. Do not turn this into the plan-comparison shot below. Capture
+and integration remain pending; the current-cut timestamps above are unchanged.
+F's 13 October real-model fixture attempts failed validation. Do not add a
+successful F-generation shot from those calls. Existing fixture UI may be
+shown only as tested synthetic capability, not a new generated briefing.
+
+## Optional later shots — require accepted simulation evidence
 
 - **SUMO:** `results/twin/aberdeen-diagnostic.gif` belongs to the September
   IN-26-06481 diagnostic, not the May pre-incident window. Omit it from this
@@ -68,8 +80,9 @@ available for review. No new Ollama call is needed for this pickup.
   `results/data/closed-lanes_AID01104_20260515-0840_1010.json` is an inference
   artifact, not an incident-message log.
 - Keep delay, CO2, travel-time savings and BCR unclaimed unless supported by
-  accepted comparable runs before the 14 October results freeze.
-- Prepare the reviewable draft for 12 October; target internal submission on
-  17 October ahead of the 18 October deadline. Follow `docs/04-plan.md`.
+  accepted comparable runs before the provisional 16 October results freeze.
+- Deliver the next reviewable evidence/export pack on 15 October; review the
+  final delta on the 16th and target internal submission on 17 October ahead
+  of the 18 October deadline. Follow `docs/04-plan.md`.
 - Check narration, subtitle timing, map readability and the delivery format
   on the submission platform before final delivery.

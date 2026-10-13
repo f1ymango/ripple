@@ -18,8 +18,10 @@ Official technical partner: Tencent Cloud (WorkBuddy).
 | 22 Oct 2026 | Thu | Finalists announced |
 | **24 Oct 2026** | **Sat** | **Final demo / pitch day**, CityU Hong Kong, Kowloon Tong. 09:00–18:00 |
 
-**Our internal deadlines:** results freeze **Wed 14 Oct**; submit **Sat 17 Oct**
-(one day early). Do not plan to the real deadline.
+**Our internal deadlines (Lead update, 13 Oct):** provisional results freeze
+**Fri 16 Oct** (hour unconfirmed), replacing the original 14 Oct target;
+submit **Sat 17 Oct** (one day early). Keep the 15 Oct evidence/export
+checkpoint and review a final delta on the 16th. Do not plan to the real deadline.
 
 Selection: teams are vetted on interim report + pitch deck quality, against the
 judging criteria. **Only 10 teams per track reach the final (40 total).**
