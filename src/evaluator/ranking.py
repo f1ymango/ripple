@@ -160,6 +160,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--grid", required=True, help="Grid file: plans, plan set and cells")
     parser.add_argument("--check", action="store_true", help="Print where the grid stands; write nothing")
+    parser.add_argument("--name", help="Ranking file name in results/rankings/, default the plan set; e.g. <plan set>-confirm")
     args = parser.parse_args()
     ranking, pending, cells = rank(args.grid)
     for c in cells:
@@ -178,7 +179,7 @@ def main():
     print(f"Before both others: {ranking['first'] or 'no plan'}")
     if args.check:
         return
-    out = resolve(OUT_DIR) / f"{ranking['plan_set']}.json"
+    out = resolve(OUT_DIR) / f"{args.name or ranking['plan_set']}.json"
     if out.exists():
         raise SystemExit(f"{out} already exists; rankings are never overwritten")
     save_json(out, ranking)
