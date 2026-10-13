@@ -1,0 +1,25 @@
+Warning: Vehicle 'f18.5' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=693.00.
+Warning: Vehicle 'f56.137' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=1356.00.
+Warning: Vehicle 'f74.96' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=2089.00.
+Warning: Vehicle 'f15.83' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=3685.00.
+Warning: Vehicle 'f110.78' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=3842.00.
+Warning: Vehicle 'f110.76' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=3845.00.
+Warning: Vehicle 'f11.46' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=4097.00.
+Warning: Vehicle 'f128.18' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=4321.00.
+Warning: Vehicle 'f128.24' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=4372.00.
+Warning: Vehicle 'f128.54' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=4605.00.
+Warning: Vehicle 'f128.105' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=4982.00.
+Warning: Vehicle 'f146.9' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=5120.00.
+Warning: Teleporting vehicle 'f145.50'; waited too long (wrong lane), lane='1198059119_1', time=5644.00.
+Warning: Vehicle 'f145.50' ends teleporting on edge '44419212', time=5647.00.
+Warning: Teleporting vehicle 'f145.80'; waited too long (wrong lane), lane='1198059120_2', time=6034.00.
+Warning: Vehicle 'f145.80' ends teleporting on edge '1198059138', time=6034.00.
+Warning: Teleporting vehicle 'f146.78'; waited too long (wrong lane), lane='1198059120_2', time=6340.00.
+Warning: Vehicle 'f146.78' ends teleporting on edge '1198059138', time=6340.00.
+Warning: Vehicle 'f15.147' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=7208.00.
+Warning: Vehicle 'f182.79' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=10145.00.
+Warning: Vehicle 'f11.120' performs emergency braking on lane '1233513875#0_2' with decel=9.00, wished=4.50, severity=1.00, time=10276.00.
+2026-05-15_ABD_P0_c50_t66_replay_lead-draft-20261013-b: 33149 of 33505 vehicles entered, 0 still waiting, 3 teleports
+delay 870.6 vehicle-hours (+0% against doing nothing), queue {'AID01103': 1095} m
+This run: GEH<5 89.45%, speed MAPE 14.44% -> validation targets met
+-> results\lead-draft-diagnostic-oct13\runs\2026-05-15_ABD_P0_c50_t66_replay_lead-draft-20261013-b.json

@@ -1,0 +1,82 @@
+{
+  "runs": [
+    {
+      "plan_id": "P0",
+      "command": [
+        "-m",
+        "src.evaluator.run",
+        "--plans",
+        "data/generated-plans/IN-26-03365-lead-draft-20261013-b",
+        "--plan-set",
+        "lead-draft-20261013-b",
+        "--plan",
+        "P0",
+        "--scenario",
+        "sim/scenarios/evaluator_IN-26-03365_replay.json",
+        "--compliance",
+        "0.5",
+        "--clearance",
+        "66",
+        "--results-dir",
+        "results\\lead-draft-diagnostic-oct13"
+      ],
+      "sumo_version": "Eclipse SUMO sumo 1.27.1",
+      "wall_limit_seconds": 300,
+      "wall_seconds": 216.55,
+      "status": "completed",
+      "returncode": 0
+    },
+    {
+      "plan_id": "P1",
+      "command": [
+        "-m",
+        "src.evaluator.run",
+        "--plans",
+        "data/generated-plans/IN-26-03365-lead-draft-20261013-b",
+        "--plan-set",
+        "lead-draft-20261013-b",
+        "--plan",
+        "P1",
+        "--scenario",
+        "sim/scenarios/evaluator_IN-26-03365_replay.json",
+        "--compliance",
+        "0.5",
+        "--clearance",
+        "66",
+        "--results-dir",
+        "results\\lead-draft-diagnostic-oct13"
+      ],
+      "sumo_version": "Eclipse SUMO sumo 1.27.1",
+      "wall_limit_seconds": 300,
+      "wall_seconds": 188.18,
+      "status": "completed",
+      "returncode": 0
+    },
+    {
+      "plan_id": "P2",
+      "command": [
+        "-m",
+        "src.evaluator.run",
+        "--plans",
+        "data/generated-plans/IN-26-03365-lead-draft-20261013-b",
+        "--plan-set",
+        "lead-draft-20261013-b",
+        "--plan",
+        "P2",
+        "--scenario",
+        "sim/scenarios/evaluator_IN-26-03365_replay.json",
+        "--compliance",
+        "0.5",
+        "--clearance",
+        "66",
+        "--results-dir",
+        "results\\lead-draft-diagnostic-oct13"
+      ],
+      "sumo_version": "Eclipse SUMO sumo 1.27.1",
+      "wall_limit_seconds": 300,
+      "wall_seconds": 182.08,
+      "status": "completed",
+      "returncode": 0
+    }
+  ]
+}
