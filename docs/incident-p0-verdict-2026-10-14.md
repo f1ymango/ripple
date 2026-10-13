@@ -29,7 +29,7 @@ P0 is **15 May as it happened, with no plan action**:
 - **Drivers already committed** to the last 18 m before the flyover when both lanes shut go on over it.
 - **Some drivers leave the corridor at the queue.** The share is 20%, fitted to when the queue reached AID01101, not sourced. Each leaver is charged an assumed 20 minutes outside the network.
 
-P1 and P2 add advice on top of this from 09:01 to 10:00. The advice points to the same road, and it reaches drivers earlier and further upstream, including after the flyover reopens. In the main cell, 461 (P1) and 374 (P2) drivers took the advised route, and 192 and 142 of them were still on it after the reopening.
+P1 and P2 add advice on top of this from 09:01 until the flyover reopens. The advice points to the same road and reaches drivers earlier, as they enter. When it stops, an advised driver not yet on the detour is put back on the flyover route. In the main cell, 461 (P1) and 374 (P2) drivers took the advised route; 192 and 142 of them were put back on the flyover at the reopening.
 
 ### Which assumptions have independent support
 
@@ -109,7 +109,7 @@ deterministic. **Diagnostic: the incident P0 is not accepted.**
 
 Mean per cell over the 33 cells (vehicle-hours; drivers):
 
-| Plan | Took the advised route (still on it after the reopening) | Sent round at the closure | Left the corridor | Delay in network | Waiting to enter | Assumed outside | Total |
+| Plan | Took the advised route (put back on the flyover at the reopening) | Sent round at the closure | Left the corridor | Delay in network | Waiting to enter | Assumed outside | Total |
 |---|---|---|---|---|---|---|---|
 | P0 | 0 | 676 | 387 | 497.5 | 312.1 | 130.4 | 940.0 |
 | P1, broadcast | 467 (179) | 370 | 374 | 517.7 | 322.4 | 129.7 | 969.8 |
@@ -138,10 +138,14 @@ wrong-lane teleport in every set), with the outside delay recomputed at 0 to
 3. *Does any supported P2 beat both P0 and P1?* **No.** Neither variant
    earned the reserved confirmation run, and none was run.
 
-Why, in this replay: advice can only send drivers to the road the closure
-already forces them onto, and sooner. Advised drivers join the sole detour
-from 09:01, further upstream, and 69 to 179 of them are still on it after the
-flyover reopens. That loads the one detour without adding capacity.
+Why, in this replay: the plans act only from 09:01, after both lanes shut
+at 09:00:30, so advice can only send drivers to the road the closure already
+forces them onto. With advice, more drivers use that one detour in total
+(advised plus sent round: 731 to 837 per cell, against 676 in P0), and slightly
+fewer leave the corridor (374 to 380, against 387). That loads the sole detour
+without adding capacity. Corrected 14 October: an earlier draft read the
+"put back on the flyover" count as drivers still on the detour after the
+reopening.
 
 For `lead-p2-nosignal-oct13`, the ranking's `first` is P0. F would therefore
 draft a "no additional action" briefing if these runs were in `results/runs/`.
