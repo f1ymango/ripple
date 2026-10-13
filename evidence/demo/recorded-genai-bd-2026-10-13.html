@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Ripple · recorded B/D GenAI evidence</title>
+  <style>
+    :root { font-family: system-ui, 'Segoe UI', sans-serif; color: #172532; background: #f2f5f5; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.52; }
+    .banner { position: sticky; top: 0; z-index: 3; padding: .68rem 1.3rem; background: #153646; color: #fff; font-size: .92rem; font-weight: 700; letter-spacing: .01em; }
+    main { max-width: 1120px; margin: 0 auto; padding: 1.3rem 1.3rem 3rem; }
+    .mast { border-left: 6px solid #15877e; padding: .4rem 1.15rem 1rem; margin: 1rem 0 2rem; }
+    h1 { font-size: clamp(1.65rem, 3vw, 2.5rem); line-height: 1.16; margin: .35rem 0; }
+    h2 { font-size: 1.35rem; margin: 0 0 .65rem; }
+    h3 { font-size: 1.03rem; margin: 0 0 .75rem; }
+    p { margin: .55rem 0; }
+    .eyebrow, .section-kicker, .plan-id { color: #167268; font-size: .83rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .section { margin: 2rem 0; }
+    .message { margin: 1.35rem 0 2rem; }
+    .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: .55rem; }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+    .card { padding: 1.15rem 1.2rem; border: 1px solid #d9e2e2; border-radius: 12px; background: #fff; box-shadow: 0 3px 12px #1737470a; min-width: 0; }
+    .source-text { padding: .7rem .85rem; border-left: 3px solid #8cc4bd; background: #f3f8f7; overflow-wrap: anywhere; }
+    .zh { font-family: 'Microsoft JhengHei', 'Noto Sans CJK TC', system-ui, sans-serif; line-height: 1.8; }
+    dl { margin: 0; }
+    .field { display: grid; grid-template-columns: minmax(8.2rem, 37%) 1fr; gap: .6rem; border-top: 1px solid #e4ebeb; padding: .42rem 0; overflow-wrap: anywhere; }
+    dt { color: #526775; font-size: .9rem; }
+    dd { margin: 0; font-weight: 600; }
+    .caution { border-left: 3px solid #c17724; background: #fff6eb; color: #62410e; padding: .6rem .8rem; font-size: .92rem; }
+    .trace, .subtle { color: #556b77; font-size: .9rem; }
+    .plan ul { padding-left: 1.1rem; }
+    .plan li { margin: .45rem 0; }
+    .qualifications { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .source-table { overflow-x: auto; border: 1px solid #d9e2e2; border-radius: 10px; background: #fff; }
+    table { border-collapse: collapse; width: 100%; text-align: left; font-size: .82rem; }
+    th, td { padding: .6rem .7rem; border-bottom: 1px solid #e4ebeb; vertical-align: top; }
+    td code { overflow-wrap: anywhere; word-break: break-word; }
+    a { color: #075e91; }
+    @media (max-width: 760px) { .pair, .cards, .qualifications { grid-template-columns: 1fr; } }
+    @media print { :root { background: white; } .banner { position: static; } .card { box-shadow: none; break-inside: avoid; } }
+  </style>
+</head>
+<body>
+  <div class="banner">Recorded model evidence — not live inference or an operational recommendation</div>
+  <main>
+    <header class="mast">
+      <div class="eyebrow">Ripple / Lead evidence / incident IN-26-03365</div>
+      <h1>From incident message to candidate response</h1>
+      <p>Page created 2026-10-13 HKT from saved files. The messages describe 15 May 2026; the Reader calls were recorded 29 September and the plan call 13 October. This capture aid runs offline.</p>
+      <p class="subtle">Recorded Qwen3:8b inference · original text and proposed actions preserved · operator approval and incident validation outstanding</p>
+    </header>
+
+    <section class="section" aria-labelledby="reader-title">
+      <div class="eyebrow">B · Incident Reader</div>
+      <h2 id="reader-title">The closure changed in the feed</h2>
+      <p>The first TD report says only “part of the lanes”; the later update says “all lanes.” The Reader saved <code>unspecified</code> and <code>all</code> respectively. These are recorded extractions, not fresh calls.</p>
+
+      <section class="message">
+        <div class="section-kicker">TD message 138270 · 2026-05-15T09:01:00 HKT</div>
+        <div class="pair">
+          <article class="card">
+            <h3>Archived bilingual message</h3>
+            <p class="source-text" lang="en">Due to traffic accident , part of the lanes of Wong Chuk Hang Road flyover (Aberdeen Tunnel bound) near Yip Kan Street is closed to all traffic. Only remaining lanes are available to motorists. Traffic is busy now.</p>
+            <p class="source-text zh" lang="zh-Hant">因交通意外，黃竹坑道天橋(往香港仔隧道方向)近業勤街的部份行車線現已封閉。 駕駛人士只可使用餘下行車線行車。 現時上址交通繁忙。</p>
+          </article>
+          <article class="card">
+            <h3>Saved Reader extraction</h3>
+            <dl><div class="field"><dt>Road</dt><dd>Wong Chuk Hang Road flyover</dd></div><div class="field"><dt>Direction</dt><dd>Aberdeen Tunnel bound</dd></div><div class="field"><dt>Landmark</dt><dd>Yip Kan Street</dd></div><div class="field"><dt>Lanes closed</dt><dd>unspecified</dd></div><div class="field"><dt>Incident type</dt><dd>traffic_accident</dd></div><div class="field"><dt>Model confidence (self reported)</dt><dd>0.7</dd></div><div class="field"><dt>Saved model note</dt><dd>Lanes closed but not specified. The road name includes the direction in parentheses.</dd></div></dl>
+            <p class="caution">The saved first note overdescribes the direction: the TD feed has a separate direction field. It is retained as model output, not evidence of a road-name bracket.</p>
+          </article>
+        </div>
+        <p class="trace">Recorded Qwen3:8b call: 2026-09-29T16:08:50+08:00. This is one saved example, not an accuracy score.</p>
+      </section>
+      <section class="message">
+        <div class="section-kicker">TD message 138272 · 2026-05-15T09:36:00 HKT</div>
+        <div class="pair">
+          <article class="card">
+            <h3>Archived bilingual message</h3>
+            <p class="source-text" lang="en">Due to traffic accident , all lanes of Wong Chuk Hang Road flyover (Aberdeen Tunnel bound) near Yip Kan Street are closed to all traffic. Motorists are advised to use alternative routes such as Wong Chuk Hang Road. Traffic is busy now.</p>
+            <p class="source-text zh" lang="zh-Hant">因交通意外，黃竹坑道天橋(往香港仔隧道方向)近業勤街的全線現已封閉。 駕駛人士請考慮改用其他道路，例如黃竹坑道。 現時上址交通繁忙。</p>
+          </article>
+          <article class="card">
+            <h3>Saved Reader extraction</h3>
+            <dl><div class="field"><dt>Road</dt><dd>Wong Chuk Hang Road flyover</dd></div><div class="field"><dt>Direction</dt><dd>Aberdeen Tunnel bound</dd></div><div class="field"><dt>Landmark</dt><dd>Yip Kan Street</dd></div><div class="field"><dt>Lanes closed</dt><dd>all</dd></div><div class="field"><dt>Incident type</dt><dd>traffic_accident</dd></div><div class="field"><dt>Model confidence (self reported)</dt><dd>0.9</dd></div><div class="field"><dt>Saved model note</dt><dd>All lanes are closed due to the traffic accident.</dd></div></dl>
+            <p class="caution">The later update explicitly reports all lanes closed.</p>
+          </article>
+        </div>
+        <p class="trace">Recorded Qwen3:8b call: 2026-09-29T16:09:33+08:00. This is one saved example, not an accuracy score.</p>
+      </section>
+    </section>
+
+    <section class="section" aria-labelledby="plans-title">
+      <div class="eyebrow">D · Plan Generator</div>
+      <h2 id="plans-title">Three saved candidates, each constraint checked</h2>
+      <p>Recorded Qwen3:8b call: 2026-10-13T12:20:13+08:00. P0 is the no-intervention reference. P1 and P2 share the only detour in the working context; P2 changes the advised shares and proposes a signal extension. These are proposal parameters, not measured benefits.</p>
+      <div class="cards">
+      <article class="card plan">
+        <div class="plan-id">P0</div>
+        <h3>No Intervention</h3>
+        <p>Baseline scenario with no additional measures taken.</p>
+        No diversion, signal, sign or public transport action. Comparison baseline only.
+      </article>
+      <article class="card plan">
+        <div class="plan-id">P1</div>
+        <h3>Single OD Group Detour</h3>
+        <p>Broadcasts one alternative route to all OD groups.</p>
+        <ul><li>Aberdeen-&gt;Canal Road Flyover via Wong Chuk Hang Road: 100% advised diversion share</li><li>Aberdeen-&gt;Wong Nai Chung Road via Wong Chuk Hang Road: 100% advised diversion share</li></ul><p>No sign or public transport action in this saved plan.</p><p class="caution">Original title says “Single OD Group,” while the saved actions cover both supplied groups. The original model text is preserved.</p>
+      </article>
+      <article class="card plan">
+        <div class="plan-id">P2</div>
+        <h3>Coordinated Detour</h3>
+        <p>Coordinates detours for specific OD groups using available routes.</p>
+        <ul><li>Aberdeen-&gt;Canal Road Flyover via Wong Chuk Hang Road: 80% advised diversion share</li><li>Aberdeen-&gt;Wong Nai Chung Road via Wong Chuk Hang Road: 70% advised diversion share</li></ul><p>Proposed signal setting: Wong Chuk Hang Road / Tong Bin Lane, +20 s green</p><p>No sign or public transport action in this saved plan.</p><p class="caution">The Tong Bin Lane control and 20 s limit are working network assumptions; real signal availability and timing are unconfirmed.</p>
+      </article></div>
+      <div class="qualifications" style="margin-top:1rem">
+        <article class="card">
+          <h3>Context known retrospectively</h3>
+          <p>Action window: 2026-05-15T09:01:00+08:00 to 2026-05-15T10:02:00+08:00. The end time is known from the later incident record. The supported detour also draws on TD’s 09:36 update, after the 09:01 first report.</p>
+          <p>OD demand comes from the model. Route classifications are working assumptions. School exposure is marked conservatively; the action window misses the stated school peaks.</p>
+        </article>
+        <article class="card">
+          <h3>Review status</h3>
+          <p>Data reviewed the v2 context as working assumptions. A constraint pass checks the supplied policy rules. The plan set has not been accepted through an incident replay.</p>
+          <p class="caution"><strong>P0 NO-GO:</strong> Data and Simulation have not accepted the incident P0 as a credible basis for ranking these plans. No travel time, delay, queue, emissions or savings claim follows from this page.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="trace-title">
+      <div class="eyebrow">Traceability</div>
+      <h2 id="trace-title">Original files and raw-byte SHA-256</h2>
+      <p>Source paths below are repository relative. The page contains the selected evidence so it remains readable by itself offline. Checksums detect changed files; they do not establish scientific validation.</p>
+      <div class="source-table"><table><thead><tr><th>Source</th><th>Path</th><th>SHA-256</th></tr></thead><tbody><tr><th>TD source messages</th><td><code>data/demo_incident_messages.jsonl</code></td><td><code>b76366fc278f08ed81a3d8dbfe2d3007792236130ae56d386e5cce108e2750fe</code></td></tr><tr><th>Saved Reader output</th><td><code>results/reader/2026-09-29T1608_qwen3-8b.jsonl</code></td><td><code>3b015de2169bdc5de034bbce6b1c7b76ea212a59b4f0a8f6e178aeae86be4464</code></td></tr><tr><th>Reader call log</th><td><code>evidence/ai-log/2026-09-29.jsonl</code></td><td><code>87fc40388dcc6ad9a120b6f277dd71e14f9baa8baa890d3eb8f6a19678cea56d</code></td></tr><tr><th>Reviewed context (working assumptions)</th><td><code>data/plan-context/IN-26-03365_first-report-v2.json</code></td><td><code>fe6c708905d9b2e29f2da603a290762142199ec94ff5e95a7573ec785e0f8d18</code></td></tr><tr><th>Context qualifications</th><td><code>data/plan-context/IN-26-03365_first-report-v2.md</code></td><td><code>25f19269644104286f4ad16288fefda2810d20f75d0625c53273b7056a5dab91</code></td></tr><tr><th>D generation inputs</th><td><code>data/generated-plans/IN-26-03365-lead-draft-20261013-b/generation-inputs.json</code></td><td><code>8726acd9be7023a9483f3e46128fa172abb6bebf5f1361970194144d904f33a1</code></td></tr><tr><th>P0 candidate</th><td><code>data/generated-plans/IN-26-03365-lead-draft-20261013-b/P0.json</code></td><td><code>4198ec674296e0a1413b3ef3d0758fdf3e60124afbe9d51728b912b69ed898ff</code></td></tr><tr><th>P1 candidate</th><td><code>data/generated-plans/IN-26-03365-lead-draft-20261013-b/P1.json</code></td><td><code>dae8a9c06f0e7d34b77407193ff36eb1d814311b8a8d0739fe508190da27dade</code></td></tr><tr><th>P2 candidate</th><td><code>data/generated-plans/IN-26-03365-lead-draft-20261013-b/P2.json</code></td><td><code>3afc8b638a7abd2d9a290541d07032ab9a9f269fa4196c14f479ef7284eea20c</code></td></tr><tr><th>D call log</th><td><code>evidence/ai-log/2026-10-13.jsonl</code></td><td><code>49dc7e73209d56de1987d904253e8c5f8646200f2726162cccc92ad6203572d6</code></td></tr><tr><th>Lead handoff and qualifications</th><td><code>docs/lead-genai-handoff-2026-10-13.md</code></td><td><code>bf18ea4dada8d5197aa478f99e7d1e27229d7650ff251054664d9e7d72083704</code></td></tr></tbody></table></div>
+      <p class="subtle">The separate <a href="../../docs/lead-genai-follow-up-2026-10-13.md">current Lead status note</a> records F separately. Visuals may capture this page, with the persistent label visible.</p>
+    </section>
+  </main>
+</body>
+</html>

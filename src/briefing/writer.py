@@ -12,6 +12,20 @@ from src.plans.generator import validate_plans
 
 HERE = Path(__file__).parent
 TOKEN = re.compile(r"\{\{([a-z_][a-z_0-9]*)\}\}")
+TOKEN_MEANINGS = {
+    "plan_id": "selected candidate identifier",
+    "delay_hours": "selected run's total simulated delay, vehicle-hours",
+    "delay_vs_do_nothing_pct": "signed simulated delay change against no intervention, percent",
+    "travel_time_p95_min": "selected run's corridor travel-time percentile, minutes",
+    "emergency_tt_min": "selected run's emergency travel time, minutes",
+    "co2_kg": "selected run's simulated carbon dioxide, kilograms",
+    "residential_delay_share_pct": "selected run's residential delay share, percent",
+    "vehicles_completed": "selected run's completed vehicles, vehicles",
+    "compliance_pct": "assumed driver compliance, percent",
+    "clearance_min": "assumed incident clearance time, minutes",
+    "geh_under_5_pct": "baseline count validation coverage, percent",
+    "speed_mape_pct": "baseline speed validation error, percent",
+}
 # Deliberately conservative: quantitative wording must use evidence tokens.
 # This detects common worded quantities; it is not a semantic proof of prose.
 WORD_QUANTITY = re.compile(
@@ -41,6 +55,31 @@ def evidence_tokens(result, baseline):
     }
     return {name: format(value, ".12g") if isinstance(value, (int, float)) else value
             for name, value in values.items()}
+
+
+def model_context(plan):
+    """Provide action meaning and token syntax without result or action numbers.
+
+    Full results stay in code for ranking, provenance and final substitution.
+    Sign IDs are copied verbatim because the output contract requires them.
+    """
+    return {
+        "selected_plan": {
+            "plan_id": "{{plan_id}}",
+            "mode": "no intervention baseline" if plan["plan_id"] == "P0"
+                    else "proposed intervention awaiting operator review",
+            "diversions": [{"od_group": item["od_group"], "via": item["via"]}
+                           for item in plan["diversions"]],
+            "signals": [{"junction_id": item["junction_id"],
+                         "action": "proposed green extension"} for item in plan["signals"]],
+            "vms": [{"sign_id": item["sign_id"], "intent": item["intent"]}
+                    for item in plan["vms"]],
+            "pt_nudge": plan["pt_nudge"].copy(),
+            "priority_corridor": plan["priority_corridor"].copy(),
+        },
+        "evidence_tokens": [{"token": "{{" + name + "}}", "meaning": meaning}
+                            for name, meaning in TOKEN_MEANINGS.items()],
+    }
 
 
 def render_text(text, tokens):
@@ -120,8 +159,7 @@ def write_briefing(plans, result_paths, model="qwen3:8b", *, generation_inputs,
         plans, result_paths, generation_inputs=generation_inputs, results_root=results_root)
     return generate_checked(
         component="briefing", prompt=HERE / "prompts" / "system.md",
-        payload={"selected_plan": plan, "selected_result": result, "baseline_result": baseline,
-                 "evidence_tokens": evidence_tokens(result, baseline)},
+        payload=model_context(plan),
         schema=DRAFT_SCHEMA,
         check=lambda draft: assemble(draft, plan, result, baseline, sorted(sources)),
         model=model, temperature=0.0)
