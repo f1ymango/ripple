@@ -10,12 +10,12 @@ from pathlib import Path
 
 import pytest
 
-from src.briefing.schema import RESULT_SCHEMA
+from src.briefing.schema import RESULT_SCHEMA, VALIDATION_V2
 from src.evaluation_provenance import json_hash, sidecar_path, verify_result
 from src.evaluator import metrics, od_demand, run, scenario as scenarios, simulate, speed_signs
 from src.evaluator.actions import PlanActions
 from src.evaluator.behaviour import LEFT_FILE, DriversLeave
-from src.generation import load_json, validate
+from src.generation import load_json, save_json, validate
 
 FIXTURES = Path(__file__).parent / "fixtures"
 MOCK = FIXTURES / "mock_evaluator"
@@ -76,11 +76,19 @@ def write_mock_output(work, trips=TRIPS):
         '<interval begin="600" nVehContrib="0" speed="-1"/></detector>')
 
 
-def mock_run(complete=True, trips=TRIPS):
+def wrong_lane_line(vehicle, lane, second):
+    return (f"Warning: Teleporting vehicle '{vehicle}'; waited too long (wrong lane), lane='{lane}', "
+            f"time={second:.2f}.\n")
+
+
+def mock_run(complete=True, trips=TRIPS, log=""):
     def fake(scenario, files, work, clearance_min, controllers=()):
         simulate.prepare(scenario, files, work, clearance_min)
         write_mock_output(work, trips)
+        (Path(work) / "sumo.log").write_text("Simulation version 1.27.1 started with time: 0.00.\n" + log)
         return {"complete": complete, "final_time_seconds": 900 if complete else 450,
+                "closure_steps": [{"second": second, "lanes_closed": [f"closed_{i}" for i in lanes]}
+                                  for second, lanes in scenarios.closure_steps(scenario, clearance_min)],
                 "vehicles_loaded": 7, "vehicles_inserted": 6, "vehicles_waiting_to_enter_at_end": 1,
                 "teleports": {"total": 0, "jam": 0, "yield": 0, "wrongLane": 0}}
     return fake
@@ -298,9 +306,38 @@ def test_edge_metrics_use_only_simulated_traffic(output):
     assert detail["emergency_route_edges_with_traffic"] == 1
 
 
+def speed_bin(observed, simulated):
+    return {"observed_kmh": observed, "simulated_kmh": simulated,
+            "absolute_percentage_error": 100 * abs(simulated - observed) / observed}
+
+
 def test_validation_rounding_never_turns_a_miss_into_a_pass():
-    assert metrics.validation({"geh_under_5_percent": 84.999, "speed_mape_percent": 15.001}) == {
-        "geh_under_5_pct": 84.99, "speed_mape_pct": 15.01}
+    evaluation = {"geh_under_5_percent": 84.999, "speed_mape_percent": 15.001,
+                  "speed_bins": [speed_bin(100, 115.001)] + [speed_bin(50, 50)] * 5 + [speed_bin(10, 40)]}
+    assert metrics.validation(evaluation, []) == {
+        "geh_under_5_pct": 84.99, "speed_mape_pct": 15.01, "speed_mape_free_flow_pct": 2.51,
+        "congestion_state_agreement_pct": 85.71, "wrong_lane_teleports_not_at_lane_shut": 0}
+
+
+def test_free_flow_speed_error_leaves_out_bins_measured_under_30_kmh():
+    evaluation = {"geh_under_5_percent": 90, "speed_mape_percent": 50,
+                  "speed_bins": [speed_bin(80, 72), speed_bin(5, 30), speed_bin(29.9, 10)]}
+    block = metrics.validation(evaluation, ["v lane 900"])
+    assert block["speed_mape_free_flow_pct"] == 10.0                     # only the 80 km/h bin
+    assert block["congestion_state_agreement_pct"] == 66.66              # 5 km/h measured, 30 simulated: disagree
+    assert block["wrong_lane_teleports_not_at_lane_shut"] == 1
+    validate(block, VALIDATION_V2)
+
+
+def test_a_wrong_lane_teleport_counts_against_the_model_unless_the_wait_began_as_a_lane_shut():
+    steps = [{"second": 300, "lanes_closed": ["a_0"]}, {"second": 420, "lanes_closed": ["a_0", "a_1"]},
+             {"second": 600, "lanes_closed": []}]
+    log = (wrong_lane_line("x.1", "b_1", 604) + wrong_lane_line("x.2", "b_1", 781)      # waits from 304 and 481
+           + wrong_lane_line("x.3", "c_0", 1500) + "Warning: Teleporting vehicle 'x.4'; waited too long (jam), "
+           "lane='d_0', time=700.00.\n")
+    assert metrics.wrong_lane_teleports(log, steps) == (["x.1 b_1 604"], ["x.2 b_1 781", "x.3 c_0 1500"])
+    assert metrics.wrong_lane_teleports(wrong_lane_line("x.5", "b_1", 720), steps) == (["x.5 b_1 720"], [])   # 420 + 0
+    assert metrics.wrong_lane_teleports(wrong_lane_line("x.6", "b_1", 900), steps) == ([], ["x.6 b_1 900"])  # reopening is no shutting
 
 
 def test_expected_demand_over_the_closed_edge_by_exit():
@@ -317,7 +354,9 @@ def test_p0_result_meets_the_contract_and_its_sidecar_verifies(evaluate, plans, 
     assert load_json(path) == result
     assert result["scenario"] == {"compliance": 0.5, "clearance_min": 5.0, "seed": 42}
     assert result["metrics"]["delay_vs_do_nothing_pct"] == 0
-    assert result["validation"] == {"geh_under_5_pct": 100.0, "speed_mape_pct": 0.0}
+    assert result["validation"] == {"geh_under_5_pct": 100.0, "speed_mape_pct": 0.0, "speed_mape_free_flow_pct": 0.0,
+                                    "congestion_state_agreement_pct": 100.0, "wrong_lane_teleports_not_at_lane_shut": 0}
+    assert report["validation_targets_met"] and report["wrong_lane_teleports"] == {"at_a_lane_shutting": [], "other": []}
     files = verify_result(path, result, load_json(plans / "P0.json"), load_json(plans / "generation-inputs.json"))
     assert {"network", "routes", "detector_loops", "observations", "scenario",
             "code:src/evaluator/metrics.py", "code:src/twin/evaluate.py"} <= set(files)
@@ -1027,25 +1066,82 @@ def test_a_join_can_be_moved_from_its_ramp_to_the_main_line():
 
 # --- E's output into F and G --------------------------------------------------------------
 
+def time_lost(share):
+    return [(i, d, w, a, t, loss * share, co2) for i, d, w, a, t, loss, co2 in TRIPS]
+
+
+def ranking_grid(tmp_path, plans, evaluate_plans, second_cell_lost):
+    """Two cells, the mock scenario and the same at seed 7, each run P0, P1, P2; the grid file's path."""
+    _, first = full_scenario(tmp_path, plan_actions=PLACES_TWO)          # P2 also names Mock Alternative
+    second = tmp_path / "mock_seed7.json"
+    second.write_text(json.dumps({**load_json(first), "seed": 7, "run_label": "mock-seed7"}))
+    paths = []
+    for scenario, lost in ((first, {"P1": 0.75, "P2": 0}), (second, second_cell_lost)):
+        paths.append([evaluate_plans("P0", scenario=scenario)[2]] + [
+            evaluate_plans(pid, trips=time_lost(lost[pid]), scenario=scenario)[2] for pid in ("P1", "P2")])
+    grid = tmp_path / "grid.json"
+    grid.write_text(json.dumps({"incident_id": "MOCK-INCIDENT", "plans": str(plans), "plan_set": "mock-plans",
+                                "why": "two seeds", "cells": [
+        {"name": name, "scenario": str(path), "compliance": 0.5, "clearance_min": 5.0,
+         "results_dir": str(tmp_path / "results")} for name, path in (("main", first), ("seed7", second))]}))
+    return grid, paths[0]
+
+
 def test_e_results_are_accepted_by_the_briefing_and_the_console(evaluate_plans, plans, tmp_path):
     from src.briefing.writer import prepare_comparison
     from src.console.recommendation import load_comparison, scenarios_for, read_objects
-    full_scenario(tmp_path, plan_actions=PLACES_TWO)                      # P2 also names Mock Alternative
-    def time_lost(share):
-        return [(i, d, w, a, t, loss * share, co2) for i, d, w, a, t, loss, co2 in TRIPS]
-    paths = [evaluate_plans("P0")[2], evaluate_plans("P1", trips=time_lost(0.75))[2],
-             evaluate_plans("P2", trips=time_lost(0))[2]]
+    from src.evaluator import ranking
+    grid, paths = ranking_grid(tmp_path, plans, evaluate_plans, {"P1": 0.75, "P2": 0})
     runs_dir = tmp_path / "results" / "runs"
     results, errors = read_objects(runs_dir)
-    assert not errors and scenarios_for(results, "MOCK-INCIDENT") == [(0.5, 5.0, 42)]
+    assert not errors and scenarios_for(results, "MOCK-INCIDENT") == [(0.5, 5.0, 7), (0.5, 5.0, 42)]
     comparison, why = load_comparison(runs_dir, plans, "MOCK-INCIDENT", (0.5, 5.0, 42))
-    assert why == "" and comparison["winner"]["plan_id"] == "P2"
+    assert comparison is None and "No ranking" in why                    # version 2 needs the every-cell ranking
+    saved_ranking, pending, _ = ranking.rank(grid)
+    assert not pending and saved_ranking["first"] == "P2" and not saved_ranking["cells_not_counting"]
+    assert saved_ranking["verdicts"] == ["P1 before P0", "P2 before P0", "P2 before P1"]
+    save_json(tmp_path / "results" / "rankings" / "mock-plans.json", saved_ranking)
+    comparison, why = load_comparison(runs_dir, plans, "MOCK-INCIDENT", (0.5, 5.0, 42))
+    assert why == "" and comparison["winner"]["plan_id"] == "P2" and comparison["ranking_cells"] == 2
     inputs = load_json(plans / "generation-inputs.json")
     saved = [load_json(plans / f"P{i}.json") for i in range(3)]
     plan, result, baseline, sources = prepare_comparison(saved, paths, generation_inputs=inputs,
                                                          results_root=runs_dir)
     assert plan["plan_id"] == result["plan_id"] == "P2" and baseline["plan_id"] == "P0"
     assert len(sources) == 6                                              # three results and their sidecars
+
+
+def test_no_plan_is_recommended_unless_the_ranking_puts_it_before_both_others(evaluate_plans, plans, tmp_path):
+    from src.console.recommendation import load_comparison
+    from src.evaluator import ranking
+    grid, _ = ranking_grid(tmp_path, plans, evaluate_plans, {"P1": 0.25, "P2": 0.5})   # P1 lower at seed 7
+    saved_ranking, _, _ = ranking.rank(grid)
+    assert saved_ranking["first"] is None and saved_ranking["verdicts"][2] == "P1 and P2 tie"
+    save_json(tmp_path / "results" / "rankings" / "mock-plans.json", saved_ranking)
+    comparison, why = load_comparison(tmp_path / "results" / "runs", plans, "MOCK-INCIDENT", (0.5, 5.0, 42))
+    assert comparison is None and "puts no plan before both others (" in why
+
+
+def test_a_cell_whose_runs_teleported_a_driver_out_of_a_wrong_lane_blocks_every_order(evaluate_plans, plans, tmp_path,
+                                                                                         monkeypatch):
+    from src.evaluator import ranking
+    grid, _ = ranking_grid(tmp_path, plans, evaluate_plans, {"P1": 0.5, "P2": 0.25})
+    report = next((tmp_path / "results" / "evaluator").glob("*P1*seed7*.report.json"))
+    saved = load_json(report)
+    saved["wrong_lane_teleports"]["other"] = ["v lane 900"]
+    report.write_text(json.dumps(saved))
+    saved_ranking, _, cells = ranking.rank(grid)
+    assert [c["counts"] for c in cells] == [True, False] and "P1" in cells[1]["why_not"]
+    assert saved_ranking["first"] is None                                # 1 of 2 cells does not count: over 10%
+    assert all(v == "not stated: 1 of 2 cells do not count" for v in saved_ranking["verdicts"])
+
+
+def test_a_cell_without_results_is_reported_and_nothing_is_ranked(evaluate_plans, plans, tmp_path):
+    from src.evaluator import ranking
+    grid, _ = ranking_grid(tmp_path, plans, evaluate_plans, {"P1": 0.5, "P2": 0.25})
+    (tmp_path / "results" / "runs" / "mock_P2_c50_t5_mock-seed7_mock-plans.json").unlink()
+    saved_ranking, pending, cells = ranking.rank(grid)
+    assert saved_ranking is None and len(pending) == 1 and "seed7" in pending[0] and len(cells) == 1
 
 
 # --- speed signs and the rehearsal plans -------------------------------------------------
@@ -1186,3 +1282,28 @@ def test_a_reopening_stage_can_hold_the_open_lane_at_the_passing_speed(tmp_path)
     assert scenarios.scene_speeds(scenario, 5, 720) == (72, 72)           # both lanes, full speed
     plain, _ = full_scenario(tmp_path)
     assert scenarios.scene_speeds(plain, 5, 600) == (72, 18)              # without edge_kmh: as before
+
+
+def ranking_cell(p0, p1, p2, counts=True):
+    return {"total_vehicle_hours_delay": {"P0": p0, "P1": p1, "P2": p2}, "counts": counts}
+
+
+def test_a_plan_is_before_another_only_if_the_95_percent_interval_of_the_paired_difference_excludes_zero():
+    from src.evaluator import ranking
+    cells = [ranking_cell(100, 101, 97), ranking_cell(110, 109, 106.7), ranking_cell(90, 91, 86.4),
+             ranking_cell(105, 104, 102.9), ranking_cell(95, 96, 93.1)]
+    pairs, first = ranking.orders(cells)
+    by = {(p["a"], p["b"]): p for p in pairs}
+    assert by[("P0", "P1")]["verdict"] == "P0 and P1 tie"            # about -1, +1, -1, +1, -1 %: holds zero
+    assert by[("P0", "P2")]["verdict"] == "P2 before P0" and by[("P0", "P2")]["interval_pct"][0] > 0
+    assert by[("P0", "P2")]["mean_difference_pct"] == pytest.approx(2.8, abs=0.01)   # P0 - P2: 3, 3, 4, 2, 2 %
+    assert by[("P1", "P2")]["verdict"] == "P2 before P1" and first == "P2"
+    assert ranking.t95(4) == 2.776 and ranking.t95(13) == 2.179 and ranking.t95(500) == 1.980
+
+
+def test_no_order_is_stated_when_more_than_a_tenth_of_the_cells_do_not_count():
+    from src.evaluator import ranking
+    good, bad = [ranking_cell(100, 90, 80)] * 9, ranking_cell(100, 120, 130, counts=False)
+    assert ranking.orders(good + [bad])[1] == "P2"                   # 1 of 10 left out, and its delays are not used
+    pairs, first = ranking.orders(good[:8] + [bad, bad])
+    assert first is None and pairs[0]["verdict"] == "not stated: 2 of 10 cells do not count"

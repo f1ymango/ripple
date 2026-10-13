@@ -203,6 +203,40 @@ they are the ethics slide.
 
 `validation` is populated only for the **baseline** run (`P0` against reality).
 
+**Version 2 of `validation` (agreed by the team, 13 Oct 2026).** E writes
+three more fields, and `speed_mape_pct` stays as the whole-run figure for
+information:
+
+```json
+"validation": {"geh_under_5_pct": 93.52, "speed_mape_pct": 24.83,
+               "speed_mape_free_flow_pct": 12.99, "congestion_state_agreement_pct": 93.27,
+               "wrong_lane_teleports_not_at_lane_shut": 0}
+```
+
+A block with `speed_mape_free_flow_pct` is judged by the version 2 targets in
+§4; a block without it by the original targets. E, F and the console share one
+rule, `src/validation_targets.py`. Older results keep their version 1 block.
+
+### Plan ranking — E → F (agreed by the team, 13 Oct 2026)
+
+`python -m src.evaluator.ranking --grid <grid file>` reads a plan set's P0, P1
+and P2 results in every cell of a grid (one cell = one scenario, compliance
+and clearance; the grid file lists the cells and why they vary) and writes
+`results/rankings/<plan set>.json` once. Its fields: `plan_set`,
+`incident_id`, `rule`, `cells` (each with `run_ids` and
+`total_vehicle_hours_delay` per plan, and whether it counts), `pairs` (each
+pair's mean paired difference, 95% interval and `verdict`), `verdicts` and
+`first` (the plan before both others, or `null`).
+
+A cell counts if its P0 meets the validation targets and none of its runs had a
+wrong-lane teleport other than at a lane shutting; no order is stated if more
+than 10% of cells do not count. For plans A and B, each counting cell gives
+(A delay − B delay) / P0 delay. **A before B** if the 95% confidence interval of
+the mean lies wholly below zero, **B before A** if wholly above, otherwise a
+**tie**. With a version 2 baseline, F recommends the lowest-delay plan only if
+the ranking's `first` is that plan and the compared runs are one of its cells;
+otherwise it recommends nothing.
+
 ### Result provenance sidecar — E → F (approved by Lead, 30 Sep)
 
 For every `results/runs/<run_id>.json`, E also writes
@@ -290,6 +324,22 @@ This is a *product feature* (accountability) and an *ethics slide*, for free.
 - **GEH < 5 for ≥ 85% of detector counts** in the pre-incident hour.
   `GEH = sqrt( 2·(M−C)² / (M+C) )`, M = modelled, C = counted.
 - Speed MAPE ≤ ~15% on 5-minute bins across corridor detectors.
+
+**Version 2 (agreed by the team, 13 Oct 2026; `src/validation_targets.py`).**
+The corridor's detectors miss many vehicles in traffic under 30 km/h
+(`results/data/count-bias_AID01106_AID01107.md`), and a speed error over
+crawling bins can only be met by writing the measured speed into the model,
+which would also cap its flow (`docs/evaluator-replay-v3-2026-10-13.md`). So:
+
+- **GEH < 5 for ≥ 85% of count bins**, with counts measured under 30 km/h left
+  out of the detector data.
+- **Speed MAPE ≤ 15% over bins measured at 30 km/h or more.**
+- **Congested or not (under 30 km/h): model and detector agree in ≥ 85% of
+  speed bins.**
+- **No wrong-lane teleport** except of a driver stuck from the moment a lane
+  shut (its wait began within 60 s after the lane shut). Any other fails the
+  run, P0 or plan.
+- The whole-run speed MAPE is still reported, for information.
 
 If we miss these, **say so and report the real number.** An honest 72% with an
 explanation beats a claimed 95% a judge can poke.

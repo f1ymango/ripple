@@ -698,8 +698,10 @@ def show_plan_comparison() -> dict | None:
     winner_id = winner["plan_id"]
     winner_label = comparison["plans"].get(winner_id, {}).get(
         "label", "Do nothing" if winner_id == "P0" else winner_id)
+    cells = comparison.get("ranking_cells")
     st.success(f"Recommended operator response: {winner_label} ({winner_id}). "
-               "Lowest simulated total delay among these validated runs.")
+               + (f"Lower simulated total delay than each other plan over a grid of {cells} seeds and "
+                  "assumptions (95% confidence)." if cells else "Lowest simulated total delay among these validated runs."))
     st.caption(f"Plan results for {chosen_incident} are simulated with the same "
                "compliance, clearance and seed. The map above shows the selected "
                "recorded detector window.")

@@ -7,16 +7,22 @@ more traffic look better.
 """
 import json
 import math
+import re
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+from src import validation_targets as targets
 from src.evaluator.behaviour import LEFT_FILE
 from src.evaluator.scenario import BIN_SECONDS
 from src.twin.common import ROOT
 
 QUEUE_JOIN_GAP_M = 10.0     # a lane's queue reaches the next edge upstream if it ends this close to the lane start
+TELEPORT_AFTER_SECONDS = 300    # SUMO's default --time-to-teleport; simulate.py does not change it
+AT_LANE_SHUT_SECONDS = 60       # a wrong-lane wait that began this soon after a lane shut is caused by the shutting
+WRONG_LANE_TELEPORT = re.compile(r"Teleporting vehicle '([^']+)'; waited too long \(wrong lane\), "
+                                 r"lane='([^']+)', time=(\d+(?:\.\d+)?)")
 DEFINITIONS = {
     "total_vehicle_hours_delay": "Sum over in-scope vehicles of SUMO timeLoss (time lost against each "
                                  "vehicle's own free speed) plus departDelay (time waiting to enter), up to the end of the run. "
@@ -42,7 +48,11 @@ DEFINITIONS = {
     "vehicles_completed": "In-scope vehicles that finished their trip in the network before the run ended. "
                           "A vehicle that left the corridor because of the queue did not.",
     "validation": "src/twin/evaluate.py, unchanged, over every observed bin after the warm-up (P0 only), "
-                  "rounded to two decimals towards failing.",
+                  "rounded to two decimals towards failing. speed_mape_free_flow_pct uses only speed bins the "
+                  "detector measured at 30 km/h or more; congestion_state_agreement_pct is the share of speed bins "
+                  "where model and detector are on the same side of 30 km/h; "
+                  "wrong_lane_teleports_not_at_lane_shut counts SUMO wrong-lane teleports whose wait did not begin "
+                  "within 60 seconds after a lane shut (src/validation_targets.py).",
 }
 
 
@@ -212,10 +222,48 @@ def compute(scenario, files, work, net):
     return metrics, detail
 
 
-def validation(evaluation):
-    """The two contract fields, rounded so that rounding can never turn a miss into a pass."""
+def validation(evaluation, wrong_lane_not_at_lane_shut):
+    """The contract's validation block, version 2 (src/validation_targets.py).
+
+    Rounded so that rounding can never turn a miss into a pass. The speed
+    error over free-flow bins uses only bins the detector measured at 30 km/h
+    or more; congestion-state agreement is the share of speed bins where model
+    and detector are on the same side of 30 km/h.
+    """
+    rows = evaluation["speed_bins"]
+    free = [r["absolute_percentage_error"] for r in rows if r["observed_kmh"] >= targets.CONGESTED_KMH]
+    agree = sum((r["observed_kmh"] < targets.CONGESTED_KMH) == (r["simulated_kmh"] < targets.CONGESTED_KMH)
+                for r in rows)
+    if not free or not rows:
+        raise ValueError("No speed bin to validate against; the detector data has no measured speed")
     return {"geh_under_5_pct": math.floor(evaluation["geh_under_5_percent"] * 100) / 100,
-            "speed_mape_pct": math.ceil(evaluation["speed_mape_percent"] * 100) / 100}
+            "speed_mape_pct": math.ceil(evaluation["speed_mape_percent"] * 100) / 100,
+            "speed_mape_free_flow_pct": math.ceil(sum(free) / len(free) * 100) / 100,
+            "congestion_state_agreement_pct": math.floor(10000 * agree / len(rows)) / 100,
+            "wrong_lane_teleports_not_at_lane_shut": len(wrong_lane_not_at_lane_shut)}
+
+
+def wrong_lane_teleports(log_text, closure_steps):
+    """SUMO's wrong-lane teleports split into (stuck from the moment a lane shut, every other one).
+
+    SUMO teleports a vehicle that has stood still for TELEPORT_AFTER_SECONDS,
+    so its wait began that long before the teleport. A wait that began within
+    AT_LANE_SHUT_SECONDS after a lane shut is a driver caught in that lane
+    when it closed; any other wrong-lane teleport means the model left a driver
+    unable to reach its lane. Each entry is 'vehicle lane second'.
+    """
+    shut, closed = [], set()
+    for step in closure_steps:
+        now = set(step["lanes_closed"])
+        if now - closed:
+            shut.append(step["second"])
+        closed = now
+    at_shut, other = [], []
+    for vehicle, lane, second in WRONG_LANE_TELEPORT.findall(log_text):
+        began = float(second) - TELEPORT_AFTER_SECONDS
+        entry = f"{vehicle} {lane} {float(second):g}"
+        (at_shut if any(s <= began <= s + AT_LANE_SHUT_SECONDS for s in shut) else other).append(entry)
+    return at_shut, other
 
 
 def speed_error_by_source(evaluation, assessed):

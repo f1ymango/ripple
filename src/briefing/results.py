@@ -1,6 +1,13 @@
-"""Read saved E results, require comparable runs, and rank by total delay."""
+"""Read saved E results, require comparable runs, and rank by total delay.
+
+A baseline with a version 2 validation block (src/validation_targets.py) also
+needs the plan set's ranking, results/rankings/<plan set>.json from
+src/evaluator/ranking.py: the lowest-delay plan here is recommended only if the
+ranking puts it before both other plans over its grid of seeds and assumptions.
+"""
 from pathlib import Path
 
+from src import validation_targets as targets
 from src.briefing.schema import RESULT_SCHEMA
 from src.generation import load_json, validate
 from src.plans.schema import PLAN_SCHEMA
@@ -20,7 +27,39 @@ def load_results(paths, root=Path("results/runs")):
     return artifacts
 
 
-def select(plans, artifacts):
+def plan_set_of(run_id):
+    """The plan set a run_id names last: ..._<scenario label>_<plan set>."""
+    return run_id.rsplit("_", 1)[-1]
+
+
+def load_ranking(run_id, root=Path("results/rankings")):
+    """The saved ranking of the run's plan set, or None if there is none."""
+    path = Path(root) / f"{plan_set_of(run_id)}.json"
+    return load_json(path) if path.is_file() else None
+
+
+def check_ranking(ranking, runs, winner):
+    """Refuse a winner the plan set's ranking over its grid does not back, for exactly these runs."""
+    if ranking is None:
+        raise ValueError("No ranking for this plan set in results/rankings/; run src.evaluator.ranking")
+    baseline = runs["P0"]
+    if ranking.get("plan_set") != plan_set_of(baseline["run_id"]) or ranking.get("incident_id") != baseline["incident_id"]:
+        raise ValueError("The ranking is for another plan set or incident")
+    ids = {pid: r["run_id"] for pid, r in runs.items()}
+    cell = next((c for c in ranking.get("cells", []) if c.get("run_ids") == ids), None)
+    if cell is None:
+        raise ValueError("These runs are not a cell of the plan set's ranking")
+    if cell.get("total_vehicle_hours_delay") != {pid: r["metrics"]["total_vehicle_hours_delay"] for pid, r in runs.items()}:
+        raise ValueError("The ranking's delays differ from these results")
+    first = ranking.get("first")
+    if first is None:
+        raise ValueError("The plan set's ranking puts no plan before both others (" + "; ".join(ranking.get(
+            "verdicts", [])) + "); no plan can be recommended")
+    if first != winner["plan_id"]:
+        raise ValueError("The ranking and these runs disagree on the lowest-delay plan")
+
+
+def select(plans, artifacts, ranking=None):
     for plan in plans:
         validate(plan, PLAN_SCHEMA)
         if plan["constraints_checked"] != CHECKS:
@@ -46,10 +85,12 @@ def select(plans, artifacts):
            for r in runs.values()):
         raise ValueError("Compared runs must share incident, compliance, clearance and seed")
     validation = baseline.get("validation")
-    if (not validation or validation["geh_under_5_pct"] < 85
-            or validation["speed_mape_pct"] > 15):
-        raise ValueError("Baseline has not met the documented validation targets")
+    met, reason = targets.check(validation)
+    if not met:
+        raise ValueError(f"Baseline has not met the documented validation targets: {reason}")
     if baseline["metrics"]["delay_vs_do_nothing_pct"] != 0:
         raise ValueError("P0 delay versus itself must be zero")
     winner = min(runs.values(), key=lambda r: (r["metrics"]["total_vehicle_hours_delay"], r["plan_id"]))
+    if targets.is_version_2(validation):
+        check_ranking(ranking, runs, winner)
     return by_plan[winner["plan_id"]], winner, baseline, sorted(sources)
