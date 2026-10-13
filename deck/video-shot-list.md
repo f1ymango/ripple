@@ -1,5 +1,27 @@
 # Observed incident demo — video shot list
 
+## 13 October revision decision
+
+The local 88.6-second archived rehearsal (kept outside Git and intended for
+group-chat review) captures useful screens but is **not approved for submission**. Rorath found
+the stitched synthetic voice incoherent and the story too dependent on open
+Data/Simulation/Lead evidence. Preserve the observed map and recorded Reader
+pickups. Treat the retrospective D cards and mock approval as separate backup
+footage, not the main narrative.
+
+Choose the final ending after Lead's scope decision. If a single incident P0
+and comparable Lead-plan runs are jointly accepted, show their exact
+result-backed comparison and an operator decision. If they are not accepted,
+end with the observed incident and recorded Reader; say that evaluated route
+benefits are not measured. Do not turn fixture figures into incident results.
+
+Write one short, connected voiceover for the chosen sequence, then record it
+with the new capture/audio tools. Re-time captions against that track rather
+than assembling separate text-to-speech sentences. Review map legibility,
+sound continuity, evidence labels and attribution before export.
+
+## Historical 12 October cut
+
 Owner: Visuals. Updated 12 October against the existing 92.6-second silent rough
 cut. This follows the approved [9 October observed-playback scope](../docs/04-plan.md).
 The recording is local, separate from Git. This table describes the shots

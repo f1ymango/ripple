@@ -1,4 +1,6 @@
 """Compact map annotations for the sourced May incident; no exact crash geocode."""
+import base64
+from html import escape
 import math
 
 import pydeck as pdk
@@ -50,38 +52,46 @@ def annotation(message, cleared, geometry):
         title, when, colour = "Clearance reported", cleared, [42, 120, 214]
     else:
         text = message.english.casefold()
-        title = ("All lanes reported closed" if "all lanes" in text else
-                 "Partial lane closure reported" if "part of the lanes" in text else
-                 "Traffic accident reported")
+        title = ("All lanes closed" if "all lanes" in text else
+                 "Partial closure" if "part of the lanes" in text else
+                 "Traffic accident")
         when, colour = message.published, [202, 89, 20]
     return {**area, "colour": colour, "arrow": "↓",
-            "label": f"{title}\nWCH flyover · near Yip Kan St\nTD {when:%H:%M} · Approx. location",
-            "tooltip": f"{message.incident_id} · archived TD report\n"
-                       f"Approximate reported area on SUMO edge {area['edge_id']}; "
-                       "not an exact crash coordinate.\n"
-                       + ("TD reported clearance; earlier closure text is historical.\n" if cleared else "")
-                       + message.english + "\n" + message.chinese}
+            "label": f"{title}\nTD report · {when:%H:%M}\nApprox. location",
+            "tooltip": f"{title}\nTD report · {when:%H:%M} HKT\n"
+                       "WCH flyover, near Yip Kan St\n"
+                       "Approximate location\n"
+                       "Full report in source card below."}
 
 
 def layers(item):
-    """All elements share a geographic anchor, so the arrow follows pan/zoom."""
-    data = [item]
+    """Draw text, padded box and arrow together to keep their bounds aligned."""
+    colour = "rgb(" + ",".join(str(c) for c in item["colour"]) + ")"
+    lines = item["label"].splitlines()
+    text = "".join(
+        f'<text x="92" y="{22 + i * 21}">{escape(line)}</text>'
+        for i, line in enumerate(lines))
+    # One image gives the text fixed padding inside its box, without separate
+    # glyph and background measurements after resizing.
+    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="184" height="106" '
+           f'viewBox="0 0 184 106"><rect x="1" y="1" width="182" height="75" '
+           f'rx="5" fill="white" fill-opacity="0.98" stroke="{colour}" '
+           f'stroke-width="2"/><g font-family="Arial, sans-serif" font-size="14" '
+           f'fill="#283242" text-anchor="middle">{text}</g>'
+           f'<path d="M92 77V100 M86 94L92 102L98 94" fill="none" '
+           f'stroke="{colour}" stroke-width="2" stroke-linecap="round" '
+           f'stroke-linejoin="round"/></svg>')
+    icon = {"url": "data:image/svg+xml;base64," + base64.b64encode(
+                svg.encode("utf-8")).decode("ascii"),
+            "width": 184, "height": 106, "anchorX": 92, "anchorY": 106,
+            "mask": False}
+    data = [{**item, "icon": icon}]
     return [
         pdk.Layer("ScatterplotLayer", id="incident-location", data=data,
                   get_position="position", get_fill_color="colour", get_radius=1,
                   radius_min_pixels=5, stroked=True, get_line_color=[255, 255, 255],
                   line_width_min_pixels=2, pickable=True),
-        pdk.Layer("TextLayer", id="incident-arrow", data=data,
-                  get_position="position", get_text="arrow", get_size=30,
-                  font_family='"Arial"', character_set='"auto"',
-                  get_color="colour", get_pixel_offset=[0, -19],
-                  get_text_anchor='"middle"', get_alignment_baseline='"center"'),
-        pdk.Layer("TextLayer", id="incident-callout", data=data,
-                  get_position="position", get_text="label", get_size=12,
-                  font_family='"Arial"', character_set='"auto"',
-                  get_color=[40, 50, 66], get_pixel_offset=[0, -40],
-                  get_text_anchor='"middle"', get_alignment_baseline='"bottom"',
-                  background=True, get_background_color=[255, 255, 255, 248],
-                  background_padding=[10, 7], get_border_color="colour",
-                  get_border_width=1, border_radius=6, pickable=True),
+        pdk.Layer("IconLayer", id="incident-callout", data=data,
+                  get_position="position", get_icon="icon", get_size=106,
+                  size_units='"pixels"', billboard=True, pickable=True),
     ]

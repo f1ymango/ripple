@@ -60,10 +60,10 @@ def test_callout_uses_named_eastbound_road_and_reports_approximation(messages):
     assert point["edge_id"] == "mock_eastbound"
     assert point["position"] == pytest.approx([114.165, 22.25])
     partial = incident_callout.annotation(messages[0], None, geometry)
-    assert "Partial lane closure reported" in partial["label"]
+    assert "Partial closure" in partial["label"]
     assert "Approx. location" in partial["label"]
     latest = incident_callout.annotation(messages[-1], None, geometry)
-    assert "All lanes reported closed" in latest["label"]
+    assert "All lanes closed" in latest["label"]
     cleared = incident_callout.annotation(messages[-1], playback.local_time("2026-05-15T10:02:00+08:00"), geometry)
     assert "Clearance reported" in cleared["label"]
     assert "closed" not in cleared["label"]
@@ -103,10 +103,13 @@ app.show_incident_card(messages, "2026-05-15T" + cursor + ":00+08:00", markers)
     at = AppTest.from_string(script).run()
     assert not at.exception
     assert not at.text
+    assert not at.code
+    assert not at.json
     assert "Later message text is withheld" in " ".join(c.value for c in at.caption)
     at.selectbox[0].select("09:40").run()
     assert not at.exception
     assert "全線現已封閉" in " ".join(t.value for t in at.text)
+    assert '["all"]' in [c.value for c in at.code]
     at.selectbox[0].select("10:05").run()
     assert "TD clearance report · 10:02" in " ".join(i.value for i in at.info)
     at.selectbox[0].select("09:05").run()
@@ -114,3 +117,10 @@ app.show_incident_card(messages, "2026-05-15T" + cursor + ":00+08:00", markers)
     assert not at.info
     assert "part of the lanes" in " ".join(t.value for t in at.text)
     assert "全線現已封閉" not in " ".join(t.value for t in at.text)
+    assert '["unspecified"]' in [c.value for c in at.code]
+    assert '["all"]' not in [c.value for c in at.code]
+    assert "not a live model call" in " ".join(c.value for c in at.caption)
+    assert "The road name includes the direction in parentheses." in " ".join(c.value for c in at.caption)
+    at.selectbox[0].select("09:00").run()
+    assert not at.code
+    assert not at.json

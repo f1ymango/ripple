@@ -46,6 +46,19 @@ The focused Windows CI job runs real Streamlit startup, approval/rejection,
 UTF-8 audit and competing-process locking tests with named mock artifacts.
 Synthetic traffic fixtures remain under `tests/fixtures/mock_recommendation/`.
 
+## Synthetic approval rehearsal
+
+Run `streamlit run src/console/fixture_demo.py --server.port 8505` to show the
+briefing and audit controls with the existing mock P0/P1/P2 bundle. A persistent
+purple badge and warning identify the fixture throughout the screen recording.
+The helper copies the source fixtures verbatim to the ignored
+`tests/fixtures/mock_operator_capture/` directory; the contract-required
+`generation-inputs.json` basename is kept inside that mock directory. It writes
+its audit only to `mock_audit_log.jsonl` there. The helper preserves any
+existing copied artifacts, so a changed result continues to fail validation
+instead of being silently refreshed. The rehearsal never writes a real result,
+briefing or audit record and never calls a model or simulator.
+
 ## Trajectory replay deferred
 
 PR #41 excludes the trajectory renderer and GIF display. Hashing an FCD file

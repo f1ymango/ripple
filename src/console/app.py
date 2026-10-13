@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import glob
 import hashlib
+import json
 import math
 import os
 import re
@@ -51,7 +52,7 @@ import pandas as pd
 import pydeck as pdk
 import streamlit as st
 
-from src.console import incident_callout, incident_playback, operator_workflow, recommendation, road_geometry
+from src.console import incident_callout, incident_playback, operator_workflow, reader_evidence, recommendation, recorded_plans, road_geometry
 
 # Tests point this at a fixture directory; everything else reads the real data/.
 DATA_DIR = Path(os.environ.get("RIPPLE_DATA_DIR") or ROOT / "data")
@@ -62,6 +63,8 @@ RESULTS_DIR = Path(os.environ.get("RIPPLE_RESULTS_DIR") or ROOT / "results" / "r
 PLANS_DIR = Path(os.environ.get("RIPPLE_PLANS_DIR") or ROOT / "results" / "plans")
 BRIEFINGS_DIR = Path(os.environ.get("RIPPLE_BRIEFINGS_DIR") or ROOT / "data" / "generated-briefings")
 AUDIT_PATH = Path(os.environ.get("RIPPLE_AUDIT_LOG") or ROOT / "evidence" / "audit_log.jsonl")
+READER_OUTPUT = ROOT / "results" / "reader" / "2026-09-29T1608_qwen3-8b.jsonl"
+READER_LOG = ROOT / "evidence" / "ai-log" / "2026-09-29.jsonl"
 
 # The loader names its exports ..._b<width>[_cov<threshold>].csv. The `5min` in
 # the stem is stale whenever --bin-minutes was not 5; the width and the filter
@@ -296,7 +299,7 @@ def playback_index(bins: list[str], width: int | None) -> int:
 
     # Callbacks update state before Streamlit draws the page, so stopping by
     # any control immediately restores Play instead of leaving a stale Pause.
-    back, play, forward, rewind, _ = st.columns([1, 1, 1, 1, 6])
+    back, play, forward, rewind = st.columns(4)
     back.button("◀", help="one bin back", use_container_width=True,
                 on_click=_seek_playback, args=(max(0, index - 1),))
     play.button("⏸" if playing else "▶",
@@ -441,18 +444,52 @@ def show_incident_card(messages: list[incident_playback.Message], current_bin: s
                     "Earlier message text below is historical; it does not describe current lane status.")
         st.caption(f"Published {message.published:%d %b %Y · %H:%M} HKT · "
                    "TD source text · retrospective playback")
-        english, chinese = st.columns(2)
-        with english:
-            st.markdown("**English**")
+        source, extraction = st.columns([1.2, 1])
+        with source:
+            st.markdown("**Archived bilingual source**")
             st.text(message.english or "English source text unavailable.")
-        with chinese:
-            st.markdown("**繁體中文**")
             st.text(message.chinese or "Chinese source text unavailable.")
+        with extraction:
+            show_reader_evidence(message)
         st.caption("Publication time does not establish the exact physical closure time "
                    "or when an operator received the message.")
         with st.expander("Message source"):
             st.text(f"demo_incident_messages.jsonl · message {message.message_id}\n"
                     f"Feed: {message.source_feed} · archive snapshot: {message.archive_time}")
+
+
+def show_reader_evidence(message: incident_playback.Message) -> None:
+    """Show the saved extraction for this published message, independently of E/F."""
+    st.markdown("**Saved Reader extraction**")
+    try:
+        record = reader_evidence.read(message, DATA_DIR / "demo_incident_messages.jsonl",
+                                      READER_OUTPUT, READER_LOG)
+    except (OSError, UnicodeError, ValueError, KeyError, TypeError,
+            AttributeError, jsonschema.ValidationError) as exc:
+        st.warning(f"Recorded Reader evidence unavailable: {exc}")
+        return
+    if record is None:
+        st.caption("No matching recorded extraction. Archived TD text remains available.")
+        return
+    incident = record["incident"]
+    st.caption(f"Recorded {record['model']} inference — not a live model call.")
+    fields = (("Road", "road_name"), ("Direction", "direction"),
+              ("Landmark", "near_landmark"), ("Type", "incident_type"))
+    st.markdown("  \n".join(f"**{label}:** {incident[field] or 'Not stated'}"
+                             for label, field in fields))
+    st.markdown("**Closed lanes**")
+    st.code(json.dumps(incident["lanes_closed"]), language="json")
+    st.caption(f"Model confidence (self reported): {incident['confidence']}")
+    if incident["notes"]:
+        st.caption(f"Saved model note: {incident['notes']}")
+    if message.message_id == "138270":
+        st.caption("Known limitation: the saved note overdescribes the direction bracket. "
+                   "Original output is retained.")
+    with st.expander("Reader JSON and call source"):
+        st.json(incident)
+        st.caption(f"Call: {record['timestamp']} · model: {record['model']}")
+        st.text(f"{READER_OUTPUT.relative_to(ROOT).as_posix()}\n"
+                f"{READER_LOG.relative_to(ROOT).as_posix()}")
 
 
 def timeline_chart(timeline: pd.DataFrame, current_bin: str,
@@ -549,7 +586,10 @@ def build_map(detectors: pd.DataFrame, roads: list[dict] | None = None,
     tooltip = {
         "text": "{tooltip}",
         "style": {"backgroundColor": "#111", "color": "white",
-                  "padding": "6px 8px"},
+                  "padding": "8px 10px", "maxWidth": "min(240px, 60vw)",
+                  "whiteSpace": "pre-wrap", "overflowWrap": "anywhere",
+                  "fontSize": "13px", "lineHeight": "1.4",
+                  "boxSizing": "border-box"},
     }
     layers = []
     if roads:
@@ -616,18 +656,18 @@ def headline(detectors: pd.DataFrame) -> None:
     c1, c2, c3, c4 = st.columns(4)
     if known.empty:
         c1.metric("Mean speed", "—")
-        c2.metric("Slowest detector", "—")
-        c3.metric("Congested detectors", "—")
+        c2.metric("Slowest speed", "—")
+        c3.metric("Congested", "—")
     else:
         slowest = known.loc[known["speed_kmh"].idxmin()]
         congested = int((known["speed_kmh"] <= CONGESTED_KMH).sum())
-        c1.metric("Mean corridor speed", f"{known['speed_kmh'].mean():.0f} km/h")
-        c2.metric(f"Slowest · {slowest['detector_id']}",
+        c1.metric("Mean speed", f"{known['speed_kmh'].mean():.0f} km/h")
+        c2.metric("Slowest speed",
                   f"{slowest['speed_kmh']:.0f} km/h",
-                  help=slowest["road_en"])
-        c3.metric(f"Congested (≤ {CONGESTED_KMH:.0f} km/h)",
-                  f"{congested} of {len(known)}")
-    c4.metric("Reporting no vehicle", f"{empty} of {len(detectors)}",
+                  help=f"{slowest['detector_id']} · {slowest['road_en']}")
+        c3.metric("Congested", f"{congested} of {len(known)}",
+                  help=f"Reporting detectors at or below {CONGESTED_KMH:.0f} km/h.")
+    c4.metric("No vehicles", f"{empty} of {len(detectors)}",
               help="The loop reported for this bin and counted nobody: an empty "
                    "road, not a missing reading.")
 
@@ -646,17 +686,18 @@ def colour_legend() -> None:
     )
 
 
-def show_plan_comparison() -> dict | None:
+def show_plan_comparison(results_dir: Path = RESULTS_DIR,
+                         plans_dir: Path = PLANS_DIR) -> dict | None:
     """Show only complete, validated simulator comparisons from the contracts."""
     st.subheader("Simulation plan comparison")
-    results, result_errors = recommendation.read_objects(RESULTS_DIR)
-    plans, plan_errors = recommendation.read_objects(PLANS_DIR)
+    results, result_errors = recommendation.read_objects(results_dir)
+    plans, plan_errors = recommendation.read_objects(plans_dir)
     for error in result_errors + plan_errors:
         st.warning(f"Cannot read simulation input: {error}")
     if result_errors or plan_errors:
         return
     if not results:
-        st.caption("No completed plan runs in results/runs/ yet. The map above is "
+        st.caption("No completed plan runs in results/runs/ yet. The playback map is "
                    "recorded detector data; it is not a route recommendation.")
         return
     incidents = sorted({r.get("incident_id") for r in results
@@ -674,7 +715,7 @@ def show_plan_comparison() -> dict | None:
     key = st.selectbox("Simulation assumption", scenarios,
                        format_func=lambda s: f"{s[0]:.0%} compliance · "
                                              f"{s[1]:g} min clearance · seed {s[2]}")
-    comparison, reason = recommendation.load_comparison(RESULTS_DIR, PLANS_DIR,
+    comparison, reason = recommendation.load_comparison(results_dir, plans_dir,
                                                        chosen_incident, key)
     if comparison is None:
         st.warning(f"Recommendation unavailable: {reason}")
@@ -701,19 +742,23 @@ def show_plan_comparison() -> dict | None:
     st.success(f"Recommended operator response: {winner_label} ({winner_id}). "
                "Lowest simulated total delay among these validated runs.")
     st.caption(f"Plan results for {chosen_incident} are simulated with the same "
-               "compliance, clearance and seed. The map above shows the selected "
+               "compliance, clearance and seed. The playback map shows the selected "
                "recorded detector window.")
     return comparison
 
 
-def show_operator_briefing(comparison: dict | None) -> None:
+def show_operator_briefing(comparison: dict | None, *,
+                           results_dir: Path = RESULTS_DIR,
+                           plans_dir: Path = PLANS_DIR,
+                           briefings_dir: Path = BRIEFINGS_DIR,
+                           audit_path: Path = AUDIT_PATH) -> None:
     st.subheader("Operator briefing and decision")
     if comparison is None:
         st.caption("Waiting for a validated plan comparison and its saved briefing.")
         st.button("Record approval", disabled=True)
         st.button("Record rejection", disabled=True)
         return
-    drafts, errors = recommendation.read_artifacts(BRIEFINGS_DIR)
+    drafts, errors = recommendation.read_artifacts(briefings_dir)
     for error in errors:
         st.warning(f"Cannot read briefing: {error}")
     matching = [path for path, draft in drafts
@@ -757,16 +802,16 @@ def show_operator_briefing(comparison: dict | None) -> None:
     try:
         if not st.session_state.get(viewed):
             operator_workflow.record_decision(
-                results_dir=RESULTS_DIR, plans_dir=PLANS_DIR, briefing_path=path,
+                results_dir=results_dir, plans_dir=plans_dir, briefing_path=path,
                 incident_id=comparison["incident_id"], scenario=comparison["scenario"],
-                displayed_key=shown_key, audit_path=AUDIT_PATH, action="viewed",
+                displayed_key=shown_key, audit_path=audit_path, action="viewed",
                 operator=operator, note="Viewed saved briefing and comparison.")
             st.session_state[viewed] = True
         if decision:
             operator_workflow.record_decision(
-                results_dir=RESULTS_DIR, plans_dir=PLANS_DIR, briefing_path=path,
+                results_dir=results_dir, plans_dir=plans_dir, briefing_path=path,
                 incident_id=comparison["incident_id"], scenario=comparison["scenario"],
-                displayed_key=shown_key, audit_path=AUDIT_PATH, action=decision,
+                displayed_key=shown_key, audit_path=audit_path, action=decision,
                 operator=operator, note=note)
             st.success(f"Operator decision recorded: {decision}.")
     except (OSError, ValueError, jsonschema.ValidationError) as exc:
@@ -775,6 +820,12 @@ def show_operator_briefing(comparison: dict | None) -> None:
 
 def main() -> None:
     st.set_page_config(page_title="Ripple — Aberdeen corridor", layout="wide")
+    st.markdown("""<style>
+      .block-container {padding-top: 1.5rem;}
+      h1 {font-size: 2rem;}
+      [data-testid="stMetricValue"] {font-size: 1.8rem;}
+      [data-testid="stMetricLabel"] p {white-space: normal;}
+    </style>""", unsafe_allow_html=True)
     st.title("Ripple — Aberdeen corridor")
     st.caption("Operator console · archived traffic observations")
 
@@ -813,7 +864,9 @@ def main() -> None:
             )
         else:
             n_bins = len(bins)
-            index = playback_index(bins, bin_minutes(frame))
+            with st.sidebar:
+                st.caption("Playback · Hong Kong time")
+                index = playback_index(bins, bin_minutes(frame))
             current_bin = bins[index]
             window = frame[frame["bin_start"] == current_bin].set_index("detector_id")
             for column in ("speed_kmh", "state", "volume_observed", "coverage_pct"):
@@ -836,14 +889,8 @@ def main() -> None:
         if selected_time is not None:
             st.markdown(f"**Archived observations · {selected_time:%d %b %Y} · "
                         f"{selected_time:%H:%M} HKT**")
-        st.caption("Cursor shows the bin start; detector readings summarize the selected bin. "
-                   "Coverage is partial. Missing readings and zero recorded vehicles are distinct.")
-    headline(detectors)
-    colour_legend()
+        st.caption("Cursor is bin start; readings summarize the bin. Coverage is partial.")
     roads, focus_roads = road_preview_controls()
-    if roads:
-        st.caption("Road network · blue: main corridor · purple: alternative roads · "
-                   "grey: other roads. Geometry only, not route advice.")
     messages, day_reports, markers, selected_incident = [], None, None, None
     if timeline is not None and current_bin is not None:
         archived, archive_errors = incident_playback.read_messages(
@@ -881,25 +928,37 @@ def main() -> None:
                 incident = None
         if message and incident is None:
             st.caption("Incident location unavailable on this map; source details are below.")
-    st.pydeck_chart(build_map(detectors, roads, focus_roads, incident))
-
-    if timeline is not None and current_bin is not None:
-        st.caption("Full archived window · orange markers are TD report times, "
-                   "not inferred physical closure times.")
-        chart = timeline_chart(timeline, current_bin, markers)
-        if chart is not None:
-            st.altair_chart(chart, use_container_width=True)
-        if markers.empty:
-            st.caption(
-                "No incident times drawn: run `python -m src.loaders.fetch "
-                "incidents --start <day> --end <day>` to mark what TD said, and when."
-            )
-        show_incident_card(messages, current_bin, day_reports, selected_incident)
-
-    st.caption(f"{len(detectors)} detectors · data: DATA.GOV.HK / Transport Department")
-
-    comparison = show_plan_comparison()
-    show_operator_briefing(comparison)
+    playback_tab, reader_tab, draft_tab, operator_tab = st.tabs(
+        ["Incident playback", "Incident + Reader", "Recorded plan drafts", "Operator review"])
+    with playback_tab:
+        headline(detectors)
+        if roads:
+            st.caption("Road geometry · blue: corridor · purple: alternatives · grey: other roads. "
+                       "Geometry only, not route advice.")
+        st.pydeck_chart(build_map(detectors, roads, focus_roads, incident),
+                        use_container_width=True, height=460)
+        colour_legend()
+        if timeline is not None and current_bin is not None:
+            st.caption("Full archived window · orange markers are TD report times, "
+                       "not inferred physical closure times.")
+            chart = timeline_chart(timeline, current_bin, markers)
+            if chart is not None:
+                st.altair_chart(chart, use_container_width=True)
+            if markers.empty:
+                st.caption("No archived incident times available for this window.")
+        st.caption(f"{len(detectors)} detectors · data: DATA.GOV.HK / Transport Department")
+    with reader_tab:
+        if current_bin is not None:
+            show_incident_card(messages, current_bin, day_reports, selected_incident)
+        else:
+            st.caption("Choose an archived playback window to inspect its incident messages.")
+    with draft_tab:
+        published_message = (incident_playback.latest_at(messages, selected_incident, current_bin)
+                             if current_bin is not None and selected_incident else None)
+        recorded_plans.show(ROOT, published_message)
+    with operator_tab:
+        comparison = show_plan_comparison()
+        show_operator_briefing(comparison)
 
     if n_bins:
         autoplay_tick(n_bins, pace)

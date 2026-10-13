@@ -1,5 +1,49 @@
 # Visuals handover — 29 Sep 2026
 
+## Local console and video review — 13 October 2026
+
+Branch `visuals/console-demo-oct13`, based on main `9053d13`, is in the durable
+ignored checkout `work/visuals-console-oct13`. The original checkout's earlier
+drafts remain untouched. This new branch is local and has not been pushed.
+
+The map/metrics fit the checked desktop screens, the compact SVG incident
+callout retains its padding, and the shared playback controls are in the
+sidebar. Separate tabs show observed playback, time-gated saved Reader output,
+Lead's checked retrospective draft candidates, and the existing operator gate.
+No model or simulator is called. D is labelled unevaluated; original B/D
+imperfections and assumed controls remain disclosed. See the
+[updated playback guide](console-observed-playback.md) for source binding,
+review screenshots, source inventory and checks.
+
+Validation: the full suite passed with **609 tests** on macOS (one existing
+Altair deprecation warning). The Windows job includes the new evidence checks but has not run on
+this unpublished branch. Browser review covered 1280px and 1024px widths,
+partial/all-lanes/clearance states, the Reader changes, candidate labels and
+timeline. Preview runs on port 8504 using the original recorded data and the
+recovered provisional archive network; port 8503 was left alone.
+
+The ignored local `docs/video/` contains an **88.6-second MP4 review cut**
+(`console-genai-review-2026-10-13-review.mp4`) with burned captions and a
+synthetic timing voice, plus the standalone review page, caption script, both
+source clips and segment source inventory. These media files stay out of the
+console-code commit; the MP4 may be attached to the group chat for feedback.
+The original checkout also holds a
+local `console-genai-review-2026-10-13-review-pack.zip` for offline review.
+The first 72 seconds use the
+observed replay and saved B/D evidence. The last 16.6 seconds show an isolated
+synthetic approval rehearsal; its fixed purple badge stays visible and both
+viewed/approved mock audit actions share the same evidence hash. Inputs and
+audit stay under ignored `tests/fixtures/mock_operator_capture/`; real results
+and real audit files were not written. The observed-only source clip is kept
+separately. The MP4's beginning, Reader, fixture transition and audit ending
+were inspected. **Rorath's review rejected this edit for submission:** the
+synthetic speech is incoherent and the story carries too much unresolved
+evidence. Retain the captured screens as source footage. Re-record one
+continuous narration and rebuild the cut after the team's result-scope
+decision; keep the mock approval as a separate labelled capability pickup if
+used. Route recommendations and benefit claims still require joint
+incident/plan acceptance.
+
 ## Observed playback and road map — 8 October 2026
 
 The console now labels archived observations, gates bilingual TD prose on its

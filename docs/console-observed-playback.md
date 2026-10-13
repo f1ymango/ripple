@@ -58,9 +58,54 @@ The screenshot uses a provisional local OSM/SUMO network with SHA-256
 It is not a newly approved canonical network. Geometry identity alone does not
 bind a route or FCD file to an evaluated run.
 
-The map callout shows a short report summary and time; hover for bilingual
-source text or scroll to the full source card. Before the first message there
+The map callout shows a short report summary and time; hover for a compact
+location summary or open Incident + Reader for the full bilingual source. Before the first message there
 is no incident pin. Clearance changes the callout and arrow to blue.
+
+## 13 October console review
+
+The console has four views: **Incident playback**, **Incident + Reader**,
+**Recorded plan drafts** and **Operator review**. The shared playback controls sit in the sidebar and the
+selected date/time remains visible above every view.
+The map uses a single SVG for its padded incident box, text and arrow, avoiding
+separate text/background bounds. Compact metrics keep the map readable.
+
+Incident + Reader pairs the archived bilingual message with its saved
+`results/reader/2026-09-29T1608_qwen3-8b.jsonl` extraction. Code checks the
+message, original `evidence/ai-log/2026-09-29.jsonl` input/response and saved
+output before displaying it. The example follows TD publication time and
+rewinds with the selected bin; no later extraction remains visible. Missing
+or changed evidence withholds the extraction while retaining the TD source.
+This is recorded inference, not a new model call. The first saved model note's
+known direction-bracket error remains visible, and confidence is labelled as
+self reported. The view does not infer physical lane closure times.
+
+Operator review retains the existing comparison, provenance and approval
+gates. This change supplies no route recommendation or evaluated trajectory.
+Recorded plan drafts uses the same checked bundle as Lead's
+[offline B/D capture page](../evidence/demo/README.md). It preserves the
+retrospective context, the P1 title mismatch and the assumed P2 signal control.
+It is withheld before the first report and labels the candidates as unevaluated;
+it does not present them as new advice at the cursor or provide approval actions.
+
+Review captures: [map](img/console-demo-2026-10-13.png),
+[Reader](img/console-reader-2026-10-13.png),
+[draft candidates](img/console-plan-drafts-2026-10-13.png),
+[1024px update](img/console-demo-1024-2026-10-13.png) and
+[1024px clearance](img/console-clearance-1024-2026-10-13.png).
+Their [source inventory](img/console-demo-2026-10-13.sources.json) records the
+display inputs and uncommitted code hashes. These captures use the recovered
+archive network with SHA-256 `e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e`;
+they do not establish simulation acceptance.
+
+Local validation: 607 tests passed (590 in the full restricted run and 17
+HTTP-stub tests retried with localhost socket permission). Browser review at
+1280×900 and 1024×900 found no clipped metric values or horizontal page
+overflow; the timeline and partial/all-lanes/clearance boxes rendered. The
+local health endpoint returned HTTP 200 / `ok`. The Windows job now includes
+the Reader identity and recorded-evidence exporter checks; that CI run remains
+pending until publication. No model call, simulation, contract change or
+operator decision was made during this console review.
 
 ## Review checks
 

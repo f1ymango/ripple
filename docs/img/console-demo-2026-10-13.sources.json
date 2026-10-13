@@ -1,0 +1,76 @@
+{
+  "inventory_created_at": "2026-10-13T12:10:38.381351+00:00",
+  "base_main_commit": "9053d139170210a7cd834a936cfbcf1ade1dbfd1",
+  "branch": "visuals/console-demo-oct13",
+  "evidence_boundary": "Observed TD/detector playback and logged retrospective B/D examples. Provisional geometry; no evaluated recommendation, trajectory or benefit.",
+  "source_sha256": {
+    "data/detector_5min_20260515-0755_1035_b5.csv": "b6c30f64141c243ec6149b16bf0d1f72bfa9ab32d35489bcce54e7866d108726",
+    "data/incidents_2026-05-15_2026-05-15.csv": "3e0a8daaa21edc4751d18e57c2461df2b2edf0bc623ca8faaa5778d1ec96b6cd",
+    "data/demo_incident_messages.jsonl": "ba33ba1c397aa718ce309992c934d4e509517d214a33165b51af782d73319fe2",
+    "provisional_geometry/aberdeen.archived.net.xml": "e3bcd9ed2bc1acfc72b5c72ba8a421fc85c51f3a87ef8138aa450fbe984ed90e",
+    "src/console/app.py": "f11fe0279f271f3d2537dcc24a2b7994df5a4d4de3026011db1ff08764a4450d",
+    "src/console/incident_callout.py": "6e8895d87320358b1685a3403a0f590df32288cde1da58b86d4da7328d0211bc",
+    "src/console/reader_evidence.py": "1c4cbc38c27273b6a4e6d4e3b598a3efdaf70db58d1ec06aa2f7f30b4bd0a03f",
+    "src/console/recorded_plans.py": "a0029b7367dfca011f653a70144477ded2c6a8d4034844636eebad1869cb2d21",
+    "scripts/build_genai_evidence.py": "838a928fada8cb4feb04516e01966d11daf089eb88450dcf451fe34f6377dee5",
+    "results/reader/2026-09-29T1608_qwen3-8b.jsonl": "3b015de2169bdc5de034bbce6b1c7b76ea212a59b4f0a8f6e178aeae86be4464",
+    "evidence/ai-log/2026-09-29.jsonl": "87fc40388dcc6ad9a120b6f277dd71e14f9baa8baa890d3eb8f6a19678cea56d",
+    "evidence/ai-log/2026-10-13.jsonl": "49dc7e73209d56de1987d904253e8c5f8646200f2726162cccc92ad6203572d6",
+    "data/generated-plans/IN-26-03365-lead-draft-20261013-b/generation-inputs.json": "8726acd9be7023a9483f3e46128fa172abb6bebf5f1361970194144d904f33a1",
+    "data/generated-plans/IN-26-03365-lead-draft-20261013-b/P0.json": "4198ec674296e0a1413b3ef3d0758fdf3e60124afbe9d51728b912b69ed898ff",
+    "data/generated-plans/IN-26-03365-lead-draft-20261013-b/P1.json": "dae8a9c06f0e7d34b77407193ff36eb1d814311b8a8d0739fe508190da27dade",
+    "data/generated-plans/IN-26-03365-lead-draft-20261013-b/P2.json": "3afc8b638a7abd2d9a290541d07032ab9a9f269fa4196c14f479ef7284eea20c"
+  },
+  "screenshots": [
+    {
+      "path": "docs/img/console-demo-2026-10-13.png",
+      "sha256": "c67dae3cbf22555c3d19edfc5789a22ff30021fe90cd745c442b721f38ae3d07",
+      "viewport": [
+        1280,
+        900
+      ],
+      "cursor_hkt": "2026-05-15T09:05:00+08:00",
+      "view": "Incident playback"
+    },
+    {
+      "path": "docs/img/console-reader-2026-10-13.png",
+      "sha256": "6e4732144862126b10928b1b4d5c2328e6965ecebcdf2310befbb7de9025413f",
+      "viewport": [
+        1280,
+        900
+      ],
+      "cursor_hkt": "2026-05-15T09:05:00+08:00",
+      "view": "Incident + Reader"
+    },
+    {
+      "path": "docs/img/console-plan-drafts-2026-10-13.png",
+      "sha256": "eef34768daa59f765c4c2335cd68e1c95dc2f6d6e4a5ad6ee67656b3ada44898",
+      "viewport": [
+        1280,
+        900
+      ],
+      "cursor_hkt": "2026-05-15T09:05:00+08:00",
+      "view": "Recorded plan drafts"
+    },
+    {
+      "path": "docs/img/console-demo-1024-2026-10-13.png",
+      "sha256": "1661069b0fbd4a6203395bb985a00a9b23df84385024d763d2529dc00faa7c86",
+      "viewport": [
+        1024,
+        900
+      ],
+      "cursor_hkt": "2026-05-15T09:40:00+08:00",
+      "view": "Incident playback"
+    },
+    {
+      "path": "docs/img/console-clearance-1024-2026-10-13.png",
+      "sha256": "0180f75d9117469c019474ce4ab33639b98adbdf9a931cac8deb0dd50d0ca946",
+      "viewport": [
+        1024,
+        900
+      ],
+      "cursor_hkt": "2026-05-15T10:25:00+08:00",
+      "view": "Incident playback"
+    }
+  ]
+}

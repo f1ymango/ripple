@@ -71,3 +71,9 @@ sim/scenarios/detectors.json
 # local copies there do not show up as new files.
 simulation_validation/
 /work/
+
+# Local video rehearsals are shared for review, not committed with console code.
+/docs/video/
+
+# Regenerable synthetic operator rehearsal inputs and its isolated mock audit.
+tests/fixtures/mock_operator_capture/
