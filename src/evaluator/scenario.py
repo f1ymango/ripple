@@ -44,9 +44,11 @@ SCENE = optional(obj({
     "passing_kmh": POSITIVE,                 # the open lanes of the closed edge while another lane is closed
     "crawl_kmh": POSITIVE,                   # the approach while every lane is closed
     "move_over_at_edges": EDGES,             # where drivers learn a lane ahead is closed; default reroute_at_edges
-    "reopening": obj({"lanes": LANES, "minutes": POSITIVE, "approach_kmh": POSITIVE}),
+    "reopening": optional(obj({"lanes": LANES, "minutes": POSITIVE, "approach_kmh": POSITIVE,
+                               "edge_kmh": POSITIVE}), "edge_kmh"),   # edge_kmh: the open lane's speed meanwhile
     "let_in_after_seconds": POSITIVE,        # a driver stopped this long at the end of a lane that leads nowhere on its way is let in
-}), "move_over_at_edges", "reopening", "let_in_after_seconds")
+    "committed_edges": EDGES,                # drivers here in a lane onto the closed edge when every lane shuts go on over it
+}), "move_over_at_edges", "reopening", "let_in_after_seconds", "committed_edges")
 DRIVERS_LEAVE = optional(obj({
     "share": SHARE,                          # of the drivers who see the queue at an exit
     "queue_kmh": POSITIVE,                   # traffic ahead slower than this is a queue
@@ -220,7 +222,8 @@ def scene_speeds(scenario, clearance_min, now):
     closed: nobody new gets onto the edge (they are turned off at
     `reroute_at_edges`), the few already on it leave at the same speed, and
     the approach crawls past the scene. Some lanes still closed after the first
-    one reopens: the edge runs freely and the approach at the reopening speed.
+    one reopens: the edge runs at the reopening's `edge_kmh` (freely if it has
+    none) and the approach at the reopening speed.
     """
     closure, scene = scenario["closure"], scenario["closure"]["scene"]
     steps = closure_steps(scenario, clearance_min)
@@ -230,7 +233,7 @@ def scene_speeds(scenario, clearance_min, now):
     if closed and now < reopen_second(scenario, clearance_min):
         return scene["passing_kmh"], scene["open_kmh"]
     if closed:
-        return scene["open_kmh"], scene["reopening"]["approach_kmh"]
+        return scene["reopening"].get("edge_kmh", scene["open_kmh"]), scene["reopening"]["approach_kmh"]
     return scene["open_kmh"], scene["open_kmh"]
 
 

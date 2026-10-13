@@ -1149,3 +1149,40 @@ def test_without_the_let_in_rule_nobody_is_moved(tmp_path):
     road.put("stuck.0", "in", THROUGH, lane=1)
     closure.step(road, 5)                                   # Road has no getWaitingTime: it would fail if asked
     assert closure.let_in_now == set()
+
+
+# --- 13 October: drivers already committed to the flyover, and a slow first reopening --------
+
+def test_a_driver_already_in_a_lane_onto_the_closed_edge_goes_on_over_it(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    scenario["closure"]["detour"] = DETOUR
+    scenario["closure"]["scene"] = {**SCENE, "committed_edges": ["in"]}
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    road.put("committed.0", "in", THROUGH, lane=1)                        # lane 1 leads only onto "closed"
+    road.put("free.0", "in", THROUGH, lane=0)                             # lane 0 also leads to the detour
+    lane_of = lambda v: f"in_{road.lane_index[v]}"
+    road.vehicle.getLaneID = lane_of
+    road.lane = types.SimpleNamespace(setMaxSpeed=road.lane_speeds.__setitem__,
+                                      getLinks=lambda lane: [("closed_0",), ("under1_0",)] if lane == "in_0"
+                                      else [("closed_1",)])
+    closure.step(road, 420)                                               # every lane shut
+    assert road.routes["committed.0"] == THROUGH and closure.kept_on == {"committed.0"}
+    assert road.routes["free.0"] == ["in", "under1", "under2", "out"] and closure.sent_round == {"free.0"}
+
+
+def test_without_committed_edges_every_driver_is_sent_round(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    scenario["closure"]["detour"] = DETOUR
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    road.put("committed.0", "in", THROUGH, lane=1)
+    closure.step(road, 420)
+    assert road.routes["committed.0"] == ["in", "under1", "under2", "out"] and closure.kept_on == set()
+
+
+def test_a_reopening_stage_can_hold_the_open_lane_at_the_passing_speed(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    scenario["closure"]["scene"] = {**SCENE, "reopening": {**SCENE["reopening"], "edge_kmh": 3.6}}
+    assert scenarios.scene_speeds(scenario, 5, 600) == (3.6, 18)          # first lane back, at the passing speed
+    assert scenarios.scene_speeds(scenario, 5, 720) == (72, 72)           # both lanes, full speed
+    plain, _ = full_scenario(tmp_path)
+    assert scenarios.scene_speeds(plain, 5, 600) == (72, 18)              # without edge_kmh: as before

@@ -116,6 +116,7 @@ class Closure:
         self.original, self.closed, self.set, self.approach = {}, set(), {}, None
         self.window, self.sent_round = reroute_window(scenario, clearance_min), set()
         self.let_in_now = set()                             # every driver let in, for the run report
+        self.kept_on = set()                                # drivers too far into a lane onto the flyover to turn
 
     def step(self, traci, now):
         if "scene" in self.scenario["closure"]:
@@ -190,6 +191,11 @@ class Closure:
                 first = route.index(replace[0], here)
                 if list(route[first:first + len(replace)]) != replace:
                     continue
+                if (route[here] in closure["scene"].get("committed_edges", []) and first == here + 1
+                        and not any(link[0].rsplit("_", 1)[0] == detour[0]
+                                    for link in traci.lane.getLinks(traci.vehicle.getLaneID(vehicle)))):
+                    self.kept_on.add(vehicle)               # in a lane onto the flyover, too late to change: goes on
+                    continue
                 try:
                     traci.vehicle.setRoute(vehicle, list(route[here:first]) + detour
                                            + list(route[first + len(replace):]))
@@ -247,6 +253,8 @@ def run(scenario, files, work, clearance_min, controllers=()):
                           for second, lanes in closure.steps],
         "drivers_rerouted_during_seconds": reroute_window(scenario, clearance_min),
         **({"drivers_sent_round_by_the_detour": len(closure.sent_round)} if "detour" in scenario["closure"] else {}),
+        **({"drivers_already_committed_kept_on": len(closure.kept_on)}
+           if scenario["closure"].get("scene", {}).get("committed_edges") else {}),
         **({"drivers_let_in_at_a_lane_end": len(closure.let_in_now)}
            if scenario["closure"].get("scene", {}).get("let_in_after_seconds") else {}),
         "vehicles_loaded": int(vehicles["loaded"]),
