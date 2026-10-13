@@ -84,9 +84,24 @@ Both representations are run as bounds in every grid (Simulation found the plan'
 
 Every check must pass in every counting cell before a plan benefit is claimed. Separately, the ranking's verdicts must not change with the outside-delay assumption between 0 and 40 minutes; they do not today.
 
+## 4a. Audit: is a driver selected for advice but not rerouted shielded from leaving?
+
+Yes, slightly. `PlanActions.follows()` counts a driver as following the advice
+when their seeded draw selects them, whether or not the reroute was applied, and
+`DriversLeave` never lets a following driver leave. An instrumented copy of P1's
+main run (debug only, outside `results/`; it reproduced the committed delay,
+833.4, exactly) found 339 drivers kept from leaving by the advice. 18 of them
+were never rerouted, mostly drivers still waiting to enter. At the 20% leave
+share that is about 4 drivers, about 1 vehicle-hour at the assumed 20 minutes,
+against P1's 54 vehicle-hours more than P0 in that cell. Not material to any
+verdict here. The fix for the next E version is one line: only drivers actually
+rerouted (`group_of`) are exempt. It was not changed tonight, because changing
+E's code would invalidate the matched runs in progress.
+
 ## 5. Matched diagnostic runs of the Lead's P2 diagnostics (PR #67)
 
-*To be filled in from the runs: actual reroutes, vehicles leaving, delay in the network, waiting to enter and assumed outside, and the 20-minute check. Labelled diagnostic: P0 is not accepted.*
+Protocol fixed before any run: `docs/lead-p2-diagnostic-protocol-2026-10-13.md`.
+*Results to be filled in when the screen (and any confirmation) finishes.*
 
 ## 6. What would change the verdict
 
