@@ -1,0 +1,32 @@
+{
+  "status": "diagnostic only; no accepted P0 or measured benefit",
+  "incident_id": "IN-26-03365",
+  "derivation": "deterministic Lead parameter search; no LLM call",
+  "source_plan_set": "data/generated-plans/IN-26-03365-lead-draft-20261013-b",
+  "source_sha256": {
+    "P0.json": "4198ec674296e0a1413b3ef3d0758fdf3e60124afbe9d51728b912b69ed898ff",
+    "P1.json": "dae8a9c06f0e7d34b77407193ff36eb1d814311b8a8d0739fe508190da27dade",
+    "P2.json": "3afc8b638a7abd2d9a290541d07032ab9a9f269fa4196c14f479ef7284eea20c",
+    "generation-inputs.json": "8726acd9be7023a9483f3e46128fa172abb6bebf5f1361970194144d904f33a1"
+  },
+  "variants": {
+    "lead-p2-nosignal-oct13": {
+      "description": "Original advice shares; remove the unverified signal action.",
+      "p2_sha256": "98b5b5d2f0bb3ca9952bf165d0227681a7a58d3266d073294dcd47a1639e2e41",
+      "unchanged_comparators": [
+        "P0.json",
+        "P1.json",
+        "generation-inputs.json"
+      ]
+    },
+    "lead-p2-half-nosignal-oct13": {
+      "description": "Halve both proposed advice shares; remove the unverified signal action.",
+      "p2_sha256": "a74dd8d3e8ccd651b133e8d4be8cea4fb94161910d9c4b11adf185c1924405f3",
+      "unchanged_comparators": [
+        "P0.json",
+        "P1.json",
+        "generation-inputs.json"
+      ]
+    }
+  }
+}
