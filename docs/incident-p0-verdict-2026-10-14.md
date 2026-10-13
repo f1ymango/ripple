@@ -15,6 +15,7 @@ replay, and checks each point on replay 3.1 with E 3.2 (33 baselines in
 | Incident P0 as a basis for a measured plan benefit | **NO-GO.** It fails two of the six checks in section 4 in nearly every baseline: traffic reaching the tunnel during the closure, and queue recovery. |
 | A second diversion besides Wong Chuk Hang Road | **None usable.** In the network every route that avoids the flyover uses Wong Chuk Hang Road under it. Outside it, the only alternative is the hospital corridor (Pok Fu Lam Road), which P0 keeps clear and for which there is no evidence. |
 | The Tong Bin Lane +20 s signal | **Remove.** Its programme is netconvert's guess (24 s green in 90 s); no source gives the real timing or says TD can extend it. |
+| Can a source-supported P2 beat both P0 and P1? (PR #67, section 5) | **No.** Without the unverified signal, P2 at the saved shares loses to doing nothing, and at half shares it beats P1 but ties P0 only through the assumed outside delay. Neither earned the reserved confirmation. |
 | Plan runs on this replay | **Diagnostic only.** No route recommendation or saving should be stated in the submission from them. |
 
 What would change the verdict is new evidence, not new settings (section 6).
