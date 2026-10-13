@@ -8,18 +8,20 @@ whose section 9 listed the four decisions a go needed. The team took them on
 `346e2f0` on `data/lead-plans-v3-oct13`. Results: `results/evaluator-lead-draft-20261013-b/`
 and `results/rankings/lead-draft-20261013-b.json`.
 
-**In one paragraph.** Every one of the 33 baselines meets validation version 2:
-GEH 91.5 to 94.2%, free-flow speed error 12.6 to 13.5%, congestion state agreeing
-in 92.8 to 94.0% of bins (whole-run speed MAPE 22.9 to 26.9%, for information).
-Three cells do not count, each for one wrong-lane teleport the rule does not
-excuse; the limit is three. Over the other 30, **doing nothing beats P1** (P1
-adds 3.4% delay, 95% interval 1.2 to 5.5%), **P2 beats P1** (4.8% less, 3.0 to
-6.6%, lower in 28 of 30 cells), and **P2 and doing nothing tie** (P2 1.4% less,
-interval from 4.1% less to 1.2% more). No plan comes before both others, so F
-and the console recommend nothing. **The system is a go for ranking plans; for
-these three plans the ranking is "P0 and P2 ahead of P1, P0 and P2 not
-separable".** Whether P2 helps depends on how the road reopened, which the
-detectors cannot settle (section 4).
+**In one paragraph.** The evaluator workflow works end to end: the Lead's three
+plans ran through the twin in 33 cells, every baseline was checked against the
+detectors, and the system stated only the orders its rule supports, then
+refused to recommend a plan, giving the reason. **That workflow is a go.** The
+replay is **not yet a measurement of traffic benefits**: while the flyover is
+shut, the model sends only 63 to 79% of the traffic the detectors counted after
+it (AID01106 to AID01108, all 33 baselines), and the speed fit comes mostly from
+speeds set from ordinary mornings, not from the model (section 4a, with thanks
+to Simulation, who traced both). Validation version 2 passes in every baseline
+(GEH 91.5 to 94.2%, free-flow speed error 12.6 to 13.5%, congestion state 92.8 to
+94.0%), because five-minute GEH is too lenient to see the first gap. Over 30
+counting cells the evaluator's verdicts on this replay are: P0 before P1, P2
+before P1, P0 and P2 tie, so no plan is recommended. Those verdicts describe the
+replay; they are not presented as savings on the road.
 
 ## 1. What the team decided on 13 October
 
@@ -123,7 +125,7 @@ count, more than 10% of cells would fail, and no order could be stated. The
 seed 4 debug log showed the lane beside it stood still for over four minutes
 too. Every run's report lists its wrong-lane teleports by kind.
 
-**Reading it.** P1 sends every advised driver under the flyover, which the
+**Reading it, on this replay.** P1 sends every advised driver under the flyover, which the
 morning was already using as its detour, and is worse than doing nothing
 wherever the road reopened late or slowly. P2 sends 80% and 70% and gives the
 Tong Bin Lane signal 20 more seconds; it helps by 3 to 4% when both lanes
@@ -133,6 +135,44 @@ happened. P2's 18% gain with 5 m vehicles says the queue's length per vehicle
 matters as much as the reopening; 6.5 m stays the replay's choice. The cells are
 not independent draws: compliance-30 and -70 share the main cell's P0, and
 the one-change families weigh each assumption by how many cells it has.
+Because the model under-loads the road after the flyover (section 4a), where
+diverted drivers rejoin, none of these differences is presented as a measured
+saving, including "P2 before P1".
+
+## 4a. What the validation does not show
+
+Simulation traced two problems on 13 October (`sim/lead-plans-diagnostic-oct13`
+at `a48b8c9`, `docs/component-c-validation-root-cause-2026-10-13.md`). Both hold
+in the E 3.2 runs above.
+
+**Traffic reaching the tunnel during the closure.** Counted and simulated
+vehicles in the valid five-minute bins from 09:05 to 09:55, wholly inside the
+full closure (ten at each detector), every cell's P0 (`results/evaluator-lead-draft-20261013-b/closure-counts.json`):
+
+| Detector | Counted | Simulated / counted, 33 baselines | GEH, hourly-equivalent | Five-minute bins with GEH < 5 |
+|---|---|---|---|---|
+| AID01106 | 895 | 0.68 to 0.72 | 9.8 to 11.3 | 8 of 10 |
+| AID01107 | 824 | 0.75 to 0.79 | 6.9 to 8.5 | 9 or 10 of 10 |
+| AID01108 | 957 | 0.63 to 0.68 | 11.9 to 13.8 | 8 of 10 |
+
+GEH is meant for hourly flows; on five-minute bins of about 90 vehicles, a 30%
+shortfall still scores under 5, so version 2's count target passes while the
+hourly-equivalent flow fails clearly. Simulation's figures (46.6 and 46.2 simulated per
+bin at AID01106 and AID01108) come from a different run than these; in the
+E 3.2 runs the model sends about 62 per bin, still well short. The detector totals cannot say
+which side-road joins supplied the missing traffic or how the north ramp
+really ran, and adjusting demand or the ramp until the score passes would not
+validate the road. Settling it needs independently checked detector
+placement and turning or entry counts, then matched P0, P1 and P2 reruns.
+
+**Where the speed fit comes from.** Speed error on the 4 detectors where the
+model makes the speed itself (AID01101 to AID01104: the queue and the scene)
+is 72 to 99% across the baselines; on the other detectors, whose roads show the
+ordinary mornings' speeds as signs, 14.4 to 14.6% (run reports,
+`speed_error_by_source`). The free-flow figure in version 2 mostly confirms
+that the morning was ordinary away from the crash, not that the model
+reproduces the queue. The congestion-state agreement (92.8 to 94.0%) is the
+part that tests the queue, and only coarsely: on which side of 30 km/h it was.
 
 ## 5. Go/no-go
 
@@ -143,13 +183,23 @@ the one-change families weigh each assumption by how many cells it has.
 | Wrong-lane teleports | 1 to 3 per run, at a lane shutting | 93 at a lane shutting, 12 in a jam, 3 other (3 cells left out) | **Yes**, within the rule |
 | A ranking rule decided before the results | proposed (every cell) | 95% paired interval, ties allowed, committed after 4 of 33 cells | **Yes** |
 | F and the console bound to the ranking | no | refuse unless one plan is before both; tested on these results | **Yes** |
+| Traffic after the flyover during the closure (section 4a) | known gap: about 610 sent against 895 and 824 counted at AID01106 and AID01107 | 63 to 79% of the count; hourly-equivalent GEH 6.9 to 13.8 | **No** (reported, not a target) |
+| Speeds the model makes itself (queue and scene) | 24.8% whole-run, all detectors | 72 to 99% at AID01101 to AID01104 | **No** (reported, not a target) |
 
-**Data's position: GO for ranking plans on replay 3.1 with E 3.2.** The
-evaluator validates its baseline under the agreed targets in every cell and
-states only the orders the grid supports. For the Lead's plans that is: **P0
-and P2 tie, both before P1; no plan is recommended.** The honest headline is
-that coordinating the detour (P2) is clearly better than broadcasting it to
-everyone (P1), but on this morning neither beats doing nothing reliably.
+**Data's position: GO for the evaluator workflow on replay 3.1 with E 3.2;
+NOT a validated measurement of traffic benefits.** The workflow is what the
+demo shows: the plans run through the twin, every baseline is checked against
+the detectors under the agreed targets, the grid's orders are stated only where
+the rule supports them, and F and the console refuse to recommend when no plan
+comes first, saying why. For the Lead's plans the evaluator says **P0 and P2
+tie, both before P1, no plan recommended**, on this replay. Because the replay
+under-loads the road after the flyover during the closure, where diverted
+traffic rejoins, no saving or cost of any plan is claimed as measured, and the
+demo should say so.
+
+Open for the team: whether the hourly-equivalent count after the flyover
+(section 4a) becomes a validation target. Today every baseline would fail it,
+and F and the console would then refuse every comparison on this replay.
 
 Following the team's decision of 13 October, the main-case runs go into
 `results/runs/` only if the ranking passes; it names no plan before both
@@ -169,6 +219,8 @@ python -m src.evaluator.run --plans data/generated-plans/IN-26-03365-lead-draft-
     --plan-set lead-draft-20261013-b --plan P0 --scenario <cell scenario> --compliance <c> \
     --clearance <t> --results-dir results/evaluator-lead-draft-20261013-b      # then P1 and P2
 python -m src.evaluator.ranking --grid sim/scenarios/rankings/IN-26-03365_lead-draft-20261013-b.json
+# the counts after the flyover during the closure (reads each P0's work folder)
+python -m src.evaluator.closure_counts --grid sim/scenarios/rankings/IN-26-03365_lead-draft-20261013-b.json
 ```
 
 The cells' scenarios, compliance and clearance are in the grid file. Linux,

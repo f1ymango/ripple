@@ -1,0 +1,1005 @@
+{
+  "grid": "sim/scenarios/rankings/IN-26-03365_lead-draft-20261013-b.json",
+  "window_bin_starts": [
+    "09:05",
+    "09:55"
+  ],
+  "detectors": [
+    "AID01106",
+    "AID01107",
+    "AID01108"
+  ],
+  "why": "    python -m src.evaluator.closure_counts --grid sim/scenarios/rankings/IN-26-03365_lead-draft-20261013-b.json     -> <results dir of the grid>/closure-counts.json",
+  "cells": [
+    {
+      "name": "main",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_replay-v3-1_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 621,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 10.9,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 615,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "seed1",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-seed1_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 634,
+          "simulated_over_counted": 0.71,
+          "geh_hourly_equivalent": 10.3,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 641,
+          "simulated_over_counted": 0.78,
+          "geh_hourly_equivalent": 7.4,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 633,
+          "simulated_over_counted": 0.66,
+          "geh_hourly_equivalent": 12.6,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "seed2",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-seed2_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 624,
+          "simulated_over_counted": 0.7,
+          "geh_hourly_equivalent": 10.8,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 10
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 611,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "seed3",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-seed3_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 614,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 11.2,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 619,
+          "simulated_over_counted": 0.75,
+          "geh_hourly_equivalent": 8.4,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 612,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "seed4",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-seed4_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 623,
+          "simulated_over_counted": 0.7,
+          "geh_hourly_equivalent": 10.8,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 613,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "seed5",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-seed5_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 617,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 11.1,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 622,
+          "simulated_over_counted": 0.75,
+          "geh_hourly_equivalent": 8.2,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 611,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "clearing",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 621,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 10.9,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 615,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "clearing-seed1",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed1_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 634,
+          "simulated_over_counted": 0.71,
+          "geh_hourly_equivalent": 10.3,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 641,
+          "simulated_over_counted": 0.78,
+          "geh_hourly_equivalent": 7.4,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 633,
+          "simulated_over_counted": 0.66,
+          "geh_hourly_equivalent": 12.6,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "clearing-seed2",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed2_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 624,
+          "simulated_over_counted": 0.7,
+          "geh_hourly_equivalent": 10.8,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 10
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 611,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "clearing-seed3",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed3_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 614,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 11.2,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 619,
+          "simulated_over_counted": 0.75,
+          "geh_hourly_equivalent": 8.4,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 612,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "clearing-seed4",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed4_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 623,
+          "simulated_over_counted": 0.7,
+          "geh_hourly_equivalent": 10.8,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 613,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "clearing-seed5",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed5_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 617,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 11.1,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 622,
+          "simulated_over_counted": 0.75,
+          "geh_hourly_equivalent": 8.2,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 611,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "ramp",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 621,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 10.9,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 615,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "ramp-seed1",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed1_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 634,
+          "simulated_over_counted": 0.71,
+          "geh_hourly_equivalent": 10.3,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 641,
+          "simulated_over_counted": 0.78,
+          "geh_hourly_equivalent": 7.4,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 633,
+          "simulated_over_counted": 0.66,
+          "geh_hourly_equivalent": 12.6,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "ramp-seed2",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed2_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 624,
+          "simulated_over_counted": 0.7,
+          "geh_hourly_equivalent": 10.8,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 10
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 611,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "ramp-seed3",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed3_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 614,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 11.2,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 619,
+          "simulated_over_counted": 0.75,
+          "geh_hourly_equivalent": 8.4,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 612,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "ramp-seed4",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed4_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 623,
+          "simulated_over_counted": 0.7,
+          "geh_hourly_equivalent": 10.8,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 613,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "ramp-seed5",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed5_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 617,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 11.1,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 622,
+          "simulated_over_counted": 0.75,
+          "geh_hourly_equivalent": 8.2,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 611,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_replay-v3-1_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 621,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 10.9,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 615,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04-seed1",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_v3-1-seed1_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 634,
+          "simulated_over_counted": 0.71,
+          "geh_hourly_equivalent": 10.3,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 641,
+          "simulated_over_counted": 0.78,
+          "geh_hourly_equivalent": 7.4,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 633,
+          "simulated_over_counted": 0.66,
+          "geh_hourly_equivalent": 12.6,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04-seed2",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_v3-1-seed2_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 624,
+          "simulated_over_counted": 0.7,
+          "geh_hourly_equivalent": 10.8,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 10
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 611,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04-seed3",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_v3-1-seed3_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 614,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 11.2,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 619,
+          "simulated_over_counted": 0.75,
+          "geh_hourly_equivalent": 8.4,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 612,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04-seed4",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_v3-1-seed4_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 623,
+          "simulated_over_counted": 0.7,
+          "geh_hourly_equivalent": 10.8,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 613,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04-seed5",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_v3-1-seed5_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 617,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 11.1,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 622,
+          "simulated_over_counted": 0.75,
+          "geh_hourly_equivalent": 8.2,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 611,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.5,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "compliance-30",
+      "run_id": "2026-05-15_ABD_P0_c30_t66_replay-v3-1_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 621,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 10.9,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 615,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "compliance-70",
+      "run_id": "2026-05-15_ABD_P0_c70_t66_replay-v3-1_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 621,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 10.9,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 628,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.0,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 615,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "leave-0",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-leave0_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 618,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 11.0,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 623,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.2,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 615,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "leave-10",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-leave10_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 612,
+          "simulated_over_counted": 0.68,
+          "geh_hourly_equivalent": 11.3,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 616,
+          "simulated_over_counted": 0.75,
+          "geh_hourly_equivalent": 8.5,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 605,
+          "simulated_over_counted": 0.63,
+          "geh_hourly_equivalent": 13.8,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "leave-30",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-leave30_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 620,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 10.9,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 624,
+          "simulated_over_counted": 0.76,
+          "geh_hourly_equivalent": 8.1,
+          "five_minute_bins_geh_under_5": 10
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 607,
+          "simulated_over_counted": 0.63,
+          "geh_hourly_equivalent": 13.7,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "leave-40",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-leave40_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 617,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 11.1,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 622,
+          "simulated_over_counted": 0.75,
+          "geh_hourly_equivalent": 8.2,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 609,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.6,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "length-5m",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-length5_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 619,
+          "simulated_over_counted": 0.69,
+          "geh_hourly_equivalent": 11.0,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 622,
+          "simulated_over_counted": 0.75,
+          "geh_hourly_equivalent": 8.2,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 614,
+          "simulated_over_counted": 0.64,
+          "geh_hourly_equivalent": 13.4,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "length-5m-seed1",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-length5-seed1_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 644,
+          "simulated_over_counted": 0.72,
+          "geh_hourly_equivalent": 9.9,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 649,
+          "simulated_over_counted": 0.79,
+          "geh_hourly_equivalent": 7.1,
+          "five_minute_bins_geh_under_5": 9
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 642,
+          "simulated_over_counted": 0.67,
+          "geh_hourly_equivalent": 12.2,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    },
+    {
+      "name": "length-5m-seed2",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-length5-seed2_lead-draft-20261013-b",
+      "detectors": {
+        "AID01106": {
+          "bins": 10,
+          "counted": 895,
+          "simulated": 646,
+          "simulated_over_counted": 0.72,
+          "geh_hourly_equivalent": 9.8,
+          "five_minute_bins_geh_under_5": 8
+        },
+        "AID01107": {
+          "bins": 10,
+          "counted": 824,
+          "simulated": 654,
+          "simulated_over_counted": 0.79,
+          "geh_hourly_equivalent": 6.9,
+          "five_minute_bins_geh_under_5": 10
+        },
+        "AID01108": {
+          "bins": 10,
+          "counted": 957,
+          "simulated": 648,
+          "simulated_over_counted": 0.68,
+          "geh_hourly_equivalent": 11.9,
+          "five_minute_bins_geh_under_5": 8
+        }
+      }
+    }
+  ]
+}

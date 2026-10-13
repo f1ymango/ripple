@@ -1333,3 +1333,19 @@ def test_no_order_is_stated_when_more_than_a_tenth_of_the_cells_do_not_count():
     assert ranking.orders(good + [bad])[1] == "P2"                   # 1 of 10 left out, and its delays are not used
     pairs, first = ranking.orders(good[:8] + [bad, bad])
     assert first is None and pairs[0]["verdict"] == "not stated: 2 of 10 cells do not count"
+
+
+def test_closure_counts_score_the_hourly_flow_that_five_minute_geh_lets_through():
+    from src.evaluator import closure_counts
+    rows = [{"detector_id": "AID01106", "time": f"2026-05-15T09:{m:02d}:00+08:00", "observed": 90, "simulated": 62,
+             "within_5": metrics_geh(62, 90) < 5} for m in range(5, 60, 5)]
+    rows.append({"detector_id": "AID01106", "time": "2026-05-15T10:00:00+08:00", "observed": 90, "simulated": 0,
+                 "within_5": False})                                     # outside the window: not counted
+    out = closure_counts.cell_counts({"count_bins": rows})["AID01106"]
+    assert out["bins"] == 11 and out["five_minute_bins_geh_under_5"] == 11      # every bin passes at five minutes
+    assert out["simulated_over_counted"] == 0.69 and out["geh_hourly_equivalent"] > 10   # the hour fails
+
+
+def metrics_geh(m, c):
+    from src.evaluator.closure_counts import geh
+    return geh(m, c)
