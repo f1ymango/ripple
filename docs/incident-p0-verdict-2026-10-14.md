@@ -101,7 +101,51 @@ E's code would invalidate the matched runs in progress.
 ## 5. Matched diagnostic runs of the Lead's P2 diagnostics (PR #67)
 
 Protocol fixed before any run: `docs/lead-p2-diagnostic-protocol-2026-10-13.md`.
-*Results to be filled in when the screen (and any confirmation) finishes.*
+The runs used the Lead's own files from PR #67 (hashes checked against its
+manifest), 33 screening cells per variant, 198 runs, E 3.2. In both sets P0 and
+P1 are identical to `lead-draft-20261013-b` in all 33 cells, so the runs are
+deterministic. **Diagnostic: the incident P0 is not accepted.**
+
+Mean per cell over the 33 cells (vehicle-hours; drivers):
+
+| Plan | Took the advised route (still on it after the reopening) | Sent round at the closure | Left the corridor | Delay in network | Waiting to enter | Assumed outside | Total |
+|---|---|---|---|---|---|---|---|
+| P0 | 0 | 676 | 387 | 497.5 | 312.1 | 130.4 | 940.0 |
+| P1, broadcast | 467 (179) | 370 | 374 | 517.7 | 322.4 | 129.7 | 969.8 |
+| Saved model P2, 0.8/0.7 + signal | 371 (134) | 435 | 358 | 496.1 | 308.7 | 122.7 | 927.5 |
+| `lead-p2-nosignal-oct13`, 0.8/0.7 | 367 (137) | 426 | 374 | 511.4 | 322.8 | 128.8 | 962.9 |
+| `lead-p2-half-nosignal-oct13`, 0.4/0.35 | 184 (69) | 547 | 380 | 503.4 | 314.7 | 129.0 | 947.1 |
+
+Verdicts (31 counting cells; seed5 and ramp-seed5 fail on the same P1
+wrong-lane teleport in every set), with the outside delay recomputed at 0 to
+40 minutes instead of 20:
+
+| Plan set | 0 min | 10 min | 20 min (as run) | 30 min | 40 min |
+|---|---|---|---|---|---|
+| `lead-p2-nosignal-oct13` | P0 first | P0 first | **P0 first**: P2 +2.8% (95% interval +1.2 to +4.5), P1 +3.5%, P1 and P2 tie | P0 first | P0 first |
+| `lead-p2-half-nosignal-oct13` | P0 first | P0 first | P0 and P2 tie: P2 +1.0% (−0.1 to +2.1); P2 before P1 by 2.5%; P0 before P1 | tie | tie |
+| Saved model P2 (for comparison) | P0 and P2 tie | tie | tie: P2 −1.4% (−4.1 to +1.2) | tie | tie |
+
+**Answers to the Lead's questions.**
+1. *Did the unverified signal drive the result?* **Yes.** With the same shares,
+   removing it adds about 35 vehicle-hours per cell (927.5 → 962.9), mostly in
+   the network and waiting to enter, and turns a tie with P0 into a clear loss.
+2. *Does less early advice help?* It is better than broadcasting (P2 before P1
+   at every assumption), but it does not beat doing nothing. Its tie with P0 at
+   20 minutes depends on the assumed outside delay: at 0 or 10 minutes, P0 is
+   first. By the protocol, that tie is driven by the assumption.
+3. *Does any supported P2 beat both P0 and P1?* **No.** Neither variant
+   earned the reserved confirmation run, and none was run.
+
+Why, in this replay: advice can only send drivers to the road the closure
+already forces them onto, and sooner. Advised drivers join the sole detour
+from 09:01, further upstream, and 69 to 179 of them are still on it after the
+flyover reopens. That loads the one detour without adding capacity.
+
+For `lead-p2-nosignal-oct13`, the ranking's `first` is P0. F would therefore
+draft a "no additional action" briefing if these runs were in `results/runs/`.
+They are not: they stay in `results/evaluator-lead-p2-*-oct13/` as diagnostics,
+and the submission states no route recommendation or saving.
 
 ## 6. What would change the verdict
 

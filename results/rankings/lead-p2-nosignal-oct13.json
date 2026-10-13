@@ -1,0 +1,1101 @@
+{
+  "incident_id": "IN-26-03365",
+  "plan_set": "lead-p2-nosignal-oct13",
+  "plans": "data/plan-experiments/IN-26-03365-lead-p2-20261013/lead-p2-nosignal-oct13",
+  "grid": "sim/scenarios/rankings/IN-26-03365_lead-p2-nosignal-oct13_screen.json",
+  "why": "DIAGNOSTIC SCREEN (incident P0 not accepted). The same 33 cells as lead-draft-20261013-b. Replay version 3.1 (sim/scenarios/evaluator_IN-26-03365_replay-v3-1.json): seed 2026, compliance 50%, one-stage reopening at 10:00 (clearance 66), 20% of drivers leave at the queue, 6.5 m mean vehicle length, the ramp joining the main line (correction 2). Each other cell changes one of these: seeds 1-5; the reopening as a clearing stage (fast lane at 4.7 km/h 10:00-10:04, slow lane shut) or fully at 10:04 (clearance 70); the ramp as built; compliance 30% and 70% (03-architecture.md section 4); 0, 10, 30 and 40% of drivers leaving; 5 m vehicles. Agreed by the team on 13 October 2026; docs/evaluator-replay-v3-2026-10-13.md gives where each choice comes from.",
+  "rule": "A cell counts if its P0 meets the validation targets and none of its runs had a wrong-lane teleport other than at a lane shutting or in a jam; no order is stated if more than 10% of cells do not count. 'A before B' if the 95% confidence interval of the mean of (A delay - B delay) / P0 delay over the counting cells lies wholly below zero; a tie if it contains zero. Validation targets: GEH < 5 in at least 85% of count bins; speed MAPE at most 15% over bins measured at 30 km/h or more; model and detector agree on congested (under 30 km/h) or not in at least 85% of speed bins; no wrong-lane teleport except of a driver stuck from the moment a lane shut or in a jam (a jam teleport on its edge or the next during its wait or the 300 s before) (03-architecture.md section 4, version 2 of 13 October 2026)",
+  "e_code_sha256": {
+    "code:src/evaluator/actions.py": "3cec539abc926c98325abb701c951207c31c8a2238c556e8f82ddf537bc1ac64",
+    "code:src/evaluator/behaviour.py": "b15ba3cfe005d785907ec62a56bec58e1a7b38c99293aea9542796292b5c4a86",
+    "code:src/evaluator/metrics.py": "949d7b178ef8d677f84e624ed50ca783b3a5e3be8093e7269f81a014aed488a2",
+    "code:src/evaluator/run.py": "381fe80a7b7addfcf2a23ceb9128d30d8314e96ec750a2aee896be37ad9e7315",
+    "code:src/evaluator/scenario.py": "97de7ce4a21d687329dc4385ca4a7f702d3d1826d41cfac0294fc499f8681756",
+    "code:src/evaluator/simulate.py": "f5d37a34797060db9eff3d4b7fe6ccaf9e09a32db3c83cd215131f888d01b78c",
+    "code:src/twin/evaluate.py": "15fdc70d33e6919a147f358483466b69e3bd36aa517454db3e3f61abc81ed80b",
+    "code:src/validation_targets.py": "e8bfa03e456d5dd2b92d6165713353212d9cd2277cebb47d61268c208795857c"
+  },
+  "cells": [
+    {
+      "name": "main",
+      "scenario": "sim/scenarios/evaluator_IN-26-03365_replay-v3-1.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2026,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_replay-v3-1_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_replay-v3-1_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_replay-v3-1_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 779.5,
+        "P1": 833.4,
+        "P2": 814.0
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 93.34,
+        "speed_mape_pct": 23.88,
+        "speed_mape_free_flow_pct": 13.03,
+        "congestion_state_agreement_pct": 93.39,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "seed1",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed1.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 1,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-seed1_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-seed1_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-seed1_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 815.9,
+        "P1": 769.9,
+        "P2": 775.2
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 93.16,
+        "speed_mape_pct": 23.87,
+        "speed_mape_free_flow_pct": 12.82,
+        "congestion_state_agreement_pct": 93.39,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "seed2",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed2.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-seed2_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-seed2_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-seed2_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 810.3,
+        "P1": 826.5,
+        "P2": 819.5
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.98,
+        "speed_mape_pct": 23.69,
+        "speed_mape_free_flow_pct": 13.11,
+        "congestion_state_agreement_pct": 93.9,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "seed3",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed3.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 3,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-seed3_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-seed3_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-seed3_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 824.6,
+        "P1": 809.9,
+        "P2": 825.3
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 93.52,
+        "speed_mape_pct": 24.15,
+        "speed_mape_free_flow_pct": 13.05,
+        "congestion_state_agreement_pct": 93.13,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "seed4",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed4.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 4,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-seed4_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-seed4_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-seed4_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 819.3,
+        "P1": 799.3,
+        "P2": 797.9
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.62,
+        "speed_mape_pct": 23.52,
+        "speed_mape_free_flow_pct": 12.91,
+        "congestion_state_agreement_pct": 93.64,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "seed5",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed5.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 5,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-seed5_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-seed5_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-seed5_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 812.8,
+        "P1": 919.2,
+        "P2": 808.0
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [
+          "f179.39 1198059119_1 9638"
+        ],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.98,
+        "speed_mape_pct": 24.1,
+        "speed_mape_free_flow_pct": 12.9,
+        "congestion_state_agreement_pct": 93.26,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": false,
+      "why_not": "wrong-lane teleport other than at a lane shutting or in a jam in P1"
+    },
+    {
+      "name": "clearing",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2026,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-clearing_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-clearing_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 798.6,
+        "P1": 909.4,
+        "P2": 880.3
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 93.16,
+        "speed_mape_pct": 23.32,
+        "speed_mape_free_flow_pct": 13.03,
+        "congestion_state_agreement_pct": 93.51,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "clearing-seed1",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing-seed1.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 1,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed1_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-clearing-seed1_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-clearing-seed1_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 793.3,
+        "P1": 849.2,
+        "P2": 832.1
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.8,
+        "speed_mape_pct": 23.88,
+        "speed_mape_free_flow_pct": 12.86,
+        "congestion_state_agreement_pct": 93.77,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "clearing-seed2",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing-seed2.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed2_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-clearing-seed2_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-clearing-seed2_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 811.7,
+        "P1": 870.6,
+        "P2": 858.3
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.62,
+        "speed_mape_pct": 23.75,
+        "speed_mape_free_flow_pct": 13.07,
+        "congestion_state_agreement_pct": 93.64,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "clearing-seed3",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing-seed3.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 3,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed3_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-clearing-seed3_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-clearing-seed3_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 826.8,
+        "P1": 884.0,
+        "P2": 867.3
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 93.52,
+        "speed_mape_pct": 23.73,
+        "speed_mape_free_flow_pct": 12.97,
+        "congestion_state_agreement_pct": 93.39,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "clearing-seed4",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing-seed4.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 4,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed4_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-clearing-seed4_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-clearing-seed4_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 803.5,
+        "P1": 874.4,
+        "P2": 864.3
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.44,
+        "speed_mape_pct": 23.45,
+        "speed_mape_free_flow_pct": 12.98,
+        "congestion_state_agreement_pct": 93.51,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "clearing-seed5",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing-seed5.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 5,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed5_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-clearing-seed5_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-clearing-seed5_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 802.7,
+        "P1": 906.5,
+        "P2": 861.3
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.98,
+        "speed_mape_pct": 24.06,
+        "speed_mape_free_flow_pct": 12.92,
+        "congestion_state_agreement_pct": 93.39,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "ramp",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2026,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-ramp_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-ramp_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1415.3,
+        "P1": 1462.9,
+        "P2": 1489.1
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 93.52,
+        "speed_mape_pct": 23.86,
+        "speed_mape_free_flow_pct": 13.01,
+        "congestion_state_agreement_pct": 93.39,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "ramp-seed1",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp-seed1.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 1,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed1_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-ramp-seed1_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-ramp-seed1_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1528.7,
+        "P1": 1496.3,
+        "P2": 1506.0
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.98,
+        "speed_mape_pct": 23.86,
+        "speed_mape_free_flow_pct": 12.8,
+        "congestion_state_agreement_pct": 93.51,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "ramp-seed2",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp-seed2.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed2_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-ramp-seed2_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-ramp-seed2_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1595.9,
+        "P1": 1585.7,
+        "P2": 1579.7
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.44,
+        "speed_mape_pct": 23.66,
+        "speed_mape_free_flow_pct": 13.07,
+        "congestion_state_agreement_pct": 93.9,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "ramp-seed3",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp-seed3.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 3,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed3_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-ramp-seed3_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-ramp-seed3_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1403.6,
+        "P1": 1388.1,
+        "P2": 1425.5
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 93.16,
+        "speed_mape_pct": 24.12,
+        "speed_mape_free_flow_pct": 13.01,
+        "congestion_state_agreement_pct": 93.26,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "ramp-seed4",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp-seed4.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 4,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed4_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-ramp-seed4_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-ramp-seed4_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1494.6,
+        "P1": 1449.1,
+        "P2": 1489.5
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 93.16,
+        "speed_mape_pct": 23.5,
+        "speed_mape_free_flow_pct": 12.89,
+        "congestion_state_agreement_pct": 93.64,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "ramp-seed5",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-ramp-seed5.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 5,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed5_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-ramp-seed5_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-ramp-seed5_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1551.0,
+        "P1": 1591.3,
+        "P2": 1595.6
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [
+          "f179.39 1198059119_1 9638"
+        ],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 93.16,
+        "speed_mape_pct": 24.09,
+        "speed_mape_free_flow_pct": 12.87,
+        "congestion_state_agreement_pct": 93.39,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": false,
+      "why_not": "wrong-lane teleport other than at a lane shutting or in a jam in P1"
+    },
+    {
+      "name": "reopen-10:04",
+      "scenario": "sim/scenarios/evaluator_IN-26-03365_replay-v3-1.json",
+      "compliance": 0.5,
+      "clearance_min": 70,
+      "seed": 2026,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t70_replay-v3-1_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t70_replay-v3-1_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t70_replay-v3-1_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 860.9,
+        "P1": 956.0,
+        "P2": 920.6
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.08,
+        "speed_mape_pct": 23.3,
+        "speed_mape_free_flow_pct": 12.76,
+        "congestion_state_agreement_pct": 93.25,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "reopen-10:04-seed1",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed1.json",
+      "compliance": 0.5,
+      "clearance_min": 70,
+      "seed": 1,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t70_v3-1-seed1_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t70_v3-1-seed1_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t70_v3-1-seed1_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 843.5,
+        "P1": 907.3,
+        "P2": 883.8
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.44,
+        "speed_mape_pct": 23.6,
+        "speed_mape_free_flow_pct": 12.67,
+        "congestion_state_agreement_pct": 93.38,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "reopen-10:04-seed2",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed2.json",
+      "compliance": 0.5,
+      "clearance_min": 70,
+      "seed": 2,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t70_v3-1-seed2_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t70_v3-1-seed2_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t70_v3-1-seed2_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 874.2,
+        "P1": 954.2,
+        "P2": 906.2
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 91.9,
+        "speed_mape_pct": 23.02,
+        "speed_mape_free_flow_pct": 12.71,
+        "congestion_state_agreement_pct": 94.02,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "reopen-10:04-seed3",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed3.json",
+      "compliance": 0.5,
+      "clearance_min": 70,
+      "seed": 3,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t70_v3-1-seed3_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t70_v3-1-seed3_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t70_v3-1-seed3_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 905.0,
+        "P1": 946.2,
+        "P2": 921.1
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.44,
+        "speed_mape_pct": 23.24,
+        "speed_mape_free_flow_pct": 12.68,
+        "congestion_state_agreement_pct": 93.51,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "reopen-10:04-seed4",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed4.json",
+      "compliance": 0.5,
+      "clearance_min": 70,
+      "seed": 4,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t70_v3-1-seed4_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t70_v3-1-seed4_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t70_v3-1-seed4_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 867.8,
+        "P1": 937.4,
+        "P2": 894.6
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.08,
+        "speed_mape_pct": 22.87,
+        "speed_mape_free_flow_pct": 12.7,
+        "congestion_state_agreement_pct": 93.89,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "reopen-10:04-seed5",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-seed5.json",
+      "compliance": 0.5,
+      "clearance_min": 70,
+      "seed": 5,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t70_v3-1-seed5_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t70_v3-1-seed5_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t70_v3-1-seed5_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 874.1,
+        "P1": 931.8,
+        "P2": 901.6
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.44,
+        "speed_mape_pct": 23.62,
+        "speed_mape_free_flow_pct": 12.63,
+        "congestion_state_agreement_pct": 93.51,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "compliance-30",
+      "scenario": "sim/scenarios/evaluator_IN-26-03365_replay-v3-1.json",
+      "compliance": 0.3,
+      "clearance_min": 66,
+      "seed": 2026,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c30_t66_replay-v3-1_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c30_t66_replay-v3-1_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c30_t66_replay-v3-1_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 779.5,
+        "P1": 808.9,
+        "P2": 792.0
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 93.34,
+        "speed_mape_pct": 23.88,
+        "speed_mape_free_flow_pct": 13.03,
+        "congestion_state_agreement_pct": 93.39,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "compliance-70",
+      "scenario": "sim/scenarios/evaluator_IN-26-03365_replay-v3-1.json",
+      "compliance": 0.7,
+      "clearance_min": 66,
+      "seed": 2026,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c70_t66_replay-v3-1_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c70_t66_replay-v3-1_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c70_t66_replay-v3-1_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 779.5,
+        "P1": 817.3,
+        "P2": 897.5
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 93.34,
+        "speed_mape_pct": 23.88,
+        "speed_mape_free_flow_pct": 13.03,
+        "congestion_state_agreement_pct": 93.39,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "leave-0",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-leave0.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2026,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-leave0_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-leave0_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-leave0_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 964.8,
+        "P1": 888.3,
+        "P2": 937.3
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 91.54,
+        "speed_mape_pct": 24.23,
+        "speed_mape_free_flow_pct": 13.46,
+        "congestion_state_agreement_pct": 93.39,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "leave-10",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-leave10.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2026,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-leave10_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-leave10_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-leave10_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 845.5,
+        "P1": 840.4,
+        "P2": 845.3
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.98,
+        "speed_mape_pct": 23.62,
+        "speed_mape_free_flow_pct": 13.2,
+        "congestion_state_agreement_pct": 93.26,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "leave-30",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-leave30.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2026,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-leave30_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-leave30_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-leave30_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 734.7,
+        "P1": 791.1,
+        "P2": 797.5
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 94.06,
+        "speed_mape_pct": 26.0,
+        "speed_mape_free_flow_pct": 13.04,
+        "congestion_state_agreement_pct": 92.88,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "leave-40",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-leave40.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2026,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-leave40_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-leave40_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-leave40_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 701.2,
+        "P1": 739.5,
+        "P2": 742.2
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 94.24,
+        "speed_mape_pct": 26.85,
+        "speed_mape_free_flow_pct": 12.97,
+        "congestion_state_agreement_pct": 92.75,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "length-5m",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-length5.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2026,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-length5_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-length5_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-length5_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 809.8,
+        "P1": 806.6,
+        "P2": 771.8
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.44,
+        "speed_mape_pct": 24.99,
+        "speed_mape_free_flow_pct": 12.75,
+        "congestion_state_agreement_pct": 93.13,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "length-5m-seed1",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-length5-seed1.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 1,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-length5-seed1_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-length5-seed1_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-length5-seed1_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 741.5,
+        "P1": 743.9,
+        "P2": 723.6
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.98,
+        "speed_mape_pct": 25.5,
+        "speed_mape_free_flow_pct": 12.88,
+        "congestion_state_agreement_pct": 92.88,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "length-5m-seed2",
+      "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-length5-seed2.json",
+      "compliance": 0.5,
+      "clearance_min": 66,
+      "seed": 2,
+      "run_ids": {
+        "P0": "2026-05-15_ABD_P0_c50_t66_v3-1-length5-seed2_lead-p2-nosignal-oct13",
+        "P1": "2026-05-15_ABD_P1_c50_t66_v3-1-length5-seed2_lead-p2-nosignal-oct13",
+        "P2": "2026-05-15_ABD_P2_c50_t66_v3-1-length5-seed2_lead-p2-nosignal-oct13"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 748.8,
+        "P1": 708.4,
+        "P2": 752.2
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 92.62,
+        "speed_mape_pct": 25.32,
+        "speed_mape_free_flow_pct": 12.78,
+        "congestion_state_agreement_pct": 93.51,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    }
+  ],
+  "cells_not_counting": [
+    "seed5: wrong-lane teleport other than at a lane shutting or in a jam in P1",
+    "ramp-seed5: wrong-lane teleport other than at a lane shutting or in a jam in P1"
+  ],
+  "pairs": [
+    {
+      "a": "P0",
+      "b": "P1",
+      "cells": 31,
+      "cells_a_lower": 20,
+      "cells_b_lower": 11,
+      "before": "P0",
+      "mean_difference_pct": -3.45,
+      "interval_pct": [
+        -5.52,
+        -1.39
+      ],
+      "verdict": "P0 before P1"
+    },
+    {
+      "a": "P0",
+      "b": "P2",
+      "cells": 31,
+      "cells_a_lower": 22,
+      "cells_b_lower": 9,
+      "before": "P0",
+      "mean_difference_pct": -2.83,
+      "interval_pct": [
+        -4.49,
+        -1.16
+      ],
+      "verdict": "P0 before P2"
+    },
+    {
+      "a": "P1",
+      "b": "P2",
+      "cells": 31,
+      "cells_a_lower": 12,
+      "cells_b_lower": 19,
+      "before": null,
+      "mean_difference_pct": 0.63,
+      "interval_pct": [
+        -0.66,
+        1.92
+      ],
+      "verdict": "P1 and P2 tie"
+    }
+  ],
+  "verdicts": [
+    "P0 before P1",
+    "P0 before P2",
+    "P1 and P2 tie"
+  ],
+  "first": "P0"
+}

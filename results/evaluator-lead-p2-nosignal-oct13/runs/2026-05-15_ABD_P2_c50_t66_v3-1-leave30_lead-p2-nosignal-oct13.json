@@ -1,0 +1,23 @@
+{
+  "run_id": "2026-05-15_ABD_P2_c50_t66_v3-1-leave30_lead-p2-nosignal-oct13",
+  "plan_id": "P2",
+  "incident_id": "IN-26-03365",
+  "scenario": {
+    "compliance": 0.5,
+    "clearance_min": 66.0,
+    "seed": 2026
+  },
+  "metrics": {
+    "total_vehicle_hours_delay": 797.5,
+    "delay_vs_do_nothing_pct": 8.5,
+    "max_queue_m": {
+      "AID01103": 1091
+    },
+    "corridor_tt_p95_min": 29.5,
+    "emergency_tt_min": 2.8,
+    "co2_kg": 14062,
+    "residential_delay_share_pct": 0.0,
+    "vehicles_completed": 27106
+  },
+  "validation": {}
+}
