@@ -27,7 +27,7 @@ Every slide and artifact is traceable to one of these core criteria:
 | Observed incident prototype | Visuals + Lead | Merged and locally rehearsed; no route recommendation or validated plan comparison |
 | Reader / GenAI evidence | Lead | Saved input, output, call log and evaluation exist; video pickup remains |
 | Plan Generator | Lead | Actual 13 Oct model-generated drafts and limitations in the [GenAI handoff](../docs/lead-genai-handoff-2026-10-13.md); no accepted incident recommendation |
-| Briefing Writer | Lead | Real-model fixture attempts logged on 13 Oct but failed validation; no accepted new bilingual output. Offline fixture capability is separate. |
+| Briefing Writer | Lead | Later 13 Oct model calls produced structurally valid synthetic drafts, both rejected on semantic review; no accepted new bilingual output. Offline fixture capability is separate ([follow-up](../docs/lead-genai-follow-up-2026-10-13.md)). |
 | Evaluator and provenance | Data | Diagnostic implementation and integrity fixes merged through PR #61; scientific acceptance remains NO-GO |
 | Simulation validation | Simulation | Joint incident review remains NO-GO for public plan ranking |
 | Video | Visuals | Shot list and captions are versioned; playable export and source manifest are not delivered here |
