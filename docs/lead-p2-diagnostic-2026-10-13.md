@@ -49,7 +49,10 @@ in this scenario. A change in reported delay can therefore reflect that
 assumption or the number leaving, not only better road throughput. The [metric
 detail](../src/evaluator/metrics.py) separates in-network delay, entry wait
 and assumed outside delay; every comparison must show those components and
-the counts of actual advised routes and exits.
+the counts of actual advised routes and exits. Data should also audit whether
+`PlanActions.follows()` shields a driver from the leave-corridor rule when
+`advise()` selected that driver but could not actually apply the route; a
+selected driver is not necessarily a successfully rerouted driver.
 
 ## Prepared artifacts and local checks
 
