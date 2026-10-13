@@ -10,9 +10,9 @@ block comes in two versions, and each is judged by its own rule:
     at most 15% over bins measured at 30 km/h or more; the model and the
     detector agreeing on whether a speed bin is congested (under 30 km/h) in
     at least 85% of speed bins; and no wrong-lane teleport except of a driver
-    stuck from the moment a lane shut. The whole-run speed MAPE stays in the
-    block as information. A block is version 2 when it has
-    `speed_mape_free_flow_pct`.
+    stuck from the moment a lane shut or stuck in a jam (src/evaluator/metrics.py,
+    wrong_lane_teleports). The whole-run speed MAPE stays in the block as
+    information. A block is version 2 when it has `speed_mape_free_flow_pct`.
 
 Why version 2: the corridor's detectors miss many vehicles in traffic under
 30 km/h (results/data/count-bias_AID01106_AID01107.md), so those counts are
@@ -34,7 +34,8 @@ CONGESTED_KMH = 30.0     # a bin measured under this speed is congested
 
 DESCRIPTION = ("GEH < 5 in at least 85% of count bins; speed MAPE at most 15% over bins measured at 30 km/h or "
                "more; model and detector agree on congested (under 30 km/h) or not in at least 85% of speed bins; "
-               "no wrong-lane teleport except of a driver stuck from the moment a lane shut "
+               "no wrong-lane teleport except of a driver stuck from the moment a lane shut or in a jam (a jam "
+               "teleport on its edge or the next during its wait or the 300 s before) "
                "(03-architecture.md section 4, version 2 of 13 October 2026)")
 
 
@@ -60,7 +61,7 @@ def check(validation):
             return True, ""
         free_flow = _number(validation, "speed_mape_free_flow_pct")
         state = _number(validation, "congestion_state_agreement_pct", 100)
-        teleports = _number(validation, "wrong_lane_teleports_not_at_lane_shut")
+        teleports = _number(validation, "wrong_lane_teleports_other")
     except (KeyError, ValueError):
         return False, "Baseline validation is incomplete."
     if geh < COUNT_TARGET:
@@ -70,7 +71,7 @@ def check(validation):
     if state < STATE_TARGET:
         return False, "Baseline is below the congestion-state agreement target."
     if teleports:
-        return False, "Baseline had a wrong-lane teleport other than at the moment a lane shut."
+        return False, "Baseline had a wrong-lane teleport other than at a lane shutting or in a jam."
     return True, ""
 
 

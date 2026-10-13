@@ -5,7 +5,7 @@ from src import validation_targets as targets
 
 V1 = {"geh_under_5_pct": 88.0, "speed_mape_pct": 11.3}
 V2 = {"geh_under_5_pct": 93.52, "speed_mape_pct": 24.83, "speed_mape_free_flow_pct": 12.99,
-      "congestion_state_agreement_pct": 93.27, "wrong_lane_teleports_not_at_lane_shut": 0}
+      "congestion_state_agreement_pct": 93.27, "wrong_lane_teleports_other": 0}
 
 
 def test_a_version_1_block_keeps_the_earlier_rule():
@@ -23,7 +23,7 @@ def test_a_version_2_block_is_judged_on_free_flow_speed_and_congestion_state():
     ({"geh_under_5_pct": 84.99}, "GEH"),
     ({"speed_mape_free_flow_pct": 15.01}, "free-flow speed"),
     ({"congestion_state_agreement_pct": 84.99}, "congestion-state"),
-    ({"wrong_lane_teleports_not_at_lane_shut": 1}, "wrong-lane teleport"),
+    ({"wrong_lane_teleports_other": 1}, "wrong-lane teleport"),
 ])
 def test_each_version_2_target_on_its_own_fails_the_baseline(change, reason):
     met, why = targets.check({**V2, **change})

@@ -47,8 +47,9 @@ SCENE = optional(obj({
     "reopening": optional(obj({"lanes": LANES, "minutes": POSITIVE, "approach_kmh": POSITIVE,
                                "edge_kmh": POSITIVE}), "edge_kmh"),   # edge_kmh: the open lane's speed meanwhile
     "let_in_after_seconds": POSITIVE,        # a driver stopped this long at the end of a lane that leads nowhere on its way is let in
+    "let_in_edges": EDGES,                   # where else that applies, e.g. along the queue; always the approach and reroute edges
     "committed_edges": EDGES,                # drivers here in a lane onto the closed edge when every lane shuts go on over it
-}), "move_over_at_edges", "reopening", "let_in_after_seconds", "committed_edges")
+}), "move_over_at_edges", "reopening", "let_in_after_seconds", "let_in_edges", "committed_edges")
 DRIVERS_LEAVE = optional(obj({
     "share": SHARE,                          # of the drivers who see the queue at an exit
     "queue_kmh": POSITIVE,                   # traffic ahead slower than this is a queue

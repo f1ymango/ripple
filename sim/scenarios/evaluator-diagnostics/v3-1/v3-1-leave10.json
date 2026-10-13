@@ -77,6 +77,26 @@
       "let_in_after_seconds": 60,
       "committed_edges": [
         "1198059120"
+      ],
+      "let_in_edges": [
+        "814979902",
+        "23632768",
+        "814979896",
+        "297373180",
+        "310329775",
+        "45174709",
+        "302998780",
+        "956602966",
+        "26560239",
+        "1197441891",
+        "1197441888",
+        "1197441889",
+        "40959451",
+        "1197689928",
+        "1197689929",
+        "1197441907",
+        "1197689927",
+        "1197689855"
       ]
     }
   },
@@ -294,6 +314,11 @@
       "choice": "Count rule: the observations are sim/work/v3/detectors-slow-withheld.json, SHA-256 5ad28fea5616c4ce80123362d95f83c24730231824c419f276abc55f26ca8d40, the packet's sim/work/p0-replay/detectors.json with the count set to null in the 51 bins whose measured speed is under 30 km/h (`python -m src.loaders.fetch withhold-slow-counts --min-count-speed 30`). Their speeds are still scored.",
       "status": "measured, 13 October, on days other than 15 May: AID01106 and AID01107 have no junction between them in TD's Road Network, yet AID01106 counts 55% of AID01107's vehicles when it runs under 10 km/h, 73% at 10 to 20 and 80% at 20 to 30, and 96 to 102% from 30 km/h up (1,598 five-minute bins on 48 days). A model that moves the right number of vehicles fails GEH in such a bin",
       "source": "results/data/count-bias_AID01106_AID01107.md; src/loaders/count_bias.py; TD Road Network (2nd Generation), data.gov.hk, RdNet_IRNP.gdb.zip of 9 October 2026"
+    },
+    {
+      "choice": "A driver stopped 60 s at the end of a lane that cannot take it on its way is also let in along the AID01103 queue path (closure.scene.let_in_edges), not only on the approach and reroute edges.",
+      "status": "Added 13 October afternoon: in the E 3.1 runs of the Lead plans, drivers on 814979902 lane 0 were lifted off the road by SUMO after 300 s (a wrong-lane teleport) in 2 of the first 6 cells, which fails the run under validation version 2. Applies the same to every plan.",
+      "source": "src/evaluator/simulate.py let_in; sim/work/evaluator/*v3-1-seed3*P1*/sumo.log and *v3-1-seed4*P0*/sumo.log"
     }
   ],
   "metrics": {

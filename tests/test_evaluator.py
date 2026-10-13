@@ -316,7 +316,7 @@ def test_validation_rounding_never_turns_a_miss_into_a_pass():
                   "speed_bins": [speed_bin(100, 115.001)] + [speed_bin(50, 50)] * 5 + [speed_bin(10, 40)]}
     assert metrics.validation(evaluation, []) == {
         "geh_under_5_pct": 84.99, "speed_mape_pct": 15.01, "speed_mape_free_flow_pct": 2.51,
-        "congestion_state_agreement_pct": 85.71, "wrong_lane_teleports_not_at_lane_shut": 0}
+        "congestion_state_agreement_pct": 85.71, "wrong_lane_teleports_other": 0}
 
 
 def test_free_flow_speed_error_leaves_out_bins_measured_under_30_kmh():
@@ -325,19 +325,38 @@ def test_free_flow_speed_error_leaves_out_bins_measured_under_30_kmh():
     block = metrics.validation(evaluation, ["v lane 900"])
     assert block["speed_mape_free_flow_pct"] == 10.0                     # only the 80 km/h bin
     assert block["congestion_state_agreement_pct"] == 66.66              # 5 km/h measured, 30 simulated: disagree
-    assert block["wrong_lane_teleports_not_at_lane_shut"] == 1
+    assert block["wrong_lane_teleports_other"] == 1
     validate(block, VALIDATION_V2)
 
 
-def test_a_wrong_lane_teleport_counts_against_the_model_unless_the_wait_began_as_a_lane_shut():
+def test_a_wrong_lane_teleport_counts_against_the_model_unless_at_a_lane_shutting_or_in_a_jam():
     steps = [{"second": 300, "lanes_closed": ["a_0"]}, {"second": 420, "lanes_closed": ["a_0", "a_1"]},
              {"second": 600, "lanes_closed": []}]
+    near = {"b": {"b", ":j", "c"}, "c": {"c", ":k"}, "d": {"d"}}.__getitem__        # b leads through junction j to c
     log = (wrong_lane_line("x.1", "b_1", 604) + wrong_lane_line("x.2", "b_1", 781)      # waits from 304 and 481
-           + wrong_lane_line("x.3", "c_0", 1500) + "Warning: Teleporting vehicle 'x.4'; waited too long (jam), "
-           "lane='d_0', time=700.00.\n")
-    assert metrics.wrong_lane_teleports(log, steps) == (["x.1 b_1 604"], ["x.2 b_1 781", "x.3 c_0 1500"])
-    assert metrics.wrong_lane_teleports(wrong_lane_line("x.5", "b_1", 720), steps) == (["x.5 b_1 720"], [])   # 420 + 0
-    assert metrics.wrong_lane_teleports(wrong_lane_line("x.6", "b_1", 900), steps) == ([], ["x.6 b_1 900"])  # reopening is no shutting
+           + wrong_lane_line("x.3", "d_0", 1500))
+    assert metrics.wrong_lane_teleports(log, steps, near) == (["x.1 b_1 604"], [], ["x.2 b_1 781", "x.3 d_0 1500"])
+    assert metrics.wrong_lane_teleports(wrong_lane_line("x.5", "b_1", 720), steps, near) == (["x.5 b_1 720"], [], [])
+    assert metrics.wrong_lane_teleports(wrong_lane_line("x.6", "b_1", 900), steps, near)[2] == ["x.6 b_1 900"]  # reopening
+
+
+def jam_line(lane, second):
+    return f"Warning: Teleporting vehicle 'j.1'; waited too long (jam), lane='{lane}', time={second:.2f}.\n"
+
+
+@pytest.mark.parametrize("jam, in_jam", [
+    (jam_line("c_0", 1300), True),           # the next edge jammed during the wait (1200 to 1500)
+    (jam_line("c_1", 900), True),            # ... or in the 300 s before it began
+    (jam_line(":j_0_1", 1450), True),        # the junction b ends at
+    (jam_line("b_2", 1499), True),           # its own edge
+    (jam_line("c_0", 899), False),           # too early
+    (jam_line("c_0", 1501), False),          # after it was lifted off
+    (jam_line("e_0", 1300), False),          # elsewhere
+])
+def test_a_wrong_lane_teleport_inside_a_jam_on_its_edge_or_the_next_is_part_of_the_jam(jam, in_jam):
+    near = {"b": {"b", ":j", "c"}}.get
+    at_shut, jammed, other = metrics.wrong_lane_teleports(jam + wrong_lane_line("x.1", "b_1", 1500), [], near)
+    assert (jammed, other) == ((["x.1 b_1 1500"], []) if in_jam else ([], ["x.1 b_1 1500"]))
 
 
 def test_expected_demand_over_the_closed_edge_by_exit():
@@ -355,8 +374,9 @@ def test_p0_result_meets_the_contract_and_its_sidecar_verifies(evaluate, plans, 
     assert result["scenario"] == {"compliance": 0.5, "clearance_min": 5.0, "seed": 42}
     assert result["metrics"]["delay_vs_do_nothing_pct"] == 0
     assert result["validation"] == {"geh_under_5_pct": 100.0, "speed_mape_pct": 0.0, "speed_mape_free_flow_pct": 0.0,
-                                    "congestion_state_agreement_pct": 100.0, "wrong_lane_teleports_not_at_lane_shut": 0}
-    assert report["validation_targets_met"] and report["wrong_lane_teleports"] == {"at_a_lane_shutting": [], "other": []}
+                                    "congestion_state_agreement_pct": 100.0, "wrong_lane_teleports_other": 0}
+    assert report["validation_targets_met"] and report["wrong_lane_teleports"] == {
+        "at_a_lane_shutting": [], "in_a_jam": [], "other": []}
     files = verify_result(path, result, load_json(plans / "P0.json"), load_json(plans / "generation-inputs.json"))
     assert {"network", "routes", "detector_loops", "observations", "scenario",
             "code:src/evaluator/metrics.py", "code:src/twin/evaluate.py"} <= set(files)
@@ -1237,6 +1257,12 @@ def test_a_driver_stuck_at_the_end_of_a_lane_that_leads_nowhere_on_its_way_is_le
     waiting["stuck.0"] = 90.0
     closure.step(road, 15)
     assert changes == []
+
+
+def test_drivers_are_also_let_in_along_the_scenes_let_in_edges_once_each():
+    closure = {"reroute_at_edges": ["far", "in"], "scene": {"approach_edges": ["in"], "let_in_edges": ["up", "far"]}}
+    assert simulate.let_in_edges(closure) == ["in", "far", "up"]
+    assert simulate.let_in_edges({"scene": {"approach_edges": ["in"]}}) == ["in"]
 
 
 def test_without_the_let_in_rule_nobody_is_moved(tmp_path):

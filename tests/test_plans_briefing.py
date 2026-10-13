@@ -481,7 +481,7 @@ def version_2(records):
     for _, record in records:
         record["run_id"] = f"mock_{record['plan_id']}_c50_t60_mock-scenario_mock-set"
     records[0][1]["validation"] = {"geh_under_5_pct": 93.5, "speed_mape_pct": 24.8, "speed_mape_free_flow_pct": 13.0,
-                                   "congestion_state_agreement_pct": 93.3, "wrong_lane_teleports_not_at_lane_shut": 0}
+                                   "congestion_state_agreement_pct": 93.3, "wrong_lane_teleports_other": 0}
     return records
 
 

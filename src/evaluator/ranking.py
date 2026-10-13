@@ -6,7 +6,8 @@
 A cell is one scenario at one compliance and clearance: the P0, P1 and P2
 results of a plan set with their run reports. A cell counts only if its P0
 meets the validation targets (src/validation_targets.py) and none of its three
-runs had a wrong-lane teleport other than at a lane shutting. Cells that do not
+runs had a wrong-lane teleport other than at a lane shutting or in a jam
+(src/evaluator/metrics.py, wrong_lane_teleports). Cells that do not
 count are listed; if more than MAX_LEFT_OUT of them do not count, no order is
 stated.
 
@@ -52,7 +53,7 @@ GRID_SCHEMA = obj({
                         "results_dir": NAME}), minItems=2),
 })
 RULE = ("A cell counts if its P0 meets the validation targets and none of its runs had a wrong-lane teleport other "
-        "than at a lane shutting; no order is stated if more than 10% of cells do not count. 'A before B' if the "
+        "than at a lane shutting or in a jam; no order is stated if more than 10% of cells do not count. 'A before B' if the "
         "95% confidence interval of the mean of (A delay - B delay) / P0 delay over the counting cells lies wholly "
         "below zero; a tie if it contains zero. Validation targets: " + targets.DESCRIPTION)
 
@@ -74,7 +75,7 @@ def read_cell(cell, grid):
         raise ValueError(f"{cell['name']}: the scenario is for another incident")
     settings = {"compliance": cell["compliance"], "clearance_min": cell["clearance_min"], "seed": scenario["seed"]}
     out = {"name": cell["name"], "scenario": cell["scenario"], **settings, "run_ids": {},
-           "total_vehicle_hours_delay": {}, "wrong_lane_teleports_not_at_lane_shut": {}}
+           "total_vehicle_hours_delay": {}, "wrong_lane_teleports_other": {}}
     shared = None
     for plan_id in PLANS:
         run_id = scenarios.run_id(scenario, plan_id, cell["compliance"], cell["clearance_min"], grid["plan_set"])
@@ -92,13 +93,13 @@ def read_cell(cell, grid):
             raise ValueError(f"{run_id}: its report has no wrong-lane teleport check; run it again with today's E")
         out["run_ids"][plan_id] = run_id
         out["total_vehicle_hours_delay"][plan_id] = result["metrics"]["total_vehicle_hours_delay"]
-        out["wrong_lane_teleports_not_at_lane_shut"][plan_id] = report["wrong_lane_teleports"]["other"]
+        out["wrong_lane_teleports_other"][plan_id] = report["wrong_lane_teleports"]["other"]
         if plan_id == "P0":
             out["baseline_validation"] = result["validation"]
     met, reason = targets.check(out["baseline_validation"])
-    teleported = [pid for pid, found in out["wrong_lane_teleports_not_at_lane_shut"].items() if found]
+    teleported = [pid for pid, found in out["wrong_lane_teleports_other"].items() if found]
     out["counts"] = met and not teleported
-    out["why_not"] = reason or (f"wrong-lane teleport other than at a lane shutting in {', '.join(teleported)}"
+    out["why_not"] = reason or (f"wrong-lane teleport other than at a lane shutting or in a jam in {', '.join(teleported)}"
                                 if teleported else "")
     return out, {name: digest for name, digest in shared.items() if name.startswith("code:")}
 

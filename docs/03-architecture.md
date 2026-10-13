@@ -210,7 +210,7 @@ information:
 ```json
 "validation": {"geh_under_5_pct": 93.52, "speed_mape_pct": 24.83,
                "speed_mape_free_flow_pct": 12.99, "congestion_state_agreement_pct": 93.27,
-               "wrong_lane_teleports_not_at_lane_shut": 0}
+               "wrong_lane_teleports_other": 0}
 ```
 
 A block with `speed_mape_free_flow_pct` is judged by the version 2 targets in
@@ -229,7 +229,7 @@ pair's mean paired difference, 95% interval and `verdict`), `verdicts` and
 `first` (the plan before both others, or `null`).
 
 A cell counts if its P0 meets the validation targets and none of its runs had a
-wrong-lane teleport other than at a lane shutting; no order is stated if more
+wrong-lane teleport other than at a lane shutting or in a jam; no order is stated if more
 than 10% of cells do not count. For plans A and B, each counting cell gives
 (A delay − B delay) / P0 delay. **A before B** if the 95% confidence interval of
 the mean lies wholly below zero, **B before A** if wholly above, otherwise a
@@ -337,8 +337,10 @@ which would also cap its flow (`docs/evaluator-replay-v3-2026-10-13.md`). So:
 - **Congested or not (under 30 km/h): model and detector agree in ≥ 85% of
   speed bins.**
 - **No wrong-lane teleport** except of a driver stuck from the moment a lane
-  shut (its wait began within 60 s after the lane shut). Any other fails the
-  run, P0 or plan.
+  shut (its wait began within 60 s after the lane shut) or stuck in a jam (a
+  jam teleport on the same or the next edge during its 300 s wait or in the
+  300 s before it: the lane it needed stood still too). Any other fails the
+  run, P0 or plan. Each run's report lists all three kinds.
 - The whole-run speed MAPE is still reported, for information.
 
 If we miss these, **say so and report the real number.** An honest 72% with an

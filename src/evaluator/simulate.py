@@ -33,6 +33,12 @@ HOLD_WITHIN_M = 30       # a driver behind in the wanted lane closer than this .
 HOLD_BELOW_MS = 3.0      # ... and already this slow holds back; a faster one is left alone
 
 
+def let_in_edges(closure):
+    """Where a stuck driver is let in: the approach, where drivers are sent round, and the scene's let_in_edges."""
+    return list(dict.fromkeys(closure["scene"]["approach_edges"] + closure.get("reroute_at_edges", [])
+                              + closure["scene"].get("let_in_edges", [])))
+
+
 def leads_on(traci, lane, edges):
     """Whether `lane` connects, lane by lane through open lanes, along `edges` (as far as they go)."""
     if not edges:
@@ -158,8 +164,7 @@ class Closure:
         soon as that leaves room. It is asked again at the next check while it
         still needs to.
         """
-        edges = dict.fromkeys(closure["scene"]["approach_edges"] + closure.get("reroute_at_edges", []))
-        for edge in edges:
+        for edge in let_in_edges(closure):
             for vehicle in traci.edge.getLastStepVehicleIDs(edge):
                 if traci.vehicle.getWaitingTime(vehicle) < wait:
                     continue

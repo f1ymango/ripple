@@ -196,10 +196,10 @@ def evaluate(plans_dir, plan_set, plan_id, scenario_path, compliance, clearance_
                     "delay_vs_do_nothing_pct": change if baseline else 0, **values},
         "validation": {},                                             # only P0 is compared with the real morning
     }
-    at_lane_shut, other = metrics.wrong_lane_teleports((work / "sumo.log").read_text(encoding="utf-8"),
-                                                       health["closure_steps"])
+    at_lane_shut, in_jam, other = metrics.wrong_lane_teleports((work / "sumo.log").read_text(encoding="utf-8"),
+                                                               health["closure_steps"], metrics.near_on(net))
     report = {"run_id": run_id, "status": scenario["status"], "validation_targets": targets.DESCRIPTION,
-              "wrong_lane_teleports": {"at_a_lane_shutting": at_lane_shut, "other": other}}
+              "wrong_lane_teleports": {"at_a_lane_shutting": at_lane_shut, "in_a_jam": in_jam, "other": other}}
     if baseline:
         # A plan run is only as good as its P0, and fails on its own wrong-lane teleport too.
         report.update(validation_targets_met=baseline[1]["validation_targets_met"] and not other,
