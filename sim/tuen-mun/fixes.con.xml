@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Siu Lam on-slip from Castle Peak Rd: it joins the nearside lane only (with fixes.nod.xml, as a zipper merge)
+     instead of stopping to cross all three lanes of Tuen Mun Road at a give-way. -->
+<connections>
+    <!-- Ting Kau: with 1344086463 back to three lanes (fixes.edg.xml), each lane runs straight on -->
+    <connection from="868844358" to="1344086463" fromLane="2" toLane="2"/>
+    <delete from="1344086463" to="1344086464" fromLane="1" toLane="2"/>
+    <connection from="1344086463" to="1344086464" fromLane="2" toLane="2"/>
+    <delete from="833525675" to="1078219417" fromLane="0" toLane="1"/>
+    <delete from="833525675" to="1078219417" fromLane="0" toLane="2"/>
+    <!-- Lanes that end where OSM drops a lane (after the Ting Kau merge, and the Siu Lam acceleration lane) merge into
+         the lane beside them, as a zipper (fixes.nod.xml), instead of leading nowhere: in a queue SUMO could not
+         change lanes off them and lifted drivers off the road after five minutes. -->
+    <connection from="1344086462" to="1344086461" fromLane="0" toLane="0"/>
+    <connection from="1344086460" to="1344086459" fromLane="3" toLane="2"/>
+    <connection from="1078219418" to="1078219416" fromLane="3" toLane="2"/>
+</connections>

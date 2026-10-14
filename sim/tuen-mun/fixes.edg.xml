@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Corrections to OpenStreetMap, applied after the TD speed limits: scripts/tuen_mun/build_network.py.
+     1344086463: an 89 m way tagged lanes=2 with placement=transition between two 3-lane ways at Ting Kau;
+     the tag describes lanes shifting, not a lane drop, and with 2 lanes the third lane of 868844358 led nowhere. -->
+<edges>
+    <edge id="1344086463" numLanes="3"/>
+</edges>

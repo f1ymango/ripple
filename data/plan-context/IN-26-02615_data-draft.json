@@ -1,0 +1,34 @@
+{
+  "incident_id": "IN-26-02615",
+  "reviewed": true,
+  "sources": [
+    "data/raw/stn (TD Special Traffic News, 15 Apr 2026)",
+    "sim/scenarios/tuen-mun/"
+  ],
+  "active_from": "2026-04-15T17:59:00+08:00",
+  "active_until": "2026-04-15T18:47:00+08:00",
+  "od_demand_vehicles": {
+    "Tsuen Wan & Ting Kau->Tuen Mun": 2082.7
+  },
+  "routes": [
+    {
+      "od_group": "Tsuen Wan & Ting Kau->Tuen Mun",
+      "via": "Castle Peak Road",
+      "roads": [
+        "Castle Peak Road"
+      ],
+      "residential": false,
+      "school": true
+    }
+  ],
+  "blocked_roads": [],
+  "signals": {},
+  "sign_ids": [],
+  "pt_modes": [],
+  "priority_corridor": {
+    "od": "Tuen Mun Road->crash site",
+    "keep_clear": [
+      "Tuen Mun Road"
+    ]
+  }
+}
