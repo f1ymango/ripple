@@ -1,8 +1,8 @@
 {
   "incident_id": "IN-26-02615",
   "run_prefix": "2026-04-15_TMR",
-  "run_label": "p0x-zipper-sigma05-s2028",
-  "status": "DATA'S CANDIDATE P0 AFTER SIMULATION'S REVIEW, a diagnostic until Simulation reviews it: Data's candidate after the variant runs, building on p0x-zipper: drivers' imperfection sigma 0.5 (SUMO's default; the twin had 0), which lowers the flow out of a standing queue. Checked first on two ordinary Wednesdays: 22 Apr GEH 90.38% (97.22% with 0), free-flow speed error 11.38%, congestion state 100%; 6 May GEH 96.36% (96.67%), 12.64%, 99.34%. TD's flow out of the queue after reopening was 4,560-4,896 veh/h at TDS90033; every run so far gave 6,100-6,900",
+  "run_label": "p0x-turn-sigma05-s2028",
+  "status": "DATA'S CANDIDATE P0 AFTER SIMULATION'S REVIEW, a diagnostic until Simulation reviews it: Data's candidate after the variant runs, building on p0x-turn: drivers' imperfection sigma 0.5 (SUMO's default; the twin had 0), which lowers the flow out of a standing queue. Checked first on two ordinary Wednesdays: 22 Apr GEH 90.38% (97.22% with 0), free-flow speed error 11.38%, congestion state 100%; 6 May GEH 96.36% (96.67%), 12.64%, 99.34%. TD's flow out of the queue after reopening was 4,560-4,896 veh/h at TDS90033; every run so far gave 6,100-6,900",
   "sumo_version": "1.27.1",
   "seed": 2028,
   "inputs": {
@@ -173,7 +173,7 @@
   },
   "assumptions": [
     {
-      "choice": "Data's candidate after the variant runs, building on p0x-zipper: drivers' imperfection sigma 0.5 (SUMO's default; the twin had 0), which lowers the flow out of a standing queue. Checked first on two ordinary Wednesdays: 22 Apr GEH 90.38% (97.22% with 0), free-flow speed error 11.38%, congestion state 100%; 6 May GEH 96.36% (96.67%), 12.64%, 99.34%. TD's flow out of the queue after reopening was 4,560-4,896 veh/h at TDS90033; every run so far gave 6,100-6,900",
+      "choice": "Data's candidate after the variant runs, building on p0x-turn: drivers' imperfection sigma 0.5 (SUMO's default; the twin had 0), which lowers the flow out of a standing queue. Checked first on two ordinary Wednesdays: 22 Apr GEH 90.38% (97.22% with 0), free-flow speed error 11.38%, congestion state 100%; 6 May GEH 96.36% (96.67%), 12.64%, 99.34%. TD's flow out of the queue after reopening was 4,560-4,896 veh/h at TDS90033; every run so far gave 6,100-6,900",
       "status": "changed from replay-v2, Data's, after the variant runs",
       "source": "docs/tuen-mun-p0-simulation-review-2026-10-14.md"
     },

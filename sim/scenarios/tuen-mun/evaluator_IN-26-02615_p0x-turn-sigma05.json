@@ -1,13 +1,13 @@
 {
   "incident_id": "IN-26-02615",
   "run_prefix": "2026-04-15_TMR",
-  "run_label": "p0x-zipper-s2028",
-  "status": "DATA'S CANDIDATE P0 AFTER SIMULATION'S REVIEW, a diagnostic until Simulation reviews it: Data's candidate after the variant runs, building on p0x-merge-at-site: drivers move over on the 250 m approach, and drivers from a lane shut ahead keep to it and merge at its end in turn with the lane beside it (one each, a zipper). In every earlier run the open lane's own queue stood still on the 2.45 km edge while drivers in the lanes shut ahead ran past it at 45-65 km/h and cut in at the end; TD's loops read all three lanes queued at 7-20 km/h (TDS90024-32, 18:05-18:45)",
+  "run_label": "p0x-turn-sigma05",
+  "status": "DATA'S CANDIDATE P0 AFTER SIMULATION'S REVIEW, a diagnostic until Simulation reviews it: Data's candidate after the variant runs, building on p0x-turn: drivers' imperfection sigma 0.5 (SUMO's default; the twin had 0), which lowers the flow out of a standing queue. Checked first on two ordinary Wednesdays: 22 Apr GEH 90.38% (97.22% with 0), free-flow speed error 11.38%, congestion state 100%; 6 May GEH 96.36% (96.67%), 12.64%, 99.34%. TD's flow out of the queue after reopening was 4,560-4,896 veh/h at TDS90033; every run so far gave 6,100-6,900",
   "sumo_version": "1.27.1",
-  "seed": 2028,
+  "seed": 2026,
   "inputs": {
     "network": "sim/tuen-mun/network.net.xml",
-    "routes": "sim/tuen-mun/demand_20260415.rou.xml",
+    "routes": "sim/tuen-mun/demand_20260415-sigma05.rou.xml",
     "detector_loops": "sim/tuen-mun/detectors.add.xml",
     "observations": "sim/tuen-mun/observations_20260415.json"
   },
@@ -173,7 +173,7 @@
   },
   "assumptions": [
     {
-      "choice": "Data's candidate after the variant runs, building on p0x-merge-at-site: drivers move over on the 250 m approach, and drivers from a lane shut ahead keep to it and merge at its end in turn with the lane beside it (one each, a zipper). In every earlier run the open lane's own queue stood still on the 2.45 km edge while drivers in the lanes shut ahead ran past it at 45-65 km/h and cut in at the end; TD's loops read all three lanes queued at 7-20 km/h (TDS90024-32, 18:05-18:45)",
+      "choice": "Data's candidate after the variant runs, building on p0x-turn: drivers' imperfection sigma 0.5 (SUMO's default; the twin had 0), which lowers the flow out of a standing queue. Checked first on two ordinary Wednesdays: 22 Apr GEH 90.38% (97.22% with 0), free-flow speed error 11.38%, congestion state 100%; 6 May GEH 96.36% (96.67%), 12.64%, 99.34%. TD's flow out of the queue after reopening was 4,560-4,896 veh/h at TDS90033; every run so far gave 6,100-6,900",
       "status": "changed from replay-v2, Data's, after the variant runs",
       "source": "docs/tuen-mun-p0-simulation-review-2026-10-14.md"
     },

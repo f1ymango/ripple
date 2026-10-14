@@ -81,8 +81,22 @@ A network zipper at the scene (diagonal links from each lane into the one beside
 
 | Label | Changes from replay-v2 |
 |---|---|
-| `p0x-zipper` (+ `-s2027`, `-s2028`) | move over on the approach, and **merging in turn** (`merge_in_turn`, E `src/evaluator/simulate.py` sha256 6587b72dafad…): a driver in a lane shut ahead keeps to it and moves over one lane at its end only behind a driver of that lane who did not just move in (one each); a slow driver behind holds back 3 s |
-| `p0x-zipper-sigma05` (+ `-s2027`, `-s2028`) | the same, and drivers' imperfection sigma 0.5 (SUMO's default; the twin had 0), `sim/tuen-mun/demand_20260415-sigma05.rou.xml` sha256 3f9dcadcfff2…. It lowers the flow out of a standing queue. TD measured 4,560–4,896 veh/h at TDS90033 after the reopening; every run so far gave 6,100–6,900. |
+| `p0x-zipper` (+ `-s2027`) | move over on the approach, and E's **first** merging-in-turn rule (commit b597929) |
+| `p0x-turn` (+ `-s2027`, `-s2028`) | move over on the approach, and E's **second** merging-in-turn rule (`merge_in_turn`, `src/evaluator/simulate.py` sha256 a870d683b245…, commit ebabb9e) |
+| `p0x-turn-sigma05` (+ `-s2027`, `-s2028`) | the same as `p0x-turn`, and drivers' imperfection sigma 0.5 (SUMO's default; the twin had 0), `sim/tuen-mun/demand_20260415-sigma05.rou.xml`. It lowers the flow out of a standing queue. TD measured 4,560–4,896 veh/h at TDS90033 after the reopening; every run so far gave 6,100–6,900. |
+
+**The second merging-in-turn rule:**
+- A driver in a lane shut ahead keeps to it along the approach.
+- At its end, the driver moves over one lane only when the last driver through that lane's end was one of the lane's own: one each.
+- A slow driver fully behind in that lane holds back 2 s, but only if there is room ahead.
+- A driver kept 120 s at the end goes at the next room.
+- The let-in rule leaves the approach to this rule.
+
+**Why the first rule was replaced:** the two `p0x-zipper` runs fail version 2 (seed 2026: GEH 77.67%, free-flow error 16.33%, 9 wrong-lane teleports, 1 not at a lane shut or a jam). Two faults, both found in a debug replay from 17:59:
+- **Lane 2 jumped the queue:** lane 2 drivers moved in ahead of lane 1's own queue.
+- **Let-in froze the open lane:** it kept holding drivers beside, not behind, a driver at the lane end, so the open lane stood still and drivers in the shut lanes timed out at the end.
+
+The same replay with the second rule shows all three lanes moving stop-and-go at the approach end and no wrong-lane teleport. The runs with the first rule are kept as they are. The rest of the first rule's set (`p0x-zipper-s2028`, `p0x-zipper-sigma05*`) never ran and is removed.
 
 **sigma 0.5 on ordinary Wednesdays** (`results/tuen-mun-p0-variants-oct15/ordinary-days-driver-imperfection.json`): both days still meet version 2.
 
