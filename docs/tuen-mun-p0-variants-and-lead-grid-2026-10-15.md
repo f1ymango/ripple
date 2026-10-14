@@ -108,3 +108,34 @@ The same replay with the second rule shows all three lanes moving stop-and-go at
 | 6 May | 0 | 96.67% | 11.53% | 99.34% |
 
 Same criteria as Part A: the queue speed and extent at TDS90024–32, the recovery and the discharge after the reopening, no unexplained flow deficit, no wrong-lane teleport, and the ledger. A candidate is credible only if it meets Simulation's criteria as well as version 2. If one is, the Lead's plan set from Part B runs on it as its own labelled grid (`results/tuen-mun-lead-grid-oct15-<label>/`), with the same seeds, compliances and decision rule.
+
+### Part C outcome (15 Oct, 04:25)
+**Result.** Merging in turn spreads the queue across the lanes, but no version keeps the site's throughput, so none meets version 2. Only `p0x-merge-at-site` meets version 2 on all three seeds.
+
+**Runs with results** (`results/tuen-mun-p0-variants-oct15/`):
+
+| Run | Seeds | GEH | Free-flow error | Congestion state | Wrong-lane teleports (other) | Delay, veh-h | Verdict |
+|---|---|---|---|---|---|---|---|
+| `p0x-merge-at-site` | 2026–2028 | 87.79–89.28% | 13.80–13.95% | 91.69–92.17% | 0 | 1,234–1,306 | meets version 2 |
+| `p0x-zipper` (first rule) | 2026, 2027 | 77.67% (2026) | 16.33% | 91.03% | 1 | 2,239 | fails |
+| `p0x-turn` (second rule) | 2026–2028 | 82.14–82.73% | 14.17–14.76% | 91.98–92.36% | 0 | 1,587–1,665 | fails on counts |
+| `p0x-turn-sigma05` | 2026–2028 | 80.05–81.84% | 18.9–19.7% | | | 3,359–3,665 | rejected |
+
+- **`p0x-turn`, why it fails on counts:** throughput past the site falls to 1,188–1,212 veh/h with one lane open (TD 1,584–1,740) and to about 2,780 with two open (TD 3,024–3,096).
+- **`p0x-turn-sigma05`, why rejected:** 140–249 drivers are still waiting to enter at the end of the run.
+
+**Development runs, versions 3–6 of the rule** (seed 2040 only, not results; side branch `data/v3-dev`, commit 9ac15d7):
+- Drivers in a lane shut ahead keep to it from the Sham Tseng exit on.
+- The lane-speed spread at TDS90025–31 falls from about 38 to 18 km/h; TD reads 6.0.
+- Speeds there fall to 12–30 km/h, against TD's 8–20.
+- Throughput past the site with one lane open stays at 1,270 veh/h or collapses, and GEH is 70.8–81.3% in every version.
+- A 0.5 s start-up delay meets version 2 on both ordinary Wednesdays: 22 Apr GEH 96.71%, 6 May 96.97%. On the incident day, though, it stalls the merge.
+
+**What is left for Simulation (C):** SUMO's lane-change model does not form a three-lane queue behind a lane closure while keeping the site's measured throughput. In every P0 here, the queue's speed at TDS90024–31 is set by the lanes that keep moving. Treat the queue speed and the clearing time as unresolved.
+
+## Part D: the Lead's plan set on `p0x-merge-at-site` (written before it runs)
+- **Why this P0:** of every P0 run so far, it is the only one that meets version 2 on all three seeds. It also removes replay-v2's single-lane collapse and the Sham Tseng gridlock.
+- **Known faults:** it still has the faults in Part C (queue speed, clearing time, discharge after the reopening). So a P2 result on it is a candidate for the 16 Oct review, not a measured saving.
+- **Scenarios:** `p0x-merge-at-site-s2029/2030/2031`, actuated signals, and `p0x-merge-at-site-fixed-s2029/2030/2031`, fixed-time signals. Each is identical to `p0x-merge-at-site` apart from its seed and signal network.
+- **Grid:** the same plan set, compliances and decision rule as Part B; 54 runs into `results/tuen-mun-lead-grid-oct15-p0x-merge-at-site/`.
+- **Then:** Part B's grid on replay-v2, into `results/tuen-mun-lead-grid-oct15/`.
