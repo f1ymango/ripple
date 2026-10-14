@@ -56,7 +56,8 @@ def upstream_of(net, edge_id, edges_on):
         out.append(ins[0].getID())
 
 
-def scenario(net, label, leave_share, passing_kmh, length_m, minutes_outside, queue_kmh, routes="sim/tuen-mun/demand_20260415.rou.xml"):
+def scenario(net, label, leave_share, passing_kmh, length_m, minutes_outside, queue_kmh, routes="sim/tuen-mun/demand_20260415.rou.xml",
+             network="sim/tuen-mun/network.net.xml"):
     main = path(net, E["tmr_from_tsuen_wan"], E["tuen_mun"])
     cpr_to_tuen_mun = path(net, E["sham_tseng_exit"], E["siu_lam_on_ramp"], avoid=[E["scene"]])
     # Drivers for Siu Lam end on the exit slip road (sim/tuen-mun/demand_*.json), which Castle Peak Rd
@@ -74,7 +75,7 @@ def scenario(net, label, leave_share, passing_kmh, length_m, minutes_outside, qu
                    "P0 is not yet checked against the detectors; nothing here is a result."),
         "sumo_version": "1.27.1",
         "seed": 2026,
-        "inputs": {"network": "sim/tuen-mun/network.net.xml", "routes": routes,
+        "inputs": {"network": network, "routes": routes,
                    "detector_loops": "sim/tuen-mun/detectors.add.xml",
                    "observations": "sim/tuen-mun/observations_20260415.json"},
         "run": {"begin": BEGIN, "end_seconds": 14400, "warmup_seconds": 1800, "wall_timeout_seconds": 1800},
@@ -178,12 +179,14 @@ def main():
     parser.add_argument("--queue-kmh", type=float, default=15)
     parser.add_argument("--routes", default="sim/tuen-mun/demand_20260415.rou.xml")
     parser.add_argument("--seed", type=int, default=2026)
+    parser.add_argument("--network", default="sim/tuen-mun/network.net.xml",
+                        help="sim/tuen-mun/network-fixed-time.net.xml for the fixed-time signal sensitivity")
     args = parser.parse_args()
     import sumolib
     net = sumolib.net.readNet(str(NET))
     OUT.mkdir(parents=True, exist_ok=True)
     doc = scenario(net, args.label, args.leave_share, args.passing_kmh, args.length_m, args.minutes_outside,
-                   args.queue_kmh, args.routes)
+                   args.queue_kmh, args.routes, args.network)
     doc["seed"] = args.seed
     path_out = OUT / f"evaluator_IN-26-02615_{args.label}.json"
     path_out.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")

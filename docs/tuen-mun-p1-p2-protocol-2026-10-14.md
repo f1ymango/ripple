@@ -102,3 +102,11 @@ Anything less is reported as **mixed** or **no improvement**, with the numbers. 
 **Regardless of outcome:**
 - No saving or recommendation goes into the materials until the Lead's 16 Oct go/no-go, given P0's known shortfalls.
 - The result stays separate from the Aberdeen submission.
+
+## Addendum: fixed-time signal sensitivity (written 20:00, after 2 of the 9 main cells had finished)
+- **Already committed to, before any P1/P2 run:** at 18:33 Data was told that P2 would also be run on a stricter signal design, and that a plan only counts if it wins with both.
+- **The variant:** `sim/tuen-mun/network-fixed-time.net.xml`, from `scripts/tuen_mun/fixed_time_variant.py`, fixed before any run on it.
+  - Every signal is fixed-time.
+  - The Sham Tseng Interchange gives its exit-slip stage 20 s of an 84 s cycle (24%), against up to 40 s on demand.
+- **Cells:** seeds 2026 and 2027 × compliance 0.3/0.5/0.7, with P0, P1 and P2 each on the variant's own P0. That is 18 runs: `replay-v2-fixed`, `replay-v2-fixed-s2027`.
+- **Decision rule extended:** P2 "beats P0" only if it also wins in every fixed-time cell under 0, 4 and 10 minutes outside. If the variant's P0 fails validation v2, that is reported, and the variant's cells count only as a sensitivity.
