@@ -1,0 +1,23 @@
+{
+  "run_id": "2026-05-15_ABD_P2_c50_t66_whatif-slowlane-free-seed2_lead-p2-nosignal-oct13",
+  "plan_id": "P2",
+  "incident_id": "IN-26-03365",
+  "scenario": {
+    "compliance": 0.5,
+    "clearance_min": 66.0,
+    "seed": 2
+  },
+  "metrics": {
+    "total_vehicle_hours_delay": 128.5,
+    "delay_vs_do_nothing_pct": 5.2,
+    "max_queue_m": {
+      "AID01103": 0
+    },
+    "corridor_tt_p95_min": 10.7,
+    "emergency_tt_min": 2.8,
+    "co2_kg": 12079,
+    "residential_delay_share_pct": 0.1,
+    "vehicles_completed": 27622
+  },
+  "validation": {}
+}
