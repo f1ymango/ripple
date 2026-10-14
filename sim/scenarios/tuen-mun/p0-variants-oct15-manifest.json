@@ -1,0 +1,58 @@
+{
+  "source": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_replay-v2.json",
+  "source_sha256": "9ee3cfcbb8d2e014260130a35cf8c4d5e248c59fcf6d0448ac12751d93940d64",
+  "seeds": [
+    2029,
+    2030,
+    2031
+  ],
+  "variants": {
+    "middle-open": [
+      {
+        "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0-middle-open-s2029.json",
+        "sha256": "28662d9eb1a28e7bb5139721a2e35a14aecb36affcb03e2621294dbbb323d7ef"
+      },
+      {
+        "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0-middle-open-s2030.json",
+        "sha256": "3fcf7ea5319ed3e5fa67a2bd1f428d062fab3338340d0a6def04b2aa148c8854"
+      },
+      {
+        "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0-middle-open-s2031.json",
+        "sha256": "651101ba24909d59efc470a52a02927f30a994222a6bb1305e22d8bc19117358"
+      }
+    ],
+    "td-one-lane": [
+      {
+        "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0-td-one-lane-s2029.json",
+        "sha256": "f04b1bf5a4b400458633c3145ba34d1d9d6fbfb09da0110dcfb5d5f322dd90f0"
+      },
+      {
+        "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0-td-one-lane-s2030.json",
+        "sha256": "39b45c2f805c33ad915f1ad8c80bd7a197fc03091d02c26f14c74685f4b985b8"
+      },
+      {
+        "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0-td-one-lane-s2031.json",
+        "sha256": "f95a0a4f612fdd601b0c30059aa7d4ec52c5cb3f7692c88dfcb513ed934a5d77"
+      }
+    ],
+    "no-residual": {
+      "removed_subtraction": 1141.0,
+      "source_metadata_sha256": "79df8c390b94159c22c885d63ad4964b20c21e2cd9e4c8f93b11dec194ee7cb6",
+      "routes_sha256": "7716b383403eca73c8ad7b88de4b91fb14a029791e2b2517874984fa4040d9fb",
+      "scenarios": [
+        {
+          "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0-no-residual-s2029.json",
+          "sha256": "a7d185793a35d77e9680b45f4c5883d47373a4415ed12a7b636c0e1732afb331"
+        },
+        {
+          "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0-no-residual-s2030.json",
+          "sha256": "21769995e899177ea47828108014b8b3e878be493c0066eb0892dfd9a25f6d39"
+        },
+        {
+          "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0-no-residual-s2031.json",
+          "sha256": "2ce5b35e98688c2a04b74c9e467ae7f3d010f200f2855316bf4ddf4af5aabafa"
+        }
+      ]
+    }
+  }
+}

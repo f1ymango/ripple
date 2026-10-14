@@ -234,11 +234,11 @@ def write_routes(day, rows, shares, tau=1.0, suffix="", startup=0.0):
                          f'number="{n}" departLane="best" departSpeed="max"><route edges="{routes[route]}"/></flow>')
     lines.append("</routes>")
     tag = day.replace("-", "")
-    (OUT / f"demand_{tag}{suffix}.rou.xml").write_text("\n".join(lines) + "\n")
-    (OUT / f"demand_{tag}.json").write_text(json.dumps({"day": day, "window": [BEGIN, END], "bin_minutes": BIN_MIN,
+    (OUT / f"demand_{tag}{suffix}.rou.xml").write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    (OUT / f"demand_{tag}{suffix}.json").write_text(json.dumps({"day": day, "window": [BEGIN, END], "bin_minutes": BIN_MIN,
                                                          "shares": shares, "split": split, "census": CENSUS,
                                                          "westbound_share_castle_peak_road": WESTBOUND_SHARE,
-                                                         "bins": rows, "routes": routes}, indent=1) + "\n")
+                                                         "bins": rows, "routes": routes}, indent=1) + "\n", encoding="utf-8", newline="\n")
     print(day, "vehicles", written, "shares", shares, file=sys.stderr)
 
 

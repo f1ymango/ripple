@@ -1,0 +1,1238 @@
+{
+  "source": "sim/tuen-mun/observations_20260415.json",
+  "bins": "5-minute bin start HKT",
+  "runs": [
+    {
+      "run_id": "2026-04-15_TMR_P0_c50_t59_p0-middle-open-s2029_lead-capacity-p0-variants",
+      "result_path": "results/tuen-mun-p0-variants-oct15/runs/2026-04-15_TMR_P0_c50_t59_p0-middle-open-s2029_lead-capacity-p0-variants.json",
+      "validation": {
+        "geh_under_5_pct": 86.01,
+        "speed_mape_pct": 32.49,
+        "speed_mape_free_flow_pct": 14.13,
+        "congestion_state_agreement_pct": 91.12,
+        "wrong_lane_teleports_other": 0
+      },
+      "health": {
+        "complete": true,
+        "final_time_seconds": 14400.0,
+        "wall_seconds": 509.5,
+        "sumo_version": "SUMO 1.27.1",
+        "closure_steps": [
+          {
+            "second": 4680,
+            "lanes_closed": [
+              "389939170-scene_2"
+            ]
+          },
+          {
+            "second": 5340,
+            "lanes_closed": [
+              "389939170-scene_0",
+              "389939170-scene_2"
+            ]
+          },
+          {
+            "second": 6420,
+            "lanes_closed": [
+              "389939170-scene_2"
+            ]
+          },
+          {
+            "second": 7860,
+            "lanes_closed": [
+              "389939170-scene_0",
+              "389939170-scene_2"
+            ]
+          },
+          {
+            "second": 8220,
+            "lanes_closed": []
+          }
+        ],
+        "drivers_rerouted_during_seconds": null,
+        "drivers_let_in_at_a_lane_end": 21,
+        "vehicles_loaded": 19323,
+        "vehicles_inserted": 19323,
+        "vehicles_running_at_end": 627,
+        "vehicles_waiting_to_enter_at_end": 0,
+        "teleports": {
+          "total": 0,
+          "jam": 0,
+          "yield": 0,
+          "wrongLane": 0
+        }
+      },
+      "delay_vehicle_hours": 1299.3,
+      "max_queue_m": {
+        "Tuen Mun Road back from the crash site": 6070
+      },
+      "detector_profiles": {
+        "TDS90020": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 71.3,
+            "sim_speed_kmh": 67.7,
+            "observed_count": 238,
+            "sim_count": 259.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 69.5,
+            "sim_speed_kmh": 67.3,
+            "observed_count": 245,
+            "sim_count": 252.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 69.9,
+            "sim_speed_kmh": 67.2,
+            "observed_count": null,
+            "sim_count": 266.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 45.5,
+            "sim_speed_kmh": 28.6,
+            "observed_count": 237,
+            "sim_count": 312.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 70.8,
+            "sim_speed_kmh": 26.6,
+            "observed_count": 195,
+            "sim_count": 153.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 63.8,
+            "sim_speed_kmh": 46.8,
+            "observed_count": 218,
+            "sim_count": 248.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 66.4,
+            "sim_speed_kmh": 68.3,
+            "observed_count": null,
+            "sim_count": 212.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 71.9,
+            "sim_speed_kmh": 69.4,
+            "observed_count": 173,
+            "sim_count": 203.0
+          }
+        ],
+        "TDS90024": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 75.6,
+            "sim_speed_kmh": 66.8,
+            "observed_count": 436,
+            "sim_count": 431.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 68.7,
+            "sim_speed_kmh": 62.3,
+            "observed_count": 450,
+            "sim_count": 432.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 10.6,
+            "sim_speed_kmh": 37.1,
+            "observed_count": null,
+            "sim_count": 217.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 23.3,
+            "sim_speed_kmh": 40.2,
+            "observed_count": null,
+            "sim_count": 317.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 14.1,
+            "sim_speed_kmh": 39.3,
+            "observed_count": null,
+            "sim_count": 188.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 19.0,
+            "sim_speed_kmh": 65.6,
+            "observed_count": null,
+            "sim_count": 427.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 32.3,
+            "sim_speed_kmh": 66.9,
+            "observed_count": null,
+            "sim_count": 354.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 43.5,
+            "sim_speed_kmh": 67.7,
+            "observed_count": 352,
+            "sim_count": 336.0
+          }
+        ],
+        "TDS90025": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 48.3,
+            "sim_speed_kmh": 66.2,
+            "observed_count": 440,
+            "sim_count": 435.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 38.2,
+            "sim_speed_kmh": 60.3,
+            "observed_count": 470,
+            "sim_count": 411.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 11.3,
+            "sim_speed_kmh": 38.8,
+            "observed_count": null,
+            "sim_count": 220.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 17.4,
+            "sim_speed_kmh": 37.1,
+            "observed_count": null,
+            "sim_count": 308.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 18.8,
+            "sim_speed_kmh": 39.8,
+            "observed_count": null,
+            "sim_count": 188.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 30.0,
+            "sim_speed_kmh": 65.5,
+            "observed_count": 318,
+            "sim_count": 429.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 28.7,
+            "sim_speed_kmh": 66.9,
+            "observed_count": null,
+            "sim_count": 361.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 33.2,
+            "sim_speed_kmh": 67.8,
+            "observed_count": 405,
+            "sim_count": 334.0
+          }
+        ],
+        "TDS90029": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 73.5,
+            "sim_speed_kmh": 69.2,
+            "observed_count": 418,
+            "sim_count": 365.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 17.0,
+            "sim_speed_kmh": 60.4,
+            "observed_count": null,
+            "sim_count": 252.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 7.9,
+            "sim_speed_kmh": 48.1,
+            "observed_count": null,
+            "sim_count": 147.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 16.2,
+            "sim_speed_kmh": 27.9,
+            "observed_count": null,
+            "sim_count": 269.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 9.9,
+            "sim_speed_kmh": 53.1,
+            "observed_count": null,
+            "sim_count": 228.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 72.7,
+            "sim_speed_kmh": 75.1,
+            "observed_count": 320,
+            "sim_count": 375.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 72.2,
+            "sim_speed_kmh": 76.3,
+            "observed_count": null,
+            "sim_count": 294.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 73.2,
+            "sim_speed_kmh": 76.8,
+            "observed_count": 385,
+            "sim_count": 290.0
+          }
+        ],
+        "TDS90032": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 23.1,
+            "sim_speed_kmh": 32.8,
+            "observed_count": null,
+            "sim_count": 261.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 12.1,
+            "sim_speed_kmh": 36.5,
+            "observed_count": null,
+            "sim_count": 122.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": null,
+            "sim_speed_kmh": 32.2,
+            "observed_count": null,
+            "sim_count": 179.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 19.1,
+            "sim_speed_kmh": 28.6,
+            "observed_count": null,
+            "sim_count": 264.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": null,
+            "sim_speed_kmh": 62.9,
+            "observed_count": null,
+            "sim_count": 384.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 65.0,
+            "sim_speed_kmh": 75.3,
+            "observed_count": null,
+            "sim_count": 365.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 79.5,
+            "sim_speed_kmh": 76.7,
+            "observed_count": null,
+            "sim_count": 291.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 79.3,
+            "sim_speed_kmh": 77.7,
+            "observed_count": null,
+            "sim_count": 285.0
+          }
+        ],
+        "TDS90033": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 68.2,
+            "sim_speed_kmh": 78.3,
+            "observed_count": 285,
+            "sim_count": 261.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 66.9,
+            "sim_speed_kmh": 80.1,
+            "observed_count": 145,
+            "sim_count": 126.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 63.2,
+            "sim_speed_kmh": 78.8,
+            "observed_count": null,
+            "sim_count": 156.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 66.6,
+            "sim_speed_kmh": 78.4,
+            "observed_count": 252,
+            "sim_count": 262.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 65.7,
+            "sim_speed_kmh": 73.4,
+            "observed_count": 202,
+            "sim_count": 363.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 62.5,
+            "sim_speed_kmh": 52.2,
+            "observed_count": 408,
+            "sim_count": 396.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 71.9,
+            "sim_speed_kmh": 77.1,
+            "observed_count": null,
+            "sim_count": 286.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 68.5,
+            "sim_speed_kmh": 76.6,
+            "observed_count": 367,
+            "sim_count": 294.0
+          }
+        ]
+      }
+    },
+    {
+      "run_id": "2026-04-15_TMR_P0_c50_t59_p0-no-residual-s2029_lead-capacity-p0-variants",
+      "result_path": "results/tuen-mun-p0-variants-oct15/runs/2026-04-15_TMR_P0_c50_t59_p0-no-residual-s2029_lead-capacity-p0-variants.json",
+      "validation": {
+        "geh_under_5_pct": 84.52,
+        "speed_mape_pct": 32.43,
+        "speed_mape_free_flow_pct": 15.2,
+        "congestion_state_agreement_pct": 91.98,
+        "wrong_lane_teleports_other": 0
+      },
+      "health": {
+        "complete": true,
+        "final_time_seconds": 14400.0,
+        "wall_seconds": 533.3,
+        "sumo_version": "SUMO 1.27.1",
+        "closure_steps": [
+          {
+            "second": 4680,
+            "lanes_closed": [
+              "389939170-scene_2"
+            ]
+          },
+          {
+            "second": 5340,
+            "lanes_closed": [
+              "389939170-scene_1",
+              "389939170-scene_2"
+            ]
+          },
+          {
+            "second": 6420,
+            "lanes_closed": [
+              "389939170-scene_2"
+            ]
+          },
+          {
+            "second": 7860,
+            "lanes_closed": [
+              "389939170-scene_1",
+              "389939170-scene_2"
+            ]
+          },
+          {
+            "second": 8220,
+            "lanes_closed": []
+          }
+        ],
+        "drivers_rerouted_during_seconds": null,
+        "drivers_let_in_at_a_lane_end": 10,
+        "vehicles_loaded": 20465,
+        "vehicles_inserted": 20465,
+        "vehicles_running_at_end": 631,
+        "vehicles_waiting_to_enter_at_end": 0,
+        "teleports": {
+          "total": 5,
+          "jam": 4,
+          "yield": 0,
+          "wrongLane": 1
+        }
+      },
+      "delay_vehicle_hours": 2196.4,
+      "max_queue_m": {
+        "Tuen Mun Road back from the crash site": 5790
+      },
+      "detector_profiles": {
+        "TDS90020": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 71.3,
+            "sim_speed_kmh": 67.7,
+            "observed_count": 238,
+            "sim_count": 259.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 69.5,
+            "sim_speed_kmh": 68.1,
+            "observed_count": 245,
+            "sim_count": 256.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 69.9,
+            "sim_speed_kmh": 67.1,
+            "observed_count": null,
+            "sim_count": 260.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 45.5,
+            "sim_speed_kmh": 68.2,
+            "observed_count": 237,
+            "sim_count": 239.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 70.8,
+            "sim_speed_kmh": 17.4,
+            "observed_count": 195,
+            "sim_count": 84.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 63.8,
+            "sim_speed_kmh": 60.8,
+            "observed_count": 218,
+            "sim_count": 202.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 66.4,
+            "sim_speed_kmh": 68.4,
+            "observed_count": null,
+            "sim_count": 219.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 71.9,
+            "sim_speed_kmh": 68.7,
+            "observed_count": 173,
+            "sim_count": 206.0
+          }
+        ],
+        "TDS90024": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 75.6,
+            "sim_speed_kmh": 66.8,
+            "observed_count": 436,
+            "sim_count": 431.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 68.7,
+            "sim_speed_kmh": 58.3,
+            "observed_count": 450,
+            "sim_count": 315.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 10.6,
+            "sim_speed_kmh": 37.9,
+            "observed_count": null,
+            "sim_count": 146.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 23.3,
+            "sim_speed_kmh": 40.3,
+            "observed_count": null,
+            "sim_count": 325.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 14.1,
+            "sim_speed_kmh": 33.2,
+            "observed_count": null,
+            "sim_count": 168.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 19.0,
+            "sim_speed_kmh": 59.3,
+            "observed_count": null,
+            "sim_count": 481.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 32.3,
+            "sim_speed_kmh": 66.3,
+            "observed_count": null,
+            "sim_count": 417.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 43.5,
+            "sim_speed_kmh": 66.8,
+            "observed_count": 352,
+            "sim_count": 378.0
+          }
+        ],
+        "TDS90025": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 48.3,
+            "sim_speed_kmh": 66.2,
+            "observed_count": 440,
+            "sim_count": 435.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 38.2,
+            "sim_speed_kmh": 56.3,
+            "observed_count": 470,
+            "sim_count": 266.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 11.3,
+            "sim_speed_kmh": 43.4,
+            "observed_count": null,
+            "sim_count": 188.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 17.4,
+            "sim_speed_kmh": 39.1,
+            "observed_count": null,
+            "sim_count": 327.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 18.8,
+            "sim_speed_kmh": 37.5,
+            "observed_count": null,
+            "sim_count": 215.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 30.0,
+            "sim_speed_kmh": 63.3,
+            "observed_count": 318,
+            "sim_count": 479.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 28.7,
+            "sim_speed_kmh": 66.5,
+            "observed_count": null,
+            "sim_count": 415.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 33.2,
+            "sim_speed_kmh": 66.7,
+            "observed_count": 405,
+            "sim_count": 379.0
+          }
+        ],
+        "TDS90029": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 73.5,
+            "sim_speed_kmh": 69.2,
+            "observed_count": 418,
+            "sim_count": 365.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 17.0,
+            "sim_speed_kmh": 54.4,
+            "observed_count": null,
+            "sim_count": 155.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 7.9,
+            "sim_speed_kmh": 50.2,
+            "observed_count": null,
+            "sim_count": 139.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 16.2,
+            "sim_speed_kmh": 27.3,
+            "observed_count": null,
+            "sim_count": 262.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 9.9,
+            "sim_speed_kmh": 47.2,
+            "observed_count": null,
+            "sim_count": 235.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 72.7,
+            "sim_speed_kmh": 75.1,
+            "observed_count": 320,
+            "sim_count": 416.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 72.2,
+            "sim_speed_kmh": 75.4,
+            "observed_count": null,
+            "sim_count": 373.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 73.2,
+            "sim_speed_kmh": 76.5,
+            "observed_count": 385,
+            "sim_count": 325.0
+          }
+        ],
+        "TDS90032": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 23.1,
+            "sim_speed_kmh": 32.8,
+            "observed_count": null,
+            "sim_count": 261.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 12.1,
+            "sim_speed_kmh": 34.7,
+            "observed_count": null,
+            "sim_count": 112.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": null,
+            "sim_speed_kmh": 30.8,
+            "observed_count": null,
+            "sim_count": 195.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 19.1,
+            "sim_speed_kmh": 28.0,
+            "observed_count": null,
+            "sim_count": 268.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": null,
+            "sim_speed_kmh": 62.0,
+            "observed_count": null,
+            "sim_count": 373.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 65.0,
+            "sim_speed_kmh": 42.2,
+            "observed_count": null,
+            "sim_count": 431.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 79.5,
+            "sim_speed_kmh": 75.6,
+            "observed_count": null,
+            "sim_count": 378.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 79.3,
+            "sim_speed_kmh": 77.0,
+            "observed_count": null,
+            "sim_count": 336.0
+          }
+        ],
+        "TDS90033": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 68.2,
+            "sim_speed_kmh": 78.3,
+            "observed_count": 285,
+            "sim_count": 261.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 66.9,
+            "sim_speed_kmh": 80.6,
+            "observed_count": 145,
+            "sim_count": 125.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 63.2,
+            "sim_speed_kmh": 79.1,
+            "observed_count": null,
+            "sim_count": 173.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 66.6,
+            "sim_speed_kmh": 78.2,
+            "observed_count": 252,
+            "sim_count": 265.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 65.7,
+            "sim_speed_kmh": 73.5,
+            "observed_count": 202,
+            "sim_count": 351.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 62.5,
+            "sim_speed_kmh": 40.0,
+            "observed_count": 408,
+            "sim_count": 417.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 71.9,
+            "sim_speed_kmh": 74.9,
+            "observed_count": null,
+            "sim_count": 371.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 68.5,
+            "sim_speed_kmh": 76.7,
+            "observed_count": 367,
+            "sim_count": 329.0
+          }
+        ]
+      }
+    },
+    {
+      "run_id": "2026-04-15_TMR_P0_c50_t59_p0-td-one-lane-s2029_lead-capacity-p0-variants",
+      "result_path": "results/tuen-mun-p0-variants-oct15/runs/2026-04-15_TMR_P0_c50_t59_p0-td-one-lane-s2029_lead-capacity-p0-variants.json",
+      "validation": {
+        "geh_under_5_pct": 77.97,
+        "speed_mape_pct": 36.04,
+        "speed_mape_free_flow_pct": 16.5,
+        "congestion_state_agreement_pct": 89.4,
+        "wrong_lane_teleports_other": 0
+      },
+      "health": {
+        "complete": true,
+        "final_time_seconds": 14400.0,
+        "wall_seconds": 558.9,
+        "sumo_version": "SUMO 1.27.1",
+        "closure_steps": [
+          {
+            "second": 4680,
+            "lanes_closed": [
+              "389939170-scene_2"
+            ]
+          },
+          {
+            "second": 5340,
+            "lanes_closed": [
+              "389939170-scene_1",
+              "389939170-scene_2"
+            ]
+          },
+          {
+            "second": 8220,
+            "lanes_closed": []
+          }
+        ],
+        "drivers_rerouted_during_seconds": null,
+        "drivers_let_in_at_a_lane_end": 20,
+        "vehicles_loaded": 19323,
+        "vehicles_inserted": 19293,
+        "vehicles_running_at_end": 631,
+        "vehicles_waiting_to_enter_at_end": 0,
+        "teleports": {
+          "total": 8,
+          "jam": 8,
+          "yield": 0,
+          "wrongLane": 0
+        }
+      },
+      "delay_vehicle_hours": 1986.8,
+      "max_queue_m": {
+        "Tuen Mun Road back from the crash site": 7178
+      },
+      "detector_profiles": {
+        "TDS90020": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 71.3,
+            "sim_speed_kmh": 67.7,
+            "observed_count": 238,
+            "sim_count": 259.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 69.5,
+            "sim_speed_kmh": 67.5,
+            "observed_count": 245,
+            "sim_count": 252.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 69.9,
+            "sim_speed_kmh": 67.0,
+            "observed_count": null,
+            "sim_count": 266.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 45.5,
+            "sim_speed_kmh": 17.4,
+            "observed_count": 237,
+            "sim_count": 151.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 70.8,
+            "sim_speed_kmh": 18.5,
+            "observed_count": 195,
+            "sim_count": 196.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 63.8,
+            "sim_speed_kmh": 34.0,
+            "observed_count": 218,
+            "sim_count": 331.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 66.4,
+            "sim_speed_kmh": 68.3,
+            "observed_count": null,
+            "sim_count": 212.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 71.9,
+            "sim_speed_kmh": 69.4,
+            "observed_count": 173,
+            "sim_count": 203.0
+          }
+        ],
+        "TDS90024": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 75.6,
+            "sim_speed_kmh": 66.8,
+            "observed_count": 436,
+            "sim_count": 431.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 68.7,
+            "sim_speed_kmh": 58.2,
+            "observed_count": 450,
+            "sim_count": 315.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 10.6,
+            "sim_speed_kmh": 23.3,
+            "observed_count": null,
+            "sim_count": 20.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 23.3,
+            "sim_speed_kmh": 34.2,
+            "observed_count": null,
+            "sim_count": 137.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 14.1,
+            "sim_speed_kmh": 40.9,
+            "observed_count": null,
+            "sim_count": 209.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 19.0,
+            "sim_speed_kmh": 60.4,
+            "observed_count": null,
+            "sim_count": 486.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 32.3,
+            "sim_speed_kmh": 67.1,
+            "observed_count": null,
+            "sim_count": 372.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 43.5,
+            "sim_speed_kmh": 67.7,
+            "observed_count": 352,
+            "sim_count": 336.0
+          }
+        ],
+        "TDS90025": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 48.3,
+            "sim_speed_kmh": 66.2,
+            "observed_count": 440,
+            "sim_count": 435.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 38.2,
+            "sim_speed_kmh": 56.3,
+            "observed_count": 470,
+            "sim_count": 266.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 11.3,
+            "sim_speed_kmh": 24.6,
+            "observed_count": null,
+            "sim_count": 20.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 17.4,
+            "sim_speed_kmh": 38.6,
+            "observed_count": null,
+            "sim_count": 151.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 18.8,
+            "sim_speed_kmh": 44.9,
+            "observed_count": null,
+            "sim_count": 242.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 30.0,
+            "sim_speed_kmh": 59.6,
+            "observed_count": 318,
+            "sim_count": 484.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 28.7,
+            "sim_speed_kmh": 67.0,
+            "observed_count": null,
+            "sim_count": 373.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 33.2,
+            "sim_speed_kmh": 67.8,
+            "observed_count": 405,
+            "sim_count": 334.0
+          }
+        ],
+        "TDS90029": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 73.5,
+            "sim_speed_kmh": 69.2,
+            "observed_count": 418,
+            "sim_count": 365.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 17.0,
+            "sim_speed_kmh": 54.4,
+            "observed_count": null,
+            "sim_count": 155.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 7.9,
+            "sim_speed_kmh": 43.1,
+            "observed_count": null,
+            "sim_count": 43.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 16.2,
+            "sim_speed_kmh": 70.1,
+            "observed_count": null,
+            "sim_count": 101.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 9.9,
+            "sim_speed_kmh": 46.3,
+            "observed_count": null,
+            "sim_count": 184.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 72.7,
+            "sim_speed_kmh": 75.4,
+            "observed_count": 320,
+            "sim_count": 417.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 72.2,
+            "sim_speed_kmh": 76.7,
+            "observed_count": null,
+            "sim_count": 309.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 73.2,
+            "sim_speed_kmh": 76.9,
+            "observed_count": 385,
+            "sim_count": 290.0
+          }
+        ],
+        "TDS90032": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 23.1,
+            "sim_speed_kmh": 32.8,
+            "observed_count": null,
+            "sim_count": 261.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 12.1,
+            "sim_speed_kmh": 34.7,
+            "observed_count": null,
+            "sim_count": 112.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": null,
+            "sim_speed_kmh": 34.3,
+            "observed_count": null,
+            "sim_count": 129.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 19.1,
+            "sim_speed_kmh": 27.1,
+            "observed_count": null,
+            "sim_count": 134.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": null,
+            "sim_speed_kmh": 61.4,
+            "observed_count": null,
+            "sim_count": 349.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 65.0,
+            "sim_speed_kmh": 40.4,
+            "observed_count": null,
+            "sim_count": 425.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 79.5,
+            "sim_speed_kmh": 76.9,
+            "observed_count": null,
+            "sim_count": 307.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 79.3,
+            "sim_speed_kmh": 77.7,
+            "observed_count": null,
+            "sim_count": 285.0
+          }
+        ],
+        "TDS90033": [
+          {
+            "time": "17:50",
+            "observed_speed_kmh": 68.2,
+            "sim_speed_kmh": 78.3,
+            "observed_count": 285,
+            "sim_count": 261.0
+          },
+          {
+            "time": "18:00",
+            "observed_speed_kmh": 66.9,
+            "sim_speed_kmh": 80.6,
+            "observed_count": 145,
+            "sim_count": 125.0
+          },
+          {
+            "time": "18:15",
+            "observed_speed_kmh": 63.2,
+            "sim_speed_kmh": 79.0,
+            "observed_count": null,
+            "sim_count": 131.0
+          },
+          {
+            "time": "18:30",
+            "observed_speed_kmh": 66.6,
+            "sim_speed_kmh": 78.1,
+            "observed_count": 252,
+            "sim_count": 131.0
+          },
+          {
+            "time": "18:45",
+            "observed_speed_kmh": 65.7,
+            "sim_speed_kmh": 74.7,
+            "observed_count": 202,
+            "sim_count": 326.0
+          },
+          {
+            "time": "19:00",
+            "observed_speed_kmh": 62.5,
+            "sim_speed_kmh": 41.3,
+            "observed_count": 408,
+            "sim_count": 434.0
+          },
+          {
+            "time": "19:30",
+            "observed_speed_kmh": 71.9,
+            "sim_speed_kmh": 60.4,
+            "observed_count": null,
+            "sim_count": 338.0
+          },
+          {
+            "time": "19:40",
+            "observed_speed_kmh": 68.5,
+            "sim_speed_kmh": 76.8,
+            "observed_count": 367,
+            "sim_count": 294.0
+          }
+        ]
+      }
+    }
+  ]
+}
