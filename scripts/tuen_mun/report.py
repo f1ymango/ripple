@@ -21,6 +21,8 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from src import validation_targets   # noqa: E402
 WORK = ROOT / "sim/work/evaluator"
 CRASH_ONSET_S = 4680
 
@@ -89,7 +91,8 @@ def main():
         normal = normal_trips(t["P0"], gone["P0"])
         scen = json.loads((ROOT / f"sim/scenarios/tuen-mun/evaluator_IN-26-02615_{label}.json").read_text())
         charged = scen["drivers_leave"]["extra_minutes_outside"]
-        row = {"cell": f"{label} {c}", "plans": {}}
+        met, why = validation_targets.check(r["P0"]["validation"])
+        row = {"cell": f"{label} {c}", "p0_validation_met": met, "p0_validation_reason": why, "plans": {}}
         for p in r:
             e = r[p]["metrics"]["total_vehicle_hours_delay"]
             hours, cars = extra_driving(t[p], normal)
@@ -99,12 +102,23 @@ def main():
                                              for m in args.outside}}
         out.append(row)
     for row in out:
-        print(row["cell"])
+        print(row["cell"], "" if row["p0_validation_met"] else f"  [P0 FAILS validation v2: {row['p0_validation_reason']}]")
         for p, v in row["plans"].items():
             vs = "" if p == "P0" else "  " + " ".join(
                 f"{k}: {100 * (v['corrected'][k] / row['plans']['P0']['corrected'][k] - 1):+.1f}%" for k in v["corrected"])
             print(f"  {p}: E {v['delay_E']:7.1f} veh-h, +{v['extra_driving_h']:5.1f} longer drive ({v['cars_on_a_longer_route']} cars), "
                   f"{v['left_at_ting_kau']} left at Ting Kau{vs}")
+    for group in sorted({row["cell"].split()[0].split("-s")[0] for row in out}):
+        cells = [row for row in out if row["cell"].split()[0].split("-s")[0] == group]
+        for plan in ("P1", "P2"):
+            for only_valid in (False, True):
+                use = [row for row in cells if row["p0_validation_met"] or not only_valid]
+                d = [100 * (row["plans"][plan]["corrected"][k] / row["plans"]["P0"]["corrected"][k] - 1)
+                     for row in use for k in row["plans"]["P0"]["corrected"]]
+                if d:
+                    print(f"{group} {plan} {'cells with a valid P0' if only_valid else 'all cells'}: {len(use)} cells, "
+                          f"better than P0 in {sum(x < 0 for x in d)} of {len(d)} (cell x minutes outside), "
+                          f"{min(d):+.1f}% to {max(d):+.1f}%, median {sorted(d)[len(d) // 2]:+.1f}%")
     (res / "comparison.json").write_text(json.dumps(out, indent=1) + "\n")
 
 

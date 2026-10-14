@@ -1,0 +1,23 @@
+{
+  "run_id": "2026-04-15_TMR_P2_c30_t59_replay-v2-s2028_rehearsal",
+  "plan_id": "P2",
+  "incident_id": "IN-26-02615",
+  "scenario": {
+    "compliance": 0.3,
+    "clearance_min": 59.0,
+    "seed": 2028
+  },
+  "metrics": {
+    "total_vehicle_hours_delay": 1198.3,
+    "delay_vs_do_nothing_pct": -5.2,
+    "max_queue_m": {
+      "Tuen Mun Road back from the crash site": 5139
+    },
+    "corridor_tt_p95_min": 31.3,
+    "emergency_tt_min": 4.6,
+    "co2_kg": 36523,
+    "residential_delay_share_pct": 0.0,
+    "vehicles_completed": 15868
+  },
+  "validation": {}
+}

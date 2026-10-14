@@ -1,0 +1,362 @@
+[
+ {
+  "cell": "replay-v2 c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1337.6,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 371,
+    "corrected": {
+     "0 min outside": 1312.9,
+     "4 min outside": 1337.6,
+     "10 min outside": 1374.7
+    }
+   },
+   "P1": {
+    "delay_E": 1336.4,
+    "extra_driving_h": 26.3,
+    "cars_on_a_longer_route": 366,
+    "left_at_ting_kau": 361,
+    "corrected": {
+     "0 min outside": 1338.6,
+     "4 min outside": 1362.7,
+     "10 min outside": 1398.8
+    }
+   },
+   "P2": {
+    "delay_E": 1269.8,
+    "extra_driving_h": 9.4,
+    "cars_on_a_longer_route": 129,
+    "left_at_ting_kau": 323,
+    "corrected": {
+     "0 min outside": 1257.6,
+     "4 min outside": 1279.2,
+     "10 min outside": 1311.5
+    }
+   }
+  }
+ },
+ {
+  "cell": "replay-v2 c50",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1337.6,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 371,
+    "corrected": {
+     "0 min outside": 1312.9,
+     "4 min outside": 1337.6,
+     "10 min outside": 1374.7
+    }
+   },
+   "P1": {
+    "delay_E": 1815.2,
+    "extra_driving_h": 31.1,
+    "cars_on_a_longer_route": 436,
+    "left_at_ting_kau": 344,
+    "corrected": {
+     "0 min outside": 1823.4,
+     "4 min outside": 1846.3,
+     "10 min outside": 1880.7
+    }
+   },
+   "P2": {
+    "delay_E": 1259.9,
+    "extra_driving_h": 17.0,
+    "cars_on_a_longer_route": 233,
+    "left_at_ting_kau": 255,
+    "corrected": {
+     "0 min outside": 1259.9,
+     "4 min outside": 1276.9,
+     "10 min outside": 1302.4
+    }
+   }
+  }
+ },
+ {
+  "cell": "replay-v2 c70",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1337.6,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 371,
+    "corrected": {
+     "0 min outside": 1312.9,
+     "4 min outside": 1337.6,
+     "10 min outside": 1374.7
+    }
+   },
+   "P1": {
+    "delay_E": 2056.1,
+    "extra_driving_h": 38.8,
+    "cars_on_a_longer_route": 541,
+    "left_at_ting_kau": 380,
+    "corrected": {
+     "0 min outside": 2069.6,
+     "4 min outside": 2094.9,
+     "10 min outside": 2132.9
+    }
+   },
+   "P2": {
+    "delay_E": 1283.0,
+    "extra_driving_h": 23.4,
+    "cars_on_a_longer_route": 321,
+    "left_at_ting_kau": 184,
+    "corrected": {
+     "0 min outside": 1294.1,
+     "4 min outside": 1306.4,
+     "10 min outside": 1324.8
+    }
+   }
+  }
+ },
+ {
+  "cell": "replay-v2-s2027 c30",
+  "p0_validation_met": false,
+  "p0_validation_reason": "Baseline had a wrong-lane teleport other than at a lane shutting or in a jam.",
+  "plans": {
+   "P0": {
+    "delay_E": 1346.1,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 365,
+    "corrected": {
+     "0 min outside": 1321.8,
+     "4 min outside": 1346.1,
+     "10 min outside": 1382.6
+    }
+   },
+   "P1": {
+    "delay_E": 1398.5,
+    "extra_driving_h": 27.7,
+    "cars_on_a_longer_route": 374,
+    "left_at_ting_kau": 349,
+    "corrected": {
+     "0 min outside": 1402.9,
+     "4 min outside": 1426.2,
+     "10 min outside": 1461.1
+    }
+   },
+   "P2": {
+    "delay_E": 1249.7,
+    "extra_driving_h": 12.9,
+    "cars_on_a_longer_route": 173,
+    "left_at_ting_kau": 314,
+    "corrected": {
+     "0 min outside": 1241.6,
+     "4 min outside": 1262.6,
+     "10 min outside": 1294.0
+    }
+   }
+  }
+ },
+ {
+  "cell": "replay-v2-s2027 c50",
+  "p0_validation_met": false,
+  "p0_validation_reason": "Baseline had a wrong-lane teleport other than at a lane shutting or in a jam.",
+  "plans": {
+   "P0": {
+    "delay_E": 1346.1,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 365,
+    "corrected": {
+     "0 min outside": 1321.8,
+     "4 min outside": 1346.1,
+     "10 min outside": 1382.6
+    }
+   },
+   "P1": {
+    "delay_E": 1836.4,
+    "extra_driving_h": 32.3,
+    "cars_on_a_longer_route": 437,
+    "left_at_ting_kau": 341,
+    "corrected": {
+     "0 min outside": 1845.9,
+     "4 min outside": 1868.7,
+     "10 min outside": 1902.8
+    }
+   },
+   "P2": {
+    "delay_E": 1232.0,
+    "extra_driving_h": 20.4,
+    "cars_on_a_longer_route": 275,
+    "left_at_ting_kau": 248,
+    "corrected": {
+     "0 min outside": 1235.8,
+     "4 min outside": 1252.4,
+     "10 min outside": 1277.2
+    }
+   }
+  }
+ },
+ {
+  "cell": "replay-v2-s2027 c70",
+  "p0_validation_met": false,
+  "p0_validation_reason": "Baseline had a wrong-lane teleport other than at a lane shutting or in a jam.",
+  "plans": {
+   "P0": {
+    "delay_E": 1346.1,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 365,
+    "corrected": {
+     "0 min outside": 1321.8,
+     "4 min outside": 1346.1,
+     "10 min outside": 1382.6
+    }
+   },
+   "P1": {
+    "delay_E": 2069.5,
+    "extra_driving_h": 39.2,
+    "cars_on_a_longer_route": 533,
+    "left_at_ting_kau": 378,
+    "corrected": {
+     "0 min outside": 2083.5,
+     "4 min outside": 2108.7,
+     "10 min outside": 2146.5
+    }
+   },
+   "P2": {
+    "delay_E": 1150.0,
+    "extra_driving_h": 25.1,
+    "cars_on_a_longer_route": 339,
+    "left_at_ting_kau": 366,
+    "corrected": {
+     "0 min outside": 1150.7,
+     "4 min outside": 1175.1,
+     "10 min outside": 1211.7
+    }
+   }
+  }
+ },
+ {
+  "cell": "replay-v2-s2028 c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1264.4,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 438,
+    "corrected": {
+     "0 min outside": 1235.2,
+     "4 min outside": 1264.4,
+     "10 min outside": 1308.2
+    }
+   },
+   "P1": {
+    "delay_E": 1345.9,
+    "extra_driving_h": 28.6,
+    "cars_on_a_longer_route": 389,
+    "left_at_ting_kau": 370,
+    "corrected": {
+     "0 min outside": 1349.8,
+     "4 min outside": 1374.5,
+     "10 min outside": 1411.5
+    }
+   },
+   "P2": {
+    "delay_E": 1198.3,
+    "extra_driving_h": 13.1,
+    "cars_on_a_longer_route": 171,
+    "left_at_ting_kau": 340,
+    "corrected": {
+     "0 min outside": 1188.7,
+     "4 min outside": 1211.4,
+     "10 min outside": 1245.4
+    }
+   }
+  }
+ },
+ {
+  "cell": "replay-v2-s2028 c50",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1264.4,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 438,
+    "corrected": {
+     "0 min outside": 1235.2,
+     "4 min outside": 1264.4,
+     "10 min outside": 1308.2
+    }
+   },
+   "P1": {
+    "delay_E": 1863.4,
+    "extra_driving_h": 32.5,
+    "cars_on_a_longer_route": 437,
+    "left_at_ting_kau": 341,
+    "corrected": {
+     "0 min outside": 1873.2,
+     "4 min outside": 1895.9,
+     "10 min outside": 1930.0
+    }
+   },
+   "P2": {
+    "delay_E": 1240.8,
+    "extra_driving_h": 20.2,
+    "cars_on_a_longer_route": 270,
+    "left_at_ting_kau": 255,
+    "corrected": {
+     "0 min outside": 1244.0,
+     "4 min outside": 1261.0,
+     "10 min outside": 1286.5
+    }
+   }
+  }
+ },
+ {
+  "cell": "replay-v2-s2028 c70",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1264.4,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 438,
+    "corrected": {
+     "0 min outside": 1235.2,
+     "4 min outside": 1264.4,
+     "10 min outside": 1308.2
+    }
+   },
+   "P1": {
+    "delay_E": 2079.3,
+    "extra_driving_h": 40.2,
+    "cars_on_a_longer_route": 544,
+    "left_at_ting_kau": 392,
+    "corrected": {
+     "0 min outside": 2093.4,
+     "4 min outside": 2119.5,
+     "10 min outside": 2158.7
+    }
+   },
+   "P2": {
+    "delay_E": 1191.9,
+    "extra_driving_h": 22.7,
+    "cars_on_a_longer_route": 305,
+    "left_at_ting_kau": 401,
+    "corrected": {
+     "0 min outside": 1187.9,
+     "4 min outside": 1214.6,
+     "10 min outside": 1254.7
+    }
+   }
+  }
+ }
+]
