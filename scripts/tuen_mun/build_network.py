@@ -175,7 +175,12 @@ def audit(net, limits, path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--irn", help="TD's RdNet_IRNP.gdb; without it the committed speed-limits.edg.xml is used")
+    parser.add_argument("--crash-site", default="sim/tuen-mun/crash-site.edg.xml",
+                        help="where the scene is cut out; a variant writes its own network and no audit")
+    parser.add_argument("--output", default="sim/tuen-mun/network.net.xml")
     args = parser.parse_args()
+    output, crash_site = ROOT / args.output, ROOT / args.crash_site
+    variant = output != OUT / "network.net.xml"
     import sumolib
     OUT.mkdir(parents=True, exist_ok=True)
     patch = OUT / "speed-limits.edg.xml"
@@ -188,17 +193,21 @@ def main():
         subprocess.run(["netconvert", "--sumo-net-file", str(base), "--edge-files", str(patch), "--lefthand",
                         "--output-file", str(limited)], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         cut = Path(tmp) / "cut.net.xml"
-        subprocess.run(["netconvert", "--sumo-net-file", str(limited), "--edge-files", str(OUT / "crash-site.edg.xml"),
+        subprocess.run(["netconvert", "--sumo-net-file", str(limited), "--edge-files", str(crash_site),
                         "--lefthand", "--output-file", str(cut)], check=True,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        write_arterial_speeds(sumolib.net.readNet(str(cut)), OUT / "arterial-speeds.edg.xml")
+        if not variant:
+            write_arterial_speeds(sumolib.net.readNet(str(cut)), OUT / "arterial-speeds.edg.xml")
         # corrections to OSM and the Sham Tseng Interchange stages: each file says why
         subprocess.run(["netconvert", "--sumo-net-file", str(cut),
                         "--edge-files", f"{OUT / 'fixes.edg.xml'},{OUT / 'arterial-speeds.edg.xml'}",
                         "--connection-files", str(OUT / "fixes.con.xml"), "--node-files", str(OUT / "fixes.nod.xml"),
                         "--tllogic-files", str(OUT / "signals.tll.xml"), "--lefthand",
-                        "--output-file", str(OUT / "network.net.xml")], check=True,
+                        "--output-file", str(output)], check=True,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    if variant:
+        print("wrote", output, file=sys.stderr)
+        return
     net = sumolib.net.readNet(str(OUT / "network.net.xml"))
     limits = {}
     for line in patch.read_text().splitlines():

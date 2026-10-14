@@ -110,7 +110,7 @@ def census_cpr(t, station_two_way, direction_share):
         * BIN_MIN / 60
 
 
-def build(day):
+def build(day, residual=True):
     ids = ["TDS90017", "TDS90019", "TDS90020", "TDS90024", "TDS90025", "TDS90029", "TDS90031", "TDS90033",
            "TDS90039", "TDS90040", "TDS90041"]
     _, _, starts = slots(day)
@@ -150,7 +150,7 @@ def build(day):
         merge_total = sum(r["ting_kau_merge_ordinary"] for r in window)
         for r in rows:
             r["ting_kau_decided_earlier"] = (TING_KAU_DECIDED_EARLIER * r["ting_kau_merge_ordinary"] / merge_total
-                                             if r in window else 0.0)
+                                             if r in window and residual else 0.0)
 
     # shares, from the three ordinary Wednesdays over the whole window
     def total(c, d):
@@ -235,7 +235,7 @@ def write_routes(day, rows, shares, tau=1.0, suffix="", startup=0.0):
     lines.append("</routes>")
     tag = day.replace("-", "")
     (OUT / f"demand_{tag}{suffix}.rou.xml").write_text("\n".join(lines) + "\n")
-    (OUT / f"demand_{tag}.json").write_text(json.dumps({"day": day, "window": [BEGIN, END], "bin_minutes": BIN_MIN,
+    (OUT / f"demand_{tag}{suffix}.json").write_text(json.dumps({"day": day, "window": [BEGIN, END], "bin_minutes": BIN_MIN,
                                                          "shares": shares, "split": split, "census": CENSUS,
                                                          "westbound_share_castle_peak_road": WESTBOUND_SHARE,
                                                          "bins": rows, "routes": routes}, indent=1) + "\n")
@@ -248,8 +248,10 @@ def main():
     parser.add_argument("--tau", type=float, default=TAU_S, help="drivers' desired time headway, s")
     parser.add_argument("--startup-delay", type=float, default=STARTUP_S, help="s a driver takes to move off from a stop")
     parser.add_argument("--suffix", default="", help="written as demand_<day><suffix>.rou.xml, for calibration variants")
+    parser.add_argument("--no-ting-kau-residual", action="store_true",
+                        help="keep the 1,141 Ting Kau drivers in (Simulation's P0 variant 5)")
     args = parser.parse_args()
-    rows, shares = build(args.day)
+    rows, shares = build(args.day, residual=not args.no_ting_kau_residual)
     write_routes(args.day, rows, shares, args.tau, args.suffix, args.startup_delay)
 
 

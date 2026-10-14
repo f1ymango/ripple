@@ -124,8 +124,13 @@ def observations(day, ids, placement):
 
 
 def main():
+    import argparse
     import sumolib
-    net = sumolib.net.readNet(str(NET))
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--network", default=str(NET.relative_to(ROOT)))
+    parser.add_argument("--suffix", default="", help="a network variant's loops: detectors<suffix>.add.xml, no new observations")
+    args = parser.parse_args()
+    net = sumolib.net.readNet(str(ROOT / args.network))
     where = locations()
     placement = {}
     for detector_id in WESTBOUND:
@@ -140,8 +145,10 @@ def main():
             lines.append(f'  <inductionLoop id="{detector_id}_{lane}" lane="{p["edge_id"]}_{lane}" '
                          f'pos="{p["position_m"]:.2f}" freq="300" file="results/e1_{detector_id}_{lane}.xml" />')
     lines.append("</additional>")
-    (OUT / "detectors.add.xml").write_text("\n".join(lines) + "\n")
-    (OUT / "detectors-placement.json").write_text(json.dumps(placement, indent=1) + "\n")
+    (OUT / f"detectors{args.suffix}.add.xml").write_text("\n".join(lines) + "\n")
+    (OUT / f"detectors-placement{args.suffix}.json").write_text(json.dumps(placement, indent=1) + "\n")
+    if args.suffix:
+        return
     ids = list(placement)
     for day in [INCIDENT_DAY] + ORDINARY_DAYS:
         doc = observations(day, ids, placement)
