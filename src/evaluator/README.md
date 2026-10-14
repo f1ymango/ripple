@@ -166,6 +166,13 @@ first lane reopens if that is earlier. If the road reopens before
 E also refuses a plan that names an od group, route or junction the
 scenario's `plan_actions` block does not place in the network.
 
+A route in `plan_actions` either `replace`s named edges starting at the closed
+road (Wong Chuk Hang Road), or leaves the driver's road earlier at
+`leaves_at` and `rejoin`s it at a named edge, whatever the driver's route has
+in between (a route off the road before the closure, such as Castle Peak Road
+for a Tuen Mun Road closure). A driver already past where a route leaves
+keeps their road.
+
 ## The scenario file
 
 A scenario file in `sim/scenarios/` holds what E assumes: inputs, seed, the

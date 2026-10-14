@@ -890,6 +890,34 @@ def test_two_routes_for_one_od_group_split_its_drivers_by_share(tmp_path, mock_p
     assert all(actions.follows(f"f.{i}", road.routes[f"f.{i}"], 121) == (took[i] != "closed") for i in range(4000))
 
 
+LONG_WAY = {**PLACES, "routes": {"Mock Detour": {"leaves_at": "in", "rejoin": "out", "with": ["west", "north"]}}}
+
+
+def test_a_long_way_round_leaves_before_the_closed_road_and_rejoins_whatever_lies_between(tmp_path, mock_plans):
+    plans, context = mock_plans
+    scenario, _ = full_scenario(tmp_path, plan_actions=LONG_WAY)
+    road, actions = Road(), PlanActions(plans["P1"], context, scenario, 1.0, 5)
+    variant = ["far", "in", "closed", "side", "out"]                      # another route between leaving and rejoining
+    road.put("a.0", "far", THROUGH)
+    road.put("b.0", "far", variant)
+    road.put("past.0", "in", THROUGH)                                     # already past where the route leaves
+    actions.step(road, 120)
+    assert road.routes["a.0"] == road.routes["b.0"] == ["far", "west", "north", "out"]
+    assert road.routes["past.0"] == THROUGH and actions.rerouted == {"a.0", "b.0"}
+    actions.step(road, 600)                                               # both still short of the long way
+    assert road.routes["a.0"] == THROUGH and road.routes["b.0"] == variant
+    assert actions.report()["of_them_back_on_the_reopened_road"] == 2
+
+
+@pytest.mark.parametrize("route, message", [
+    ({"replace": ["closed"], "rejoin": "out", "with": ["alt"]}, "either replace or rejoin"),
+    ({"with": ["alt"]}, "either replace or rejoin"),
+    ({"leaves_at": "in", "rejoin": "out", "with": ["west", "out"]}, "end before the rejoin edge")])
+def test_a_plan_route_names_what_it_replaces_one_way_only(tmp_path, route, message):
+    with pytest.raises(ValueError, match=message):
+        full_scenario(tmp_path, plan_actions={**PLACES, "routes": {"Mock Detour": route}})
+
+
 def test_routes_and_junctions_the_network_cannot_take_are_refused(tmp_path, mock_plans):
     plans, context = mock_plans
     starts_early = {**PLACES, "routes": {"Mock Detour": {"replace": ["in", "closed"], "with": ["under1"]}}}

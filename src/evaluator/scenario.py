@@ -12,7 +12,10 @@ Four blocks are optional. A scenario without them runs exactly as before:
   vehicles        the mean vehicle length, which sets how much road a queue takes.
   drivers_leave   drivers who see the queue ahead of an exit take that exit.
   plan_actions    where a plan's od groups, routes and junctions are in this
-                  network. Without it E can only run P0.
+                  network. Without it E can only run P0. A route leaves the
+                  driver's road at the od group's via_edge, or earlier at
+                  `leaves_at`, and either replaces the edges it names or, with
+                  `rejoin`, whatever the driver's route has up to that edge.
 """
 import hashlib
 import re
@@ -59,9 +62,15 @@ DRIVERS_LEAVE = optional(obj({
     "entry": obj({"edge": NAME, "after_waiting_seconds": POSITIVE}),
     "extra_minutes_outside": {"type": "number", "minimum": 0},
 }), "entry")
+ROUTE = optional(obj({
+    "leaves_at": NAME,                       # where the route leaves the driver's road; default the od group's via_edge
+    "replace": EDGES,                        # the driver's edges it replaces, from leaves_at on ...
+    "rejoin": NAME,                          # ... or the edge where it meets the driver's road again, whatever is between
+    "with": EDGES,
+}), "leaves_at", "replace", "rejoin")
 PLAN_ACTIONS = obj({
     "od_groups": named(obj({"via_edge": NAME, "to_edge": NAME})),
-    "routes": named(obj({"replace": EDGES, "with": EDGES})),
+    "routes": named(ROUTE),
     "signals": named(obj({"tls_id": NAME, "green_phases": array({"type": "integer", "minimum": 0}, minItems=1)})),
 })
 SCENARIO_SCHEMA = obj({
@@ -153,6 +162,11 @@ def load(path):
     if "detour" in closure and ("reroute_at_edges" not in closure
                                 or closure["detour"]["replace"][0] != closure["edge_id"]):
         raise ValueError("closure.detour needs reroute_at_edges and must replace the closed edge onwards")
+    for name, route in scenario.get("plan_actions", {}).get("routes", {}).items():
+        if ("replace" in route) == ("rejoin" in route):
+            raise ValueError(f"Plan route {name!r} needs either replace or rejoin, not both or neither")
+        if route.get("rejoin") in route["with"]:
+            raise ValueError(f"Plan route {name!r}: its edges end before the rejoin edge")
     return scenario
 
 
