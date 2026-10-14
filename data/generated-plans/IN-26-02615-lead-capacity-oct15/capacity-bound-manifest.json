@@ -1,0 +1,20 @@
+{
+  "incident_id": "IN-26-02615",
+  "derivation": "Logged D P2 proposal, then deterministic capacity bound; not a new LLM call or result",
+  "source_plan_set": "data/generated-plans/IN-26-02615-lead-raw-oct15",
+  "source_sha256": {
+    "P0.json": "832b2646e69195611dfacfeb57d35e428ae6d3a18e0a996a68cffbca4fb14ef8",
+    "P1.json": "51cc3ab9b44807227c85914c63eee81c30c0bb730e7ca8c1013d5ee90b4408c8",
+    "P2.json": "d7ca756c5a43e6609ea575d1c3976f7f4a20816fbb0aa0330f0c7f10ed436d84",
+    "generation-inputs.json": "a8479854edebb8e9b14d4a961b6c4ee894f0aeb1b8eac1491a5b929543158129"
+  },
+  "rule_path": "data/lead-inputs/IN-26-02615_capacity-rule.json",
+  "rule_sha256": "808595c76685d21ec68d16b71e79b62981ad5a0d87f87b579113285b030df640",
+  "estimated_eligible_flow_veh_h": 2603.375,
+  "unrounded_capacity_share_cap": 0.114138,
+  "rounded_capacity_share_cap": 0.11,
+  "model_proposed_share": 0.8,
+  "selected_share": 0.11,
+  "p2_sha256": "0defc99a1f4acc427e8df8e4100428e96784c8e86ea6b3dae0ea2a02b81ea5e1",
+  "status": "experimental candidate; no evaluated benefit or P0 acceptance implied"
+}

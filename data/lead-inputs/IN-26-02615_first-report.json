@@ -1,0 +1,22 @@
+{
+  "incident_id": "IN-26-02615",
+  "source_message_en": "Due to traffic accident , part of the lanes of Tuen Mun Road (Tuen Mun bound) near Hong Kong Garden is closed to all traffic. Only remaining lane is available to motorists. Traffic is busy now.",
+  "source_message_zh": "因交通意外，屯門公路(往屯門方向)近豪景花園的部份行車線現已封閉。 駕駛人士只可使用餘下行車線行車。 現時上址交通繁忙。",
+  "announced_at": "2026-04-15T17:59:00+08:00",
+  "closed_at": null,
+  "status": "NEW",
+  "district": null,
+  "road_name": "Tuen Mun Road",
+  "direction": "Tuen Mun bound",
+  "near_landmark": "Hong Kong Garden",
+  "between_landmark": null,
+  "lat": null,
+  "lon": null,
+  "coords_source": "none",
+  "incident_type": "traffic_accident",
+  "lanes_closed": ["unspecified"],
+  "lanes_total": null,
+  "in_scope": true,
+  "confidence": 0.7,
+  "notes": "TD first-report transcription copied from the Data rehearsal inputs for this Lead-approved Tuen Mun experiment; not a Reader output. See docs/tuen-mun-2026-10-14.md."
+}
