@@ -64,7 +64,7 @@ def upstream_of(net, edge_id, edges_on):
 
 def scenario(net, label, leave_share, passing_kmh, length_m, minutes_outside, queue_kmh, routes="sim/tuen-mun/demand_20260415.rou.xml",
              network="sim/tuen-mun/network.net.xml", closure="reference", loops="sim/tuen-mun/detectors.add.xml",
-             move_over="long", merge_in_turn=False):
+             move_over="long", merge_in_turn=False, keep_lanes=False):
     main = path(net, E["tmr_from_tsuen_wan"], E["tuen_mun"])
     cpr_to_tuen_mun = path(net, E["sham_tseng_exit"], E["siu_lam_on_ramp"], avoid=[E["scene"]])
     # Drivers for Siu Lam end on the exit slip road (sim/tuen-mun/demand_*.json), which Castle Peak Rd
@@ -100,7 +100,10 @@ def scenario(net, label, leave_share, passing_kmh, length_m, minutes_outside, qu
                       # drivers from a lane shut ahead keep to it and move over at the approach's end in turn with the
                       # lane beside it (src/evaluator/simulate.py, Closure.merge_in_turn); without it they run past
                       # the open lane's standing queue and cut in, unlike TD's loops, which read every lane queued
-                      **({"merge_in_turn": True} if merge_in_turn else {})},
+                      **({"merge_in_turn": True} if merge_in_turn else {}),
+                      # and on the two edges before the approach (back to the Sham Tseng exit) they keep to it too;
+                      # left to SUMO they leave it 2-3 km early and only the open lane queues
+                      **({"keep_lane_edges": [E["upstream"], E["leaves_at"]]} if keep_lanes else {})},
         },
         "vehicles": {"type": "DEFAULT_VEHTYPE", "length_m": length_m},
         "drivers_leave": {
@@ -200,6 +203,8 @@ def main():
     parser.add_argument("--detector-loops", default="sim/tuen-mun/detectors.add.xml")
     parser.add_argument("--move-over", choices=["long", "approach"], default="long")
     parser.add_argument("--merge-in-turn", action="store_true", help="drivers from a lane shut ahead merge in turn (a zipper)")
+    parser.add_argument("--keep-lanes", action="store_true",
+                        help="with --merge-in-turn: they keep to their lane from the Sham Tseng exit on, not only on the approach")
     parser.add_argument("--network", default="sim/tuen-mun/network.net.xml",
                         help="sim/tuen-mun/network-fixed-time.net.xml for the fixed-time signal sensitivity")
     args = parser.parse_args()
@@ -208,7 +213,7 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     doc = scenario(net, args.label, args.leave_share, args.passing_kmh, args.length_m, args.minutes_outside,
                    args.queue_kmh, args.routes, args.network, args.closure, args.detector_loops, args.move_over,
-                   args.merge_in_turn)
+                   args.merge_in_turn, args.keep_lanes)
     doc["seed"] = args.seed
     if args.variant_note:
         data_candidate = args.variant_note.startswith("Data's candidate")

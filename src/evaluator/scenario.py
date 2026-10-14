@@ -53,7 +53,9 @@ SCENE = optional(obj({
     "let_in_edges": EDGES,                   # where else that applies, e.g. along the queue; always the approach and reroute edges
     "committed_edges": EDGES,                # drivers here in a lane onto the closed edge when every lane shuts go on over it
     "merge_in_turn": {"type": "boolean"},    # drivers from a lane shut ahead move over at the approach's end in turn (a zipper)
-}), "move_over_at_edges", "reopening", "let_in_after_seconds", "let_in_edges", "committed_edges", "merge_in_turn")
+    "keep_lane_edges": EDGES,                # with merge_in_turn: before the approach, drivers in a lane shut ahead keep to it
+}), "move_over_at_edges", "reopening", "let_in_after_seconds", "let_in_edges", "committed_edges", "merge_in_turn",
+   "keep_lane_edges")
 DRIVERS_LEAVE = optional(obj({
     "share": SHARE,                          # of the drivers who see the queue at an exit
     "queue_kmh": POSITIVE,                   # traffic ahead slower than this is a queue

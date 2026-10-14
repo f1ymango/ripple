@@ -1,0 +1,249 @@
+{
+  "incident_id": "IN-26-02615",
+  "run_prefix": "2026-04-15_TMR",
+  "run_label": "dev-v6b",
+  "status": "DATA'S CANDIDATE P0 AFTER SIMULATION'S REVIEW, a diagnostic until Simulation reviews it: Data's candidate, development run only (seed 2040), not a result",
+  "sumo_version": "1.27.1",
+  "seed": 2040,
+  "inputs": {
+    "network": "sim/tuen-mun/network.net.xml",
+    "routes": "sim/tuen-mun/demand_20260415-startup05.rou.xml",
+    "detector_loops": "sim/tuen-mun/detectors.add.xml",
+    "observations": "sim/tuen-mun/observations_20260415.json"
+  },
+  "run": {
+    "begin": "2026-04-15T16:30:00+08:00",
+    "end_seconds": 14400,
+    "warmup_seconds": 1800,
+    "wall_timeout_seconds": 1800
+  },
+  "closure": {
+    "edge_id": "389939170-scene",
+    "lanes_total": 3,
+    "onset_seconds": 4680,
+    "phases": [
+      {
+        "offset_seconds": 0,
+        "lanes": [
+          "fast"
+        ]
+      },
+      {
+        "offset_seconds": 660,
+        "lanes": [
+          "fast",
+          "middle1"
+        ]
+      },
+      {
+        "offset_seconds": 1740,
+        "lanes": [
+          "fast"
+        ]
+      },
+      {
+        "offset_seconds": 3180,
+        "lanes": [
+          "fast",
+          "middle1"
+        ]
+      }
+    ],
+    "reroute_at_edges": [
+      "389939170"
+    ],
+    "scene": {
+      "approach_edges": [
+        "389939170-approach"
+      ],
+      "open_kmh": 80,
+      "passing_kmh": 40.0,
+      "crawl_kmh": 40.0,
+      "move_over_at_edges": [
+        "389939170-approach"
+      ],
+      "let_in_after_seconds": 60,
+      "let_in_edges": [
+        "389939170",
+        "52155204",
+        "645999370",
+        "157931300#0",
+        "1344086459",
+        "1344086460",
+        "1344086461",
+        "1344086462",
+        "1344086465",
+        "1344086464",
+        "1344086463",
+        "868844358",
+        "1344086477",
+        "107646978#1"
+      ],
+      "merge_in_turn": true,
+      "keep_lane_edges": [
+        "389939170",
+        "52155204"
+      ]
+    }
+  },
+  "vehicles": {
+    "type": "DEFAULT_VEHTYPE",
+    "length_m": 7.0
+  },
+  "drivers_leave": {
+    "share": 0.2,
+    "queue_kmh": 15,
+    "route_crosses": "389939170-scene",
+    "exits": [
+      {
+        "decide_on": [
+          "1184210836",
+          "1184210830"
+        ],
+        "exit_edge": "1184210823",
+        "look_ahead": [
+          "157931300#0"
+        ],
+        "nearside_lanes": 4
+      },
+      {
+        "decide_on": [
+          "107646978#1",
+          "1344086477"
+        ],
+        "exit_edge": "209559418",
+        "look_ahead": [
+          "157931300#0"
+        ],
+        "nearside_lanes": 2
+      }
+    ],
+    "entry": {
+      "edge": "107646978#1",
+      "after_waiting_seconds": 60
+    },
+    "extra_minutes_outside": 4
+  },
+  "plan_actions": {
+    "od_groups": {
+      "Tsuen Wan & Ting Kau->Tuen Mun": {
+        "via_edge": "389939170-scene",
+        "to_edge": "1078219416"
+      }
+    },
+    "routes": {
+      "Castle Peak Road": {
+        "leaves_at": "52155204",
+        "rejoin": "1078219417",
+        "with": [
+          "158584378",
+          "452269559",
+          "158584373",
+          "452269552",
+          "-756050077",
+          "-756050082",
+          "-756050083",
+          "452269553#0",
+          "389939167#0",
+          "300687110#0",
+          "300687110#1",
+          "1313130367",
+          "1312957701#0",
+          "1312957701#1",
+          "158584344#0",
+          "158584344#1",
+          "441107653",
+          "441107654",
+          "158584334#2",
+          "173181473",
+          "150053247",
+          "158584336#0",
+          "158584336#1",
+          "442382931",
+          "9411886",
+          "158584332",
+          "158584318",
+          "1078219451",
+          "158785721",
+          "833628376",
+          "263981124#1",
+          "25159375",
+          "-833525676",
+          "833525675"
+        ]
+      }
+    },
+    "signals": {}
+  },
+  "assumptions": [
+    {
+      "choice": "Data's candidate, development run only (seed 2040), not a result",
+      "status": "changed from replay-v2, Data's, after the variant runs",
+      "source": "docs/tuen-mun-p0-simulation-review-2026-10-14.md"
+    },
+    {
+      "choice": "Network: OpenStreetMap geometry, lanes and signal positions; TD Road Network speed limits; netconvert's signal timings",
+      "status": "TD publishes no signal timings",
+      "source": "sim/tuen-mun/network-audit.md"
+    },
+    {
+      "choice": "Closure phases from TD's lane detectors; onset 17:48, reopening after 59 min; the 18:41-18:47 near stop modelled as one lane open",
+      "status": "measured, one simplification",
+      "source": "docs/tuen-mun-2026-10-14.md"
+    },
+    {
+      "choice": "Open lanes pass the scene at 40.0 km/h",
+      "status": "fitted to the throughput past the site",
+      "source": "docs/tuen-mun-2026-10-14.md"
+    },
+    {
+      "choice": "Drivers at Ting Kau who see the queue stay on Route 3 with probability 0.2, each charged 4 min",
+      "status": "share fitted to TDS90024; minutes from TD segment speeds",
+      "source": "docs/tuen-mun-2026-10-14.md"
+    },
+    {
+      "choice": "Demand: TDS90019 on the day; the Ting Kau merge as on ordinary Wednesdays; Castle Peak Rd from the 2024 census; exits at Sham Tseng and Siu Lam fitted on ordinary Wednesdays",
+      "status": "observed, census and fitted",
+      "source": "sim/tuen-mun/demand_20260415.json"
+    },
+    {
+      "choice": "Vehicles 7.0 m long on average including buses and lorries",
+      "status": "assumption",
+      "source": "docs/tuen-mun-2026-10-14.md"
+    }
+  ],
+  "metrics": {
+    "queue_paths": {
+      "Tuen Mun Road back from the crash site": [
+        "389939170-approach",
+        "389939170",
+        "52155204",
+        "645999370",
+        "157931300#0",
+        "1344086459",
+        "1344086460",
+        "1344086461",
+        "1344086462",
+        "1344086465",
+        "1344086464",
+        "1344086463",
+        "868844358",
+        "1344086477",
+        "107646978#1"
+      ]
+    },
+    "corridor": {
+      "from_edge": "107646978#1",
+      "to_edge": "1078219416",
+      "via_edge": "389939170-scene"
+    },
+    "emergency_route_edges": [
+      "389939170",
+      "389939170-approach"
+    ],
+    "residential_edge_types": [
+      "highway.residential",
+      "highway.living_street"
+    ]
+  }
+}

@@ -1307,13 +1307,14 @@ def test_drivers_from_a_lane_shut_ahead_merge_in_turn_with_the_lane_beside_it(tm
     road.vehicle.getSpeed = lambda v: 1.0
     road.vehicle.getWaitingTime = lambda v: 10.0
     road.vehicle.getNeighbors = lambda v, mode: neighbours.get((v, mode), [])
-    road.vehicle.slowDown = lambda v, speed, duration: held.append(v)
+    road.vehicle.getLength = lambda v: 7.0
+    road.vehicle.openGap = lambda v, headway, space, duration, rate, decel, reference: held.append((v, reference))
     road.vehicle.setLaneChangeMode = modes.__setitem__
     road.vehicle.changeLane = lambda v, lane, duration: changes.append((v, lane))
     closure.step(road, 1)
-    # both drivers in the shut lane keep to it; the one at its end moves over, and the slow driver behind holds back
+    # both drivers in the shut lane keep to it; the one at its end moves over, and the driver behind leaves room
     assert modes == {"m1": simulate.LET_IN_MODE, "m2": simulate.KEEP_LANE_MODE}
-    assert changes == [("m1", 0)] and held == ["own"] and closure.merges_in_turn == 1
+    assert changes == [("m1", 0)] and held == [("own", "m1")] and closure.merges_in_turn == 1
     # m1 moved over in front of "own"; m2 reaches the end with "own" still beside it: "own" goes next
     road.lane_index["m1"] = 0
     positions.update({"m1": 99.0, "m2": 96.0})
@@ -1321,11 +1322,31 @@ def test_drivers_from_a_lane_shut_ahead_merge_in_turn_with_the_lane_beside_it(tm
     changes.clear(); held.clear()
     closure.step(road, 5)
     assert changes == [] and modes["m1"] == simulate.DEFAULT_LANE_CHANGE_MODE
-    # m1 and then "own" drive on through the end of lane 0: m2's turn, and the next driver behind holds back
+    # m1 and then "own" drive on through the end of lane 0: m2's turn, and the next driver behind leaves room
     road.on["in"].remove("m1"); road.on["in"].remove("own"); road.put("next", "in", THROUGH, lane=0)
     neighbours.update({("m2", 0b011): [("own", 2.0)], ("m2", 0b001): [("next", 5.0)]})
     closure.step(road, 6)
-    assert changes == [("m2", 0)] and held == ["next"] and closure.merges_in_turn == 2
+    assert changes == [("m2", 0)] and held == [("next", "m2")] and closure.merges_in_turn == 2
+
+
+def test_on_the_keep_lane_edges_drivers_in_a_lane_shut_ahead_keep_to_it(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    scenario["closure"]["scene"] = {**SCENE, "merge_in_turn": True, "keep_lane_edges": ["far"]}
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    road.put("shut", "far", THROUGH, lane=1)                 # far_1 leads to in_1, then to the shut closed_1
+    road.put("open", "far", THROUGH, lane=0)
+    links = {"far_0": [("in_0",)], "far_1": [("in_1",)], "in_0": [("closed_0",)], "in_1": [("closed_1",)]}
+    shut, modes = {"closed_1"}, {}
+    road.lane = types.SimpleNamespace(setMaxSpeed=road.lane_speeds.__setitem__, getLinks=lambda lane: links.get(lane, []),
+                                      getLength=lambda lane: 100.0,
+                                      getDisallowed=lambda lane: ["passenger"] if lane in shut else [],
+                                      getAllowed=lambda lane: [])
+    road.vehicle.setLaneChangeMode = modes.__setitem__
+    closure.step(road, 1)
+    assert modes == {"shut": simulate.KEEP_LANE_MODE}        # the driver in lane 0 is left to SUMO
+    shut.clear()                                            # the lane reopens: its own lane-change mode comes back
+    closure.step(road, 2)
+    assert modes == {"shut": simulate.DEFAULT_LANE_CHANGE_MODE}
 
 
 def test_with_merging_in_turn_the_approach_is_left_to_it():
