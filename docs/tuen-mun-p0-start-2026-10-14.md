@@ -50,6 +50,12 @@ This is consistent with an upstream queue and lower discharge through the
 incident. It does not locate the closure to one edge, establish which lane was
 closed, or measure drivers who left the corridor. `TDS90026` has no eligible
 closure bins, so it cannot be used as a continuity constraint there.
+At 17:50, a bin with 80% archive coverage shows TDS90032 at 23.1 km/h,
+TDS90031 at 44.3 km/h, and farther-upstream TDS90029 at 73.5 km/h. This
+supports disruption before TD's 17:59 announcement, but does not establish
+the exact physical onset. At TDS90031–32 all three feed lanes still record
+vehicles during the reported closure; TDS90033's lanes also carry traffic.
+Those loop readings cannot identify the one lane left open *at the scene*.
 
 Two Tsing Long Highway northbound probes, `AID03115–16`, are present in the
 location CSV. Their 15 April flows rise from 1,494 to 1,880 and 1,440 to
@@ -59,7 +65,14 @@ also rise, 1,253 → 1,495 and 1,247 → 1,526 veh/h. The 8 April series has
 84/120 served snapshots and has **not** been certified incident-free. These
 probes alone do not quantify Tuen Mun-bound diversion or prove the turn is
 reachable from the affected upstream traffic. No Castle Peak Road detector is
-identified in this local location table near the scene.
+identified in this local location table near the scene. I also checked TD's
+[annual traffic census station table](https://data.gov.hk/en-data/dataset/hk-td-sm_5-annual-traffic-census-survey-data)
+(downloaded CSV SHA-256
+`aa07ac5b597e17be2abd6198e06eca7f05818e9cf2dc99f327ff472300c7fb1f`):
+it lists a Tuen Mun Road station near Sham Tseng and Castle Peak Road stations
+in Lam Tei/Tam Mi, but no Castle Peak Road station at this incident stretch.
+That is a check of the published station table, not proof that other counts
+or traffic studies do not exist.
 
 ## Network and P0 gates
 
@@ -89,6 +102,14 @@ identify a unique closure edge**. TDS90036 has four feed lanes against nearby
 three-lane network candidates, another unresolved mapping. SUMO also reports
 ignored OSM restriction relations, so lane and turn connections need review.
 No closure edge or lane has been injected yet.
+As a connectivity diagnostic only, the split network has a 3.05 km directed
+passenger path from the TDS90029 candidate `158584349#2.366` to TDS90035
+candidate `1212523752#2.566`. Blocking one candidate edge beside TDS90032,
+`1212548387.379`, leaves no such path **inside this extract**. The real report
+is a partial closure with one lane remaining, so this full-edge block is not
+a P0 replay. It shows that the current bounded extract cannot yet support a
+reviewed bypass to the same downstream point; it says nothing conclusive
+about routes beyond the extract or actual driver behaviour.
 
 Simulation and Data still need to jointly establish:
 
@@ -110,6 +131,10 @@ snapshots and downloading the location CSV:
 ```powershell
 python -m src.twin.tuen_mun_evidence --day 2026-04-15 --locations sim/work/td-detector-locations.csv --out results/twin/tuen-mun-02615-observed.json
 python -m src.twin.tuen_mun_evidence --day 2026-04-08 --end 19:30 --locations sim/work/td-detector-locations.csv --out results/twin/tuen-mun-ordinary-2026-04-08.json
+# The OSM endpoint is live; verify its hash against the recorded extract.
+Invoke-WebRequest -Uri 'https://api.openstreetmap.org/api/0.6/map?bbox=114.012%2C22.348%2C114.070%2C22.380' -OutFile sim/work/tuen-mun/tuen-mun_bbox.osm.xml
+python -m src.twin.build_network --config sim/scenarios/tuen-mun-network-draft.json
+python -m src.twin.audit_tuen_network --network sim/work/tuen-mun/network-split.net.xml --observed results/twin/tuen-mun-02615-observed.json --osm sim/work/tuen-mun/tuen-mun_bbox.osm.xml --out results/twin/tuen-mun-network-audit.json
 ```
 
 **Early blocker for the 16 October decision:** no reviewed network or source
