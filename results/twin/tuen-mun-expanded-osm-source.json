@@ -1,0 +1,68 @@
+{
+  "source_api": "https://api.openstreetmap.org/api/0.6/map",
+  "bbox": "113.975,22.345,114.105,22.405",
+  "tiles": [
+    {
+      "bbox": "113.9750000,22.3450000,114.0183333,22.3650000",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=113.9750000%2C22.3450000%2C114.0183333%2C22.3650000",
+      "path": "sim\\work\\tuen-mun\\tuen-mun-expanded_bbox.osm-tile-0-0.osm.xml",
+      "sha256": "7087eaf6259712c16eebc16c1e802ae293eaa4e55ac83cb6b29fd7d065c78d5c"
+    },
+    {
+      "bbox": "114.0183333,22.3450000,114.0616667,22.3650000",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=114.0183333%2C22.3450000%2C114.0616667%2C22.3650000",
+      "path": "sim\\work\\tuen-mun\\tuen-mun-expanded_bbox.osm-tile-0-1.osm.xml",
+      "sha256": "54c80ab0158a129afa73e5a670f9e2a395bd283e60d1b2050543154e5bd193ba"
+    },
+    {
+      "bbox": "114.0616667,22.3450000,114.1050000,22.3650000",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=114.0616667%2C22.3450000%2C114.1050000%2C22.3650000",
+      "path": "sim\\work\\tuen-mun\\tuen-mun-expanded_bbox.osm-tile-0-2.osm.xml",
+      "sha256": "e609acd3642769eb9f228f2940238d7628b83bdfa85f65c956d2c4ab2e93f99e"
+    },
+    {
+      "bbox": "113.9750000,22.3650000,114.0183333,22.3850000",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=113.9750000%2C22.3650000%2C114.0183333%2C22.3850000",
+      "path": "sim\\work\\tuen-mun\\tuen-mun-expanded_bbox.osm-tile-1-0.osm.xml",
+      "sha256": "325b68b54ca724cd2006cdea56a3cb06e6597885ccf6c2fef4d7e0c80c855131"
+    },
+    {
+      "bbox": "114.0183333,22.3650000,114.0616667,22.3850000",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=114.0183333%2C22.3650000%2C114.0616667%2C22.3850000",
+      "path": "sim\\work\\tuen-mun\\tuen-mun-expanded_bbox.osm-tile-1-1.osm.xml",
+      "sha256": "2a11d3c08c5d99cffe66465ab218ad378c722e79e870e29a1a17dc37711e13cd"
+    },
+    {
+      "bbox": "114.0616667,22.3650000,114.1050000,22.3850000",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=114.0616667%2C22.3650000%2C114.1050000%2C22.3850000",
+      "path": "sim\\work\\tuen-mun\\tuen-mun-expanded_bbox.osm-tile-1-2.osm.xml",
+      "sha256": "f5c7571d72258e5e91696a87d04952f643c22aeb12ae9c29454664657eeeaa22"
+    },
+    {
+      "bbox": "113.9750000,22.3850000,114.0183333,22.4050000",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=113.9750000%2C22.3850000%2C114.0183333%2C22.4050000",
+      "path": "sim\\work\\tuen-mun\\tuen-mun-expanded_bbox.osm-tile-2-0.osm.xml",
+      "sha256": "ace3087bc50db610424bbd3dc9b6e01fc6e6cecaba8d5dec65ecab0bf1a7d223"
+    },
+    {
+      "bbox": "114.0183333,22.3850000,114.0616667,22.4050000",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=114.0183333%2C22.3850000%2C114.0616667%2C22.4050000",
+      "path": "sim\\work\\tuen-mun\\tuen-mun-expanded_bbox.osm-tile-2-1.osm.xml",
+      "sha256": "513d53c7ff310dd62e2115fa24a1ed6278dbdbee7f79436d4f91ff0a621b95ba"
+    },
+    {
+      "bbox": "114.0616667,22.3850000,114.1050000,22.4050000",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=114.0616667%2C22.3850000%2C114.1050000%2C22.4050000",
+      "path": "sim\\work\\tuen-mun\\tuen-mun-expanded_bbox.osm-tile-2-2.osm.xml",
+      "sha256": "d613f2a5a59fcf93d528cda7d7c3b980a1b6b8f3bda25c53f66302c50adcb70b"
+    }
+  ],
+  "objects": {
+    "node": 174764,
+    "way": 17154,
+    "relation": 1450
+  },
+  "merged_path": "sim\\work\\tuen-mun\\tuen-mun-expanded_bbox.osm.xml",
+  "merged_sha256": "4834f1fb33d4131be09573a67a19f4f7fa5fb6e66efdc7455e416ee1dcfcbbab",
+  "operation": "deduplicate source objects by type and ID; no geometry or tag edits"
+}

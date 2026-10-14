@@ -1,0 +1,6 @@
+{
+  "osm_bbox": [113.975, 22.345, 114.105, 22.405],
+  "osm_output": "sim/work/tuen-mun/tuen-mun-expanded.osm.xml",
+  "network": "sim/work/tuen-mun/network-expanded.net.xml",
+  "geometry_split": true
+}

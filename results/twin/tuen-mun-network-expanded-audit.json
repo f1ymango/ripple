@@ -1,0 +1,407 @@
+{
+  "purpose": "candidate detector edges only; physical incident location and closure lane remain unapproved",
+  "inputs_sha256": {
+    "network": "630800a22501b81f978e30d15d219f1bf7d7c97593b2a2890321f2db1f2fb94b",
+    "observed": "ec06efd175d9d48119c1e79417ac243e1d8cc620e4d55a8395c9b3e7a63294c9",
+    "osm": "4834f1fb33d4131be09573a67a19f4f7fa5fb6e66efdc7455e416ee1dcfcbbab"
+  },
+  "detectors": {
+    "TDS90028": {
+      "source_bearing_deg": 250.0,
+      "source_lane_names": [
+        "Fast Lane",
+        "Middle Lane",
+        "Slow Lane"
+      ],
+      "candidate_edges": [
+        {
+          "edge_id": "158584349#0.364",
+          "distance_m": 8.0,
+          "bearing_deg": 255,
+          "bearing_gap_deg": 5,
+          "lanes": 3,
+          "length_m": 51.5,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584349#0.345",
+          "distance_m": 25.6,
+          "bearing_deg": 258,
+          "bearing_gap_deg": 8,
+          "lanes": 3,
+          "length_m": 18.4,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584349#0.416",
+          "distance_m": 28.6,
+          "bearing_deg": 250,
+          "bearing_gap_deg": 0,
+          "lanes": 3,
+          "length_m": 23.2,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584349#0.327",
+          "distance_m": 44.0,
+          "bearing_deg": 262,
+          "bearing_gap_deg": 12,
+          "lanes": 3,
+          "length_m": 17.7,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584349#0.439",
+          "distance_m": 52.0,
+          "bearing_deg": 248,
+          "bearing_gap_deg": 2,
+          "lanes": 3,
+          "length_m": 37.1,
+          "lane_count_matches_feed": true
+        }
+      ]
+    },
+    "TDS90029": {
+      "source_bearing_deg": 280.0,
+      "source_lane_names": [
+        "Fast Lane",
+        "Middle Lane",
+        "Slow Lane"
+      ],
+      "candidate_edges": [
+        {
+          "edge_id": "158584349#2.366",
+          "distance_m": 6.8,
+          "bearing_deg": 282,
+          "bearing_gap_deg": 2,
+          "lanes": 3,
+          "length_m": 89.8,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584349#2.349",
+          "distance_m": 17.8,
+          "bearing_deg": 279,
+          "bearing_gap_deg": 1,
+          "lanes": 3,
+          "length_m": 16.3,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584349#2.331",
+          "distance_m": 33.6,
+          "bearing_deg": 278,
+          "bearing_gap_deg": 2,
+          "lanes": 3,
+          "length_m": 17.9,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584349#2.314",
+          "distance_m": 51.4,
+          "bearing_deg": 275,
+          "bearing_gap_deg": 5,
+          "lanes": 3,
+          "length_m": 17.2,
+          "lane_count_matches_feed": true
+        }
+      ]
+    },
+    "TDS90030": {
+      "source_bearing_deg": 260.0,
+      "source_lane_names": [
+        "Fast Lane",
+        "Middle Lane",
+        "Slow Lane"
+      ],
+      "candidate_edges": [
+        {
+          "edge_id": "158584355#0.65",
+          "distance_m": 8.7,
+          "bearing_deg": 254,
+          "bearing_gap_deg": 6,
+          "lanes": 3,
+          "length_m": 61.1,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584355#0.127",
+          "distance_m": 31.5,
+          "bearing_deg": 249,
+          "bearing_gap_deg": 11,
+          "lanes": 3,
+          "length_m": 70.6,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584355#0",
+          "distance_m": 32.5,
+          "bearing_deg": 261,
+          "bearing_gap_deg": 1,
+          "lanes": 3,
+          "length_m": 65.2,
+          "lane_count_matches_feed": true
+        }
+      ]
+    },
+    "TDS90031": {
+      "source_bearing_deg": 230.0,
+      "source_lane_names": [
+        "Fast Lane",
+        "Middle Lane",
+        "Slow Lane"
+      ],
+      "candidate_edges": [
+        {
+          "edge_id": "158584355#2.228",
+          "distance_m": 9.1,
+          "bearing_deg": 229,
+          "bearing_gap_deg": 1,
+          "lanes": 3,
+          "length_m": 16.4,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584355#2.210",
+          "distance_m": 9.2,
+          "bearing_deg": 233,
+          "bearing_gap_deg": 3,
+          "lanes": 3,
+          "length_m": 17.2,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584355#2.245",
+          "distance_m": 18.1,
+          "bearing_deg": 224,
+          "bearing_gap_deg": 6,
+          "lanes": 3,
+          "length_m": 54.3,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584355#2.182",
+          "distance_m": 21.4,
+          "bearing_deg": 238,
+          "bearing_gap_deg": 8,
+          "lanes": 3,
+          "length_m": 27.8,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "158584355#2.163",
+          "distance_m": 48.9,
+          "bearing_deg": 241,
+          "bearing_gap_deg": 11,
+          "lanes": 3,
+          "length_m": 18.8,
+          "lane_count_matches_feed": true
+        }
+      ]
+    },
+    "TDS90032": {
+      "source_bearing_deg": 225.0,
+      "source_lane_names": [
+        "Fast Lane",
+        "Middle Lane",
+        "Slow Lane"
+      ],
+      "candidate_edges": [
+        {
+          "edge_id": "1212548387.379",
+          "distance_m": 9.4,
+          "bearing_deg": 230,
+          "bearing_gap_deg": 5,
+          "lanes": 3,
+          "length_m": 78.7,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "1212548387.459",
+          "distance_m": 10.4,
+          "bearing_deg": 228,
+          "bearing_gap_deg": 3,
+          "lanes": 3,
+          "length_m": 83.3,
+          "lane_count_matches_feed": true
+        }
+      ]
+    },
+    "TDS90033": {
+      "source_bearing_deg": 225.0,
+      "source_lane_names": [
+        "Fast Lane",
+        "Middle Lane",
+        "Slow Lane"
+      ],
+      "candidate_edges": [
+        {
+          "edge_id": "1212523752#0.85",
+          "distance_m": 6.1,
+          "bearing_deg": 227,
+          "bearing_gap_deg": 2,
+          "lanes": 3,
+          "length_m": 144.1,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "1212523752#0.35",
+          "distance_m": 8.0,
+          "bearing_deg": 232,
+          "bearing_gap_deg": 7,
+          "lanes": 3,
+          "length_m": 49.6,
+          "lane_count_matches_feed": true
+        }
+      ]
+    },
+    "TDS90034": {
+      "source_bearing_deg": 250.0,
+      "source_lane_names": [
+        "Fast Lane",
+        "Middle Lane",
+        "Slow Lane"
+      ],
+      "candidate_edges": [
+        {
+          "edge_id": "1212523752#2",
+          "distance_m": 10.1,
+          "bearing_deg": 264,
+          "bearing_gap_deg": 14,
+          "lanes": 3,
+          "length_m": 66.6,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "1212523752#2.66",
+          "distance_m": 34.5,
+          "bearing_deg": 266,
+          "bearing_gap_deg": 16,
+          "lanes": 3,
+          "length_m": 94.9,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "1212523752#1",
+          "distance_m": 35.3,
+          "bearing_deg": 265,
+          "bearing_gap_deg": 15,
+          "lanes": 3,
+          "length_m": 66.5,
+          "lane_count_matches_feed": true
+        }
+      ]
+    },
+    "TDS90035": {
+      "source_bearing_deg": 290.0,
+      "source_lane_names": [
+        "Fast Lane",
+        "Middle Lane",
+        "Slow Lane"
+      ],
+      "candidate_edges": [
+        {
+          "edge_id": "1212523752#2.566",
+          "distance_m": 12.6,
+          "bearing_deg": 290,
+          "bearing_gap_deg": 0,
+          "lanes": 3,
+          "length_m": 38.1,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "1212523752#2.466",
+          "distance_m": 16.4,
+          "bearing_deg": 285,
+          "bearing_gap_deg": 5,
+          "lanes": 3,
+          "length_m": 99.6,
+          "lane_count_matches_feed": true
+        },
+        {
+          "edge_id": "1212523752#2.605",
+          "distance_m": 30.5,
+          "bearing_deg": 293,
+          "bearing_gap_deg": 3,
+          "lanes": 3,
+          "length_m": 57.7,
+          "lane_count_matches_feed": true
+        }
+      ]
+    },
+    "TDS90036": {
+      "source_bearing_deg": 320.0,
+      "source_lane_names": [
+        "Fast Lane",
+        "Middle Lane 1",
+        "Middle Lane 2",
+        "Slow Lane"
+      ],
+      "candidate_edges": [
+        {
+          "edge_id": "231698823.18",
+          "distance_m": 9.8,
+          "bearing_deg": 322,
+          "bearing_gap_deg": 2,
+          "lanes": 3,
+          "length_m": 26.7,
+          "lane_count_matches_feed": false
+        },
+        {
+          "edge_id": "231698823",
+          "distance_m": 11.9,
+          "bearing_deg": 320,
+          "bearing_gap_deg": 0,
+          "lanes": 3,
+          "length_m": 18.4,
+          "lane_count_matches_feed": false
+        },
+        {
+          "edge_id": "231698823.45",
+          "distance_m": 22.6,
+          "bearing_deg": 323,
+          "bearing_gap_deg": 3,
+          "lanes": 3,
+          "length_m": 23.7,
+          "lane_count_matches_feed": false
+        },
+        {
+          "edge_id": "231698825.14",
+          "distance_m": 27.0,
+          "bearing_deg": 319,
+          "bearing_gap_deg": 1,
+          "lanes": 3,
+          "length_m": 12.7,
+          "lane_count_matches_feed": false
+        },
+        {
+          "edge_id": "231698825",
+          "distance_m": 39.3,
+          "bearing_deg": 317,
+          "bearing_gap_deg": 3,
+          "lanes": 3,
+          "length_m": 14.0,
+          "lane_count_matches_feed": false
+        },
+        {
+          "edge_id": "231698823.69",
+          "distance_m": 45.4,
+          "bearing_deg": 323,
+          "bearing_gap_deg": 3,
+          "lanes": 3,
+          "length_m": 55.5,
+          "lane_count_matches_feed": false
+        },
+        {
+          "edge_id": "158785853.226",
+          "distance_m": 53.2,
+          "bearing_deg": 315,
+          "bearing_gap_deg": 5,
+          "lanes": 3,
+          "length_m": 21.8,
+          "lane_count_matches_feed": false
+        }
+      ]
+    }
+  }
+}

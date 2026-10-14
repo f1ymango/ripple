@@ -111,6 +111,24 @@ a P0 replay. It shows that the current bounded extract cannot yet support a
 reviewed bypass to the same downstream point; it says nothing conclusive
 about routes beyond the extract or actual driver behaviour.
 
+An expanded check covers 113.975–114.105 E, 22.345–22.405 N without drawing
+roads. The official OSM map API rejected one large request at its 50,000-node
+limit; [nine source tiles](../results/twin/tuen-mun-expanded-osm-source.json)
+were downloaded and deduplicated by source node/way/relation ID, with every
+tile URL and hash retained. Merged OSM SHA-256 is
+`4834f1fb33d4131be09573a67a19f4f7fa5fb6e66efdc7455e416ee1dcfcbbab`;
+the expanded left-hand split network is
+`630800a22501b81f978e30d15d219f1bf7d7c97593b2a2890321f2db1f2fb94b`.
+Its [detector audit](../results/twin/tuen-mun-network-expanded-audit.json)
+retains the same scene candidates. From the upstream TDS90024 road edge,
+passenger connections reach Castle Peak Road, but with candidate scene edge
+`1212548387.379` fully removed they do not reach the TDS90035 road edge in
+this expanded network. This is an exploratory **full-edge** block, not the
+observed partial closure or proof that drivers could not choose other final
+destinations. The alternative's downstream path and 15 April entry flow need
+independent review. Today's OSM export also cannot prove that every road and
+turn had the same state on 15 April.
+
 Simulation and Data still need to jointly establish:
 
 1. The correct Tuen Mun-bound incident edge and lane scope from road geometry,
@@ -135,6 +153,9 @@ python -m src.twin.tuen_mun_evidence --day 2026-04-08 --end 19:30 --locations si
 Invoke-WebRequest -Uri 'https://api.openstreetmap.org/api/0.6/map?bbox=114.012%2C22.348%2C114.070%2C22.380' -OutFile sim/work/tuen-mun/tuen-mun_bbox.osm.xml
 python -m src.twin.build_network --config sim/scenarios/tuen-mun-network-draft.json
 python -m src.twin.audit_tuen_network --network sim/work/tuen-mun/network-split.net.xml --observed results/twin/tuen-mun-02615-observed.json --osm sim/work/tuen-mun/tuen-mun_bbox.osm.xml --out results/twin/tuen-mun-network-audit.json
+python -m src.twin.fetch_osm_tiles --bbox 113.975,22.345,114.105,22.405 --columns 3 --rows 3 --out sim/work/tuen-mun/tuen-mun-expanded_bbox.osm.xml --manifest results/twin/tuen-mun-expanded-osm-source.json
+python -m src.twin.build_network --config sim/scenarios/tuen-mun-network-expanded-draft.json
+python -m src.twin.audit_tuen_network --network sim/work/tuen-mun/network-expanded.net.xml --observed results/twin/tuen-mun-02615-observed.json --osm sim/work/tuen-mun/tuen-mun-expanded_bbox.osm.xml --out results/twin/tuen-mun-network-expanded-audit.json
 ```
 
 **Early blocker for the 16 October decision:** no reviewed network or source
