@@ -36,12 +36,17 @@ HOLD_BELOW_MS = 3.0      # ... and already this slow holds back; a faster one is
 # own lane-change mode is restored once they are in a lane that leads on.
 KEEP_LANE_MODE = 0b0100000000      # no lane change of its own; a TraCI request still avoids collisions
 DEFAULT_LANE_CHANGE_MODE = 1621
-TURN_HOLD_SECONDS = 3
+TURN_HOLD_SECONDS = 2
+TURN_GIVE_UP_SECONDS = 120   # a driver kept waiting this long at the end goes at the next room, turn or not
 
 
 def let_in_edges(closure):
-    """Where a stuck driver is let in: the approach, where drivers are sent round, and the scene's let_in_edges."""
-    return list(dict.fromkeys(closure["scene"]["approach_edges"] + closure.get("reroute_at_edges", [])
+    """Where a stuck driver is let in: the approach, where drivers are sent round, and the scene's let_in_edges.
+
+    With merging in turn the approach is left to that rule (Closure.merge_in_turn).
+    """
+    approach = [] if closure["scene"].get("merge_in_turn") else closure["scene"]["approach_edges"]
+    return list(dict.fromkeys(approach + closure.get("reroute_at_edges", [])
                               + closure["scene"].get("let_in_edges", [])))
 
 
@@ -131,6 +136,9 @@ class Closure:
         self.merged_into = {}                               # merging in turn: lane -> drivers who moved into it
         self.lane_mode_set = {}                             # ... drivers whose lane-change mode E set: keep or turn
         self.turn_until = {}                                # ... drivers asked to move over, until when
+        self.turn_target = {}                               # ... and from which lane to which
+        self.last_in = {}                                   # ... (approach, lane) -> who last went through its end
+        self.near_end = {}                                  # ... approach -> drivers near the end of a lane that leads on
         self.merges_in_turn = 0
         self.kept_on = set()                                # drivers too far into a lane onto the flyover to turn
 
@@ -173,9 +181,10 @@ class Closure:
         SUMO, drivers in the lane that stays open queue while drivers in the lanes
         shut ahead run on past them and cut in at the end, each one let in at once,
         so the open lane's own queue stands still. Here a driver in a lane shut
-        ahead keeps to it and moves over one lane at its end only behind a driver
-        of that lane who did not just move in: one each, as a zipper. A driver
-        behind in that lane who is already slow holds back for a moment.
+        ahead keeps to it and, at its end, moves over one lane only when the last
+        driver through the end of that lane was one of its own: one each, as a
+        zipper. A driver behind in that lane who is already slow holds back for a
+        moment if there is room ahead for the one moving over.
         """
         edge, seen = self.edge, set()
         for approach in closure["scene"]["approach_edges"]:
@@ -184,10 +193,25 @@ class Closure:
             on_approach = traci.edge.getLastStepVehicleIDs(approach)
             seen.update(on_approach)
             if not usable or (len(usable) == lanes and not self.lane_mode_set):
+                self.near_end.pop(approach, None)
                 continue
+            where = {v: (traci.vehicle.getLaneIndex(v), traci.vehicle.getLanePosition(v)) for v in on_approach}
+            length = traci.lane.getLength(f"{approach}_0")
+            for vehicle, (start, target) in list(self.turn_target.items()):
+                if vehicle in where and where[vehicle][0] == target:      # it moved over
+                    del self.turn_target[vehicle]
+                    self.last_in[(approach, target)] = "merged"
+                    if vehicle not in self.merged_into.get(start, ()):
+                        self.last_in[(approach, start)] = "own"            # one of that lane's own went through its end
+                elif vehicle not in where:
+                    del self.turn_target[vehicle]
+            for vehicle, lane in self.near_end.get(approach, {}).items():
+                if vehicle not in where and vehicle not in self.merged_into.get(lane, ()):
+                    self.last_in[(approach, lane)] = "own"                 # drove on through the end of its lane
+            self.near_end[approach] = {v: lane for v, (lane, pos) in where.items()
+                                       if lane in usable and length - pos <= HOLD_WITHIN_M}
             front = {}
-            for vehicle in on_approach:
-                lane = traci.vehicle.getLaneIndex(vehicle)
+            for vehicle, (lane, position) in where.items():
                 if lane in usable:
                     if self.lane_mode_set.pop(vehicle, None):
                         traci.vehicle.setLaneChangeMode(vehicle, DEFAULT_LANE_CHANGE_MODE)
@@ -195,27 +219,29 @@ class Closure:
                 if self.turn_until.get(vehicle, -1) <= now and self.lane_mode_set.get(vehicle) != "keep":
                     traci.vehicle.setLaneChangeMode(vehicle, KEEP_LANE_MODE)
                     self.lane_mode_set[vehicle] = "keep"
-                position = traci.vehicle.getLanePosition(vehicle)
                 if lane not in front or position > front[lane][1]:
                     front[lane] = (vehicle, position)
             for lane, (vehicle, position) in front.items():
-                if self.turn_until.get(vehicle, -1) > now:
-                    continue                                # asked to move over just now
-                if traci.lane.getLength(f"{approach}_{lane}") - position > LANE_END_M:
+                if self.turn_until.get(vehicle, -1) > now or length - position > LANE_END_M:
                     continue
                 target = min(usable, key=lambda i: abs(i - lane))
                 step = lane + (1 if target > lane else -1)
+                own_waiting = any(other_lane == step and pos >= position - HOLD_WITHIN_M
+                                  and v not in self.merged_into.get(step, ())
+                                  for v, (other_lane, pos) in where.items())
+                waited = traci.vehicle.getWaitingTime(vehicle)
+                if self.last_in.get((approach, step)) == "merged" and own_waiting and waited < TURN_GIVE_UP_SECONDS:
+                    continue                                # the last one through moved over: the lane's own driver next
                 side = 0b001 if step < lane else 0b000
                 leaders = traci.vehicle.getNeighbors(vehicle, side | 0b010)
-                behind = [(f, gap) for f, gap in traci.vehicle.getNeighbors(vehicle, side) if gap < HOLD_WITHIN_M]
-                if behind and leaders and leaders[0][0] in self.merged_into.get(step, ()):
-                    continue                                # the last one in moved over: the lane's own driver goes next
-                for follower, gap in behind:
-                    if traci.vehicle.getSpeed(follower) < HOLD_BELOW_MS:
-                        traci.vehicle.slowDown(follower, 0.0, float(TURN_HOLD_SECONDS))
+                if not leaders or leaders[0][1] >= 0:       # room ahead in that lane: a slow driver behind holds back
+                    for follower, gap in traci.vehicle.getNeighbors(vehicle, side):
+                        if 0 <= gap < HOLD_WITHIN_M and traci.vehicle.getSpeed(follower) < HOLD_BELOW_MS:
+                            traci.vehicle.slowDown(follower, 0.0, float(TURN_HOLD_SECONDS))
                 traci.vehicle.setLaneChangeMode(vehicle, LET_IN_MODE)
                 traci.vehicle.changeLane(vehicle, step, float(TURN_HOLD_SECONDS))
                 self.turn_until[vehicle] = now + TURN_HOLD_SECONDS
+                self.turn_target[vehicle] = (lane, step)
                 self.lane_mode_set[vehicle] = "turn"
                 if vehicle not in self.merged_into.setdefault(step, set()):
                     self.merged_into[step].add(vehicle)

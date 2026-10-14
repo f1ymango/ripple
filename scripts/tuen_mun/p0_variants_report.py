@@ -43,6 +43,8 @@ EXIT_SLIP = ["158584378", "452269559", "452269553#0"]
 CPR_EDGES = {"Sham Tseng exit slip": "158584378", "Castle Peak Rd westbound after Sham Tseng": "389939167#0",
              "Siu Lam on-slip to Tuen Mun Rd": "833525675"}
 ROUTE3 = {"1184210823": "Ting Kau Bridge drivers staying on Route 3", "209559418": "Tuen Mun Rd drivers taking the Ting Kau exit"}
+LANE_DETS = ["TDS90025", "TDS90027", "TDS90029", "TDS90031"]     # three lanes each, between Sham Tseng and the scene
+TD_LANES = {"Slow Lane": 0, "Middle Lane": 1, "Fast Lane": 2}      # the network is left-hand: lane 0 is the nearside
 TELEPORT = re.compile(r"Teleporting vehicle '[^']+'; waited too long \((\w[\w ]*)\), lane='([^']+)', time=(\d+)")
 
 
@@ -57,6 +59,45 @@ def td_bins():
     rows = detectors.load_window(start, end, ids, log=lambda *a: None)
     return {(b["detector_id"], b["bin_start"][11:16]): b
             for b in detectors.bin_window(rows, 5, start=start, end=end, detector_ids=ids)}
+
+
+def td_lanes():
+    """TD's raw 30 s lane readings as 5-minute volume-weighted lane speeds and volumes, 18:00-18:45."""
+    start, end = dt.datetime(2026, 4, 15, 18, 0, tzinfo=HK), dt.datetime(2026, 4, 15, 18, 45, tzinfo=HK)
+    vol, sv = collections.defaultdict(float), collections.defaultdict(float)
+    for row in detectors.load_window(start, end, LANE_DETS, log=lambda *a: None):
+        if not row["valid"] or row["speed_kmh"] is None or not row["volume"] or row["lane"] not in TD_LANES:
+            continue
+        t = row["timestamp"]
+        key = (row["detector_id"], TD_LANES[row["lane"]], f"{t.hour:02d}:{t.minute // 5 * 5:02d}")
+        vol[key] += row["volume"]; sv[key] += row["volume"] * row["speed_kmh"]
+    return {k: (vol[k], sv[k] / vol[k]) for k in vol}
+
+
+def lane_balance(lanes):
+    """Mean spread between the fastest and slowest lane, and the nearside lane's share of the vehicles."""
+    spreads, near, total = [], 0.0, 0.0
+    for d in LANE_DETS:
+        for t in sorted({k[2] for k in lanes if k[0] == d}):
+            here = [lanes[(d, i, t)] for i in range(3) if (d, i, t) in lanes and lanes[(d, i, t)][0] > 0]
+            if len(here) == 3:
+                spreads.append(max(s for _, s in here) - min(s for _, s in here))
+            near += lanes.get((d, 0, t), (0, 0))[0]; total += sum(v for v, _ in here)
+    return {"mean_lane_speed_spread_kmh": round(statistics.mean(spreads), 1) if spreads else None,
+            "bins_with_all_three_lanes": len(spreads),
+            "nearside_lane_share_of_vehicles_pct": round(100 * near / total, 1) if total else None}
+
+
+def model_lanes(work):
+    out = {}
+    for d in LANE_DETS:
+        for f in glob.glob(str(work / "results" / f"e1_{d}_*.xml")):
+            lane = int(Path(f).stem.rsplit("_", 1)[1])
+            for iv in ET.parse(f).getroot().iter("interval"):
+                b = int(float(iv.get("begin"))); k = float(iv.get("nVehContrib")); s = float(iv.get("speed"))
+                if 5400 <= b < 8100:
+                    out[(d, lane, clock(b))] = (k, s * 3.6 if k > 0 and s >= 0 else 0.0)
+    return out
 
 
 def num(v):
@@ -85,7 +126,7 @@ def edge_data(work):
     return out
 
 
-def one_run(result_path, td):
+def one_run(result_path, td, td_lane):
     r = json.loads(Path(result_path).read_text())
     run_id = r["run_id"]
     rep = json.loads((Path(result_path).parent.parent / "evaluator" / f"{run_id}.report.json").read_text())
@@ -125,6 +166,7 @@ def one_run(result_path, td):
             if num((td.get((d, clock(b))) or {}).get("speed_kmh")) is not None]
     sp_m = [speed[(d, b)] for d in SPEED_DETS for b in range(5400, 8100, 300) if (d, b) in speed]
     out["mean_speed_1800_1845_TDS90024_31"] = {"td": round(statistics.mean(sp_o), 1), "model": round(statistics.mean(sp_m), 1)}
+    out["lanes_1800_1845_TDS90025_31"] = {"td": lane_balance(td_lane), "model": lane_balance(model_lanes(work))}
     out["discharge_TDS90033_1845_1900_veh_h"] = {
         "td": [num((td.get(("TDS90033", clock(b))) or {}).get("flow_veh_h")) for b in (8100, 8400, 8700)],
         "model": [round(n.get(("TDS90033", b), 0) * 12) for b in (8100, 8400, 8700)]}
@@ -162,26 +204,28 @@ def main():
     parser.add_argument("--results-dir", default="results/tuen-mun-p0-variants-oct15")
     args = parser.parse_args()
     res = ROOT / args.results_dir
-    td = td_bins()
-    runs = [one_run(p, td) for p in sorted(glob.glob(str(res / "runs" / "*.json"))) if not p.endswith(".provenance.json")]
+    td, td_lane = td_bins(), td_lanes()
+    runs = [one_run(p, td, td_lane) for p in sorted(glob.glob(str(res / "runs" / "*.json"))) if not p.endswith(".provenance.json")]
     (res / "p0-variants-report.json").write_text(json.dumps(runs, indent=1) + "\n")
     lines = ["# Tuen Mun P0 variants: Simulation's predeclared checks", "",
              f"`scripts/tuen_mun/p0_variants_report.py` on `{args.results_dir}`. "
              "TD: congested 5-minute bins at TDS90020-32 = "
              f"{runs[0]['congested_bins']['td'] if runs else '?'}; mean speed 18:00-18:45 at TDS90024-31 = "
              f"{runs[0]['mean_speed_1800_1845_TDS90024_31']['td'] if runs else '?'} km/h; "
-             f"discharge at TDS90033 18:45/18:50/18:55 = {runs[0]['discharge_TDS90033_1845_1900_veh_h']['td'] if runs else '?'} veh/h.", "",
-             "| Run | v2 met | GEH | FF err | state | congested bins model / both | mean speed 18:00-18:45 | "
+             f"discharge at TDS90033 18:45/18:50/18:55 = {runs[0]['discharge_TDS90033_1845_1900_veh_h']['td'] if runs else '?'} veh/h; "
+             f"lanes at TDS90025-31, 18:00-18:45: {runs[0]['lanes_1800_1845_TDS90025_31']['td'] if runs else '?'}.", "",
+             "| Run | v2 met | GEH | FF err | state | congested bins model / both | mean speed 18:00-18:45 | lane spread km/h / nearside share % | "
              "discharge 18:45/50/55 | counts 24/29/32/33/34, model - TD | left at Ting Kau | Sham Tseng slip veh / max wait veh-h | "
              "entry wait h | teleports (wrong-lane other) | delay veh-h |",
-             "|" + "---|" * 14]
+             "|" + "---|" * 15]
     for x in runs:
         v = x["validation"]
         label = "_".join(x["run_id"].split("_")[5:6])
         lines.append(
             f"| {label} | {'yes' if x['validation_met'] else 'NO'} | {v['geh_under_5_pct']} | {v['speed_mape_free_flow_pct']} | "
             f"{v['congestion_state_agreement_pct']} | {x['congested_bins']['model']} / {x['congested_bins']['both']} | "
-            f"{x['mean_speed_1800_1845_TDS90024_31']['model']} | {'/'.join(str(a) for a in x['discharge_TDS90033_1845_1900_veh_h']['model'])} | "
+            f"{x['mean_speed_1800_1845_TDS90024_31']['model']} | {x['lanes_1800_1845_TDS90025_31']['model']['mean_lane_speed_spread_kmh']} / "
+            f"{x['lanes_1800_1845_TDS90025_31']['model']['nearside_lane_share_of_vehicles_pct']} | {'/'.join(str(a) for a in x['discharge_TDS90033_1845_1900_veh_h']['model'])} | "
             f"{'/'.join(str(x['counts'][d]['model_minus_td_total_1730_2030']) for d in COUNT_DETS)} | "
             f"{sum(x['ledger']['left_at_ting_kau'].values())} | {x['sham_tseng_exit']['vehicles_onto_slip_1730_2030']} / "
             f"{x['sham_tseng_exit']['max_5min_waiting_vehicle_hours_on_slip']} | {x['entry']['hours_waiting_to_enter']} | "
