@@ -170,7 +170,7 @@ def build(day, residual=True):
     return rows, shares
 
 
-def write_routes(day, rows, shares, tau=1.0, suffix="", startup=0.0):
+def write_routes(day, rows, shares, tau=1.0, suffix="", startup=0.0, sigma=0.0):
     import sumolib
     net = sumolib.net.readNet(str(NET))
 
@@ -207,7 +207,7 @@ def write_routes(day, rows, shares, tau=1.0, suffix="", startup=0.0):
     lines = ["<?xml version='1.0' encoding='utf-8'?>",
              f"<!-- Observed demand for {day}, 16:30-20:30: scripts/tuen_mun/demand.py (demand_{day}.json) -->",
              "<routes>",
-             f'  <vType id="DEFAULT_VEHTYPE" vClass="passenger" length="5" speedFactor="1" speedDev="0.05" sigma="0" tau="{tau}" startupDelay="{startup}"/>']
+             f'  <vType id="DEFAULT_VEHTYPE" vClass="passenger" length="5" speedFactor="1" speedDev="0.05" sigma="{sigma:g}" tau="{tau}" startupDelay="{startup}"/>']
     flows = []
     for i, r in enumerate(rows):
         begin, end = i * BIN_MIN * 60, (i + 1) * BIN_MIN * 60
@@ -248,11 +248,13 @@ def main():
     parser.add_argument("--tau", type=float, default=TAU_S, help="drivers' desired time headway, s")
     parser.add_argument("--startup-delay", type=float, default=STARTUP_S, help="s a driver takes to move off from a stop")
     parser.add_argument("--suffix", default="", help="written as demand_<day><suffix>.rou.xml, for calibration variants")
+    parser.add_argument("--sigma", type=float, default=0.0,
+                        help="Krauss driver imperfection (SUMO's default 0.5; the team's twin uses 0)")
     parser.add_argument("--no-ting-kau-residual", action="store_true",
                         help="keep the 1,141 Ting Kau drivers in (Simulation's P0 variant 5)")
     args = parser.parse_args()
     rows, shares = build(args.day, residual=not args.no_ting_kau_residual)
-    write_routes(args.day, rows, shares, args.tau, args.suffix, args.startup_delay)
+    write_routes(args.day, rows, shares, args.tau, args.suffix, args.startup_delay, args.sigma)
 
 
 if __name__ == "__main__":

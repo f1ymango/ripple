@@ -64,7 +64,7 @@ def upstream_of(net, edge_id, edges_on):
 
 def scenario(net, label, leave_share, passing_kmh, length_m, minutes_outside, queue_kmh, routes="sim/tuen-mun/demand_20260415.rou.xml",
              network="sim/tuen-mun/network.net.xml", closure="reference", loops="sim/tuen-mun/detectors.add.xml",
-             move_over="long"):
+             move_over="long", merge_in_turn=False):
     main = path(net, E["tmr_from_tsuen_wan"], E["tuen_mun"])
     cpr_to_tuen_mun = path(net, E["sham_tseng_exit"], E["siu_lam_on_ramp"], avoid=[E["scene"]])
     # Drivers for Siu Lam end on the exit slip road (sim/tuen-mun/demand_*.json), which Castle Peak Rd
@@ -96,7 +96,11 @@ def scenario(net, label, leave_share, passing_kmh, length_m, minutes_outside, qu
                       # the approach (replay-v2); "approach" is the 250 m before the scene, so the queue behind it keeps
                       # all three lanes and drivers merge near the site, as at a real lane closure
                       "move_over_at_edges": [E["upstream"]] if move_over == "long" else [E["approach"]],
-                      "let_in_after_seconds": 60, "let_in_edges": queue[1:]},
+                      "let_in_after_seconds": 60, "let_in_edges": queue[1:],
+                      # drivers from a lane shut ahead keep to it and move over at the approach's end in turn with the
+                      # lane beside it (src/evaluator/simulate.py, Closure.merge_in_turn); without it they run past
+                      # the open lane's standing queue and cut in, unlike TD's loops, which read every lane queued
+                      **({"merge_in_turn": True} if merge_in_turn else {})},
         },
         "vehicles": {"type": "DEFAULT_VEHTYPE", "length_m": length_m},
         "drivers_leave": {
@@ -195,6 +199,7 @@ def main():
     parser.add_argument("--variant-note", help="for Simulation's P0 variants: what this scenario changes from replay-v2")
     parser.add_argument("--detector-loops", default="sim/tuen-mun/detectors.add.xml")
     parser.add_argument("--move-over", choices=["long", "approach"], default="long")
+    parser.add_argument("--merge-in-turn", action="store_true", help="drivers from a lane shut ahead merge in turn (a zipper)")
     parser.add_argument("--network", default="sim/tuen-mun/network.net.xml",
                         help="sim/tuen-mun/network-fixed-time.net.xml for the fixed-time signal sensitivity")
     args = parser.parse_args()
@@ -202,7 +207,8 @@ def main():
     net = sumolib.net.readNet(str(NET))
     OUT.mkdir(parents=True, exist_ok=True)
     doc = scenario(net, args.label, args.leave_share, args.passing_kmh, args.length_m, args.minutes_outside,
-                   args.queue_kmh, args.routes, args.network, args.closure, args.detector_loops, args.move_over)
+                   args.queue_kmh, args.routes, args.network, args.closure, args.detector_loops, args.move_over,
+                   args.merge_in_turn)
     doc["seed"] = args.seed
     if args.variant_note:
         data_candidate = args.variant_note.startswith("Data's candidate")
@@ -211,7 +217,8 @@ def main():
                           "SIMULATION'S PREDECLARED P0 VARIANT (docs/tuen-mun-p0-simulation-review-2026-10-14.md, 600c158), "
                           "a diagnostic: ") + args.variant_note)
         doc["assumptions"].insert(0, {"choice": args.variant_note,
-                                      "status": "one change from replay-v2, " + ("Data's, after the variant runs" if data_candidate
+                                      "status": ("changed from replay-v2, " if data_candidate else "one change from replay-v2, ")
+                                                + ("Data's, after the variant runs" if data_candidate
                                                                                  else "predeclared by Simulation"),
                                       "source": "docs/tuen-mun-p0-simulation-review-2026-10-14.md"})
     path_out = OUT / f"evaluator_IN-26-02615_{args.label}.json"

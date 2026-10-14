@@ -68,3 +68,29 @@ The evaluator is E as committed on this branch. Its code is unchanged since 4c5d
 - **Decision rule, unchanged:** P2 is lower than P0 in every cell and under each outside value. P1 is reported the same way.
 - **This P0 is replay-v2,** the P0 the Lead's request names. Simulation rates it no-go for a measured ranking (queue too fast, clears about 30 min early). So any P2 result here is a candidate for the 16 Oct review, not a measured saving.
 - If a Part A variant turns out credible, the same plan set may be run on it as a further labelled grid. That decision rests on Simulation's criteria, not on plan outcomes.
+
+## Part C: Data's candidates after the variant runs (15 Oct, written before they run)
+None of Simulation's five fixes the queue speed, and neither does Data's `p0x-merge-at-site` (drivers learn of the closure on the 250 m approach, not along the 2.45 km edge before it). Lane by lane, every one of those runs shows the same thing at TDS90025–32, 18:00–18:15:
+- **Open lane at the scene:** stands still (0–80 veh/h at 1–10 km/h).
+- **Lanes shut ahead:** run past it at 45–65 km/h, and their drivers cut in at the end of the approach.
+- **Loop speeds:** a loop's speed is the volume-weighted mean over the vehicles that pass, so the moving lanes set it. The standing lane barely registers, which is how the model reads 40–45 km/h.
+- **What TD saw:** all three lanes queued at 7–20 km/h, occupancy 60–100% (raw lane readings, `src/loaders/detectors.py`).
+- **Knock-on effects:** the standing queue is in the nearside lane, which is also the Sham Tseng exit lane. So the exit's flow fell from about 670 to 36–170 veh/h, and the queue reached the Ting Kau merge in that lane alone.
+
+A network zipper at the scene (diagonal links from each lane into the one beside it) was tried and dropped before any replay. SUMO took the diagonal link even with every lane open, which left the fast lane at the scene empty in ordinary traffic.
+
+| Label | Changes from replay-v2 |
+|---|---|
+| `p0x-zipper` (+ `-s2027`, `-s2028`) | move over on the approach, and **merging in turn** (`merge_in_turn`, E `src/evaluator/simulate.py` sha256 6587b72dafad…): a driver in a lane shut ahead keeps to it and moves over one lane at its end only behind a driver of that lane who did not just move in (one each); a slow driver behind holds back 3 s |
+| `p0x-zipper-sigma05` (+ `-s2027`, `-s2028`) | the same, and drivers' imperfection sigma 0.5 (SUMO's default; the twin had 0), `sim/tuen-mun/demand_20260415-sigma05.rou.xml` sha256 3f9dcadcfff2…. It lowers the flow out of a standing queue. TD measured 4,560–4,896 veh/h at TDS90033 after the reopening; every run so far gave 6,100–6,900. |
+
+**sigma 0.5 on ordinary Wednesdays** (`results/tuen-mun-p0-variants-oct15/ordinary-days-driver-imperfection.json`): both days still meet version 2.
+
+| Day | sigma | GEH | Free-flow speed error | Congestion state |
+|---|---|---|---|---|
+| 22 Apr | 0.5 | 90.38% | 11.38% | 100% |
+| 22 Apr | 0 | 97.22% | 10.92% | 100% |
+| 6 May | 0.5 | 96.36% | 12.64% | 99.34% |
+| 6 May | 0 | 96.67% | 11.53% | 99.34% |
+
+Same criteria as Part A: the queue speed and extent at TDS90024–32, the recovery and the discharge after the reopening, no unexplained flow deficit, no wrong-lane teleport, and the ledger. A candidate is credible only if it meets Simulation's criteria as well as version 2. If one is, the Lead's plan set from Part B runs on it as its own labelled grid (`results/tuen-mun-lead-grid-oct15-<label>/`), with the same seeds, compliances and decision rule.
