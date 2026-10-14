@@ -155,7 +155,8 @@ def plans_folder():
     }
     context = {
         "incident_id": "IN-26-02615", "reviewed": True,          # Data's draft for P0; the Lead revises it for P1/P2
-        "sources": ["data/raw/stn (TD Special Traffic News, 15 Apr 2026)", "sim/scenarios/tuen-mun/"],
+        "sources": ["docs/tuen-mun-2026-10-14.md", "sim/scenarios/tuen-mun/evaluator_IN-26-02615_replay-v2.json",
+                    "sim/tuen-mun/demand_20260415.json", "sim/tuen-mun/network-audit.md"],
         "active_from": "2026-04-15T17:59:00+08:00", "active_until": "2026-04-15T18:47:00+08:00",
         "od_demand_vehicles": {"Tsuen Wan & Ting Kau->Tuen Mun": round(by_exit[E["tuen_mun"]], 1)},
         "routes": [{"od_group": g, "via": v, "roads": [v], "residential": False, "school": True}   # census 2024: major road network, rural road

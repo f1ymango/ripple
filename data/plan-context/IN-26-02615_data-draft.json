@@ -2,8 +2,10 @@
   "incident_id": "IN-26-02615",
   "reviewed": true,
   "sources": [
-    "data/raw/stn (TD Special Traffic News, 15 Apr 2026)",
-    "sim/scenarios/tuen-mun/"
+    "docs/tuen-mun-2026-10-14.md",
+    "sim/scenarios/tuen-mun/evaluator_IN-26-02615_replay-v2.json",
+    "sim/tuen-mun/demand_20260415.json",
+    "sim/tuen-mun/network-audit.md"
   ],
   "active_from": "2026-04-15T17:59:00+08:00",
   "active_until": "2026-04-15T18:47:00+08:00",
