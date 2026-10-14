@@ -1,0 +1,68 @@
+replay-v2 c30 
+  P0: E  1337.6 veh-h, +  0.0 longer drive (0 cars), 371 left at Ting Kau
+  P1: E  1336.4 veh-h, + 26.3 longer drive (366 cars), 361 left at Ting Kau  0 min outside: +2.0% 4 min outside: +1.9% 10 min outside: +1.8%
+  P2: E  1269.8 veh-h, +  9.4 longer drive (129 cars), 323 left at Ting Kau  0 min outside: -4.2% 4 min outside: -4.4% 10 min outside: -4.6%
+replay-v2 c50 
+  P0: E  1337.6 veh-h, +  0.0 longer drive (0 cars), 371 left at Ting Kau
+  P1: E  1815.2 veh-h, + 31.1 longer drive (436 cars), 344 left at Ting Kau  0 min outside: +38.9% 4 min outside: +38.0% 10 min outside: +36.8%
+  P2: E  1259.9 veh-h, + 17.0 longer drive (233 cars), 255 left at Ting Kau  0 min outside: -4.0% 4 min outside: -4.5% 10 min outside: -5.3%
+replay-v2 c70 
+  P0: E  1337.6 veh-h, +  0.0 longer drive (0 cars), 371 left at Ting Kau
+  P1: E  2056.1 veh-h, + 38.8 longer drive (541 cars), 380 left at Ting Kau  0 min outside: +57.6% 4 min outside: +56.6% 10 min outside: +55.2%
+  P2: E  1283.0 veh-h, + 23.4 longer drive (321 cars), 184 left at Ting Kau  0 min outside: -1.4% 4 min outside: -2.3% 10 min outside: -3.6%
+replay-v2-fixed c30 
+  P0: E  1363.0 veh-h, +  0.0 longer drive (0 cars), 381 left at Ting Kau
+  P1: E  1836.9 veh-h, + 18.6 longer drive (263 cars), 346 left at Ting Kau  0 min outside: +37.0% 4 min outside: +36.1% 10 min outside: +34.9%
+  P2: E  1329.4 veh-h, +  9.6 longer drive (132 cars), 276 left at Ting Kau  0 min outside: -1.3% 4 min outside: -1.8% 10 min outside: -2.5%
+replay-v2-fixed c50 
+  P0: E  1363.0 veh-h, +  0.0 longer drive (0 cars), 381 left at Ting Kau
+  P1: E  2040.1 veh-h, + 22.5 longer drive (314 cars), 605 left at Ting Kau  0 min outside: +51.2% 4 min outside: +51.3% 10 min outside: +51.5%
+  P2: E  1240.7 veh-h, + 13.7 longer drive (192 cars), 417 left at Ting Kau  0 min outside: -8.3% 4 min outside: -8.0% 10 min outside: -7.5%
+replay-v2-fixed c70 
+  P0: E  1363.0 veh-h, +  0.0 longer drive (0 cars), 381 left at Ting Kau
+  P1: E  2275.8 veh-h, + 28.6 longer drive (396 cars), 664 left at Ting Kau  0 min outside: +69.0% 4 min outside: +69.1% 10 min outside: +69.2%
+  P2: E  1435.4 veh-h, + 16.8 longer drive (235 cars), 403 left at Ting Kau  0 min outside: +6.6% 4 min outside: +6.5% 10 min outside: +6.5%
+replay-v2-fixed-s2027 c30 
+  P0: E  1386.0 veh-h, +  0.0 longer drive (0 cars), 342 left at Ting Kau
+  P1: E  1884.6 veh-h, + 20.4 longer drive (276 cars), 340 left at Ting Kau  0 min outside: +38.1% 4 min outside: +37.4% 10 min outside: +36.5%
+  P2: E  1300.6 veh-h, + 11.5 longer drive (157 cars), 276 left at Ting Kau  0 min outside: -5.1% 4 min outside: -5.3% 10 min outside: -5.7%
+replay-v2-fixed-s2027 c50 
+  P0: E  1386.0 veh-h, +  0.0 longer drive (0 cars), 342 left at Ting Kau
+  P1: E  2089.4 veh-h, + 25.6 longer drive (349 cars), 514 left at Ting Kau  0 min outside: +52.6% 4 min outside: +52.6% 10 min outside: +52.5%
+  P2: E  1303.5 veh-h, + 15.7 longer drive (213 cars), 391 left at Ting Kau  0 min outside: -5.1% 4 min outside: -4.8% 10 min outside: -4.4%
+replay-v2-fixed-s2027 c70 
+  P0: E  1386.0 veh-h, +  0.0 longer drive (0 cars), 342 left at Ting Kau
+  P1: E  2297.1 veh-h, + 29.3 longer drive (398 cars), 647 left at Ting Kau  0 min outside: +67.5% 4 min outside: +67.8% 10 min outside: +68.4%
+  P2: E  1588.7 veh-h, + 17.9 longer drive (242 cars), 382 left at Ting Kau  0 min outside: +16.0% 4 min outside: +15.9% 10 min outside: +15.8%
+replay-v2-s2027 c30   [P0 FAILS validation v2: Baseline had a wrong-lane teleport other than at a lane shutting or in a jam.]
+  P0: E  1346.1 veh-h, +  0.0 longer drive (0 cars), 365 left at Ting Kau
+  P1: E  1398.5 veh-h, + 27.7 longer drive (374 cars), 349 left at Ting Kau  0 min outside: +6.1% 4 min outside: +6.0% 10 min outside: +5.7%
+  P2: E  1249.7 veh-h, + 12.9 longer drive (173 cars), 314 left at Ting Kau  0 min outside: -6.1% 4 min outside: -6.2% 10 min outside: -6.4%
+replay-v2-s2027 c50   [P0 FAILS validation v2: Baseline had a wrong-lane teleport other than at a lane shutting or in a jam.]
+  P0: E  1346.1 veh-h, +  0.0 longer drive (0 cars), 365 left at Ting Kau
+  P1: E  1836.4 veh-h, + 32.3 longer drive (437 cars), 341 left at Ting Kau  0 min outside: +39.7% 4 min outside: +38.8% 10 min outside: +37.6%
+  P2: E  1232.0 veh-h, + 20.4 longer drive (275 cars), 248 left at Ting Kau  0 min outside: -6.5% 4 min outside: -7.0% 10 min outside: -7.6%
+replay-v2-s2027 c70   [P0 FAILS validation v2: Baseline had a wrong-lane teleport other than at a lane shutting or in a jam.]
+  P0: E  1346.1 veh-h, +  0.0 longer drive (0 cars), 365 left at Ting Kau
+  P1: E  2069.5 veh-h, + 39.2 longer drive (533 cars), 378 left at Ting Kau  0 min outside: +57.6% 4 min outside: +56.7% 10 min outside: +55.3%
+  P2: E  1150.0 veh-h, + 25.1 longer drive (339 cars), 366 left at Ting Kau  0 min outside: -12.9% 4 min outside: -12.7% 10 min outside: -12.4%
+replay-v2-s2028 c30 
+  P0: E  1264.4 veh-h, +  0.0 longer drive (0 cars), 438 left at Ting Kau
+  P1: E  1345.9 veh-h, + 28.6 longer drive (389 cars), 370 left at Ting Kau  0 min outside: +9.3% 4 min outside: +8.7% 10 min outside: +7.9%
+  P2: E  1198.3 veh-h, + 13.1 longer drive (171 cars), 340 left at Ting Kau  0 min outside: -3.8% 4 min outside: -4.2% 10 min outside: -4.8%
+replay-v2-s2028 c50 
+  P0: E  1264.4 veh-h, +  0.0 longer drive (0 cars), 438 left at Ting Kau
+  P1: E  1863.4 veh-h, + 32.5 longer drive (437 cars), 341 left at Ting Kau  0 min outside: +51.7% 4 min outside: +49.9% 10 min outside: +47.5%
+  P2: E  1240.8 veh-h, + 20.2 longer drive (270 cars), 255 left at Ting Kau  0 min outside: +0.7% 4 min outside: -0.3% 10 min outside: -1.7%
+replay-v2-s2028 c70 
+  P0: E  1264.4 veh-h, +  0.0 longer drive (0 cars), 438 left at Ting Kau
+  P1: E  2079.3 veh-h, + 40.2 longer drive (544 cars), 392 left at Ting Kau  0 min outside: +69.5% 4 min outside: +67.6% 10 min outside: +65.0%
+  P2: E  1191.9 veh-h, + 22.7 longer drive (305 cars), 401 left at Ting Kau  0 min outside: -3.8% 4 min outside: -3.9% 10 min outside: -4.1%
+replay-v2 P1 all cells: 9 cells, better than P0 in 0 of 27 (cell x minutes outside), +1.8% to +69.5%, median +38.9%
+replay-v2 P1 cells with a valid P0: 6 cells, better than P0 in 0 of 18 (cell x minutes outside), +1.8% to +69.5%, median +47.5%
+replay-v2 P2 all cells: 9 cells, better than P0 in 26 of 27 (cell x minutes outside), -12.9% to +0.7%, median -4.4%
+replay-v2 P2 cells with a valid P0: 6 cells, better than P0 in 17 of 18 (cell x minutes outside), -5.3% to +0.7%, median -3.9%
+replay-v2-fixed P1 all cells: 6 cells, better than P0 in 0 of 18 (cell x minutes outside), +34.9% to +69.2%, median +52.5%
+replay-v2-fixed P1 cells with a valid P0: 6 cells, better than P0 in 0 of 18 (cell x minutes outside), +34.9% to +69.2%, median +52.5%
+replay-v2-fixed P2 all cells: 6 cells, better than P0 in 12 of 18 (cell x minutes outside), -8.3% to +16.0%, median -2.5%
+replay-v2-fixed P2 cells with a valid P0: 6 cells, better than P0 in 12 of 18 (cell x minutes outside), -8.3% to +16.0%, median -2.5%

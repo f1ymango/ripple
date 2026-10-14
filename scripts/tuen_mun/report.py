@@ -2,7 +2,7 @@
 
     python scripts/tuen_mun/report.py --results-dir results/tuen-mun --plan-set rehearsal --label replay-v2 \\
         [--outside 0 4 10]
-    -> printed table and <results-dir>/comparison.json
+    -> printed table and <results-dir>/comparison_<label>.json
 
 E's delay is SUMO timeLoss plus waiting to enter, plus extra_minutes_outside for each driver who left at
 Ting Kau. timeLoss is time lost against the road the car is on, so a car sent round Castle Peak Road loses
@@ -119,7 +119,7 @@ def main():
                     print(f"{group} {plan} {'cells with a valid P0' if only_valid else 'all cells'}: {len(use)} cells, "
                           f"better than P0 in {sum(x < 0 for x in d)} of {len(d)} (cell x minutes outside), "
                           f"{min(d):+.1f}% to {max(d):+.1f}%, median {sorted(d)[len(d) // 2]:+.1f}%")
-    (res / "comparison.json").write_text(json.dumps(out, indent=1) + "\n")
+    (res / f"comparison_{args.label}.json").write_text(json.dumps(out, indent=1) + "\n")
 
 
 if __name__ == "__main__":
