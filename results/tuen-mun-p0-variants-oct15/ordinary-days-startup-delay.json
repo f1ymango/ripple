@@ -1,0 +1,37 @@
+{
+ "generated_by": "python scripts/tuen_mun/ordinary_summary.py",
+ "runs": [
+  {
+   "run": "sim/work/tuen-mun/oct15-ord-20260422base",
+   "geh_under_5_percent": 97.21518987341773,
+   "speed_mape_free_flow_pct": 10.92,
+   "congestion_state_agreement_pct": 100.0,
+   "speed_mape_percent": 10.917885737644838,
+   "meets_version_2": true
+  },
+  {
+   "run": "sim/work/tuen-mun/oct15-ord-20260422-startup05",
+   "geh_under_5_percent": 96.70886075949367,
+   "speed_mape_free_flow_pct": 10.9,
+   "congestion_state_agreement_pct": 100.0,
+   "speed_mape_percent": 10.901321906330212,
+   "meets_version_2": true
+  },
+  {
+   "run": "sim/work/tuen-mun/oct15-ord-20260506base",
+   "geh_under_5_percent": 96.66666666666667,
+   "speed_mape_free_flow_pct": 11.53,
+   "congestion_state_agreement_pct": 99.34,
+   "speed_mape_percent": 15.078824260232583,
+   "meets_version_2": true
+  },
+  {
+   "run": "sim/work/tuen-mun/oct15-ord-20260506-startup05",
+   "geh_under_5_percent": 96.96969696969697,
+   "speed_mape_free_flow_pct": 11.55,
+   "congestion_state_agreement_pct": 99.34,
+   "speed_mape_percent": 15.106242766730679,
+   "meets_version_2": true
+  }
+ ]
+}

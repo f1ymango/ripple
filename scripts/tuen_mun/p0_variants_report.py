@@ -132,9 +132,12 @@ def one_run(result_path, td, td_lane):
     rep = json.loads((Path(result_path).parent.parent / "evaluator" / f"{run_id}.report.json").read_text())
     work = WORK / run_id
     met, why = validation_targets.check(r["validation"])
-    n, speed = model_loops(work)
     out = {"run_id": run_id, "validation": r["validation"], "validation_met": met, "validation_reason": why,
            "delay_vehicle_hours_E": r["metrics"]["total_vehicle_hours_delay"]}
+    if not (work / "results").is_dir():
+        out["work_folder"] = "removed before this report: only the result's own numbers are shown"
+        return out
+    n, speed = model_loops(work)
     # counts
     counts = {}
     for d in COUNT_DETS:
@@ -207,13 +210,14 @@ def main():
     td, td_lane = td_bins(), td_lanes()
     runs = [one_run(p, td, td_lane) for p in sorted(glob.glob(str(res / "runs" / "*.json"))) if not p.endswith(".provenance.json")]
     (res / "p0-variants-report.json").write_text(json.dumps(runs, indent=1) + "\n")
+    full = [x for x in runs if "queue" in x]
     lines = ["# Tuen Mun P0 variants: Simulation's predeclared checks", "",
              f"`scripts/tuen_mun/p0_variants_report.py` on `{args.results_dir}`. "
              "TD: congested 5-minute bins at TDS90020-32 = "
-             f"{runs[0]['congested_bins']['td'] if runs else '?'}; mean speed 18:00-18:45 at TDS90024-31 = "
-             f"{runs[0]['mean_speed_1800_1845_TDS90024_31']['td'] if runs else '?'} km/h; "
-             f"discharge at TDS90033 18:45/18:50/18:55 = {runs[0]['discharge_TDS90033_1845_1900_veh_h']['td'] if runs else '?'} veh/h; "
-             f"lanes at TDS90025-31, 18:00-18:45: {runs[0]['lanes_1800_1845_TDS90025_31']['td'] if runs else '?'}.", "",
+             f"{full[0]['congested_bins']['td'] if full else '?'}; mean speed 18:00-18:45 at TDS90024-31 = "
+             f"{full[0]['mean_speed_1800_1845_TDS90024_31']['td'] if full else '?'} km/h; "
+             f"discharge at TDS90033 18:45/18:50/18:55 = {full[0]['discharge_TDS90033_1845_1900_veh_h']['td'] if full else '?'} veh/h; "
+             f"lanes at TDS90025-31, 18:00-18:45: {full[0]['lanes_1800_1845_TDS90025_31']['td'] if full else '?'}.", "",
              "| Run | v2 met | GEH | FF err | state | congested bins model / both | mean speed 18:00-18:45 | lane spread km/h / nearside share % | "
              "discharge 18:45/50/55 | counts 24/29/32/33/34, model - TD | left at Ting Kau | Sham Tseng slip veh / max wait veh-h | "
              "entry wait h | teleports (wrong-lane other) | delay veh-h |",
@@ -221,6 +225,12 @@ def main():
     for x in runs:
         v = x["validation"]
         label = "_".join(x["run_id"].split("_")[5:6])
+        if "work_folder" in x:
+            lines.append(f"| {label} | {'yes' if x['validation_met'] else 'NO'} | {v['geh_under_5_pct']} | "
+                         f"{v['speed_mape_free_flow_pct']} | {v['congestion_state_agreement_pct']} | work folder removed: "
+                         "no detector detail |" + " |" * 9 + f" ({v.get('wrong_lane_teleports_other')}) | "
+                         f"{x['delay_vehicle_hours_E']} |")
+            continue
         lines.append(
             f"| {label} | {'yes' if x['validation_met'] else 'NO'} | {v['geh_under_5_pct']} | {v['speed_mape_free_flow_pct']} | "
             f"{v['congestion_state_agreement_pct']} | {x['congested_bins']['model']} / {x['congested_bins']['both']} | "
