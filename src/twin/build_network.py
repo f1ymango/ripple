@@ -37,9 +37,10 @@ def main():
             raise RuntimeError(f"Could not download OSM data from any server: {servers}") from last_error
     if not downloaded_osm.exists():
         raise FileNotFoundError(f"The downloader finished but expected file is missing: {downloaded_osm}")
+    geometry = ["--geometry.split", "true"] if cfg.get("geometry_split") else ["--geometry.remove", "true"]
     cmd = [require_command("netconvert"), "--osm-files", downloaded_osm, "--output-file", net,
            "--junctions.join", "true", "--tls.join", "true", "--roundabouts.guess", "true",
-           "--lefthand", "--keep-edges.by-vclass", "passenger", "--geometry.remove", "true",
+           "--lefthand", "--keep-edges.by-vclass", "passenger", *geometry,
            "--output.street-names", "true"]
     cmd += ["--keep-edges.in-geo-boundary", f"{west},{south},{east},{north}"]
     if cfg.get("netconvert_config"):
