@@ -68,6 +68,6 @@ Merging in turn fixes the lane balance in the model, but it cuts throughput past
 ## Data's reading
 - **A real but small saving that noise can swallow.** The capacity-bounded P2 gives a consistent saving of about 3–5% on this P0. It is never worse with fixed-time signals, unlike the stand-in P2 on replay-v2.
 - **Why the rule fails.** At compliance 0.3 only about 60 cars divert. The effect is then small enough that seed noise can flip a cell, which is what happens at seed 2030.
-- **What is robust:** "do not send everyone round". P1 is worse in 45 of 54 cases, while targeted advice is better than P1 in every cell.
+- **What is robust:** "do not send everyone round". P1 is worse than P0 in 45 of 54 cases. Targeted P2 beats P1 in 48 of 54; the exceptions are actuated seeds 2029 and 2030 at compliance 0.3, where 30% of the group actually diverting does better.
 - **The share is the lever.** On the first seed, 30% actually diverting gave −19%; 50% gave +22%. The Lead's share (3–8% actually diverting) sits far below that. A calibration-seed sweep of the share is running (part E, share 0.2, seeds 2026–2028) to inform the next plan generation. It is not a candidate.
 - **Aberdeen** stays the submission fallback, untouched.
