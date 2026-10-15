@@ -56,8 +56,17 @@
 
 **Say:** "Ripple found no plan that reliably beats doing nothing, so it told the operator so."
 
+## Simulation's final call (15 Oct, 20:34)
+`docs/tuen-mun-simulation-final-call-2026-10-15.md` on `sim/tuen-mun-p0-variants-oct15` at 5ec8c1d. It uses this frozen 11% P2 pack and leaves the results unchanged:
+- **Ready** for the frozen two-case presentation.
+- **Not ready** for a measured traffic-improvement claim.
+- **Agreed wording:** "modelled candidate ranked ahead", with the queue limitation visible.
+
+**Caption for the video and slides** (keep it on screen with the Tuen Mun result):
+> Modelled in SUMO for the 15 April 2026 crash. The model's queue moves faster than TD measured (about 42 vs 21 km/h), clears early and lets too much traffic through after the reopening, so this is a modelled estimate, not a measured saving.
+
 ## Limits to state in the technical evidence (not the centre of the video)
-- **Tuen Mun's baseline (`p0x-merge-at-site`)** meets the team's validation targets on all 21 runs. But its queue between Sham Tseng and the crash moves faster than TD measured (about 42 against 21 km/h), and it clears early. A stress test with a slower, all-lanes queue still has P2 ahead of P0 in 6 of 6 cells (`docs/tuen-mun-stress-zipper-2026-10-15.md`, side branch `data/v3-dev`). That model breaks traffic flow past the crash, so it is not used as the baseline.
+- **Tuen Mun's baseline (`p0x-merge-at-site`)** meets the team's validation targets on all 21 runs. But its queue between Sham Tseng and the crash moves faster than TD measured (about 42 against 21 km/h), it clears early, and after the reopening it discharges about 6,100 veh/h against TD's 4,560–4,900. A stress test with a slower, all-lanes queue still has P2 ahead of P0 in 6 of 6 cells (`docs/tuen-mun-stress-zipper-2026-10-15.md`, side branch `data/v3-dev`). That model breaks traffic flow past the crash, so it is not used as the baseline.
 - **Two rule readings for Tuen Mun:**
   - the team's ranking rule favours P2;
   - the stricter Tuen Mun protocol rule (lower in every single cell) fails on one cell: +1.9% at 30% compliance, seed 2030.
