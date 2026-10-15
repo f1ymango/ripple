@@ -1,0 +1,362 @@
+[
+ {
+  "cell": "p0x-merge-at-site-fixed-s2029 c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1304.9,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 387,
+    "corrected": {
+     "0 min outside": 1279.1,
+     "4 min outside": 1304.9,
+     "10 min outside": 1343.6
+    }
+   },
+   "P1": {
+    "delay_E": 1558.8,
+    "extra_driving_h": 22.8,
+    "cars_on_a_longer_route": 309,
+    "left_at_ting_kau": 321,
+    "corrected": {
+     "0 min outside": 1560.2,
+     "4 min outside": 1581.6,
+     "10 min outside": 1613.7
+    }
+   },
+   "P2": {
+    "delay_E": 1251.8,
+    "extra_driving_h": 4.7,
+    "cars_on_a_longer_route": 63,
+    "left_at_ting_kau": 372,
+    "corrected": {
+     "0 min outside": 1231.7,
+     "4 min outside": 1256.5,
+     "10 min outside": 1293.7
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2029 c50",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1304.9,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 387,
+    "corrected": {
+     "0 min outside": 1279.1,
+     "4 min outside": 1304.9,
+     "10 min outside": 1343.6
+    }
+   },
+   "P1": {
+    "delay_E": 2089.9,
+    "extra_driving_h": 28.0,
+    "cars_on_a_longer_route": 378,
+    "left_at_ting_kau": 419,
+    "corrected": {
+     "0 min outside": 2090.0,
+     "4 min outside": 2117.9,
+     "10 min outside": 2159.8
+    }
+   },
+   "P2": {
+    "delay_E": 1228.2,
+    "extra_driving_h": 8.0,
+    "cars_on_a_longer_route": 106,
+    "left_at_ting_kau": 354,
+    "corrected": {
+     "0 min outside": 1212.6,
+     "4 min outside": 1236.2,
+     "10 min outside": 1271.6
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2029 c70",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1304.9,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 387,
+    "corrected": {
+     "0 min outside": 1279.1,
+     "4 min outside": 1304.9,
+     "10 min outside": 1343.6
+    }
+   },
+   "P1": {
+    "delay_E": 2355.5,
+    "extra_driving_h": 29.6,
+    "cars_on_a_longer_route": 403,
+    "left_at_ting_kau": 600,
+    "corrected": {
+     "0 min outside": 2345.1,
+     "4 min outside": 2385.1,
+     "10 min outside": 2445.1
+    }
+   },
+   "P2": {
+    "delay_E": 1256.9,
+    "extra_driving_h": 10.2,
+    "cars_on_a_longer_route": 137,
+    "left_at_ting_kau": 296,
+    "corrected": {
+     "0 min outside": 1247.4,
+     "4 min outside": 1267.1,
+     "10 min outside": 1296.7
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2030 c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1343.0,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 358,
+    "corrected": {
+     "0 min outside": 1319.1,
+     "4 min outside": 1343.0,
+     "10 min outside": 1378.8
+    }
+   },
+   "P1": {
+    "delay_E": 1452.0,
+    "extra_driving_h": 25.8,
+    "cars_on_a_longer_route": 349,
+    "left_at_ting_kau": 310,
+    "corrected": {
+     "0 min outside": 1457.1,
+     "4 min outside": 1477.8,
+     "10 min outside": 1508.8
+    }
+   },
+   "P2": {
+    "delay_E": 1230.6,
+    "extra_driving_h": 4.7,
+    "cars_on_a_longer_route": 63,
+    "left_at_ting_kau": 401,
+    "corrected": {
+     "0 min outside": 1208.6,
+     "4 min outside": 1235.3,
+     "10 min outside": 1275.4
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2030 c50",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1343.0,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 358,
+    "corrected": {
+     "0 min outside": 1319.1,
+     "4 min outside": 1343.0,
+     "10 min outside": 1378.8
+    }
+   },
+   "P1": {
+    "delay_E": 1976.0,
+    "extra_driving_h": 27.4,
+    "cars_on_a_longer_route": 375,
+    "left_at_ting_kau": 394,
+    "corrected": {
+     "0 min outside": 1977.1,
+     "4 min outside": 2003.4,
+     "10 min outside": 2042.8
+    }
+   },
+   "P2": {
+    "delay_E": 1287.6,
+    "extra_driving_h": 7.4,
+    "cars_on_a_longer_route": 100,
+    "left_at_ting_kau": 283,
+    "corrected": {
+     "0 min outside": 1276.2,
+     "4 min outside": 1295.0,
+     "10 min outside": 1323.3
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2030 c70",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1343.0,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 358,
+    "corrected": {
+     "0 min outside": 1319.1,
+     "4 min outside": 1343.0,
+     "10 min outside": 1378.8
+    }
+   },
+   "P1": {
+    "delay_E": 2304.8,
+    "extra_driving_h": 28.5,
+    "cars_on_a_longer_route": 395,
+    "left_at_ting_kau": 636,
+    "corrected": {
+     "0 min outside": 2290.9,
+     "4 min outside": 2333.3,
+     "10 min outside": 2396.9
+    }
+   },
+   "P2": {
+    "delay_E": 1298.1,
+    "extra_driving_h": 10.9,
+    "cars_on_a_longer_route": 146,
+    "left_at_ting_kau": 239,
+    "corrected": {
+     "0 min outside": 1293.0,
+     "4 min outside": 1309.0,
+     "10 min outside": 1332.9
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2031 c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1269.6,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 427,
+    "corrected": {
+     "0 min outside": 1241.1,
+     "4 min outside": 1269.6,
+     "10 min outside": 1312.3
+    }
+   },
+   "P1": {
+    "delay_E": 1319.1,
+    "extra_driving_h": 25.2,
+    "cars_on_a_longer_route": 341,
+    "left_at_ting_kau": 336,
+    "corrected": {
+     "0 min outside": 1321.9,
+     "4 min outside": 1344.3,
+     "10 min outside": 1377.9
+    }
+   },
+   "P2": {
+    "delay_E": 1231.0,
+    "extra_driving_h": 4.9,
+    "cars_on_a_longer_route": 65,
+    "left_at_ting_kau": 399,
+    "corrected": {
+     "0 min outside": 1209.3,
+     "4 min outside": 1235.9,
+     "10 min outside": 1275.8
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2031 c50",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1269.6,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 427,
+    "corrected": {
+     "0 min outside": 1241.1,
+     "4 min outside": 1269.6,
+     "10 min outside": 1312.3
+    }
+   },
+   "P1": {
+    "delay_E": 2022.8,
+    "extra_driving_h": 27.7,
+    "cars_on_a_longer_route": 379,
+    "left_at_ting_kau": 358,
+    "corrected": {
+     "0 min outside": 2026.6,
+     "4 min outside": 2050.5,
+     "10 min outside": 2086.3
+    }
+   },
+   "P2": {
+    "delay_E": 1249.5,
+    "extra_driving_h": 8.4,
+    "cars_on_a_longer_route": 112,
+    "left_at_ting_kau": 314,
+    "corrected": {
+     "0 min outside": 1236.9,
+     "4 min outside": 1257.9,
+     "10 min outside": 1289.3
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2031 c70",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1269.6,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 427,
+    "corrected": {
+     "0 min outside": 1241.1,
+     "4 min outside": 1269.6,
+     "10 min outside": 1312.3
+    }
+   },
+   "P1": {
+    "delay_E": 2512.2,
+    "extra_driving_h": 28.6,
+    "cars_on_a_longer_route": 391,
+    "left_at_ting_kau": 666,
+    "corrected": {
+     "0 min outside": 2496.4,
+     "4 min outside": 2540.8,
+     "10 min outside": 2607.4
+    }
+   },
+   "P2": {
+    "delay_E": 1247.8,
+    "extra_driving_h": 11.2,
+    "cars_on_a_longer_route": 149,
+    "left_at_ting_kau": 272,
+    "corrected": {
+     "0 min outside": 1240.9,
+     "4 min outside": 1259.0,
+     "10 min outside": 1286.2
+    }
+   }
+  }
+ }
+]

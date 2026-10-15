@@ -1,0 +1,76 @@
+p0x-merge-at-site-fixed-s2029 c30 
+  P0: E  1304.9 veh-h, +  0.0 longer drive (0 cars), 387 left at Ting Kau
+  P1: E  1558.8 veh-h, + 22.8 longer drive (309 cars), 321 left at Ting Kau  0 min outside: +22.0% 4 min outside: +21.2% 10 min outside: +20.1%
+  P2: E  1251.8 veh-h, +  4.7 longer drive (63 cars), 372 left at Ting Kau  0 min outside: -3.7% 4 min outside: -3.7% 10 min outside: -3.7%
+p0x-merge-at-site-fixed-s2029 c50 
+  P0: E  1304.9 veh-h, +  0.0 longer drive (0 cars), 387 left at Ting Kau
+  P1: E  2089.9 veh-h, + 28.0 longer drive (378 cars), 419 left at Ting Kau  0 min outside: +63.4% 4 min outside: +62.3% 10 min outside: +60.7%
+  P2: E  1228.2 veh-h, +  8.0 longer drive (106 cars), 354 left at Ting Kau  0 min outside: -5.2% 4 min outside: -5.3% 10 min outside: -5.4%
+p0x-merge-at-site-fixed-s2029 c70 
+  P0: E  1304.9 veh-h, +  0.0 longer drive (0 cars), 387 left at Ting Kau
+  P1: E  2355.5 veh-h, + 29.6 longer drive (403 cars), 600 left at Ting Kau  0 min outside: +83.3% 4 min outside: +82.8% 10 min outside: +82.0%
+  P2: E  1256.9 veh-h, + 10.2 longer drive (137 cars), 296 left at Ting Kau  0 min outside: -2.5% 4 min outside: -2.9% 10 min outside: -3.5%
+p0x-merge-at-site-fixed-s2030 c30 
+  P0: E  1343.0 veh-h, +  0.0 longer drive (0 cars), 358 left at Ting Kau
+  P1: E  1452.0 veh-h, + 25.8 longer drive (349 cars), 310 left at Ting Kau  0 min outside: +10.5% 4 min outside: +10.0% 10 min outside: +9.4%
+  P2: E  1230.6 veh-h, +  4.7 longer drive (63 cars), 401 left at Ting Kau  0 min outside: -8.4% 4 min outside: -8.0% 10 min outside: -7.5%
+p0x-merge-at-site-fixed-s2030 c50 
+  P0: E  1343.0 veh-h, +  0.0 longer drive (0 cars), 358 left at Ting Kau
+  P1: E  1976.0 veh-h, + 27.4 longer drive (375 cars), 394 left at Ting Kau  0 min outside: +49.9% 4 min outside: +49.2% 10 min outside: +48.2%
+  P2: E  1287.6 veh-h, +  7.4 longer drive (100 cars), 283 left at Ting Kau  0 min outside: -3.3% 4 min outside: -3.6% 10 min outside: -4.0%
+p0x-merge-at-site-fixed-s2030 c70 
+  P0: E  1343.0 veh-h, +  0.0 longer drive (0 cars), 358 left at Ting Kau
+  P1: E  2304.8 veh-h, + 28.5 longer drive (395 cars), 636 left at Ting Kau  0 min outside: +73.7% 4 min outside: +73.7% 10 min outside: +73.8%
+  P2: E  1298.1 veh-h, + 10.9 longer drive (146 cars), 239 left at Ting Kau  0 min outside: -2.0% 4 min outside: -2.5% 10 min outside: -3.3%
+p0x-merge-at-site-fixed-s2031 c30 
+  P0: E  1269.6 veh-h, +  0.0 longer drive (0 cars), 427 left at Ting Kau
+  P1: E  1319.1 veh-h, + 25.2 longer drive (341 cars), 336 left at Ting Kau  0 min outside: +6.5% 4 min outside: +5.9% 10 min outside: +5.0%
+  P2: E  1231.0 veh-h, +  4.9 longer drive (65 cars), 399 left at Ting Kau  0 min outside: -2.6% 4 min outside: -2.7% 10 min outside: -2.8%
+p0x-merge-at-site-fixed-s2031 c50 
+  P0: E  1269.6 veh-h, +  0.0 longer drive (0 cars), 427 left at Ting Kau
+  P1: E  2022.8 veh-h, + 27.7 longer drive (379 cars), 358 left at Ting Kau  0 min outside: +63.3% 4 min outside: +61.5% 10 min outside: +59.0%
+  P2: E  1249.5 veh-h, +  8.4 longer drive (112 cars), 314 left at Ting Kau  0 min outside: -0.3% 4 min outside: -0.9% 10 min outside: -1.8%
+p0x-merge-at-site-fixed-s2031 c70 
+  P0: E  1269.6 veh-h, +  0.0 longer drive (0 cars), 427 left at Ting Kau
+  P1: E  2512.2 veh-h, + 28.6 longer drive (391 cars), 666 left at Ting Kau  0 min outside: +101.1% 4 min outside: +100.1% 10 min outside: +98.7%
+  P2: E  1247.8 veh-h, + 11.2 longer drive (149 cars), 272 left at Ting Kau  0 min outside: -0.0% 4 min outside: -0.8% 10 min outside: -2.0%
+p0x-merge-at-site-s2029 c30 
+  P0: E  1300.6 veh-h, +  0.0 longer drive (0 cars), 375 left at Ting Kau
+  P1: E  1014.7 veh-h, + 33.6 longer drive (454 cars), 327 left at Ting Kau  0 min outside: -19.5% 4 min outside: -19.4% 10 min outside: -19.2%
+  P2: E  1236.6 veh-h, +  4.5 longer drive (61 cars), 372 left at Ting Kau  0 min outside: -4.6% 4 min outside: -4.6% 10 min outside: -4.5%
+p0x-merge-at-site-s2029 c50 
+  P0: E  1300.6 veh-h, +  0.0 longer drive (0 cars), 375 left at Ting Kau
+  P1: E  1545.9 veh-h, + 39.5 longer drive (533 cars), 263 left at Ting Kau  0 min outside: +22.9% 4 min outside: +21.9% 10 min outside: +20.4%
+  P2: E  1235.1 veh-h, +  7.7 longer drive (102 cars), 332 left at Ting Kau  0 min outside: -4.3% 4 min outside: -4.4% 10 min outside: -4.6%
+p0x-merge-at-site-s2029 c70 
+  P0: E  1300.6 veh-h, +  0.0 longer drive (0 cars), 375 left at Ting Kau
+  P1: E  2101.6 veh-h, + 39.6 longer drive (539 cars), 373 left at Ting Kau  0 min outside: +65.9% 4 min outside: +64.6% 10 min outside: +62.8%
+  P2: E  1163.6 veh-h, + 10.4 longer drive (140 cars), 352 left at Ting Kau  0 min outside: -9.8% 4 min outside: -9.7% 10 min outside: -9.6%
+p0x-merge-at-site-s2030 c30 
+  P0: E  1249.4 veh-h, +  0.0 longer drive (0 cars), 425 left at Ting Kau
+  P1: E  1150.5 veh-h, + 31.9 longer drive (430 cars), 318 left at Ting Kau  0 min outside: -4.9% 4 min outside: -5.4% 10 min outside: -6.0%
+  P2: E  1262.2 veh-h, +  4.4 longer drive (59 cars), 338 left at Ting Kau  0 min outside: +1.9% 4 min outside: +1.4% 10 min outside: +0.7%
+p0x-merge-at-site-s2030 c50 
+  P0: E  1249.4 veh-h, +  0.0 longer drive (0 cars), 425 left at Ting Kau
+  P1: E  1637.4 veh-h, + 37.4 longer drive (508 cars), 250 left at Ting Kau  0 min outside: +35.8% 4 min outside: +34.0% 10 min outside: +31.6%
+  P2: E  1197.6 veh-h, +  7.6 longer drive (102 cars), 364 left at Ting Kau  0 min outside: -3.3% 4 min outside: -3.5% 10 min outside: -3.9%
+p0x-merge-at-site-s2030 c70 
+  P0: E  1249.4 veh-h, +  0.0 longer drive (0 cars), 425 left at Ting Kau
+  P1: E  2032.0 veh-h, + 38.9 longer drive (535 cars), 371 left at Ting Kau  0 min outside: +67.6% 4 min outside: +65.8% 10 min outside: +63.2%
+  P2: E  1195.5 veh-h, + 11.1 longer drive (149 cars), 301 left at Ting Kau  0 min outside: -2.8% 4 min outside: -3.4% 10 min outside: -4.3%
+p0x-merge-at-site-s2031 c30 
+  P0: E  1239.1 veh-h, +  0.0 longer drive (0 cars), 439 left at Ting Kau
+  P1: E  1181.9 veh-h, + 27.2 longer drive (368 cars), 319 left at Ting Kau  0 min outside: -1.8% 4 min outside: -2.4% 10 min outside: -3.3%
+  P2: E  1195.8 veh-h, +  5.0 longer drive (66 cars), 388 left at Ting Kau  0 min outside: -2.9% 4 min outside: -3.1% 10 min outside: -3.4%
+p0x-merge-at-site-s2031 c50 
+  P0: E  1239.1 veh-h, +  0.0 longer drive (0 cars), 439 left at Ting Kau
+  P1: E  1488.2 veh-h, + 39.6 longer drive (536 cars), 258 left at Ting Kau  0 min outside: +24.9% 4 min outside: +23.3% 10 min outside: +21.1%
+  P2: E  1192.7 veh-h, +  8.2 longer drive (110 cars), 336 left at Ting Kau  0 min outside: -2.6% 4 min outside: -3.1% 10 min outside: -3.8%
+p0x-merge-at-site-s2031 c70 
+  P0: E  1239.1 veh-h, +  0.0 longer drive (0 cars), 439 left at Ting Kau
+  P1: E  2028.7 veh-h, + 40.3 longer drive (546 cars), 335 left at Ting Kau  0 min outside: +69.2% 4 min outside: +67.0% 10 min outside: +63.9%
+  P2: E  1156.8 veh-h, + 11.1 longer drive (147 cars), 338 left at Ting Kau  0 min outside: -5.3% 4 min outside: -5.7% 10 min outside: -6.3%
+p0x-merge-at P1 all cells: 18 cells, better than P0 in 9 of 54 (cell x minutes outside), -19.5% to +101.1%, median +48.2%
+p0x-merge-at P1 cells with a valid P0: 18 cells, better than P0 in 9 of 54 (cell x minutes outside), -19.5% to +101.1%, median +48.2%
+p0x-merge-at P2 all cells: 18 cells, better than P0 in 51 of 54 (cell x minutes outside), -9.8% to +1.9%, median -3.5%
+p0x-merge-at P2 cells with a valid P0: 18 cells, better than P0 in 51 of 54 (cell x minutes outside), -9.8% to +1.9%, median -3.5%

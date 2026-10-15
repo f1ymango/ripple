@@ -161,4 +161,8 @@ So the Lead's capacity rule (spare 260 veh/h from the fixed-time sensitivity on 
 - compliance 0.3 and 0.7, the two ends of the tested range;
 - P0 and P2 only: 24 runs into `results/tuen-mun-share-sweep-oct15/`, after Part D and before Part B.
 
+**Plan-set name.** E's plan-set name is `data-share-020-oct15`: E allows only lower-case letters, digits and hyphens. The directory keeps its name.
+
+**Two P0 results set aside.** Replay-v2's seed-2029 P0 runs at compliance 0.3 and 0.5 were set aside and will run again in their turn. Their scratch folders were deleted by mistake, and the comparison needs them. The first copies are kept outside `results/`, to check that the reruns match.
+
 **What it decides.** Nothing. It informs the Lead's next plan generation. A share chosen from it still needs fresh seeds, beyond 2031, before it can be a candidate.
