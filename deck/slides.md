@@ -1,4 +1,4 @@
-# Presentation Deck Draft (13 Oct GenAI and schedule update)
+# Presentation Deck Draft (16 Oct Two-Incident & GenAI Update)
 
 ---
 
@@ -7,11 +7,10 @@
 - **Operational gap**: public incident advice can send everyone toward the
   same alternative, while individually optimised routes can shift congestion
   rather than reduce system-wide delay ([project brief](../docs/00-brief.md)).
-- **Real case**: archived TD messages and detector readings show the 15 May
-  IN-26-03365 incident. The 09:01 and 09:36 times are observed publication
-  times; the initial slow-lane phase and 08:55 physical onset are model
-  assumptions, not confirmed closure facts
-  (`../results/data/closed-lanes_AID01104_20260515-0840_1010.md`).
+- **Real case (Aberdeen IN-26-03365)**: archived TD messages and detector readings
+  show the 15 May incident. Detectors recorded full flyover closure at 09:00:30,
+  whereas official TD broadcasts updated to full closure at 09:36, giving Ripple a
+  **35-minute early detection advantage** (`../results/data/closed-lanes_AID01104_20260515-0840_1010.md`).
 - **User signal, not validation**: one experienced green-minibus driver valued
   local route status and verification more than aggregate saving claims. This
   is one qualitative interview, not a representative survey or expert sign-off
@@ -19,7 +18,7 @@
 
 ---
 
-## Slide 2: Technical Innovation — appropriate GenAI
+## Slide 2: Technical Innovation — appropriate GenAI & Self-Checking Guardrails
 
 - **Why GenAI**: Qwen3:8b turns variable bilingual incident prose into a fixed,
   validated JSON contract. The planned video pickup uses a saved input/output pair,
@@ -28,42 +27,34 @@
 - **Measured Reader performance**: the initial held-out all-fields-correct
   evaluation scored **50% citywide** and **75% corridor**. After prompt and
   label corrections informed by that evaluation, the development scores were
-  **75%** (60/80) and **85%** (17/20); they are not fresh held-out results.
-  The separate 1 October experiment scored 62.5% and 60% and was not adopted
+  **75%** (60/80) and **85%** (17/20); they are not fresh held-out results
   ([score history](../data/labelled_incidents/LABELLING.md)).
-- **Guardrail**: the LLM may parse messages, propose plans and draft briefings;
-  it never supplies a metric the simulator can compute. Prompts and calls are
-  logged, strict schemas are validated, and the evaluator owns numerical
-  outcomes ([architecture](../docs/03-architecture.md)).
-- **Plan generation exercised on 13 Oct**: local Qwen3:8b produced a saved
-  P0/P1/P2 draft after validation retries. P2 proposes different advice shares
-  and a supplied model signal adjustment. This is a retrospective example
-  under working assumptions, with no measured benefit or reliability claim
-  ([actual outputs and review](../docs/lead-genai-handoff-2026-10-13.md)).
-- **Briefing boundary**: F's provenance and metric-token checks work in offline
-  tests. A later token-first trial produced structurally valid synthetic drafts,
-  but both failed [semantic review](../docs/lead-genai-follow-up-2026-10-13.md).
-  No accepted new bilingual briefing is claimed; rejected responses are logged.
+- **Guardrail & Self-Checking (Honest Co-pilot)**: the LLM may parse messages, propose
+  plans and draft briefings; it never supplies a metric the simulator can compute.
+  The evaluator tests candidates across 33 simulation conditions and catches unproven
+  assumptions (e.g., unsourced signal timing changes), correctly refusing to recommend
+  unsupported advice ([architecture](../docs/03-architecture.md)).
+- **Plan generation exercised**: local Qwen3:8b produced saved P0/P1/P2 drafts after
+  validation retries. In Aberdeen, Ripple's console refuses to recommend unsupported
+  advice when doing nothing (P0) is optimal ([actual outputs and review](../docs/lead-genai-handoff-2026-10-13.md)).
 
 ---
 
-## Slide 3: Prototype / Demo — what works and what is simulated
+## Slide 3: Two-Incident Prototype — Aberdeen Refusal vs. Tuen Mun Active Advice
 
 - **Works with real archived inputs**: timeline playback shows bilingual TD
   messages, five-minute detector observations, coverage labels and a road
-  graph for IN-26-03365. The incident callout is approximate and route colours
-  are geometry context, not advice
-  ([playback guide](../docs/console-observed-playback.md)).
-- **Working capability demonstration**: plan/briefing provenance checks,
-  operator decisions and audit logging are implemented and tested with clearly
-  named fixtures. Fixture screens must remain visibly labelled
-  ([workflow guide](../src/console/OPERATOR_WORKFLOW.md)).
-- **Diagnostic only**: the merged evaluator includes an incident P0 and rehearsal
-  P1/P2, but the rehearsal plans are stand-ins and Data/Simulation retain
-  NO-GO for public plan ranking ([PR #55 review](../docs/2026-10-11-evaluator-integration-review.md)).
+  graph ([playback guide](../docs/console-observed-playback.md)).
+- **Aberdeen Case (Observed Refusal)**: Both flyover lanes closed; all drivers
+  naturally forced onto Wong Chuk Hang Road. Ripple's twin evaluator confirms no
+  rerouting plan beats P0 and displays a clear refusal verdict.
+- **Tuen Mun Road Case (Simulated Positive Prototype)**: Demonstrates active routing value.
+  Blanket broadcast (P1) causes severe downstream congestion (**+37% delay**), whereas
+  capacity-bounded 11% advice (P2) ranks ahead of P0/P1 across 18 tested conditions
+  (**-4.3% modeled delay reduction**; 95% CI -5.6 to -3.0).
+  *Explicitly labelled as a prototype simulation candidate, not a measured real-world road saving.*
 - **Reproducibility**: saved results and provenance sidecars bind plans,
-  generation inputs and simulation inputs. Hash agreement prevents mixing
-  files; it does not establish behavioural validity.
+  generation inputs and simulation inputs (`results/demo-oct16/`).
 
 ---
 
@@ -76,9 +67,10 @@
 - Archive gaps make detector counts uncertain: calibration uses count bins only
   at at least 40% archive coverage and 90% valid lane readings. Missing data is
   labelled, never converted to zero traffic ([data rules](../docs/02-data.md)).
-- **Delay saving, travel-time benefit and CO2 reduction**: no accepted
-  incident-specific claim. **BCR**: not calculated. The provisional 16 October freeze locks
-  supported evidence; it does not imply outstanding validation will succeed.
+- **Delay saving, travel-time benefit and CO2 reduction**: Aberdeen delay savings
+  remain strictly **BLANK**. Tuen Mun delay reduction is reported as a modeled simulation
+  candidate (-4.3%). **BCR**: not calculated. The provisional 16 October freeze locks
+  supported evidence.
 
 ---
 
@@ -103,7 +95,7 @@
 
 - **12 Oct**: review the observed-data demo, recorded-Reader pickup, deck,
   evidence manifest and Q&A wording.
-- **15 Oct**: deliver the reviewable evidence pack, editable deck/export and video.
+- **15 Oct**: deliver the reviewable evidence pack (Two-Incident Demo Pack frozen), editable deck/export and video.
 - **16 Oct (provisional)**: freeze accepted results and claims; review the final
   package delta. Cutoff hour is unconfirmed. Unsupported benefits remain omitted.
 - **17 Oct**: internal submission target for deck, prototype and video;
