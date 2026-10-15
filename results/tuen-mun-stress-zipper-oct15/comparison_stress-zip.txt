@@ -1,0 +1,20 @@
+stress-zip-fixed-s2026 c50   [P0 FAILS validation v2: Baseline is below the GEH validation target.]
+  P0: E  2218.4 veh-h, +  0.0 longer drive (0 cars), 875 left at Ting Kau
+  P2: E  2078.5 veh-h, +  4.3 longer drive (59 cars), 683 left at Ting Kau  0 min outside: -5.7% 4 min outside: -6.1% 10 min outside: -6.7%
+stress-zip-fixed-s2027 c50   [P0 FAILS validation v2: Baseline is below the GEH validation target.]
+  P0: E  1765.2 veh-h, +  0.0 longer drive (0 cars), 564 left at Ting Kau
+  P2: E  1638.2 veh-h, +  7.5 longer drive (100 cars), 463 left at Ting Kau  0 min outside: -6.5% 4 min outside: -6.8% 10 min outside: -7.1%
+stress-zip-fixed-s2028 c50   [P0 FAILS validation v2: Baseline is below the GEH validation target.]
+  P0: E  1695.7 veh-h, +  0.0 longer drive (0 cars), 544 left at Ting Kau
+  P2: E  1597.3 veh-h, +  7.6 longer drive (99 cars), 494 left at Ting Kau  0 min outside: -5.3% 4 min outside: -5.4% 10 min outside: -5.5%
+stress-zip-s2026 c50   [P0 FAILS validation v2: Baseline is below the GEH validation target.]
+  P0: E  2131.2 veh-h, +  0.0 longer drive (0 cars), 833 left at Ting Kau
+  P2: E  2109.7 veh-h, +  4.3 longer drive (59 cars), 769 left at Ting Kau  0 min outside: -0.6% 4 min outside: -0.8% 10 min outside: -1.1%
+stress-zip-s2027 c50   [P0 FAILS validation v2: Baseline is below the GEH validation target.]
+  P0: E  1781.2 veh-h, +  0.0 longer drive (0 cars), 611 left at Ting Kau
+  P2: E  1697.9 veh-h, +  7.3 longer drive (97 cars), 538 left at Ting Kau  0 min outside: -4.1% 4 min outside: -4.3% 10 min outside: -4.5%
+stress-zip-s2028 c50   [P0 FAILS validation v2: Baseline is below the GEH validation target.]
+  P0: E  2783.6 veh-h, +  0.0 longer drive (0 cars), 1096 left at Ting Kau
+  P2: E  2638.6 veh-h, +  3.1 longer drive (40 cars), 1044 left at Ting Kau  0 min outside: -5.1% 4 min outside: -5.1% 10 min outside: -5.1%
+stress-zip P2 all cells: 3 cells, better than P0 in 9 of 9 (cell x minutes outside), -5.1% to -0.6%, median -4.3%
+stress-zip-fixed P2 all cells: 3 cells, better than P0 in 9 of 9 (cell x minutes outside), -7.1% to -5.3%, median -6.1%

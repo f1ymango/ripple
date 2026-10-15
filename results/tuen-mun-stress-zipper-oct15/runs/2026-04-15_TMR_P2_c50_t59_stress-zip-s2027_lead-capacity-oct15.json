@@ -1,0 +1,23 @@
+{
+  "run_id": "2026-04-15_TMR_P2_c50_t59_stress-zip-s2027_lead-capacity-oct15",
+  "plan_id": "P2",
+  "incident_id": "IN-26-02615",
+  "scenario": {
+    "compliance": 0.5,
+    "clearance_min": 59.0,
+    "seed": 2027
+  },
+  "metrics": {
+    "total_vehicle_hours_delay": 1697.9,
+    "delay_vs_do_nothing_pct": -4.7,
+    "max_queue_m": {
+      "Tuen Mun Road back from the crash site": 6541
+    },
+    "corridor_tt_p95_min": 47.8,
+    "emergency_tt_min": 6.2,
+    "co2_kg": 41057,
+    "residential_delay_share_pct": 0.0,
+    "vehicles_completed": 15662
+  },
+  "validation": {}
+}

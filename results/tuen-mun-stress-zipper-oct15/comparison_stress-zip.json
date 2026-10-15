@@ -1,0 +1,176 @@
+[
+ {
+  "cell": "stress-zip-fixed-s2026 c50",
+  "p0_validation_met": false,
+  "p0_validation_reason": "Baseline is below the GEH validation target.",
+  "plans": {
+   "P0": {
+    "delay_E": 2218.4,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 875,
+    "corrected": {
+     "0 min outside": 2160.1,
+     "4 min outside": 2218.4,
+     "10 min outside": 2305.9
+    }
+   },
+   "P2": {
+    "delay_E": 2078.5,
+    "extra_driving_h": 4.3,
+    "cars_on_a_longer_route": 59,
+    "left_at_ting_kau": 683,
+    "corrected": {
+     "0 min outside": 2037.2,
+     "4 min outside": 2082.8,
+     "10 min outside": 2151.1
+    }
+   }
+  }
+ },
+ {
+  "cell": "stress-zip-fixed-s2027 c50",
+  "p0_validation_met": false,
+  "p0_validation_reason": "Baseline is below the GEH validation target.",
+  "plans": {
+   "P0": {
+    "delay_E": 1765.2,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 564,
+    "corrected": {
+     "0 min outside": 1727.6,
+     "4 min outside": 1765.2,
+     "10 min outside": 1821.6
+    }
+   },
+   "P2": {
+    "delay_E": 1638.2,
+    "extra_driving_h": 7.5,
+    "cars_on_a_longer_route": 100,
+    "left_at_ting_kau": 463,
+    "corrected": {
+     "0 min outside": 1614.8,
+     "4 min outside": 1645.7,
+     "10 min outside": 1692.0
+    }
+   }
+  }
+ },
+ {
+  "cell": "stress-zip-fixed-s2028 c50",
+  "p0_validation_met": false,
+  "p0_validation_reason": "Baseline is below the GEH validation target.",
+  "plans": {
+   "P0": {
+    "delay_E": 1695.7,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 544,
+    "corrected": {
+     "0 min outside": 1659.4,
+     "4 min outside": 1695.7,
+     "10 min outside": 1750.1
+    }
+   },
+   "P2": {
+    "delay_E": 1597.3,
+    "extra_driving_h": 7.6,
+    "cars_on_a_longer_route": 99,
+    "left_at_ting_kau": 494,
+    "corrected": {
+     "0 min outside": 1571.9,
+     "4 min outside": 1604.9,
+     "10 min outside": 1654.3
+    }
+   }
+  }
+ },
+ {
+  "cell": "stress-zip-s2026 c50",
+  "p0_validation_met": false,
+  "p0_validation_reason": "Baseline is below the GEH validation target.",
+  "plans": {
+   "P0": {
+    "delay_E": 2131.2,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 833,
+    "corrected": {
+     "0 min outside": 2075.7,
+     "4 min outside": 2131.2,
+     "10 min outside": 2214.5
+    }
+   },
+   "P2": {
+    "delay_E": 2109.7,
+    "extra_driving_h": 4.3,
+    "cars_on_a_longer_route": 59,
+    "left_at_ting_kau": 769,
+    "corrected": {
+     "0 min outside": 2062.7,
+     "4 min outside": 2114.0,
+     "10 min outside": 2190.9
+    }
+   }
+  }
+ },
+ {
+  "cell": "stress-zip-s2027 c50",
+  "p0_validation_met": false,
+  "p0_validation_reason": "Baseline is below the GEH validation target.",
+  "plans": {
+   "P0": {
+    "delay_E": 1781.2,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 611,
+    "corrected": {
+     "0 min outside": 1740.5,
+     "4 min outside": 1781.2,
+     "10 min outside": 1842.3
+    }
+   },
+   "P2": {
+    "delay_E": 1697.9,
+    "extra_driving_h": 7.3,
+    "cars_on_a_longer_route": 97,
+    "left_at_ting_kau": 538,
+    "corrected": {
+     "0 min outside": 1669.3,
+     "4 min outside": 1705.2,
+     "10 min outside": 1759.0
+    }
+   }
+  }
+ },
+ {
+  "cell": "stress-zip-s2028 c50",
+  "p0_validation_met": false,
+  "p0_validation_reason": "Baseline is below the GEH validation target.",
+  "plans": {
+   "P0": {
+    "delay_E": 2783.6,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 1096,
+    "corrected": {
+     "0 min outside": 2710.5,
+     "4 min outside": 2783.6,
+     "10 min outside": 2893.2
+    }
+   },
+   "P2": {
+    "delay_E": 2638.6,
+    "extra_driving_h": 3.1,
+    "cars_on_a_longer_route": 40,
+    "left_at_ting_kau": 1044,
+    "corrected": {
+     "0 min outside": 2572.1,
+     "4 min outside": 2641.7,
+     "10 min outside": 2746.1
+    }
+   }
+  }
+ }
+]
