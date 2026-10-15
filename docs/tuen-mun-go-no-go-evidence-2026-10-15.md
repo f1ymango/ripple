@@ -88,3 +88,16 @@ Merging in turn fixes the lane balance in the model, but it cuts throughput past
 - **Our recommendation:**
   - Keep Aberdeen as the submission.
   - Tuen Mun can appear only as supporting evidence for "target, don't broadcast", labelled as a candidate, with no saving claimed.
+
+## Added 15:30: the team's own ranking rule gives a different answer
+- **Which rule was applied.** The Tuen Mun protocol (`docs/tuen-mun-p1-p2-protocol-2026-10-14.md`, written by Data on 14 Oct) set a stricter rule: P2 must be lower in every cell. The verdict above applies that rule.
+- **The team's rule.** On 13 Oct the team set a different rule (`src/evaluator/ranking.py`), and F, the console and the Aberdeen case use it. Under it, A comes before B if the 95% interval of the paired difference (A − B, as a % of P0's delay) lies wholly below zero, over the cells that count.
+- **Applied afterwards to the Lead's Tuen Mun grid** (`python -m src.evaluator.ranking --grid sim/scenarios/rankings/IN-26-02615_lead-capacity-oct15_p0x-merge-at-site.json`, written to `results/rankings/lead-capacity-oct15-p0x-merge-at-site.json`). All 18 cells count:
+  - **P2 before P0:** −4.31% of P0's delay, 95% interval −5.59 to −3.03; P2 lower in 17 of 18 cells.
+  - **P0 before P1:** P1 +37.3%, interval +20.1 to +54.6.
+  - **P2 before P1:** −41.6%.
+  - **Before both others: P2.** F would recommend it.
+- **With the longer drive charged.** ranking.py uses E's delay, which does not charge the longer Castle Peak Road drive. With it charged (`report.py`, 4 min outside), P2 is −3.70%, interval −4.97 to −2.43.
+- **Data's share 0.2** on seeds 2032–2034: −4.77%, interval −6.79 to −2.76. (No P1 was run, so there is no full ranking.)
+- **For comparison, Aberdeen** under the same rule: P0 and P2 tie (−1.4%, interval −4.1 to +1.2), so F refuses to recommend.
+- **Still open:** Simulation's no-go on the P0 queue speed stands under either rule.

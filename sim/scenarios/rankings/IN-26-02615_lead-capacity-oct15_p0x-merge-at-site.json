@@ -1,0 +1,134 @@
+{
+ "incident_id": "IN-26-02615",
+ "plans": "data/generated-plans/IN-26-02615-lead-capacity-oct15",
+ "plan_set": "lead-capacity-oct15",
+ "why": "Part D of docs/tuen-mun-p0-variants-and-lead-grid-2026-10-15.md: the Lead's plan set on p0x-merge-at-site, fresh seeds 2029-2031, vehicle-actuated and fixed-time Sham Tseng signals, compliance 0.3/0.5/0.7, clearance 59 min. Ranked afterwards with the team's 13 Oct rule, which the Tuen Mun protocol did not name (it set a stricter every-cell rule).",
+ "cells": [
+  {
+   "name": "p0x-merge-at-site-s2029 c30",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2029.json",
+   "compliance": 0.3,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-s2029 c50",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2029.json",
+   "compliance": 0.5,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-s2029 c70",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2029.json",
+   "compliance": 0.7,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-fixed-s2029 c30",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2029.json",
+   "compliance": 0.3,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-fixed-s2029 c50",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2029.json",
+   "compliance": 0.5,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-fixed-s2029 c70",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2029.json",
+   "compliance": 0.7,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-s2030 c30",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2030.json",
+   "compliance": 0.3,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-s2030 c50",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2030.json",
+   "compliance": 0.5,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-s2030 c70",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2030.json",
+   "compliance": 0.7,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-fixed-s2030 c30",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2030.json",
+   "compliance": 0.3,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-fixed-s2030 c50",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2030.json",
+   "compliance": 0.5,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-fixed-s2030 c70",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2030.json",
+   "compliance": 0.7,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-s2031 c30",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2031.json",
+   "compliance": 0.3,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-s2031 c50",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2031.json",
+   "compliance": 0.5,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-s2031 c70",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2031.json",
+   "compliance": 0.7,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-fixed-s2031 c30",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2031.json",
+   "compliance": 0.3,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-fixed-s2031 c50",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2031.json",
+   "compliance": 0.5,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  },
+  {
+   "name": "p0x-merge-at-site-fixed-s2031 c70",
+   "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2031.json",
+   "compliance": 0.7,
+   "clearance_min": 59,
+   "results_dir": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site"
+  }
+ ]
+}
