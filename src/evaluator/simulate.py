@@ -269,9 +269,7 @@ class Closure:
                                   and v not in self.merged_into.get(step, ())
                                   for v, (other_lane, pos) in where.items())
                 waited = traci.vehicle.getWaitingTime(vehicle)
-                # turns only into a lane that leads on; into another lane shut ahead a driver moves over at once
-                if (step in usable and self.last_in.get((approach, step)) == "merged" and own_waiting
-                        and waited < TURN_GIVE_UP_SECONDS):
+                if self.last_in.get((approach, step)) == "merged" and own_waiting and waited < TURN_GIVE_UP_SECONDS:
                     continue                                # the last one through moved over: the lane's own driver next
                 side = 0b001 if step < lane else 0b000
                 leaders = traci.vehicle.getNeighbors(vehicle, side | 0b010)
