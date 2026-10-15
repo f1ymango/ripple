@@ -139,3 +139,26 @@ Same criteria as Part A: the queue speed and extent at TDS90024–32, the recove
 - **Scenarios:** `p0x-merge-at-site-s2029/2030/2031`, actuated signals, and `p0x-merge-at-site-fixed-s2029/2030/2031`, fixed-time signals. Each is identical to `p0x-merge-at-site` apart from its seed and signal network.
 - **Grid:** the same plan set, compliances and decision rule as Part B; 54 runs into `results/tuen-mun-lead-grid-oct15-p0x-merge-at-site/`.
 - **Then:** Part B's grid on replay-v2, into `results/tuen-mun-lead-grid-oct15/`.
+
+## Part E: a share sweep on the calibration seeds (15 Oct 09:15, written before it runs)
+**Why.** The first fresh-grid cells (seed 2029, actuated) show E's delay against P0 (before the longer drive is charged) moving with the share of drivers who actually divert:
+
+| Plan | Compliance | Share actually diverting | Delay against P0 |
+|---|---|---|---|
+| P2 | 0.3 | 3.3% | −4.9% |
+| P2 | 0.5 | 5.5% | −5.0% |
+| P1 | 0.3 | 30% | −22.0% |
+| P1 | 0.5 | 50% | +18.9% |
+
+So the Lead's capacity rule (spare 260 veh/h from the fixed-time sensitivity on replay-v2) may set the share far below what helps on this P0.
+
+**What runs.** `data/generated-plans/IN-26-02615-data-share-0.2-oct15/` (`scripts/tuen_mun/share_sweep_plans.py`):
+- the Lead's P0, P1 and generation inputs byte for byte, and the Lead's P2 with share 0.2, checked by D's validator;
+- a diagnostic, not a Ripple plan.
+
+**Cells.** Only the calibration seeds 2026–2028, so the share is chosen before any fresh seed:
+- `p0x-merge-at-site{,-s2027,-s2028}` with actuated signals, and the new `p0x-merge-at-site-fixed{,-s2027,-s2028}` with fixed-time signals;
+- compliance 0.3 and 0.7, the two ends of the tested range;
+- P0 and P2 only: 24 runs into `results/tuen-mun-share-sweep-oct15/`, after Part D and before Part B.
+
+**What it decides.** Nothing. It informs the Lead's next plan generation. A share chosen from it still needs fresh seeds, beyond 2031, before it can be a candidate.
