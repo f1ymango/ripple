@@ -1,0 +1,23 @@
+{
+ "incident_id": "IN-26-03365",
+ "plan_set": "lead-draft-20261013-b",
+ "why_this_case": "the observed-incident case: the ranking ties P0 and P2 over 33 cells, so Ripple refuses to recommend",
+ "cell": {
+  "compliance": 0.5,
+  "clearance_min": 66.0,
+  "seed": 2026
+ },
+ "copied_from": {
+  "results": "results/evaluator-lead-draft-20261013-b",
+  "plans": "data/generated-plans/IN-26-03365-lead-draft-20261013-b",
+  "ranking": "results/rankings/lead-draft-20261013-b.json"
+ },
+ "console_recommends": null,
+ "console_reason_if_none": "The plan set's ranking puts no plan before both others (P0 before P1; P0 and P2 tie; P2 before P1); no plan can be recommended",
+ "simulated_total_delay_vehicle_hours": {
+  "P0": 779.5,
+  "P1": 833.4,
+  "P2": 799.2
+ },
+ "generated_by": "python scripts/demo_pack.py"
+}
