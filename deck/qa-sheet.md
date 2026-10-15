@@ -2,37 +2,34 @@
 
 ## 1. Technical & Model Limitations (Data Freeze & Milestone Governance)
 
-### Q1: Why are Delay Savings, CO2 Reduction, and Benefit-Cost Ratio (BCR) left blank?
+### Q1: Why are measured traffic savings and BCR left blank for the Aberdeen case, while Tuen Mun reports a percentage?
 > **Answer**: 
-> Performance metrics remain strictly **BLANK / Not Measured Yet**. As noted in the 13 Oct Simulation Diagnostic ([`sim/lead-plans-diagnostic-oct13` at a48b8c9](https://github.com/f1ymango/ripple/commit/a48b8c9)), current P1/P2 simulation runs are unsuitable for public plan comparison due to closure-phase traffic deficits and entry-ramp sensitivity. No incident-specific delay, emissions, or benefit claims are made prior to post-freeze evidence sign-off.
+> - **Aberdeen**: Performance metrics remain strictly **BLANK / Not Measured Yet**. Because both lanes shut at 09:00:30, all traffic was naturally forced onto Wong Chuk Hang Road. No rerouting plan could improve delay over P0.
+> - **Tuen Mun**: The reported **-4.3% delay reduction** (or -3.7% with detour distance charged) is a **modeled simulation candidate** under a 11% capacity-bounded P2 plan. It is presented as a prototype simulation result, not a measured real-world road saving.
 
 ### Q2: What is the current diagnostic status of AI-generated response plans (P1/P2) versus baseline (P0)?
 > **Answer**: 
-> The system provides a working incident-analysis prototype that generates and ranks candidate plans. However, current diagnostic evaluations show that P1 performs worse than P0, while P2 ties P0 (establishing no traffic benefit). Furthermore, P0 contains empty plan actions (no added advisory instructions), distinct from both the simulator's automatic closure rerouting and the Transport Department's (TD) later observed advice.
+> - **Aberdeen**: P1/P2 tie or perform worse than P0 when unsourced signal changes are removed. Ripple's console correctly refuses to recommend unsupported advice.
+> - **Tuen Mun**: Unrestricted broadcast (P1) causes severe spillover (+37% delay), whereas targeted 11% advice (P2) ranks ahead of P0 in 18 tested simulation conditions (-4.3%, 95% CI -5.6 to -3.0).
 
 ### Q3: What is the timeline and criteria for locking final presentation claims?
 > **Answer**: 
-> - **15 Oct**: Evidence & Export Checkpoint (Final Presentation Pack)
-> - **16 Oct**: Provisional Claims Freeze
+> - **15 Oct**: Evidence & Export Checkpoint (Two-Incident Demo Pack Freeze)
+> - **16 Oct**: Provisional Claims Freeze & Go/No-Go Decision
 > - **17 Oct**: Internal Submission Target
-> 
-> Unless a source-supported P0 baseline passes joint Data/Simulation validation before the checkpoint, the 15 Oct presentation pack will strictly fallback to observed playback and working console workflow, omitting route recommendations and savings figures.
 
 ### Q4: What is the accuracy of the Reader Agent in parsing traffic incident reports?
 > **Answer**: 
-> The initial held-out all-fields-correct evaluation scored **50% citywide** (40/80) and **75% corridor** (15/20). After prompt and label corrections, the development evaluation scored **75% citywide** (60/80) and **85% corridor** (17/20; `results/reader/2026-09-25T0048_qwen3-8b_score.json`). A separate 1 Oct prompt experiment scored 62.5% and 60%. See `data/labelled_incidents/LABELLING.md`.
+> Development evaluation scored **75% citywide** (60/80) and **85% corridor** (17/20; `results/reader/2026-09-25T0048_qwen3-8b_score.json`). Held-out baseline scored 50% citywide and 75% corridor. See `data/labelled_incidents/LABELLING.md`.
 
 ---
 
-## 2. Methodology & Evidence Traceability
+## 2. Two-Incident Presentation Strategy Summary
 
-| Claim / Topic | Primary Source Artifact | Current Verification Status |
-| :--- | :--- | :--- |
-| **Lane-phase inference** | `results/data/closed-lanes_AID01104_20260515-0840_1010.md` | Detector-inferred initial lane/onset (physical phase remains assumed) |
-| **Flow Balance Inputs** | `results/data/flow-balance_20260515-0755_0855.json` | Verified (Data Owner) |
-| **Reader Parsing Score** | `results/reader/2026-09-25T0048_qwen3-8b_score.json` | Development score after prompt/label corrections (Reader Owner) |
-| **13 Oct Root Cause Assessment** | `docs/component-c-validation-root-cause-2026-10-13.md` | Logged on branch `sim/lead-plans-diagnostic-oct13` at `a48b8c9` |
-| **Incident-specific savings** | No accepted result set | **BLANK / Not Claimed** |
+| Incident | Case Type | Core Pitch Narrative | Key Evidence / Metric |
+| :--- | :--- | :--- | :--- |
+| **Aberdeen (15 May)** | Observed / Safety Refusal | "Honest Co-pilot": Detects closure 35 min ahead of official broadcast; refuses unproven advice when P0 is optimal. | 35-min detection gap; Delay savings strictly **BLANK** |
+| **Tuen Mun (15 Apr)** | Simulated / Positive Prototype | "Targeted Control": Capacity-bounded P2 (11% detour) beats P0 and avoids P1's gridlock. | **-4.3%** modeled delay reduction (simulated candidate) |
 
 ---
 
@@ -42,7 +39,7 @@
 - **Current Scope**: Qualitative evidence from **1 anonymous experienced green-minibus driver interview**.
 - **Governance Requirement**: Qualitative only. Do not refer to this as a "verified domain-expert interview".
 
-### 2. Missing Technical Artifacts Register (15 Oct Checkpoint Blockers)
-- **E (Data)**: Result and provenance sidecars (`docs/03-architecture.md`).
-- **Simulation**: Network setup, ramp behavior, and incident validation.
-- **Visuals**: Final high-resolution console screenshots, reviewed video script, and video MP4 export matching `deck/video-shot-list.md`.
+### 2. Missing Technical Artifacts Register (15 Oct Checkpoint)
+- **E (Data)**: Demo pack updated under `results/demo-oct16/`.
+- **Simulation**: Baseline P0 queue limitations documented in `docs/demo-two-incidents-2026-10-16.md`.
+- **Visuals**: Two-case storyboard in progress using Aberdeen refusal + Tuen Mun result card.
