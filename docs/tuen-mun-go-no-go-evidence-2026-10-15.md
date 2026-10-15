@@ -73,8 +73,8 @@ Merging in turn fixes the lane balance in the model, but it cuts throughput past
 - **Aberdeen** stays the submission fallback, untouched.
 
 ## Added 15:10: a larger share
-- **Calibration seeds 2026–2028** (\`results/tuen-mun-share-sweep-oct15/\`): share 0.2 is better than P0 in 18 of 18 cases with actuated signals (median −7.6%) and 15 of 18 with fixed-time signals (median −5.0%).
-- **Fresh seeds 2032–2034** (\`results/tuen-mun-share-020-fresh-oct15/\`): 49 of 54 (median −6.7% actuated, −4.2% fixed-time). It fails two cells: actuated seed 2032 at 0.3 (+1.1%) and fixed-time seed 2032 at 0.5 (+4.8%).
+- **Calibration seeds 2026–2028** (`results/tuen-mun-share-sweep-oct15/`): share 0.2 is better than P0 in 18 of 18 cases with actuated signals (median −7.6%) and 15 of 18 with fixed-time signals (median −5.0%).
+- **Fresh seeds 2032–2034** (`results/tuen-mun-share-020-fresh-oct15/`): 49 of 54 (median −6.7% actuated, −4.2% fixed-time). It fails two cells: actuated seed 2032 at 0.3 (+1.1%) and fixed-time seed 2032 at 0.5 (+4.8%).
 - **Averaged over three seeds,** every signal × compliance group is lower than P0 for both shares: 0.11 by −2.1% to −6.3%, 0.2 by −1.3% to −9.3%.
 - **Seed noise is the problem.** P0 alone moves by about ±4% from seed to seed: 1,216–1,308 veh-h over seeds 2026–2028. With one run per cell, any plan whose saving is about 5% will lose a cell somewhere.
 - **The replay-v2 grid** stopped after two cells. P2 is already worse in one of them, so it cannot change this.
