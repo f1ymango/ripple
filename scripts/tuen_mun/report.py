@@ -14,6 +14,7 @@ duration - timeLoss, the normal one from the same flow's cars before the crash i
 import argparse
 import glob
 import json
+import re
 import statistics
 import sys
 import xml.etree.ElementTree as ET
@@ -83,9 +84,9 @@ def main():
     cells = sorted({(label, c) for label, c, _ in runs})
     out = []
     for label, c in cells:
-        if not all((label, c, p) in runs for p in ("P0", "P1", "P2")):
-            continue
-        r = {p: runs[(label, c, p)] for p in ("P0", "P1", "P2")}
+        if not all((label, c, p) in runs for p in ("P0", "P2")):
+            continue                                       # P1 may be left out (the share sweep runs P0 and P2)
+        r = {p: runs[(label, c, p)] for p in ("P0", "P1", "P2") if (label, c, p) in runs}
         t = {p: trips(r[p]["run_id"]) for p in r}
         gone = {p: left(r[p]["run_id"]) for p in r}
         normal = normal_trips(t["P0"], gone["P0"])
@@ -108,11 +109,13 @@ def main():
                 f"{k}: {100 * (v['corrected'][k] / row['plans']['P0']['corrected'][k] - 1):+.1f}%" for k in v["corrected"])
             print(f"  {p}: E {v['delay_E']:7.1f} veh-h, +{v['extra_driving_h']:5.1f} longer drive ({v['cars_on_a_longer_route']} cars), "
                   f"{v['left_at_ting_kau']} left at Ting Kau{vs}")
-    for group in sorted({row["cell"].split()[0].split("-s")[0] for row in out}):
-        cells = [row for row in out if row["cell"].split()[0].split("-s")[0] == group]
+    def group_of(row):                                     # the label without its seed
+        return re.sub(r"-s\d{4}$", "", row["cell"].split()[0])
+    for group in sorted({group_of(row) for row in out}):
+        cells = [row for row in out if group_of(row) == group]
         for plan in ("P1", "P2"):
             for only_valid in (False, True):
-                use = [row for row in cells if row["p0_validation_met"] or not only_valid]
+                use = [row for row in cells if (row["p0_validation_met"] or not only_valid) and plan in row["plans"]]
                 d = [100 * (row["plans"][plan]["corrected"][k] / row["plans"]["P0"]["corrected"][k] - 1)
                      for row in use for k in row["plans"]["P0"]["corrected"]]
                 if d:

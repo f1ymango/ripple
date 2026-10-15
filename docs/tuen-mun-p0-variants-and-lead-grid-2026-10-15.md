@@ -166,3 +166,22 @@ So the Lead's capacity rule (spare 260 veh/h from the fixed-time sensitivity on 
 **Two P0 results set aside.** Replay-v2's seed-2029 P0 runs at compliance 0.3 and 0.5 were set aside and will run again in their turn. Their scratch folders were deleted by mistake, and the comparison needs them. The first copies are kept outside `results/`, to check that the reruns match.
 
 **What it decides.** Nothing. It informs the Lead's next plan generation. A share chosen from it still needs fresh seeds, beyond 2031, before it can be a candidate.
+
+### Part E outcome (15 Oct 12:47)
+Share 0.2 against P0 on the calibration seeds 2026–2028 (`results/tuen-mun-share-sweep-oct15/comparison_p0x-merge-at-site.txt`, longer drive charged):
+
+| Signals | Cases better than P0 | Range | Median | Cars diverted |
+|---|---|---|---|---|
+| Actuated | 18 of 18 | −5.9% to −13.2% | −7.6% | 94–292 |
+| Fixed-time | 15 of 18 | −7.9% to +5.4% | −5.0% | 88–235 |
+
+The fixed-time case that loses is seed 2028 at compliance 0.3: +5.4 / +4.2 / +2.5%. Its P0 is the lowest of the six P0s (1,216 vehicle-hours with 4 min outside, against 1,234–1,308), and that P2 (1,267) is within the other cells' P2 range of 1,135–1,299. With one run per cell, seed-to-seed noise of about ±4% decides cells where the effect is small.
+
+## Part F: share 0.2 on fresh seeds 2032–2034 (written before it runs)
+**What runs.** Data's share 0.2 from Part E, the only share tried, on seeds 2032, 2033 and 2034. These were never used before (2029–2031 have now been seen).
+- **Cells:** actuated and fixed-time signals, compliance 0.3, 0.5 and 0.7; P0 and P2 of `data/generated-plans/IN-26-02615-data-share-0.2-oct15` (plan-set name `data-share-020-oct15`).
+- **Runs and folder:** 36 runs into `results/tuen-mun-share-020-fresh-oct15/`, then Part B.
+
+**Decision rule, unchanged.** P2 lower than P0 in every cell and under 0, 4 and 10 outside minutes.
+
+**Status of the result.** Data chose the share, not D, so even a win is a proposal for the Lead to generate through D and the 16 Oct review, not a Ripple plan.
