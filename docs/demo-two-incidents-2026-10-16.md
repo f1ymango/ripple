@@ -8,7 +8,7 @@
 
 | | Aberdeen (IN-26-03365, 15 May 2026) | Tuen Mun (IN-26-02615, 15 Apr 2026) |
 |---|---|---|
-| What happened | Canal Road Flyover approach shut, morning peak; one forced detour (Wong Chuk Hang Road) | Crash on Tuen Mun Road near Hong Kong Garden, evening peak; one or two of three lanes shut 17:48–18:47 |
+| What happened | Crash on the Wong Chuk Hang Road flyover (Aberdeen Tunnel bound) near Yip Kan Street, morning peak; both lanes shut 09:00–10:00; the only way round is Wong Chuk Hang Road under it | Crash on Tuen Mun Road near Hong Kong Garden, evening peak; one or two of three lanes shut 17:48–18:47 |
 | Ripple's plans | P1: send drivers round; P2: the Lead's coordinated detour (80%/70% shares plus a signal change at Tong Bin Lane) | P1: advise everyone to Tuen Mun via Castle Peak Road; P2: advise 11% of them |
 | What the simulator found, over a grid of seeds and assumptions | P2 and doing nothing **tie**; sending drivers round is worse | P2 **beats** doing nothing and beats sending everyone round |
 | What Ripple does | **Refuses to recommend.** The evidence does not support any plan over doing nothing. | **Recommends P2**, as a modelled candidate |
