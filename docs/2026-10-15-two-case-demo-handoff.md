@@ -1,89 +1,135 @@
-# Two-case demo handoff — Lead, 15 October 2026
+# Two-case demo handoff — Lead, revised 15 October 2026
 
-**Direction:** Keep Visuals' existing 92.6-second Aberdeen rough cut as the
-editable base. Add a removable **15–25-second Tuen Mun insert** after Aberdeen's
-plan verdict. Visuals owns final pacing; the project target is approximately
-90 seconds, not a separate animation tutorial or a new rendering stack. The
-[`pdoom-video`](https://github.com/mexicat/pdoom-video) is workflow inspiration
-(storyboard, preview, export),
-not a dependency. This brief changes no simulation or plan contract.
-If the final cut must stay near 90 seconds, trim existing observation shots to
-make room for the insert; do not silently turn a 92.6-second rough cut into a
-longer final video.
+## Decision and presentation goal
 
-## Story and edit
+**Make Aberdeen and Tuen Mun co-leads.** Give each roughly half of the incident
+demonstration time in the video and one equally prominent case panel or slide in
+the deck. Aberdeen shows Ripple declining to recommend when its tested options
+tie. Tuen Mun shows the positive prototype result: targeted advice ranks ahead
+of doing nothing and blanket advice in the saved simulation. The contrast is the
+product story: **know when to hold back and when to target a response**.
 
-1. **Aberdeen — when to decline.** Retain the archived 15 May TD-message and
-   detector playback. Capture the recorded Reader input/output pickup still
-   listed in `deck/video-shot-list.md`. Replace the rough cut's provisional
-   “comparison waiting” ending with the saved diagnostic ranking: P0 and P2
-   tie, so the workflow makes **no plan recommendation**. Do not imply that
-   Aberdeen proved there was nothing useful an operator could do in reality.
-2. **Tuen Mun — when targeting may help.** In a short map-free comparison card,
-   show the 15 April incident and the same frozen Lead plan set: P0 does
-   nothing, P1 advises all eligible drivers onto Castle Peak Road, and P2
-   advises 11%. On the saved 18-cell simulation grid, P2 ranks before P0 and
-   P1 under the team's shared ranking rule; P1 ranks after P0. This is a
-   **simulated candidate**, not an observed road saving. Avoid an animated
-   route or vehicle trajectory unless Visuals receives a reviewed, run-bound
-   route/trajectory asset.
-3. **Close — one product behavior, two outcomes.** Ripple generates candidate
-   options, tests them, and either declines to recommend or identifies a
-   targeted candidate. A human operator remains in charge. Do not claim that
-   the AI cannot hallucinate; the constraints and evaluator catch or reject
-   unsupported proposals.
+This replaces the earlier plan to append Tuen Mun as a 15–25-second afterthought.
+Visuals' 92.6-second silent Aberdeen rough cut is useful footage, not a locked
+edit. Recut it into two balanced chapters. Approximately 90 seconds is the
+team's working video target, **not an organiser-imposed length**. The official
+[2026 final-submission instructions](https://www.hack4sdg.com/2026-roadmap/final-submission-2026/)
+require a pitch deck and prototype proof by **18 October, 23:59 HKT**; a demo
+video, application or technical link can serve as proof within the deck. The
+deck is locked after upload, and the team cannot rely on its own laptop at the
+final pitch. Build a self-contained, pre-tested deck even if the video link
+fails to play. The final stage allows a five-minute pitch plus Q&A; the video
+must support that pitch, not consume it.
 
-Suggested order: existing Aberdeen observation shots (0–71.5 seconds in the
-current cut) → recorded model pickup and Aberdeen refusal (rework the current
-71.5–92.6-second tail) → removable Tuen Mun card (15–25 seconds) → short close.
-Re-time narration only after a reviewable edit exists; do not present the
-current silent rough cut as a voiced final video.
+## Video edit: two equal chapters
 
-## Required on-screen language
+| Approximate time in a 90-second cut | Story | What to show |
+| --- | --- | --- |
+| 0–6 s | Hook | Ripple as an incident co-pilot: read, draft, test, brief an operator. |
+| 6–43 s | **Aberdeen: hold back** | Archived 15 May TD message and detector playback; the recorded Reader input/output; the P0–P2 tie and no-recommendation verdict. |
+| 43–80 s | **Tuen Mun: target** | Archived 15 April incident context; Castle Peak Road as the alternative; AI-drafted options refined by a deterministic capacity bound; the matched P0/P1/P2 comparison, with targeted P2 first and blanket P1 worse. |
+| 80–90 s | Close | One operator workflow, two appropriate outcomes; human review remains the final step. |
 
-| Moment | Exact label or caption |
+These are editing proportions, not exact timestamps. If pacing needs more time,
+shorten repeated Aberdeen observation shots before cutting the Tuen Mun plan
+comparison. Re-time `deck/video-narration.srt` only after a reviewable recut;
+the existing rough cut is silent.
+
+The Tuen Mun comparison should be visually direct: three bars or cards with
+P0 as the zero reference, P1 at **+37.3%** and P2 at **−4.3%** in the same
+modelled E-delay measure. Label the chart **Prototype simulation, 18 scored
+conditions**. A small adjacent note can say that P2 remains **−3.7%** when
+the longer Castle Peak Road drive is charged under Data's four-minute
+outside-network sensitivity. Do not mix the −3.7% adjusted P2 figure with the
+unadjusted +37.3% P1 figure on one unlabelled scale. The positive result is
+modest, which is fine; the contrast with blanket diversion is strong.
+
+Keep the GenAI attribution exact: D drafted candidate actions, the Lead's
+deterministic capacity step bounded the Tuen Mun P2 share to **11% before the
+fresh-seed grid**, and E tested the resulting plans. Do not say the model
+independently discovered an optimal 11% share or calculated the traffic
+benefit. Use the existing recorded inference, not a staged live-model call.
+Do not animate a highlighted route or evaluated vehicles without a route or
+trajectory asset bound to the reviewed run.
+
+The [`pdoom-video`](https://github.com/mexicat/pdoom-video) reference is
+workflow inspiration for storyboard, preview and export, not a dependency or a
+request to rebuild the rendering stack.
+
+## Deck and spoken pitch
+
+- Give Aberdeen and Tuen Mun **equal space within the case-study section**:
+  one matched slide or panel each. This is not a request to spend half of the
+  entire five-minute pitch on each incident; the deck still needs the problem,
+  working GenAI workflow, feasibility, impact and implementation plan.
+- Lead with the outcome on the Tuen Mun panel: **targeted advice lowered
+  modelled delay by about 4% on the saved comparison; telling everyone to
+  divert made it worse**. Put the exact measure and source in a readable
+  caption. On the Aberdeen panel, lead with the tie and Ripple's refusal to
+  endorse a plan. Together they demonstrate selection, not just abstention.
+- Show prototype proof inside the submitted deck: a console/Reader capture,
+  the Tuen Mun comparison and an accessible video or technical link. Keep
+  essential screenshots in the deck so reviewers are not dependent on a live
+  service or network connection. Check the uploaded format and playback before
+  the one-way submission.
+- The mandatory first slide needs the team name, project title, thematic
+  track, a description of at most 30 words, and all members' full names and
+  universities. Use the organiser's required filename and `.ppt`, `.pptx` or
+  `.pdf` format; do not submit cloud-hosted slides as the deck.
+
+## Public wording and technical backup
+
+| Use in the main cut/deck | Keep precise in the evidence, appendix and Q&A |
 | --- | --- |
-| Aberdeen map | **Archived TD messages and detector observations — 15 May 2026** |
-| Reader pickup | **Recorded Qwen3:8b inference — not a live model call** |
-| Aberdeen comparison | **Simulation diagnostic: no plan recommended (P0–P2 tie)** |
-| Tuen Mun comparison | **Tuen Mun, 15 April 2026 — simulated candidate; baseline under review** |
-| Tuen Mun plan card | **Targeted P2 (11%) ranks ahead of P0 and blanket P1 in this model** |
-| Tuen Mun limit, on the same card | **Queue speed and recovery still under Simulation review** |
+| **Aberdeen:** “With no clear winner in this comparison, Ripple makes no plan recommendation.” | This is a diagnostic simulation verdict, not proof that no real-world intervention could ever help. The playback is archived, not a live alert. |
+| **Tuen Mun:** “In our prototype simulation, targeted advice ranks first: about 4% less modelled delay than doing nothing; blanket advice increases delay.” | Saved team ranking: P2 −4.31% versus P0, P1 +37.3% versus P0 over 18 scored cells; the four-minute detour-inclusive sensitivity gives P2 −3.70%. These are model outputs, not observed road savings. |
+| **Workflow:** “AI drafts options; constraints and capacity checks shape them; the twin compares them; an operator decides.” | The 11% share was capacity-bounded before the fresh runs, not selected by an autonomous optimisation or proof of a global optimum. |
 
-Do not put a percentage saving, CO₂ reduction, real-world improvement, live
-deployment claim, or “hallucination-free” claim in the cut. If a numeric chart
-is later approved, Data must supply its exact result path, denominator and
-wording; Impact and Lead sign off before export. The 13 October shared ranking
-rule favors Tuen Mun P2, but the stricter Tuen Mun-specific, predeclared
-every-cell rule fails one cell. Keep both readings in the evidence and Q&A;
-do not conceal the protocol difference.
+Put **“Prototype simulation — not measured road saving”** adjacent to the
+Tuen Mun chart, not buried in a later disclaimer. Avoid “hallucination-free,”
+“proven real-world saving,” “live early warning,” and an operator-ready route
+recommendation. This is enough context for the main story without turning the
+video into a debugging report.
+
+Prepare a concise, candid Q&A/appendix answer rather than a sequence of bug
+slides: the current Tuen Mun P0 passes the team's headline validation v2 on
+the scored seeds, but its queue moves too fast and clears early, so Simulation
+has not accepted it for a measured-benefit claim. The Tuen Mun-specific
+predeclared every-cell rule fails one cell; the team's earlier shared ranking
+rule, used by E/F/the console and Aberdeen, ranks P2 first. State both rules
+if asked and keep the full source paths below. Do not change the ranking rule
+or hide the difference.
 
 ## Source and asset handoff
 
 | Owner and use | Repository-relative source / request |
 | --- | --- |
-| Visuals — preserve and edit | `deck/video-shot-list.md`, `deck/video-narration.srt`; local rough cut and its source manifest must be supplied with the review export. |
-| Visuals — Aberdeen playback and Reader pickup | `data/demo_incident_messages.jsonl`, `results/reader/2026-09-29T1608_qwen3-8b.jsonl`, `evidence/demo/recorded-genai-bd-2026-10-13.html`; use the coverage and geometry qualifications in `docs/console-observed-playback.md`. |
-| Data — Aberdeen refusal source | `results/rankings/lead-draft-20261013-b.json`, `docs/evaluator-lead-plans-2026-10-13.md`; `docs/incident-p0-verdict-2026-10-14.md` explains the incident-P0 limit. |
-| Data — Tuen Mun plans and rank | `data/generated-plans/IN-26-02615-lead-capacity-oct15/`, `results/rankings/lead-capacity-oct15-p0x-merge-at-site.json`, `results/tuen-mun-lead-grid-oct15-p0x-merge-at-site/` (matched result/provenance pairs), `docs/tuen-mun-go-no-go-evidence-2026-10-15.md`. Check the Lead's capture card against the final result bundle and identify any revised figures or wording before export. |
-| Lead — Tuen Mun capture aid | `evidence/demo/tuen-mun-result-card-2026-10-15.html` and its adjacent `.md` rebuilding guide. The card is generated from the saved plan/ranking/comparison files; keep its simulated-candidate banner and baseline limit visible in any crop. |
-| Simulation — baseline verdict | `results/tuen-mun-p0-variants-oct15/p0-variants-report.md` and the pending lane/queue micro-test. State whether the current P0 remains a candidate or a changed P0 warrants matched P0/P1/P2 reruns. |
+| Visuals — recut | `deck/video-shot-list.md`, `deck/video-narration.srt`; local rough cut and its source manifest. The shot list is Aberdeen-only and must be updated for the co-equal cut. |
+| Visuals — Aberdeen playback and Reader pickup | `data/demo_incident_messages.jsonl`, `results/reader/2026-09-29T1608_qwen3-8b.jsonl`, `evidence/demo/recorded-genai-bd-2026-10-13.html`; follow the source distinctions in `docs/console-observed-playback.md`. |
+| Data — Aberdeen verdict | `results/rankings/lead-draft-20261013-b.json`, `docs/evaluator-lead-plans-2026-10-13.md`, `docs/incident-p0-verdict-2026-10-14.md`. |
+| Data — Tuen Mun plans and ranking | `data/generated-plans/IN-26-02615-lead-capacity-oct15/`, `results/rankings/lead-capacity-oct15-p0x-merge-at-site.json`, `results/tuen-mun-lead-grid-oct15-p0x-merge-at-site/`, `docs/tuen-mun-go-no-go-evidence-2026-10-15.md`. Check the public figures against the final saved bundle before export. |
+| Lead — comparison capture aid | `evidence/demo/tuen-mun-result-card-2026-10-15.html` and its adjacent `.md` guide. The existing card is a provenance-rich **source/capture aid**, not the required final visual treatment; Visuals may design a cleaner result-first graphic while retaining the modelled-result label and exact numbers. |
+| Simulation — P0 verdict | `results/tuen-mun-p0-variants-oct15/p0-variants-report.md` and the pending lane/queue micro-test. Report whether the current result remains a candidate or a changed P0 needs matched P0/P1/P2 reruns. |
 
-## 16 October switch
+## 16 October claim lock and owners
 
-Visuals and Impact can build the insert now using the **simulated-candidate**
-labels. At the Lead's 16 October claims review, Data supplies the final saved
-ranking and Simulation supplies the P0 verdict. If a P0 change is adopted,
-replace the card only after matched runs of the **unchanged 11% Lead plan set**;
-if its ordering changes, update or remove the card. If no accepted P0 is ready,
-the insert may still show the frozen *candidate* comparison with the visible
-limit above, but must not be narrated as a measured benefit or an operator-ready
-route recommendation. Aberdeen-only remains a complete export if the insert
-cannot be supported or edited in time.
+The working edit is **50/50 now**, using the saved Tuen Mun result as a
+clearly labelled prototype-simulation candidate. Do not wait for a perfect
+incident replay before making the edit. At the 16 October claims review:
 
-**Next files:** Visuals provides a timed storyboard/reviewable cut and names
-missing assets; Impact adjusts the deck and limits slide to match the two-case
-wording; Lead supplies the saved-result capture card, Data checks its figures
-against the final result bundle, and Simulation gives the bounded P0 answer.
-Lead reviews one combined cut and locks public wording at the
-16 October decision before the 17 October internal submission target.
+1. **Data and Simulation** give the latest P0 verdict and saved ranking. If a
+   corrected P0 is adopted, rerun the **unchanged 11% Lead plan set** on
+   matched inputs before replacing the chart or upgrading any claim.
+2. **Lead** locks the exact Tuen Mun wording. Keep equal representation if the
+   positive comparison still stands, even if it must remain explicitly
+   labelled a simulation candidate. If a new matched result reverses the
+   ordering or invalidates the comparison, replace the positive chart rather
+   than narrating an obsolete win.
+3. **Visuals** delivers one timed, reviewable two-case cut and updates the shot
+   list; **Impact** updates the case-study slides and prepares the short Q&A
+   answer. The remaining deck work targets internal completion on 17 October,
+   before the organiser's 18 October upload deadline.
+
+Neither case should be presented as live traffic control. The competition
+pitch should foreground the working prototype and the strongest result while
+remaining exact about what was observed and what was simulated.
