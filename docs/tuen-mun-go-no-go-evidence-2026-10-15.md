@@ -112,3 +112,10 @@ Merging in turn fixes the lane balance in the model, but it cuts throughput past
 ## The 16 Oct cut
 - **Lead's direction:** a two-incident demo. Aberdeen refuses; Tuen Mun recommends the frozen 11% P2 as a modelled candidate.
 - **The pack:** `results/demo-oct16/` and `docs/demo-two-incidents-2026-10-16.md`.
+
+## Simulation's final call (15 Oct, 20:34)
+`docs/tuen-mun-simulation-final-call-2026-10-15.md` on `sim/tuen-mun-p0-variants-oct15` at 5ec8c1d.
+- **Ready** for the frozen two-case presentation.
+- **Not ready** for a measured traffic-improvement claim.
+- **The P0 blocker stands:** a queue at 41–43 km/h against 20.6 observed, early clearing, and too much discharge after the reopening.
+- **Wording:** "modelled candidate ranked ahead", with the limitation visible. The frozen pack and results are unchanged.
