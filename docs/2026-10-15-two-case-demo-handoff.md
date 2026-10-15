@@ -48,7 +48,9 @@ Keep the GenAI attribution exact: D drafted candidate actions, the Lead's
 deterministic capacity step bounded the Tuen Mun P2 share to **11% before the
 fresh-seed grid**, and E tested the resulting plans. Do not say the model
 independently discovered an optimal 11% share or calculated the traffic
-benefit. Use the existing recorded inference, not a staged live-model call.
+benefit. P0 is the no-advice baseline; P1 is the fixed blanket-advice
+comparator, not a plan being tuned for performance. Use the existing recorded
+inference, not a staged live-model call.
 Do not animate a highlighted route or evaluated vehicles without a route or
 trajectory asset bound to the reviewed run.
 
@@ -109,13 +111,16 @@ or hide the difference.
 | Data — Aberdeen verdict | `results/rankings/lead-draft-20261013-b.json`, `docs/evaluator-lead-plans-2026-10-13.md`, `docs/incident-p0-verdict-2026-10-14.md`. |
 | Data — Tuen Mun plans and ranking | `data/generated-plans/IN-26-02615-lead-capacity-oct15/`, `results/rankings/lead-capacity-oct15-p0x-merge-at-site.json`, `results/tuen-mun-lead-grid-oct15-p0x-merge-at-site/`, `docs/tuen-mun-go-no-go-evidence-2026-10-15.md`. Check the public figures against the final saved bundle before export. |
 | Lead — comparison capture aid | `evidence/demo/tuen-mun-result-card-2026-10-15.html` and its adjacent `.md` guide. The existing card is a provenance-rich **source/capture aid**, not the required final visual treatment; Visuals may design a cleaner result-first graphic while retaining the modelled-result label and exact numbers. |
-| Simulation — P0 verdict | `results/tuen-mun-p0-variants-oct15/p0-variants-report.md` and the pending lane/queue micro-test. Report whether the current result remains a candidate or a changed P0 needs matched P0/P1/P2 reruns. |
+| Lead — operator briefing draft | `data/generated-briefings/IN-26-02615-p2-demo-oct16.json` is F's provenance-checked bilingual draft for the **single** packed 50%-compliance, seed-2029 condition. Its −5% token is that condition's E result, not the 18-condition −4.3% finding. F/console use logical `results/runs/` source aliases; the physical verified files are under `results/demo-oct16/tuen-mun/runs/`. Human language and operator review are still required before presenting it as approved advice. |
+| Simulation — P0 verdict | `results/tuen-mun-p0-variants-oct15/p0-variants-report.md`. Data reports that the lane/queue stress change improved queue speed but failed flow and recovery, so it was not adopted as P0. Review that result and report whether a flow-valid replacement arrives before the claim lock; any replacement needs matched P0/P1/P2 reruns. |
 
 ## 16 October claim lock and owners
 
 The working edit is **50/50 now**, using the saved Tuen Mun result as a
-clearly labelled prototype-simulation candidate. Do not wait for a perfect
-incident replay before making the edit. At the 16 October claims review:
+clearly labelled prototype-simulation candidate. Data's 15 October stress
+test did not replace the baseline, so the current pack remains the working
+comparison. Do not wait for a perfect incident replay before making the edit.
+At the 16 October claims review:
 
 1. **Data and Simulation** give the latest P0 verdict and saved ranking. If a
    corrected P0 is adopted, rerun the **unchanged 11% Lead plan set** on
