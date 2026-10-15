@@ -103,7 +103,8 @@
 
 - **12 Oct**: review the observed-data demo, recorded-Reader pickup, deck,
   evidence manifest and Q&A wording.
-- **15 Oct**: deliver the reviewable evidence pack (Two-Incident Demo Pack frozen), editable deck/export and video.
+- **15 Oct checkpoint**: the two-incident evidence pack and Markdown slide draft
+  arrived; an editable/rendered deck and playable two-case video are still due.
 - **16 Oct (confirmed)**: freeze accepted results and claims; review the final
   package delta. Cutoff hour is unconfirmed. Unsupported benefits remain omitted.
 - **17 Oct**: internal submission target for deck, prototype and video;

@@ -23,6 +23,7 @@ The exact upload hour, format and form rules still need a live-form check.
 | Owner | Check | Status at 15 Oct |
 | --- | --- | --- |
 | Lead + Impact | Every displayed number and caption points to the [source manifest](../deck/submission-manifest.md) and the observed/modelled distinction is visible. | Pending final export review |
+| Impact | Carry Mark's merged [15 Oct slide draft](https://github.com/f1ymango/ripple/pull/70) through a two-case consistency pass; resolve the open [Q&A PR #69](https://github.com/f1ymango/ripple/pull/69) before using it as presenter copy. | Markdown slides integrated with claim corrections; Q&A still pending |
 | Lead | Human bilingual/operator review of the [single-cell F draft](../data/generated-briefings/IN-26-02615-p2-demo-oct16.json) if it appears publicly. Do not present it as an approved sign or use its about −5% token as the grid result. | Pending |
 | Impact | Export an editable deck and reviewable pitch file covering both cases and the five judging criteria; check visual readability, captions and citations. | No rendered deck in the repository at this checkpoint |
 | Visuals | Deliver a balanced playable two-case cut with captions and a source manifest. Show Tuen Mun's comparison panel/result card, not the Aberdeen map. | No playable final video in the repository at this checkpoint |
@@ -42,3 +43,21 @@ time, retain the existing qualified story or remove the affected claim.
 The presentation balance, wording and asset handoff live in the
 [Lead two-case handoff](2026-10-15-two-case-demo-handoff.md); this checklist
 records delivery gates, not a second source of result figures.
+
+## Mark's Thursday handoff review
+
+The merged [PR #70](https://github.com/f1ymango/ripple/pull/70) delivered the
+two-incident **Markdown slide draft**, including the frozen 11% Tuen Mun plan
+and saved comparison. It was not a rendered deck or video. This wrap-up branch
+keeps its useful structure while correcting the archived detector gap (not a
+proven live early alert), Aberdeen's P0/P2 tie (not proof that P0 is optimal),
+and the source review of the unsourced signal (not an automatic evaluator
+detection). It also adds Simulation's Tuen Mun queue-limit caption.
+
+Mark's separate [Q&A PR #69](https://github.com/f1ymango/ripple/pull/69) is
+still open with changes requested: it repeats early-alert and P0-optimal
+language, implies P2 wins each of 18 conditions, calls the confirmed freeze
+provisional, and omits the P0 queue limitation. Keep the existing Q&A out of
+the final presenter pack until Impact updates it. The current video shot list
+and timed narration also describe only the older Aberdeen cut; Visuals owns
+the two-case recut and retiming before export.

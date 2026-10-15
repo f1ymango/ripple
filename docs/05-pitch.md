@@ -2,6 +2,13 @@
 
 Five minutes, then 5–7 minutes of Q&A. The deck is preloaded by the organisers.
 
+> **Historical working script, not final presenter copy.** The demo and Q&A
+> sections below predate the 16 Oct two-incident pack. Use the current
+> [two-case slide draft](../deck/slides.md), [Lead handoff](2026-10-15-two-case-demo-handoff.md)
+> and [submission manifest](../deck/submission-manifest.md) for the claim
+> freeze and final export. The old 9 Oct go/no-go and “no incident comparison”
+> lines below must not be copied into the final deck.
+
 > **Working script, 6 Oct:** The no-closure count check is reproducible, but
 > there is no accepted incident P0 or comparable P0/P1/P2 result set. Demo,
 > benefit and sensitivity lines below are targets until linked to validated
