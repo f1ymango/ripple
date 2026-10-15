@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "plan_id": "P0",
+  "incident_id": "IN-26-02615",
+  "plan_sha256": "d9e9fa6ec40c44c8467668fd32b76a576da7fb56b92f577721d0a5122152a454",
+  "generation_inputs_sha256": "b5d74a345ee20b1358911d397966e2bbe99a48e8f2152dfff0f9addd92949f79",
+  "simulation_inputs": {
+    "code:src/evaluator/actions.py": "93de5fa53dc1a27d9ad8b41fe51a787da176275aecfd14f22b7f11dcec90999e",
+    "code:src/evaluator/behaviour.py": "b15ba3cfe005d785907ec62a56bec58e1a7b38c99293aea9542796292b5c4a86",
+    "code:src/evaluator/metrics.py": "949d7b178ef8d677f84e624ed50ca783b3a5e3be8093e7269f81a014aed488a2",
+    "code:src/evaluator/run.py": "381fe80a7b7addfcf2a23ceb9128d30d8314e96ec750a2aee896be37ad9e7315",
+    "code:src/evaluator/scenario.py": "f8d2cfbc409d8b5fbe9576843c09d440714d3a1465d9531b864f6800f7a7d4cf",
+    "code:src/evaluator/simulate.py": "a870d683b245079ab77b7e182a819c8996ad5b9b0ca8c0c8a73a14c6b4a34f70",
+    "code:src/twin/evaluate.py": "15fdc70d33e6919a147f358483466b69e3bd36aa517454db3e3f61abc81ed80b",
+    "code:src/validation_targets.py": "e8bfa03e456d5dd2b92d6165713353212d9cd2277cebb47d61268c208795857c",
+    "detector_loops": "1759e7265a5e576928cf4a8b7903e2265fc4c575b0ae6dd8970e576f6a1c9556",
+    "network": "4bd7241f977b847031edddb7b7fccb77ac4cb2f3eafae7b24575516a8aab769d",
+    "observations": "415a66fd2daaedf68f2eb02063105f30b82d79ea835bee350f929634ae716996",
+    "routes": "6bab6f898fab4f0a9d86323aa4d6ce4961b8638eca673a710c4cbdc467e7eab2",
+    "scenario": "a1166767be13a5fb0a16d54270e399d75775a79c3fc71c08dab9d18fd46b535a"
+  },
+  "run_id": "2026-04-15_TMR_P0_c70_t59_p0x-merge-at-site-fixed-s2033_data-share-020-oct15",
+  "result_sha256": "6eb07aa256ebdb960d85306e2b97dec424b50c61ff89558dc7b8a6bd3344642a"
+}

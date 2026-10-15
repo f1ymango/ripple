@@ -1,0 +1,23 @@
+{
+  "run_id": "2026-04-15_TMR_P2_c30_t59_p0x-merge-at-site-fixed-s2033_data-share-020-oct15",
+  "plan_id": "P2",
+  "incident_id": "IN-26-02615",
+  "scenario": {
+    "compliance": 0.3,
+    "clearance_min": 59.0,
+    "seed": 2033
+  },
+  "metrics": {
+    "total_vehicle_hours_delay": 1305.5,
+    "delay_vs_do_nothing_pct": -1.7,
+    "max_queue_m": {
+      "Tuen Mun Road back from the crash site": 5392
+    },
+    "corridor_tt_p95_min": 31.1,
+    "emergency_tt_min": 4.9,
+    "co2_kg": 37564,
+    "residential_delay_share_pct": 0.0,
+    "vehicles_completed": 15917
+  },
+  "validation": {}
+}

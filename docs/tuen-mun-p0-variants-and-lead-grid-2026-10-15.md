@@ -185,3 +185,34 @@ The fixed-time case that loses is seed 2028 at compliance 0.3: +5.4 / +4.2 / +2.
 **Decision rule, unchanged.** P2 lower than P0 in every cell and under 0, 4 and 10 outside minutes.
 
 **Status of the result.** Data chose the share, not D, so even a win is a proposal for the Lead to generate through D and the 16 Oct review, not a Ripple plan.
+
+### Part F outcome (15 Oct 15:05)
+Share 0.2 on the fresh seeds 2032–2034 (`results/tuen-mun-share-020-fresh-oct15/comparison_p0x-merge-at-site.txt`; all 18 P0s meet version 2):
+
+| Signals | Cases better than P0 | Range | Median |
+|---|---|---|---|
+| Actuated | 25 of 27 | −12.4% to +1.1% | −6.7% |
+| Fixed-time | 24 of 27 | −7.4% to +4.8% | −4.2% |
+
+**It does not pass the every-cell rule.** Two cells are worse than P0:
+- actuated seed 2032 at 0.3: +1.1 / +0.5%;
+- fixed-time seed 2032 at 0.5: +4.8 / +3.7 / +2.1%.
+
+**Mean over three seeds, with 4 min charged outside** (a reading, not the rule):
+
+| Signals | Compliance | Share 0.11 (seeds 2029–2031) | Share 0.2 (seeds 2032–2034) |
+|---|---|---|---|
+| Actuated | 0.3 | −2.1% | −4.2% |
+| Actuated | 0.5 | −3.7% | −5.8% |
+| Actuated | 0.7 | −6.3% | −9.3% |
+| Fixed-time | 0.3 | −4.8% | −1.3% |
+| Fixed-time | 0.5 | −3.3% | −1.7% |
+| Fixed-time | 0.7 | −2.1% | −6.2% |
+| All cells | | −3.7% (sd 2.5) | −4.8% (sd 4.0) |
+
+The two shares ran on different seeds, so the two columns are not a matched comparison.
+
+### Part B, stopped after two cells
+Part B, the Lead's plan set on replay-v2, stopped after seed 2029 at compliance 0.3 and 0.5 (`results/tuen-mun-lead-grid-oct15/comparison_replay-v2.txt`). P2 is already worse than P0 in one of them (0.3: +0.9 / +0.4%), so replay-v2 cannot pass the every-cell rule either. Simulation rates that P0 no-go anyway.
+
+The six runs' scratch folders were removed after the comparison was written. Their results and the comparison are kept.
