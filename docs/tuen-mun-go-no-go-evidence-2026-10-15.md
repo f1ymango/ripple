@@ -101,3 +101,14 @@ Merging in turn fixes the lane balance in the model, but it cuts throughput past
 - **Data's share 0.2** on seeds 2032–2034: −4.77%, interval −6.79 to −2.76. (No P1 was run, so there is no full ranking.)
 - **For comparison, Aberdeen** under the same rule: P0 and P2 tie (−1.4%, interval −4.1 to +1.2), so F refuses to recommend.
 - **Still open:** Simulation's no-go on the P0 queue speed stands under either rule.
+
+## Added 17:20: lane stress test (side branch `data/v3-dev`, `docs/tuen-mun-stress-zipper-2026-10-15.md`)
+- **The P0 change:** a merging rule that makes all three lanes queue together.
+- **What it fixes:** the queue speed (19.6–24.9 km/h, against TD's 20.6) and most of the lane imbalance.
+- **What it does not fix:** recovery at Ting Kau, or the discharge after the reopening.
+- **What it breaks:** flow past the site. GEH is 72.9–83.3%, and in 3 of 6 seeds the merge nearly locks for 10–15 min. So it is not a viable P0, and the repair stops, as the Lead directed.
+- **P2's lead survives:** P2 is lower than P0 in 6 of 6 cells, under all outside values (−0.6% to −7.1%).
+
+## The 16 Oct cut
+- **Lead's direction:** a two-incident demo. Aberdeen refuses; Tuen Mun recommends the frozen 11% P2 as a modelled candidate.
+- **The pack:** `results/demo-oct16/` and `docs/demo-two-incidents-2026-10-16.md`.

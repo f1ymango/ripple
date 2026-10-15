@@ -1,0 +1,42 @@
+{
+  "plan_id": "P2",
+  "label": "Coordinated Detour",
+  "rationale": "Coordinates detours for specific OD groups using available routes.",
+  "diversions": [
+    {
+      "od_group": "Aberdeen->Canal Road Flyover",
+      "via": "Wong Chuk Hang Road",
+      "share": 0.8
+    },
+    {
+      "od_group": "Aberdeen->Wong Nai Chung Road",
+      "via": "Wong Chuk Hang Road",
+      "share": 0.7
+    }
+  ],
+  "signals": [
+    {
+      "junction_id": "Wong Chuk Hang Road / Tong Bin Lane",
+      "green_extend_s": 20
+    }
+  ],
+  "vms": [],
+  "pt_nudge": {
+    "mode": "",
+    "intent": ""
+  },
+  "priority_corridor": {
+    "od": "Aberdeen->Queen Mary Hospital",
+    "keep_clear": [
+      "Pok Fu Lam Road",
+      "Shek Pai Wan Road"
+    ]
+  },
+  "constraints_checked": [
+    "residential_share_under_15pct",
+    "no_school_street_peak",
+    "emergency_corridor_clear",
+    "od_shares_at_most_one",
+    "no_blocked_road"
+  ]
+}
