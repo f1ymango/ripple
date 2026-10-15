@@ -87,5 +87,5 @@ $env:RIPPLE_RESULTS_DIR="results/demo-oct16/aberdeen/runs"; $env:RIPPLE_PLANS_DI
 
 **Gaps for Visuals and the Lead:**
 - **The map is Aberdeen's.** The console's corridor map and incident playback are built for Aberdeen. With Tuen Mun loaded, the top map still shows the Aberdeen corridor, so film only the "Simulation plan comparison" panel for Tuen Mun, or use the result card above.
-- **No Tuen Mun briefing yet.** There is no saved operator briefing for it ("The recommended run has no saved operator briefing yet"). F's briefing is an LLM call, the Lead's component.
+- **No approved Tuen Mun console briefing yet.** The console still says "The recommended run has no saved operator briefing yet" for this pack. The Lead has saved a provenance-bound F draft at `data/generated-briefings/IN-26-02615-p2-demo-oct16.json` for the single packed 50%-compliance, seed-2029 result. It awaits human bilingual/operator review and must not be presented as an approved instruction; its about −5% token is not the 18-condition −4.3% ranking.
 - **The console's delay is E's delay.** The detour-inclusive figures are only in the result card above.

@@ -13,13 +13,16 @@ This replaces the earlier plan to append Tuen Mun as a 15–25-second afterthoug
 Visuals' 92.6-second silent Aberdeen rough cut is useful footage, not a locked
 edit. Recut it into two balanced chapters. Approximately 90 seconds is the
 team's working video target, **not an organiser-imposed length**. The official
-[2026 final-submission instructions](https://www.hack4sdg.com/2026-roadmap/final-submission-2026/)
-require a pitch deck and prototype proof by **18 October, 23:59 HKT**; a demo
-video, application or technical link can serve as proof within the deck. The
-deck is locked after upload, and the team cannot rely on its own laptop at the
-final pitch. Build a self-contained, pre-tested deck even if the video link
-fails to play. The final stage allows a five-minute pitch plus Q&A; the video
-must support that pitch, not consume it.
+[2026 deliverables page](https://www.hack4sdg.com/deliverables/) confirms an
+**18 October** deadline for a pitch deck and prototype proof or information;
+the [2026 roadmap](https://www.hack4sdg.com/2026-roadmap/) confirms the date.
+The organiser lists demos, applications, videos, technical links and files as
+possible prototype evidence. Its accessible pages do **not** establish an
+upload hour, accepted deck formats, required filename or cover fields, whether
+an upload can be replaced, or a laptop rule. Check these on the live 2026
+submission form before delivery. Build a self-contained, pre-tested deck even
+if the video link fails to play. The final stage allows a five-minute pitch
+plus Q&A; the video must support that pitch, not consume it.
 
 ## Video edit: two equal chapters
 
@@ -69,15 +72,14 @@ request to rebuild the rendering stack.
   divert made it worse**. Put the exact measure and source in a readable
   caption. On the Aberdeen panel, lead with the tie and Ripple's refusal to
   endorse a plan. Together they demonstrate selection, not just abstention.
-- Show prototype proof inside the submitted deck: a console/Reader capture,
-  the Tuen Mun comparison and an accessible video or technical link. Keep
-  essential screenshots in the deck so reviewers are not dependent on a live
-  service or network connection. Check the uploaded format and playback before
-  the one-way submission.
-- The mandatory first slide needs the team name, project title, thematic
-  track, a description of at most 30 words, and all members' full names and
-  universities. Use the organiser's required filename and `.ppt`, `.pptx` or
-  `.pdf` format; do not submit cloud-hosted slides as the deck.
+- Submit the deck **and** prototype proof or information. Include a
+  console/Reader capture and the Tuen Mun comparison in the deck so its core
+  story survives a failed video link; supply an accessible video or technical
+  link as prototype evidence if the live form permits it. Check playback,
+  sharing permissions and the actual upload requirements before submitting.
+- Prepare a clear cover slide with team name, project title, track and members,
+  but verify any mandatory cover fields, file format and naming rule on the
+  live 2026 form. Do not copy a prior year's submission rules as 2026 rules.
 
 ## Public wording and technical backup
 
@@ -112,19 +114,20 @@ or hide the difference.
 | Data — Tuen Mun plans and ranking | `data/generated-plans/IN-26-02615-lead-capacity-oct15/`, `results/rankings/lead-capacity-oct15-p0x-merge-at-site.json`, `results/tuen-mun-lead-grid-oct15-p0x-merge-at-site/`, `docs/tuen-mun-go-no-go-evidence-2026-10-15.md`. Check the public figures against the final saved bundle before export. |
 | Lead — comparison capture aid | `evidence/demo/tuen-mun-result-card-2026-10-15.html` and its adjacent `.md` guide. The existing card is a provenance-rich **source/capture aid**, not the required final visual treatment; Visuals may design a cleaner result-first graphic while retaining the modelled-result label and exact numbers. |
 | Lead — operator briefing draft | `data/generated-briefings/IN-26-02615-p2-demo-oct16.json` is F's provenance-checked bilingual draft for the **single** packed 50%-compliance, seed-2029 condition. Its −5% token is that condition's E result, not the 18-condition −4.3% finding. F/console use logical `results/runs/` source aliases; the physical verified files are under `results/demo-oct16/tuen-mun/runs/`. Human language and operator review are still required before presenting it as approved advice. |
-| Simulation — P0 verdict | `results/tuen-mun-p0-variants-oct15/p0-variants-report.md`. Data reports that the lane/queue stress change improved queue speed but failed flow and recovery, so it was not adopted as P0. Review that result and report whether a flow-valid replacement arrives before the claim lock; any replacement needs matched P0/P1/P2 reruns. |
+| Simulation — P0 verdict | `docs/tuen-mun-simulation-final-call-2026-10-15.md`: ready for a labelled modelled-candidate comparison, not a measured benefit. The queue moves too fast, clears early and discharges too much after reopening. The earlier lane/queue stress change was not adopted as P0; any later replacement needs matched P0/P1/P2 reruns before changing the chart. |
 
 ## 16 October claim lock and owners
 
 The working edit is **50/50 now**, using the saved Tuen Mun result as a
 clearly labelled prototype-simulation candidate. Data's 15 October stress
-test did not replace the baseline, so the current pack remains the working
-comparison. Do not wait for a perfect incident replay before making the edit.
-At the 16 October claims review:
+test did not replace the baseline, and Simulation's final call accepts this
+presentation scope without accepting a measured benefit. The frozen 11% pack
+remains the working comparison. At the confirmed 16 October claims freeze:
 
-1. **Data and Simulation** give the latest P0 verdict and saved ranking. If a
-   corrected P0 is adopted, rerun the **unchanged 11% Lead plan set** on
-   matched inputs before replacing the chart or upgrading any claim.
+1. **Data and Simulation** confirm the saved ranking and Simulation's final
+   P0 limitation. If a corrected P0 is adopted, rerun the **unchanged 11% Lead
+   plan set** on matched inputs before replacing the chart or upgrading any
+   claim.
 2. **Lead** locks the exact Tuen Mun wording. Keep equal representation if the
    positive comparison still stands, even if it must remain explicitly
    labelled a simulation candidate. If a new matched result reverses the
