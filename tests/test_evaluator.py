@@ -10,12 +10,12 @@ from pathlib import Path
 
 import pytest
 
-from src.briefing.schema import RESULT_SCHEMA
+from src.briefing.schema import RESULT_SCHEMA, VALIDATION_V2
 from src.evaluation_provenance import json_hash, sidecar_path, verify_result
 from src.evaluator import metrics, od_demand, run, scenario as scenarios, simulate, speed_signs
 from src.evaluator.actions import PlanActions
 from src.evaluator.behaviour import LEFT_FILE, DriversLeave
-from src.generation import load_json, validate
+from src.generation import load_json, save_json, validate
 
 FIXTURES = Path(__file__).parent / "fixtures"
 MOCK = FIXTURES / "mock_evaluator"
@@ -76,11 +76,19 @@ def write_mock_output(work, trips=TRIPS):
         '<interval begin="600" nVehContrib="0" speed="-1"/></detector>')
 
 
-def mock_run(complete=True, trips=TRIPS):
+def wrong_lane_line(vehicle, lane, second):
+    return (f"Warning: Teleporting vehicle '{vehicle}'; waited too long (wrong lane), lane='{lane}', "
+            f"time={second:.2f}.\n")
+
+
+def mock_run(complete=True, trips=TRIPS, log=""):
     def fake(scenario, files, work, clearance_min, controllers=()):
         simulate.prepare(scenario, files, work, clearance_min)
         write_mock_output(work, trips)
+        (Path(work) / "sumo.log").write_text("Simulation version 1.27.1 started with time: 0.00.\n" + log)
         return {"complete": complete, "final_time_seconds": 900 if complete else 450,
+                "closure_steps": [{"second": second, "lanes_closed": [f"closed_{i}" for i in lanes]}
+                                  for second, lanes in scenarios.closure_steps(scenario, clearance_min)],
                 "vehicles_loaded": 7, "vehicles_inserted": 6, "vehicles_waiting_to_enter_at_end": 1,
                 "teleports": {"total": 0, "jam": 0, "yield": 0, "wrongLane": 0}}
     return fake
@@ -298,9 +306,57 @@ def test_edge_metrics_use_only_simulated_traffic(output):
     assert detail["emergency_route_edges_with_traffic"] == 1
 
 
+def speed_bin(observed, simulated):
+    return {"observed_kmh": observed, "simulated_kmh": simulated,
+            "absolute_percentage_error": 100 * abs(simulated - observed) / observed}
+
+
 def test_validation_rounding_never_turns_a_miss_into_a_pass():
-    assert metrics.validation({"geh_under_5_percent": 84.999, "speed_mape_percent": 15.001}) == {
-        "geh_under_5_pct": 84.99, "speed_mape_pct": 15.01}
+    evaluation = {"geh_under_5_percent": 84.999, "speed_mape_percent": 15.001,
+                  "speed_bins": [speed_bin(100, 115.001)] + [speed_bin(50, 50)] * 5 + [speed_bin(10, 40)]}
+    assert metrics.validation(evaluation, []) == {
+        "geh_under_5_pct": 84.99, "speed_mape_pct": 15.01, "speed_mape_free_flow_pct": 2.51,
+        "congestion_state_agreement_pct": 85.71, "wrong_lane_teleports_other": 0}
+
+
+def test_free_flow_speed_error_leaves_out_bins_measured_under_30_kmh():
+    evaluation = {"geh_under_5_percent": 90, "speed_mape_percent": 50,
+                  "speed_bins": [speed_bin(80, 72), speed_bin(5, 30), speed_bin(29.9, 10)]}
+    block = metrics.validation(evaluation, ["v lane 900"])
+    assert block["speed_mape_free_flow_pct"] == 10.0                     # only the 80 km/h bin
+    assert block["congestion_state_agreement_pct"] == 66.66              # 5 km/h measured, 30 simulated: disagree
+    assert block["wrong_lane_teleports_other"] == 1
+    validate(block, VALIDATION_V2)
+
+
+def test_a_wrong_lane_teleport_counts_against_the_model_unless_at_a_lane_shutting_or_in_a_jam():
+    steps = [{"second": 300, "lanes_closed": ["a_0"]}, {"second": 420, "lanes_closed": ["a_0", "a_1"]},
+             {"second": 600, "lanes_closed": []}]
+    near = {"b": {"b", ":j", "c"}, "c": {"c", ":k"}, "d": {"d"}}.__getitem__        # b leads through junction j to c
+    log = (wrong_lane_line("x.1", "b_1", 604) + wrong_lane_line("x.2", "b_1", 781)      # waits from 304 and 481
+           + wrong_lane_line("x.3", "d_0", 1500))
+    assert metrics.wrong_lane_teleports(log, steps, near) == (["x.1 b_1 604"], [], ["x.2 b_1 781", "x.3 d_0 1500"])
+    assert metrics.wrong_lane_teleports(wrong_lane_line("x.5", "b_1", 720), steps, near) == (["x.5 b_1 720"], [], [])
+    assert metrics.wrong_lane_teleports(wrong_lane_line("x.6", "b_1", 900), steps, near)[2] == ["x.6 b_1 900"]  # reopening
+
+
+def jam_line(lane, second):
+    return f"Warning: Teleporting vehicle 'j.1'; waited too long (jam), lane='{lane}', time={second:.2f}.\n"
+
+
+@pytest.mark.parametrize("jam, in_jam", [
+    (jam_line("c_0", 1300), True),           # the next edge jammed during the wait (1200 to 1500)
+    (jam_line("c_1", 900), True),            # ... or in the 300 s before it began
+    (jam_line(":j_0_1", 1450), True),        # the junction b ends at
+    (jam_line("b_2", 1499), True),           # its own edge
+    (jam_line("c_0", 899), False),           # too early
+    (jam_line("c_0", 1501), False),          # after it was lifted off
+    (jam_line("e_0", 1300), False),          # elsewhere
+])
+def test_a_wrong_lane_teleport_inside_a_jam_on_its_edge_or_the_next_is_part_of_the_jam(jam, in_jam):
+    near = {"b": {"b", ":j", "c"}}.get
+    at_shut, jammed, other = metrics.wrong_lane_teleports(jam + wrong_lane_line("x.1", "b_1", 1500), [], near)
+    assert (jammed, other) == ((["x.1 b_1 1500"], []) if in_jam else ([], ["x.1 b_1 1500"]))
 
 
 def test_expected_demand_over_the_closed_edge_by_exit():
@@ -317,7 +373,10 @@ def test_p0_result_meets_the_contract_and_its_sidecar_verifies(evaluate, plans, 
     assert load_json(path) == result
     assert result["scenario"] == {"compliance": 0.5, "clearance_min": 5.0, "seed": 42}
     assert result["metrics"]["delay_vs_do_nothing_pct"] == 0
-    assert result["validation"] == {"geh_under_5_pct": 100.0, "speed_mape_pct": 0.0}
+    assert result["validation"] == {"geh_under_5_pct": 100.0, "speed_mape_pct": 0.0, "speed_mape_free_flow_pct": 0.0,
+                                    "congestion_state_agreement_pct": 100.0, "wrong_lane_teleports_other": 0}
+    assert report["validation_targets_met"] and report["wrong_lane_teleports"] == {
+        "at_a_lane_shutting": [], "in_a_jam": [], "other": []}
     files = verify_result(path, result, load_json(plans / "P0.json"), load_json(plans / "generation-inputs.json"))
     assert {"network", "routes", "detector_loops", "observations", "scenario",
             "code:src/evaluator/metrics.py", "code:src/twin/evaluate.py"} <= set(files)
@@ -831,6 +890,34 @@ def test_two_routes_for_one_od_group_split_its_drivers_by_share(tmp_path, mock_p
     assert all(actions.follows(f"f.{i}", road.routes[f"f.{i}"], 121) == (took[i] != "closed") for i in range(4000))
 
 
+LONG_WAY = {**PLACES, "routes": {"Mock Detour": {"leaves_at": "in", "rejoin": "out", "with": ["west", "north"]}}}
+
+
+def test_a_long_way_round_leaves_before_the_closed_road_and_rejoins_whatever_lies_between(tmp_path, mock_plans):
+    plans, context = mock_plans
+    scenario, _ = full_scenario(tmp_path, plan_actions=LONG_WAY)
+    road, actions = Road(), PlanActions(plans["P1"], context, scenario, 1.0, 5)
+    variant = ["far", "in", "closed", "side", "out"]                      # another route between leaving and rejoining
+    road.put("a.0", "far", THROUGH)
+    road.put("b.0", "far", variant)
+    road.put("past.0", "in", THROUGH)                                     # already past where the route leaves
+    actions.step(road, 120)
+    assert road.routes["a.0"] == road.routes["b.0"] == ["far", "west", "north", "out"]
+    assert road.routes["past.0"] == THROUGH and actions.rerouted == {"a.0", "b.0"}
+    actions.step(road, 600)                                               # both still short of the long way
+    assert road.routes["a.0"] == THROUGH and road.routes["b.0"] == variant
+    assert actions.report()["of_them_back_on_the_reopened_road"] == 2
+
+
+@pytest.mark.parametrize("route, message", [
+    ({"replace": ["closed"], "rejoin": "out", "with": ["alt"]}, "either replace or rejoin"),
+    ({"with": ["alt"]}, "either replace or rejoin"),
+    ({"leaves_at": "in", "rejoin": "out", "with": ["west", "out"]}, "end before the rejoin edge")])
+def test_a_plan_route_names_what_it_replaces_one_way_only(tmp_path, route, message):
+    with pytest.raises(ValueError, match=message):
+        full_scenario(tmp_path, plan_actions={**PLACES, "routes": {"Mock Detour": route}})
+
+
 def test_routes_and_junctions_the_network_cannot_take_are_refused(tmp_path, mock_plans):
     plans, context = mock_plans
     starts_early = {**PLACES, "routes": {"Mock Detour": {"replace": ["in", "closed"], "with": ["under1"]}}}
@@ -1027,25 +1114,82 @@ def test_a_join_can_be_moved_from_its_ramp_to_the_main_line():
 
 # --- E's output into F and G --------------------------------------------------------------
 
+def time_lost(share):
+    return [(i, d, w, a, t, loss * share, co2) for i, d, w, a, t, loss, co2 in TRIPS]
+
+
+def ranking_grid(tmp_path, plans, evaluate_plans, second_cell_lost):
+    """Two cells, the mock scenario and the same at seed 7, each run P0, P1, P2; the grid file's path."""
+    _, first = full_scenario(tmp_path, plan_actions=PLACES_TWO)          # P2 also names Mock Alternative
+    second = tmp_path / "mock_seed7.json"
+    second.write_text(json.dumps({**load_json(first), "seed": 7, "run_label": "mock-seed7"}))
+    paths = []
+    for scenario, lost in ((first, {"P1": 0.75, "P2": 0}), (second, second_cell_lost)):
+        paths.append([evaluate_plans("P0", scenario=scenario)[2]] + [
+            evaluate_plans(pid, trips=time_lost(lost[pid]), scenario=scenario)[2] for pid in ("P1", "P2")])
+    grid = tmp_path / "grid.json"
+    grid.write_text(json.dumps({"incident_id": "MOCK-INCIDENT", "plans": str(plans), "plan_set": "mock-plans",
+                                "why": "two seeds", "cells": [
+        {"name": name, "scenario": str(path), "compliance": 0.5, "clearance_min": 5.0,
+         "results_dir": str(tmp_path / "results")} for name, path in (("main", first), ("seed7", second))]}))
+    return grid, paths[0]
+
+
 def test_e_results_are_accepted_by_the_briefing_and_the_console(evaluate_plans, plans, tmp_path):
     from src.briefing.writer import prepare_comparison
     from src.console.recommendation import load_comparison, scenarios_for, read_objects
-    full_scenario(tmp_path, plan_actions=PLACES_TWO)                      # P2 also names Mock Alternative
-    def time_lost(share):
-        return [(i, d, w, a, t, loss * share, co2) for i, d, w, a, t, loss, co2 in TRIPS]
-    paths = [evaluate_plans("P0")[2], evaluate_plans("P1", trips=time_lost(0.75))[2],
-             evaluate_plans("P2", trips=time_lost(0))[2]]
+    from src.evaluator import ranking
+    grid, paths = ranking_grid(tmp_path, plans, evaluate_plans, {"P1": 0.75, "P2": 0})
     runs_dir = tmp_path / "results" / "runs"
     results, errors = read_objects(runs_dir)
-    assert not errors and scenarios_for(results, "MOCK-INCIDENT") == [(0.5, 5.0, 42)]
+    assert not errors and scenarios_for(results, "MOCK-INCIDENT") == [(0.5, 5.0, 7), (0.5, 5.0, 42)]
     comparison, why = load_comparison(runs_dir, plans, "MOCK-INCIDENT", (0.5, 5.0, 42))
-    assert why == "" and comparison["winner"]["plan_id"] == "P2"
+    assert comparison is None and "No ranking" in why                    # version 2 needs the every-cell ranking
+    saved_ranking, pending, _ = ranking.rank(grid)
+    assert not pending and saved_ranking["first"] == "P2" and not saved_ranking["cells_not_counting"]
+    assert saved_ranking["verdicts"] == ["P1 before P0", "P2 before P0", "P2 before P1"]
+    save_json(tmp_path / "results" / "rankings" / "mock-plans.json", saved_ranking)
+    comparison, why = load_comparison(runs_dir, plans, "MOCK-INCIDENT", (0.5, 5.0, 42))
+    assert why == "" and comparison["winner"]["plan_id"] == "P2" and comparison["ranking_cells"] == 2
     inputs = load_json(plans / "generation-inputs.json")
     saved = [load_json(plans / f"P{i}.json") for i in range(3)]
     plan, result, baseline, sources = prepare_comparison(saved, paths, generation_inputs=inputs,
                                                          results_root=runs_dir)
     assert plan["plan_id"] == result["plan_id"] == "P2" and baseline["plan_id"] == "P0"
     assert len(sources) == 6                                              # three results and their sidecars
+
+
+def test_no_plan_is_recommended_unless_the_ranking_puts_it_before_both_others(evaluate_plans, plans, tmp_path):
+    from src.console.recommendation import load_comparison
+    from src.evaluator import ranking
+    grid, _ = ranking_grid(tmp_path, plans, evaluate_plans, {"P1": 0.25, "P2": 0.5})   # P1 lower at seed 7
+    saved_ranking, _, _ = ranking.rank(grid)
+    assert saved_ranking["first"] is None and saved_ranking["verdicts"][2] == "P1 and P2 tie"
+    save_json(tmp_path / "results" / "rankings" / "mock-plans.json", saved_ranking)
+    comparison, why = load_comparison(tmp_path / "results" / "runs", plans, "MOCK-INCIDENT", (0.5, 5.0, 42))
+    assert comparison is None and "puts no plan before both others (" in why
+
+
+def test_a_cell_whose_runs_teleported_a_driver_out_of_a_wrong_lane_blocks_every_order(evaluate_plans, plans, tmp_path,
+                                                                                         monkeypatch):
+    from src.evaluator import ranking
+    grid, _ = ranking_grid(tmp_path, plans, evaluate_plans, {"P1": 0.5, "P2": 0.25})
+    report = next((tmp_path / "results" / "evaluator").glob("*P1*seed7*.report.json"))
+    saved = load_json(report)
+    saved["wrong_lane_teleports"]["other"] = ["v lane 900"]
+    report.write_text(json.dumps(saved))
+    saved_ranking, _, cells = ranking.rank(grid)
+    assert [c["counts"] for c in cells] == [True, False] and "P1" in cells[1]["why_not"]
+    assert saved_ranking["first"] is None                                # 1 of 2 cells does not count: over 10%
+    assert all(v == "not stated: 1 of 2 cells do not count" for v in saved_ranking["verdicts"])
+
+
+def test_a_cell_without_results_is_reported_and_nothing_is_ranked(evaluate_plans, plans, tmp_path):
+    from src.evaluator import ranking
+    grid, _ = ranking_grid(tmp_path, plans, evaluate_plans, {"P1": 0.5, "P2": 0.25})
+    (tmp_path / "results" / "runs" / "mock_P2_c50_t5_mock-seed7_mock-plans.json").unlink()
+    saved_ranking, pending, cells = ranking.rank(grid)
+    assert saved_ranking is None and len(pending) == 1 and "seed7" in pending[0] and len(cells) == 1
 
 
 # --- speed signs and the rehearsal plans -------------------------------------------------
@@ -1107,3 +1251,186 @@ def test_rehearsal_plans_pass_ds_checks_and_differ(mock_plans):
     assert p2["signals"] == [{"junction_id": "MOCK-J", "green_extend_s": 10}]
     with pytest.raises(ValueError, match="exactly one detour"):
         rehearsal_plans(inputs["incident"], {**context, "routes": mock_plans[1]["routes"][:2]}, 0.5)
+
+
+def test_a_driver_stuck_at_the_end_of_a_lane_that_leads_nowhere_on_its_way_is_let_in(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    scenario["closure"]["scene"] = {**SCENE, "let_in_after_seconds": 60}
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    # "in" has two lanes; only lane 0 leads to "out" (by "closed" lane 0); lane 1 leads to "closed" lane 1, which is shut
+    road.put("stuck.0", "in", THROUGH, lane=1)
+    road.put("behind.0", "in", THROUGH, lane=0)
+    links = {"in_0": [("closed_0",)], "in_1": [("closed_1",)], "closed_0": [("out_0",)], "closed_1": [("out_1",)]}
+    shut = {"closed_1"}
+    waiting, speeds, changes, held, modes = {"stuck.0": 61.0, "behind.0": 0.0}, {"behind.0": 1.0}, [], [], []
+    road.lane = types.SimpleNamespace(setMaxSpeed=road.lane_speeds.__setitem__, getLinks=lambda lane: links.get(lane, []),
+                                      getLength=lambda lane: 100.0,
+                                      getDisallowed=lambda lane: ["passenger"] if lane in shut else [],
+                                      getAllowed=lambda lane: [])
+    road.vehicle.getWaitingTime = waiting.__getitem__
+    road.vehicle.getLanePosition = lambda v: 95.0
+    road.vehicle.getSpeed = speeds.__getitem__
+    road.vehicle.getNeighbors = lambda v, mode: [("behind.0", 4.0)] if mode == 0b001 else []
+    road.vehicle.slowDown = lambda v, speed, duration: held.append(v)
+    road.vehicle.setLaneChangeMode = lambda v, mode: modes.append(mode)
+    road.vehicle.changeLane = lambda v, lane, duration: changes.append((v, lane))
+    closure.step(road, 5)
+    assert changes == [("stuck.0", 0)] and held == ["behind.0"] and modes == [simulate.LET_IN_MODE]
+    assert closure.let_in_now == {"stuck.0"}
+    changes.clear()
+    waiting["stuck.0"] = 30.0                               # moving again, or not stuck long enough
+    closure.step(road, 10)
+    assert changes == []
+    shut.clear()                                            # its own lane leads on again: nothing to do
+    waiting["stuck.0"] = 90.0
+    closure.step(road, 15)
+    assert changes == []
+
+
+def test_drivers_from_a_lane_shut_ahead_merge_in_turn_with_the_lane_beside_it(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    scenario["closure"]["scene"] = {**SCENE, "merge_in_turn": True, "let_in_after_seconds": 60}
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    # "in" has two lanes; lane 1 leads to "closed" lane 1, which is shut: its drivers must move to lane 0
+    road.put("m1", "in", THROUGH, lane=1)                    # at the end of lane 1
+    road.put("m2", "in", THROUGH, lane=1)                    # behind it
+    road.put("own", "in", THROUGH, lane=0)                   # lane 0's own driver, near its end
+    links = {"in_0": [("closed_0",)], "in_1": [("closed_1",)]}
+    positions = {"m1": 95.0, "m2": 60.0, "own": 90.0, "next": 70.0}
+    modes, changes, held = {}, [], []
+    neighbours = {("m1", 0b011): [("ahead", 12.0)], ("m1", 0b001): [("own", 4.0)]}
+    road.lane = types.SimpleNamespace(setMaxSpeed=road.lane_speeds.__setitem__, getLinks=lambda lane: links.get(lane, []),
+                                      getLength=lambda lane: 100.0,
+                                      getDisallowed=lambda lane: ["passenger"] if lane == "closed_1" else [],
+                                      getAllowed=lambda lane: [])
+    road.vehicle.getLanePosition = positions.__getitem__
+    road.vehicle.getSpeed = lambda v: 1.0
+    road.vehicle.getWaitingTime = lambda v: 10.0
+    road.vehicle.getNeighbors = lambda v, mode: neighbours.get((v, mode), [])
+    road.vehicle.slowDown = lambda v, speed, duration: held.append(v)
+    road.vehicle.setLaneChangeMode = modes.__setitem__
+    road.vehicle.changeLane = lambda v, lane, duration: changes.append((v, lane))
+    closure.step(road, 1)
+    # both drivers in the shut lane keep to it; the one at its end moves over, and the slow driver behind holds back
+    assert modes == {"m1": simulate.LET_IN_MODE, "m2": simulate.KEEP_LANE_MODE}
+    assert changes == [("m1", 0)] and held == ["own"] and closure.merges_in_turn == 1
+    # m1 moved over in front of "own"; m2 reaches the end with "own" still beside it: "own" goes next
+    road.lane_index["m1"] = 0
+    positions.update({"m1": 99.0, "m2": 96.0})
+    neighbours.update({("m2", 0b011): [("m1", 2.0)], ("m2", 0b001): [("own", 3.0)]})
+    changes.clear(); held.clear()
+    closure.step(road, 5)
+    assert changes == [] and modes["m1"] == simulate.DEFAULT_LANE_CHANGE_MODE
+    # m1 and then "own" drive on through the end of lane 0: m2's turn, and the next driver behind holds back
+    road.on["in"].remove("m1"); road.on["in"].remove("own"); road.put("next", "in", THROUGH, lane=0)
+    neighbours.update({("m2", 0b011): [("own", 2.0)], ("m2", 0b001): [("next", 5.0)]})
+    closure.step(road, 6)
+    assert changes == [("m2", 0)] and held == ["next"] and closure.merges_in_turn == 2
+
+
+def test_with_merging_in_turn_the_approach_is_left_to_it():
+    closure = {"reroute_at_edges": ["far"], "scene": {"approach_edges": ["in"], "merge_in_turn": True}}
+    assert simulate.let_in_edges(closure) == ["far"]
+
+
+def test_drivers_are_also_let_in_along_the_scenes_let_in_edges_once_each():
+    closure = {"reroute_at_edges": ["far", "in"], "scene": {"approach_edges": ["in"], "let_in_edges": ["up", "far"]}}
+    assert simulate.let_in_edges(closure) == ["in", "far", "up"]
+    assert simulate.let_in_edges({"scene": {"approach_edges": ["in"]}}) == ["in"]
+
+
+def test_without_the_let_in_rule_nobody_is_moved(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    road.put("stuck.0", "in", THROUGH, lane=1)
+    closure.step(road, 5)                                   # Road has no getWaitingTime: it would fail if asked
+    assert closure.let_in_now == set()
+
+
+# --- 13 October: drivers already committed to the flyover, and a slow first reopening --------
+
+def test_a_driver_already_in_a_lane_onto_the_closed_edge_goes_on_over_it(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    scenario["closure"]["detour"] = DETOUR
+    scenario["closure"]["scene"] = {**SCENE, "committed_edges": ["in"]}
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    road.put("committed.0", "in", THROUGH, lane=1)                        # lane 1 leads only onto "closed"
+    road.put("free.0", "in", THROUGH, lane=0)                             # lane 0 also leads to the detour
+    lane_of = lambda v: f"in_{road.lane_index[v]}"
+    road.vehicle.getLaneID = lane_of
+    road.lane = types.SimpleNamespace(setMaxSpeed=road.lane_speeds.__setitem__,
+                                      getLinks=lambda lane: [("closed_0",), ("under1_0",)] if lane == "in_0"
+                                      else [("closed_1",)])
+    closure.step(road, 420)                                               # every lane shut
+    assert road.routes["committed.0"] == THROUGH and closure.kept_on == {"committed.0"}
+    assert road.routes["free.0"] == ["in", "under1", "under2", "out"] and closure.sent_round == {"free.0"}
+
+
+def test_without_committed_edges_every_driver_is_sent_round(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    scenario["closure"]["detour"] = DETOUR
+    road, closure = Road(), simulate.Closure(scenario, 5)
+    road.put("committed.0", "in", THROUGH, lane=1)
+    closure.step(road, 420)
+    assert road.routes["committed.0"] == ["in", "under1", "under2", "out"] and closure.kept_on == set()
+
+
+def test_a_reopening_stage_can_hold_the_open_lane_at_the_passing_speed(tmp_path):
+    scenario, _ = full_scenario(tmp_path)
+    scenario["closure"]["scene"] = {**SCENE, "reopening": {**SCENE["reopening"], "edge_kmh": 3.6}}
+    assert scenarios.scene_speeds(scenario, 5, 600) == (3.6, 18)          # first lane back, at the passing speed
+    assert scenarios.scene_speeds(scenario, 5, 720) == (72, 72)           # both lanes, full speed
+    plain, _ = full_scenario(tmp_path)
+    assert scenarios.scene_speeds(plain, 5, 600) == (72, 18)              # without edge_kmh: as before
+
+
+def ranking_cell(p0, p1, p2, counts=True):
+    return {"total_vehicle_hours_delay": {"P0": p0, "P1": p1, "P2": p2}, "counts": counts}
+
+
+def test_a_plan_is_before_another_only_if_the_95_percent_interval_of_the_paired_difference_excludes_zero():
+    from src.evaluator import ranking
+    cells = [ranking_cell(100, 101, 97), ranking_cell(110, 109, 106.7), ranking_cell(90, 91, 86.4),
+             ranking_cell(105, 104, 102.9), ranking_cell(95, 96, 93.1)]
+    pairs, first = ranking.orders(cells)
+    by = {(p["a"], p["b"]): p for p in pairs}
+    assert by[("P0", "P1")]["verdict"] == "P0 and P1 tie"            # about -1, +1, -1, +1, -1 %: holds zero
+    assert by[("P0", "P2")]["verdict"] == "P2 before P0" and by[("P0", "P2")]["interval_pct"][0] > 0
+    assert by[("P0", "P2")]["mean_difference_pct"] == pytest.approx(2.8, abs=0.01)   # P0 - P2: 3, 3, 4, 2, 2 %
+    assert by[("P1", "P2")]["verdict"] == "P2 before P1" and first == "P2"
+    assert ranking.t95(4) == 2.776 and ranking.t95(13) == 2.179 and ranking.t95(500) == 1.980
+
+
+def test_no_order_is_stated_when_more_than_a_tenth_of_the_cells_do_not_count():
+    from src.evaluator import ranking
+    good, bad = [ranking_cell(100, 90, 80)] * 9, ranking_cell(100, 120, 130, counts=False)
+    assert ranking.orders(good + [bad])[1] == "P2"                   # 1 of 10 left out, and its delays are not used
+    pairs, first = ranking.orders(good[:8] + [bad, bad])
+    assert first is None and pairs[0]["verdict"] == "not stated: 2 of 10 cells do not count"
+
+
+def test_closure_counts_score_the_hourly_flow_that_five_minute_geh_lets_through():
+    from src.evaluator import closure_counts
+    rows = [{"detector_id": "AID01106", "time": f"2026-05-15T09:{m:02d}:00+08:00", "observed": 90, "simulated": 62,
+             "within_5": metrics_geh(62, 90) < 5} for m in range(5, 60, 5)]
+    rows.append({"detector_id": "AID01106", "time": "2026-05-15T10:00:00+08:00", "observed": 90, "simulated": 0,
+                 "within_5": False})                                     # outside the window: not counted
+    out = closure_counts.cell_counts({"count_bins": rows})["AID01106"]
+    assert out["bins"] == 11 and out["five_minute_bins_geh_under_5"] == 11      # every bin passes at five minutes
+    assert out["simulated_over_counted"] == 0.69 and out["geh_hourly_equivalent"] > 10   # the hour fails
+
+
+def metrics_geh(m, c):
+    from src.evaluator.closure_counts import geh
+    return geh(m, c)
+
+
+def test_queue_onset_and_recovery_are_read_from_30_kmh_crossings():
+    from src.evaluator import p0_checks
+    speeds = {"08:25": 10, "08:30": 60, "09:05": 12, "09:30": 8, "10:00": 35, "10:05": 25, "10:10": 40, "10:15": 45,
+              "10:30": 50}
+    assert p0_checks.onset_and_recovery(speeds) == ("09:05", "10:10")    # 10:00 dips again at 10:05
+    rows = [{"detector_id": d, "time": f"2026-05-15T{t}:00+08:00", "observed_kmh": v, "simulated_kmh": v - 30 * (t == "10:10")}
+            for d in p0_checks.QUEUE_DETECTORS for t, v in speeds.items()]
+    timing = p0_checks.queue_timing({"speed_bins": rows})
+    assert timing["AID01103"]["minutes_late"] == [0, 5]                  # the model's queue lasts one bin longer

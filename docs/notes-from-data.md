@@ -5,6 +5,57 @@ touch someone else's. **Nothing in your files has been changed.** Each note
 says what we found, where the proof is, and what we suggest. Pick them up when
 you are next in that code; strike a note through when it is done.
 
+## 13 Oct 2026
+
+All from [the 13 October note](evaluator-replay-v3-2026-10-13.md); section 6
+of the [go/no-go review](evaluator-p0-go-no-go-2026-10-09.md) sums it up.
+
+### For Simulation
+
+**33. The detectors count too few vehicles in slow traffic.** AID01106 and
+AID01107 have no junction between them in TD's Road Network, yet AID01106
+counts 55% of AID01107's vehicles under 10 km/h, 73% at 10 to 20 and 80% at 20
+to 30, and 96 to 102% from 30 km/h up (1,598 bins on 48 days, not 15 May;
+`python -m src.loaders.fetch count-bias`). Two things follow for you.
+`evaluate.py` scores whatever count the observations carry; replay version 3
+withholds the 51 bins on 15 May measured under 30 km/h in its observations
+file, so nothing in your code changes. And the flow balance's joins and exits
+come from ordinary mornings when AID01106 often queues: the "+58 veh/h"
+between AID01106 and AID01107, where there is no junction, is this bias.
+
+**34. Where the tunnel side went.** Your three candidates (note 31), checked
+against TD's Road Network: no road from Aberdeen or Ap Lei Chau reaches the
+tunnel without AID01103's centreline, and the only road joining between
+AID01103 and the fork is Yip Kan Street, from Wong Chuk Hang itself. So a
+hidden join from Ap Lei Chau is ruled out. What is left is mostly measurement: AID01103 ran at 6 to 14 km/h,
+so its 433 was about 600 to 790, and the 10 October replay's 7 km/h crawl held
+the detour to the low count. Without the crawl the closure-phase GEH is 91.8%
+(83.15% before). The road under the flyover's lanes (OSM gives one lane off
+the fork and one lane back on) and its two signals are still unverified, and
+they decide how much the detour passes; a site or Street View check would
+settle them.
+
+**35. The north merge: the data support your warning.** On 36 congested
+mornings (AID01109 at 30 to 45 km/h) the join loses 0.51 vehicles for every
+extra main-line vehicle (`python -m src.loaders.fetch merge-tradeoff`). The
+as-built ramp gives about 0.40 but starves the ramp before the crash; the
+main-line join (correction 2) gives 0. Version 3 runs every plan under both
+as bounds. A merge built to reproduce 0.51 at the observed level would
+replace both; that is a network change, so it is yours to decide.
+
+### For the Lead
+
+**36. Replay version 3, and what a go needs now.** P0 meets the count target
+in every phase and every seed (93.5%; during the closure 91.8%) and misses the
+speed target (24.8%), almost all of it on the queue at AID01102 and AID01103.
+On the stand-ins, P2 saves 2.3 to 2.4% (paired over six seeds, under both
+ramp bounds) and P1 shows no saving. What is left is three decisions, not
+data: the slow-count rule, how the queue's speed is scored, and whether the
+teleports at the instant a lane shuts count. Section 9 of the note sets them
+out. If they are accepted, run your plans on
+`sim/scenarios/evaluator_IN-26-03365_replay-v3.json` and report a ranking only
+if it holds in every cell of the grid in section 8.
+
 ## 10 Oct 2026
 
 All from [the 10 October note](evaluator-replay-fixes-2026-10-10.md); the

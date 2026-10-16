@@ -1,0 +1,629 @@
+{
+  "incident_id": "IN-26-02615",
+  "plan_set": "lead-capacity-oct15",
+  "plans": "data/generated-plans/IN-26-02615-lead-capacity-oct15",
+  "grid": "sim/scenarios/rankings/IN-26-02615_lead-capacity-oct15_p0x-merge-at-site.json",
+  "why": "Part D of docs/tuen-mun-p0-variants-and-lead-grid-2026-10-15.md: the Lead's plan set on p0x-merge-at-site, fresh seeds 2029-2031, vehicle-actuated and fixed-time Sham Tseng signals, compliance 0.3/0.5/0.7, clearance 59 min. Ranked afterwards with the team's 13 Oct rule, which the Tuen Mun protocol did not name (it set a stricter every-cell rule).",
+  "rule": "A cell counts if its P0 meets the validation targets and none of its runs had a wrong-lane teleport other than at a lane shutting or in a jam; no order is stated if more than 10% of cells do not count. 'A before B' if the 95% confidence interval of the mean of (A delay - B delay) / P0 delay over the counting cells lies wholly below zero; a tie if it contains zero. Validation targets: GEH < 5 in at least 85% of count bins; speed MAPE at most 15% over bins measured at 30 km/h or more; model and detector agree on congested (under 30 km/h) or not in at least 85% of speed bins; no wrong-lane teleport except of a driver stuck from the moment a lane shut or in a jam (a jam teleport on its edge or the next during its wait or the 300 s before) (03-architecture.md section 4, version 2 of 13 October 2026)",
+  "e_code_sha256": {
+    "code:src/evaluator/actions.py": "93de5fa53dc1a27d9ad8b41fe51a787da176275aecfd14f22b7f11dcec90999e",
+    "code:src/evaluator/behaviour.py": "b15ba3cfe005d785907ec62a56bec58e1a7b38c99293aea9542796292b5c4a86",
+    "code:src/evaluator/metrics.py": "949d7b178ef8d677f84e624ed50ca783b3a5e3be8093e7269f81a014aed488a2",
+    "code:src/evaluator/run.py": "381fe80a7b7addfcf2a23ceb9128d30d8314e96ec750a2aee896be37ad9e7315",
+    "code:src/evaluator/scenario.py": "f8d2cfbc409d8b5fbe9576843c09d440714d3a1465d9531b864f6800f7a7d4cf",
+    "code:src/evaluator/simulate.py": "a870d683b245079ab77b7e182a819c8996ad5b9b0ca8c0c8a73a14c6b4a34f70",
+    "code:src/twin/evaluate.py": "15fdc70d33e6919a147f358483466b69e3bd36aa517454db3e3f61abc81ed80b",
+    "code:src/validation_targets.py": "e8bfa03e456d5dd2b92d6165713353212d9cd2277cebb47d61268c208795857c"
+  },
+  "cells": [
+    {
+      "name": "p0x-merge-at-site-s2029 c30",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2029.json",
+      "compliance": 0.3,
+      "clearance_min": 59,
+      "seed": 2029,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c30_t59_p0x-merge-at-site-s2029_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c30_t59_p0x-merge-at-site-s2029_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c30_t59_p0x-merge-at-site-s2029_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1300.6,
+        "P1": 1014.7,
+        "P2": 1236.6
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 86.3,
+        "speed_mape_pct": 31.65,
+        "speed_mape_free_flow_pct": 14.0,
+        "congestion_state_agreement_pct": 91.5,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-s2029 c50",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2029.json",
+      "compliance": 0.5,
+      "clearance_min": 59,
+      "seed": 2029,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c50_t59_p0x-merge-at-site-s2029_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c50_t59_p0x-merge-at-site-s2029_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c50_t59_p0x-merge-at-site-s2029_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1300.6,
+        "P1": 1545.9,
+        "P2": 1235.1
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 86.3,
+        "speed_mape_pct": 31.65,
+        "speed_mape_free_flow_pct": 14.0,
+        "congestion_state_agreement_pct": 91.5,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-s2029 c70",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2029.json",
+      "compliance": 0.7,
+      "clearance_min": 59,
+      "seed": 2029,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c70_t59_p0x-merge-at-site-s2029_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c70_t59_p0x-merge-at-site-s2029_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c70_t59_p0x-merge-at-site-s2029_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1300.6,
+        "P1": 2101.6,
+        "P2": 1163.6
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 86.3,
+        "speed_mape_pct": 31.65,
+        "speed_mape_free_flow_pct": 14.0,
+        "congestion_state_agreement_pct": 91.5,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-fixed-s2029 c30",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2029.json",
+      "compliance": 0.3,
+      "clearance_min": 59,
+      "seed": 2029,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c30_t59_p0x-merge-at-site-fixed-s2029_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c30_t59_p0x-merge-at-site-fixed-s2029_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c30_t59_p0x-merge-at-site-fixed-s2029_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1304.9,
+        "P1": 1558.8,
+        "P2": 1251.8
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 87.5,
+        "speed_mape_pct": 31.44,
+        "speed_mape_free_flow_pct": 14.02,
+        "congestion_state_agreement_pct": 91.6,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-fixed-s2029 c50",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2029.json",
+      "compliance": 0.5,
+      "clearance_min": 59,
+      "seed": 2029,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c50_t59_p0x-merge-at-site-fixed-s2029_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c50_t59_p0x-merge-at-site-fixed-s2029_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c50_t59_p0x-merge-at-site-fixed-s2029_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1304.9,
+        "P1": 2089.9,
+        "P2": 1228.2
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 87.5,
+        "speed_mape_pct": 31.44,
+        "speed_mape_free_flow_pct": 14.02,
+        "congestion_state_agreement_pct": 91.6,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-fixed-s2029 c70",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2029.json",
+      "compliance": 0.7,
+      "clearance_min": 59,
+      "seed": 2029,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c70_t59_p0x-merge-at-site-fixed-s2029_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c70_t59_p0x-merge-at-site-fixed-s2029_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c70_t59_p0x-merge-at-site-fixed-s2029_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1304.9,
+        "P1": 2355.5,
+        "P2": 1256.9
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 87.5,
+        "speed_mape_pct": 31.44,
+        "speed_mape_free_flow_pct": 14.02,
+        "congestion_state_agreement_pct": 91.6,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-s2030 c30",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2030.json",
+      "compliance": 0.3,
+      "clearance_min": 59,
+      "seed": 2030,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c30_t59_p0x-merge-at-site-s2030_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c30_t59_p0x-merge-at-site-s2030_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c30_t59_p0x-merge-at-site-s2030_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1249.4,
+        "P1": 1150.5,
+        "P2": 1262.2
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 87.2,
+        "speed_mape_pct": 31.32,
+        "speed_mape_free_flow_pct": 13.84,
+        "congestion_state_agreement_pct": 92.08,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-s2030 c50",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2030.json",
+      "compliance": 0.5,
+      "clearance_min": 59,
+      "seed": 2030,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c50_t59_p0x-merge-at-site-s2030_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c50_t59_p0x-merge-at-site-s2030_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c50_t59_p0x-merge-at-site-s2030_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1249.4,
+        "P1": 1637.4,
+        "P2": 1197.6
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 87.2,
+        "speed_mape_pct": 31.32,
+        "speed_mape_free_flow_pct": 13.84,
+        "congestion_state_agreement_pct": 92.08,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-s2030 c70",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2030.json",
+      "compliance": 0.7,
+      "clearance_min": 59,
+      "seed": 2030,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c70_t59_p0x-merge-at-site-s2030_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c70_t59_p0x-merge-at-site-s2030_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c70_t59_p0x-merge-at-site-s2030_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1249.4,
+        "P1": 2032.0,
+        "P2": 1195.5
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 87.2,
+        "speed_mape_pct": 31.32,
+        "speed_mape_free_flow_pct": 13.84,
+        "congestion_state_agreement_pct": 92.08,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-fixed-s2030 c30",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2030.json",
+      "compliance": 0.3,
+      "clearance_min": 59,
+      "seed": 2030,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c30_t59_p0x-merge-at-site-fixed-s2030_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c30_t59_p0x-merge-at-site-fixed-s2030_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c30_t59_p0x-merge-at-site-fixed-s2030_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1343.0,
+        "P1": 1452.0,
+        "P2": 1230.6
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 86.9,
+        "speed_mape_pct": 30.73,
+        "speed_mape_free_flow_pct": 13.93,
+        "congestion_state_agreement_pct": 91.5,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-fixed-s2030 c50",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2030.json",
+      "compliance": 0.5,
+      "clearance_min": 59,
+      "seed": 2030,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c50_t59_p0x-merge-at-site-fixed-s2030_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c50_t59_p0x-merge-at-site-fixed-s2030_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c50_t59_p0x-merge-at-site-fixed-s2030_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1343.0,
+        "P1": 1976.0,
+        "P2": 1287.6
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 86.9,
+        "speed_mape_pct": 30.73,
+        "speed_mape_free_flow_pct": 13.93,
+        "congestion_state_agreement_pct": 91.5,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-fixed-s2030 c70",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2030.json",
+      "compliance": 0.7,
+      "clearance_min": 59,
+      "seed": 2030,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c70_t59_p0x-merge-at-site-fixed-s2030_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c70_t59_p0x-merge-at-site-fixed-s2030_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c70_t59_p0x-merge-at-site-fixed-s2030_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1343.0,
+        "P1": 2304.8,
+        "P2": 1298.1
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 86.9,
+        "speed_mape_pct": 30.73,
+        "speed_mape_free_flow_pct": 13.93,
+        "congestion_state_agreement_pct": 91.5,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-s2031 c30",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2031.json",
+      "compliance": 0.3,
+      "clearance_min": 59,
+      "seed": 2031,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c30_t59_p0x-merge-at-site-s2031_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c30_t59_p0x-merge-at-site-s2031_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c30_t59_p0x-merge-at-site-s2031_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1239.1,
+        "P1": 1181.9,
+        "P2": 1195.8
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 88.39,
+        "speed_mape_pct": 31.67,
+        "speed_mape_free_flow_pct": 14.02,
+        "congestion_state_agreement_pct": 92.08,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-s2031 c50",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2031.json",
+      "compliance": 0.5,
+      "clearance_min": 59,
+      "seed": 2031,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c50_t59_p0x-merge-at-site-s2031_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c50_t59_p0x-merge-at-site-s2031_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c50_t59_p0x-merge-at-site-s2031_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1239.1,
+        "P1": 1488.2,
+        "P2": 1192.7
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 88.39,
+        "speed_mape_pct": 31.67,
+        "speed_mape_free_flow_pct": 14.02,
+        "congestion_state_agreement_pct": 92.08,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-s2031 c70",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-s2031.json",
+      "compliance": 0.7,
+      "clearance_min": 59,
+      "seed": 2031,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c70_t59_p0x-merge-at-site-s2031_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c70_t59_p0x-merge-at-site-s2031_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c70_t59_p0x-merge-at-site-s2031_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1239.1,
+        "P1": 2028.7,
+        "P2": 1156.8
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 88.39,
+        "speed_mape_pct": 31.67,
+        "speed_mape_free_flow_pct": 14.02,
+        "congestion_state_agreement_pct": 92.08,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-fixed-s2031 c30",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2031.json",
+      "compliance": 0.3,
+      "clearance_min": 59,
+      "seed": 2031,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c30_t59_p0x-merge-at-site-fixed-s2031_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c30_t59_p0x-merge-at-site-fixed-s2031_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c30_t59_p0x-merge-at-site-fixed-s2031_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1269.6,
+        "P1": 1319.1,
+        "P2": 1231.0
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 88.69,
+        "speed_mape_pct": 31.56,
+        "speed_mape_free_flow_pct": 13.92,
+        "congestion_state_agreement_pct": 91.98,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-fixed-s2031 c50",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2031.json",
+      "compliance": 0.5,
+      "clearance_min": 59,
+      "seed": 2031,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c50_t59_p0x-merge-at-site-fixed-s2031_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c50_t59_p0x-merge-at-site-fixed-s2031_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c50_t59_p0x-merge-at-site-fixed-s2031_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1269.6,
+        "P1": 2022.8,
+        "P2": 1249.5
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 88.69,
+        "speed_mape_pct": 31.56,
+        "speed_mape_free_flow_pct": 13.92,
+        "congestion_state_agreement_pct": 91.98,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    },
+    {
+      "name": "p0x-merge-at-site-fixed-s2031 c70",
+      "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2031.json",
+      "compliance": 0.7,
+      "clearance_min": 59,
+      "seed": 2031,
+      "run_ids": {
+        "P0": "2026-04-15_TMR_P0_c70_t59_p0x-merge-at-site-fixed-s2031_lead-capacity-oct15",
+        "P1": "2026-04-15_TMR_P1_c70_t59_p0x-merge-at-site-fixed-s2031_lead-capacity-oct15",
+        "P2": "2026-04-15_TMR_P2_c70_t59_p0x-merge-at-site-fixed-s2031_lead-capacity-oct15"
+      },
+      "total_vehicle_hours_delay": {
+        "P0": 1269.6,
+        "P1": 2512.2,
+        "P2": 1247.8
+      },
+      "wrong_lane_teleports_other": {
+        "P0": [],
+        "P1": [],
+        "P2": []
+      },
+      "baseline_validation": {
+        "geh_under_5_pct": 88.69,
+        "speed_mape_pct": 31.56,
+        "speed_mape_free_flow_pct": 13.92,
+        "congestion_state_agreement_pct": 91.98,
+        "wrong_lane_teleports_other": 0
+      },
+      "counts": true,
+      "why_not": ""
+    }
+  ],
+  "cells_not_counting": [],
+  "pairs": [
+    {
+      "a": "P0",
+      "b": "P1",
+      "cells": 18,
+      "cells_a_lower": 15,
+      "cells_b_lower": 3,
+      "before": "P0",
+      "mean_difference_pct": -37.31,
+      "interval_pct": [
+        -54.55,
+        -20.07
+      ],
+      "verdict": "P0 before P1"
+    },
+    {
+      "a": "P0",
+      "b": "P2",
+      "cells": 18,
+      "cells_a_lower": 1,
+      "cells_b_lower": 17,
+      "before": "P2",
+      "mean_difference_pct": 4.31,
+      "interval_pct": [
+        3.03,
+        5.59
+      ],
+      "verdict": "P2 before P0"
+    },
+    {
+      "a": "P1",
+      "b": "P2",
+      "cells": 18,
+      "cells_a_lower": 3,
+      "cells_b_lower": 15,
+      "before": "P2",
+      "mean_difference_pct": 41.62,
+      "interval_pct": [
+        24.22,
+        59.02
+      ],
+      "verdict": "P2 before P1"
+    }
+  ],
+  "verdicts": [
+    "P0 before P1",
+    "P2 before P0",
+    "P2 before P1"
+  ],
+  "first": "P2"
+}

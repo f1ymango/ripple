@@ -10,14 +10,12 @@ from pathlib import Path, PurePosixPath
 
 import jsonschema
 
-from src.briefing.results import select
+from src import validation_targets as targets
+from src.briefing.results import load_ranking, select
 from src.evaluation_provenance import json_hash, verify_result
 from src.generation import load_json
 from src.plans.generator import validate_plans
 from src.plans.validator import CHECKS
-
-COUNT_TARGET = 85.0
-SPEED_TARGET = 15.0
 
 
 def fingerprint(value: dict) -> str:
@@ -124,19 +122,9 @@ def assess(results: list[dict], plans: list[dict], incident_id: str,
             return None, f"{pid} has no usable simulator delay metric."
 
     validation = by_id["P0"].get("validation")
-    if not isinstance(validation, dict):
-        return None, "Baseline validation is missing."
-    try:
-        geh = float(validation["geh_under_5_pct"])
-        speed = float(validation["speed_mape_pct"])
-    except (KeyError, TypeError, ValueError):
-        return None, "Baseline validation is incomplete."
-    if not math.isfinite(geh) or not math.isfinite(speed):
-        return None, "Baseline validation is incomplete."
-    if not 0 <= geh <= 100 or speed < 0:
-        return None, "Baseline validation is out of range."
-    if geh < COUNT_TARGET or speed > SPEED_TARGET:
-        return None, "Baseline is below the GEH or speed validation target."
+    met, reason = targets.check(validation)          # the rule E and F use (src/validation_targets.py)
+    if not met:
+        return None, reason
 
     plan_by_id = {}
     for plan in plans:
@@ -176,14 +164,16 @@ def assess(results: list[dict], plans: list[dict], incident_id: str,
             sources.extend((source, PurePosixPath(source).with_suffix(".provenance.json").as_posix()))
         if any(inputs != shared_inputs[0] for inputs in shared_inputs[1:]):
             raise ValueError("Compared runs used different simulation inputs.")
-        _, winner, _, _ = select(checked, artifacts)
+        ranking = load_ranking(by_id["P0"]["run_id"], Path(results_dir).parent / "rankings")
+        _, winner, _, _ = select(checked, artifacts, ranking)
     except (OSError, ValueError, KeyError, TypeError, jsonschema.ValidationError) as exc:
         return None, str(exc).splitlines()[0]
     return {"runs": by_id, "plans": plan_by_id, "winner": winner,
             "baseline": by_id["P0"], "validation": validation,
             "scenario": key, "incident_id": incident_id,
             "sources": sorted(sources), "simulation_inputs": shared_inputs[0],
-            "generation_inputs_sha256": json_hash(generation_inputs)}, ""
+            "generation_inputs_sha256": json_hash(generation_inputs),
+            "ranking_cells": len(ranking["cells"]) if targets.is_version_2(validation) else None}, ""
 
 
 def load_comparison(results_dir: Path, plans_dir: Path, incident_id: str,

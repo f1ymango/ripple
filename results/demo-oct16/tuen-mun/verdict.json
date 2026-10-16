@@ -1,0 +1,23 @@
+{
+ "incident_id": "IN-26-02615",
+ "plan_set": "lead-capacity-oct15",
+ "why_this_case": "the modelled case: the team's ranking puts the Lead's frozen 11% P2 before P0 and P1 over 18 cells",
+ "cell": {
+  "compliance": 0.5,
+  "clearance_min": 59.0,
+  "seed": 2029
+ },
+ "copied_from": {
+  "results": "results/tuen-mun-lead-grid-oct15-p0x-merge-at-site",
+  "plans": "data/generated-plans/IN-26-02615-lead-capacity-oct15",
+  "ranking": "results/rankings/lead-capacity-oct15-p0x-merge-at-site.json"
+ },
+ "console_recommends": "P2",
+ "console_reason_if_none": null,
+ "simulated_total_delay_vehicle_hours": {
+  "P0": 1300.6,
+  "P1": 1545.9,
+  "P2": 1235.1
+ },
+ "generated_by": "python scripts/demo_pack.py"
+}

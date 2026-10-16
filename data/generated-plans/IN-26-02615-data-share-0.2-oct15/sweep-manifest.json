@@ -1,0 +1,6 @@
+{
+  "derived_from": "data/generated-plans/IN-26-02615-lead-capacity-oct15",
+  "p2_share": 0.2,
+  "generated_by": "python scripts/tuen_mun/share_sweep_plans.py",
+  "status": "diagnostic for calibration seeds 2026-2028 only; not a Ripple plan set"
+}

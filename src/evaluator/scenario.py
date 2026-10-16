@@ -12,7 +12,10 @@ Four blocks are optional. A scenario without them runs exactly as before:
   vehicles        the mean vehicle length, which sets how much road a queue takes.
   drivers_leave   drivers who see the queue ahead of an exit take that exit.
   plan_actions    where a plan's od groups, routes and junctions are in this
-                  network. Without it E can only run P0.
+                  network. Without it E can only run P0. A route leaves the
+                  driver's road at the od group's via_edge, or earlier at
+                  `leaves_at`, and either replaces the edges it names or, with
+                  `rejoin`, whatever the driver's route has up to that edge.
 """
 import hashlib
 import re
@@ -44,8 +47,13 @@ SCENE = optional(obj({
     "passing_kmh": POSITIVE,                 # the open lanes of the closed edge while another lane is closed
     "crawl_kmh": POSITIVE,                   # the approach while every lane is closed
     "move_over_at_edges": EDGES,             # where drivers learn a lane ahead is closed; default reroute_at_edges
-    "reopening": obj({"lanes": LANES, "minutes": POSITIVE, "approach_kmh": POSITIVE}),
-}), "move_over_at_edges", "reopening")
+    "reopening": optional(obj({"lanes": LANES, "minutes": POSITIVE, "approach_kmh": POSITIVE,
+                               "edge_kmh": POSITIVE}), "edge_kmh"),   # edge_kmh: the open lane's speed meanwhile
+    "let_in_after_seconds": POSITIVE,        # a driver stopped this long at the end of a lane that leads nowhere on its way is let in
+    "let_in_edges": EDGES,                   # where else that applies, e.g. along the queue; always the approach and reroute edges
+    "committed_edges": EDGES,                # drivers here in a lane onto the closed edge when every lane shuts go on over it
+    "merge_in_turn": {"type": "boolean"},    # drivers from a lane shut ahead move over at the approach's end in turn (a zipper)
+}), "move_over_at_edges", "reopening", "let_in_after_seconds", "let_in_edges", "committed_edges", "merge_in_turn")
 DRIVERS_LEAVE = optional(obj({
     "share": SHARE,                          # of the drivers who see the queue at an exit
     "queue_kmh": POSITIVE,                   # traffic ahead slower than this is a queue
@@ -55,9 +63,15 @@ DRIVERS_LEAVE = optional(obj({
     "entry": obj({"edge": NAME, "after_waiting_seconds": POSITIVE}),
     "extra_minutes_outside": {"type": "number", "minimum": 0},
 }), "entry")
+ROUTE = optional(obj({
+    "leaves_at": NAME,                       # where the route leaves the driver's road; default the od group's via_edge
+    "replace": EDGES,                        # the driver's edges it replaces, from leaves_at on ...
+    "rejoin": NAME,                          # ... or the edge where it meets the driver's road again, whatever is between
+    "with": EDGES,
+}), "leaves_at", "replace", "rejoin")
 PLAN_ACTIONS = obj({
     "od_groups": named(obj({"via_edge": NAME, "to_edge": NAME})),
-    "routes": named(obj({"replace": EDGES, "with": EDGES})),
+    "routes": named(ROUTE),
     "signals": named(obj({"tls_id": NAME, "green_phases": array({"type": "integer", "minimum": 0}, minItems=1)})),
 })
 SCENARIO_SCHEMA = obj({
@@ -149,6 +163,11 @@ def load(path):
     if "detour" in closure and ("reroute_at_edges" not in closure
                                 or closure["detour"]["replace"][0] != closure["edge_id"]):
         raise ValueError("closure.detour needs reroute_at_edges and must replace the closed edge onwards")
+    for name, route in scenario.get("plan_actions", {}).get("routes", {}).items():
+        if ("replace" in route) == ("rejoin" in route):
+            raise ValueError(f"Plan route {name!r} needs either replace or rejoin, not both or neither")
+        if route.get("rejoin") in route["with"]:
+            raise ValueError(f"Plan route {name!r}: its edges end before the rejoin edge")
     return scenario
 
 
@@ -219,7 +238,8 @@ def scene_speeds(scenario, clearance_min, now):
     closed: nobody new gets onto the edge (they are turned off at
     `reroute_at_edges`), the few already on it leave at the same speed, and
     the approach crawls past the scene. Some lanes still closed after the first
-    one reopens: the edge runs freely and the approach at the reopening speed.
+    one reopens: the edge runs at the reopening's `edge_kmh` (freely if it has
+    none) and the approach at the reopening speed.
     """
     closure, scene = scenario["closure"], scenario["closure"]["scene"]
     steps = closure_steps(scenario, clearance_min)
@@ -229,7 +249,7 @@ def scene_speeds(scenario, clearance_min, now):
     if closed and now < reopen_second(scenario, clearance_min):
         return scene["passing_kmh"], scene["open_kmh"]
     if closed:
-        return scene["open_kmh"], scene["reopening"]["approach_kmh"]
+        return scene["reopening"].get("edge_kmh", scene["open_kmh"]), scene["reopening"]["approach_kmh"]
     return scene["open_kmh"], scene["open_kmh"]
 
 

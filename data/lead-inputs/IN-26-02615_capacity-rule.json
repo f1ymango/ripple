@@ -1,0 +1,11 @@
+{
+  "incident_id": "IN-26-02615",
+  "od_group": "Tsuen Wan & Ting Kau->Tuen Mun",
+  "via": "Castle Peak Road",
+  "estimated_spare_veh_h": 260,
+  "max_compliance": 0.7,
+  "reserve_fraction": 0.2,
+  "share_step": 0.01,
+  "source": "docs/tuen-mun-p1-p2-protocol-2026-10-14.md (fixed-time Sham Tseng exit sensitivity; model estimate, not a TD timing)",
+  "note": "Bound share = estimated spare capacity after reserve / (eligible demand rate x maximum tested compliance), rounded down to share_step. Earlier 30% rehearsal results were seen before this rule was set; fresh seeds remain an exploratory confirmation."
+}

@@ -1,0 +1,29 @@
+{
+  "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed2_lead-draft-20261013-b",
+  "plan_id": "P0",
+  "incident_id": "IN-26-03365",
+  "scenario": {
+    "compliance": 0.5,
+    "clearance_min": 66.0,
+    "seed": 2
+  },
+  "metrics": {
+    "total_vehicle_hours_delay": 811.7,
+    "delay_vs_do_nothing_pct": 0,
+    "max_queue_m": {
+      "AID01103": 1094
+    },
+    "corridor_tt_p95_min": 29.0,
+    "emergency_tt_min": 2.8,
+    "co2_kg": 14285,
+    "residential_delay_share_pct": 0.0,
+    "vehicles_completed": 27132
+  },
+  "validation": {
+    "geh_under_5_pct": 92.62,
+    "speed_mape_pct": 23.75,
+    "speed_mape_free_flow_pct": 13.07,
+    "congestion_state_agreement_pct": 93.64,
+    "wrong_lane_teleports_other": 0
+  }
+}

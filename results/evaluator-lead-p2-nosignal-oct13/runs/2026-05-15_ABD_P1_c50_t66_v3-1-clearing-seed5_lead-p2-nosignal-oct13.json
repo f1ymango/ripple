@@ -1,0 +1,23 @@
+{
+  "run_id": "2026-05-15_ABD_P1_c50_t66_v3-1-clearing-seed5_lead-p2-nosignal-oct13",
+  "plan_id": "P1",
+  "incident_id": "IN-26-03365",
+  "scenario": {
+    "compliance": 0.5,
+    "clearance_min": 66.0,
+    "seed": 5
+  },
+  "metrics": {
+    "total_vehicle_hours_delay": 906.5,
+    "delay_vs_do_nothing_pct": 12.9,
+    "max_queue_m": {
+      "AID01103": 1092
+    },
+    "corridor_tt_p95_min": 33.5,
+    "emergency_tt_min": 2.8,
+    "co2_kg": 14452,
+    "residential_delay_share_pct": 0.0,
+    "vehicles_completed": 27034
+  },
+  "validation": {}
+}

@@ -1,0 +1,7020 @@
+[
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-middle-open-s2027_p0-only",
+  "validation": {
+   "geh_under_5_pct": 87.5,
+   "speed_mape_pct": 32.68,
+   "speed_mape_free_flow_pct": 14.14,
+   "congestion_state_agreement_pct": 90.93,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1284.0,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 47,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 50.6
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 211,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 59.5
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1043,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 40.9
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 68,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 44.7
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1318,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 56.6
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:30",
+     "18:55",
+     6
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:25",
+     "18:55",
+     5
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     8
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     5
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": null
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": null
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:25",
+     "18:25",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": null
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:20",
+     "18:20",
+     1
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:20",
+     "18:35",
+     4
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 32,
+   "both": 17
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 42.9
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 36.1,
+    "bins_with_all_three_lanes": 36,
+    "nearside_lane_share_of_vehicles_pct": 46.5
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3768,
+    6972,
+    5244
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1470,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.11
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1470,
+   "Castle Peak Rd westbound after Sham Tseng": 2097,
+   "Siu Lam on-slip to Tuen Mun Rd": 908
+  },
+  "entry": {
+   "hours_waiting_to_enter": 3.6,
+   "by_entry_edge": {
+    "1184210836": 2.2,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 3
+   },
+   "by_edge": {
+    "52155204": 2,
+    ":1701670722_1": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18687,
+   "still_driving_at_end": 636,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 105,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 342
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-middle-open-s2028_p0-only",
+  "validation": {
+   "geh_under_5_pct": 87.79,
+   "speed_mape_pct": 32.82,
+   "speed_mape_free_flow_pct": 13.98,
+   "congestion_state_agreement_pct": 91.79,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1247.0,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 7,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 60.4
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 185,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 58.5
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1017,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 39.8
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 29,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 45.8
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1274,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 55.0
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "18:55",
+     5
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:25",
+     "18:55",
+     4
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     8
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     6
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": null
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     3
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     3
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     3
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     3
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 39,
+   "both": 25
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 44.2
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 37.6,
+    "bins_with_all_three_lanes": 35,
+    "nearside_lane_share_of_vehicles_pct": 46.1
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4068,
+    6900,
+    4992
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.1
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2101,
+   "Siu Lam on-slip to Tuen Mun Rd": 905
+  },
+  "entry": {
+   "hours_waiting_to_enter": 8.5,
+   "by_entry_edge": {
+    "1184210836": 7.0,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 9,
+    "wrong lane": 1
+   },
+   "by_edge": {
+    "52155204": 5,
+    ":1701670722_1": 2,
+    "645999370": 2,
+    ":6070929088_0": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18695,
+   "still_driving_at_end": 628,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 121,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 369
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-middle-open_p0-only",
+  "validation": {
+   "geh_under_5_pct": 89.28,
+   "speed_mape_pct": 33.07,
+   "speed_mape_free_flow_pct": 14.16,
+   "congestion_state_agreement_pct": 91.22,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1289.3,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 57,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 40.2
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 226,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 60.4
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1077,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 40.8
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 71,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 44.4
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1324,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 53.6
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:20",
+     "18:50",
+     7
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:20",
+     "18:50",
+     7
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     8
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "18:25",
+     3
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": null
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:05",
+     "18:05",
+     1
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     3
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     3
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     3
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:20",
+     "18:35",
+     4
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:20",
+     "18:35",
+     4
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 45,
+   "both": 25
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 42.6
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 38.7,
+    "bins_with_all_three_lanes": 36,
+    "nearside_lane_share_of_vehicles_pct": 47.9
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4068,
+    6936,
+    5052
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.11
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2097,
+   "Siu Lam on-slip to Tuen Mun Rd": 907
+  },
+  "entry": {
+   "hours_waiting_to_enter": 2.8,
+   "by_entry_edge": {
+    "1184210836": 1.4,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 4
+   },
+   "by_edge": {
+    "52155204": 2,
+    ":1701670722_1": 1,
+    "645999370": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18691,
+   "still_driving_at_end": 632,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 114,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 325
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-no-residual-s2027_p0-only",
+  "validation": {
+   "geh_under_5_pct": 83.92,
+   "speed_mape_pct": 32.76,
+   "speed_mape_free_flow_pct": 15.07,
+   "congestion_state_agreement_pct": 91.69,
+   "wrong_lane_teleports_other": 1
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 2382.4,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 1199,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 69.6
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 1232,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 72.3
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 2056,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 62.3
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 1085,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 52.9
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 2333,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 69.8
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:20",
+     "18:55",
+     5
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     9
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:50",
+     9
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:05",
+     "19:05",
+     13
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:40",
+     "18:40",
+     1
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:40",
+     "18:40",
+     1
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     3
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:20",
+     "18:40",
+     5
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 54,
+   "both": 32
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 44.3
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 37.7,
+    "bins_with_all_three_lanes": 36,
+    "nearside_lane_share_of_vehicles_pct": 31.9
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4128,
+    6768,
+    5148
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1610,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.11
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1610,
+   "Castle Peak Rd westbound after Sham Tseng": 2155,
+   "Siu Lam on-slip to Tuen Mun Rd": 909
+  },
+  "entry": {
+   "hours_waiting_to_enter": 857.6,
+   "by_entry_edge": {
+    "1184210836": 856.1,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 3,
+    "wrong lane": 1
+   },
+   "by_edge": {
+    "52155204": 2,
+    "645999370": 2
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 1
+  },
+  "ledger": {
+   "loaded": 20465,
+   "inserted": 20465,
+   "waiting_at_end": 0,
+   "arrived": 19789,
+   "still_driving_at_end": 676,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 156,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 281
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-no-residual-s2028_p0-only",
+  "validation": {
+   "geh_under_5_pct": 86.3,
+   "speed_mape_pct": 32.37,
+   "speed_mape_free_flow_pct": 14.85,
+   "congestion_state_agreement_pct": 92.55,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 2140.2,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 1084,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 71.4
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 1118,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 78.1
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1958,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 60.3
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 964,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 49.1
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 2217,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 66.8
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:50",
+     "18:50",
+     1
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:30",
+     "18:55",
+     6
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     9
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "19:05",
+     12
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": null
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:30",
+     "18:30",
+     1
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:25",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:25",
+     "18:30",
+     2
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:25",
+     "18:30",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:20",
+     "18:40",
+     5
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 44,
+   "both": 31
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 44.1
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 36.8,
+    "bins_with_all_three_lanes": 35,
+    "nearside_lane_share_of_vehicles_pct": 31.4
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3888,
+    6864,
+    5040
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1610,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.11
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1610,
+   "Castle Peak Rd westbound after Sham Tseng": 2155,
+   "Siu Lam on-slip to Tuen Mun Rd": 907
+  },
+  "entry": {
+   "hours_waiting_to_enter": 652.5,
+   "by_entry_edge": {
+    "1184210836": 651.0,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 7
+   },
+   "by_edge": {
+    "52155204": 5,
+    ":6070929088_0": 1,
+    "645999370": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 20465,
+   "inserted": 20465,
+   "waiting_at_end": 0,
+   "arrived": 19831,
+   "still_driving_at_end": 634,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 212,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 343
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-no-residual_p0-only",
+  "validation": {
+   "geh_under_5_pct": 85.71,
+   "speed_mape_pct": 32.4,
+   "speed_mape_free_flow_pct": 15.27,
+   "congestion_state_agreement_pct": 91.31,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is above the free-flow speed error target.",
+  "delay_vehicle_hours_E": 2313.7,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 1172,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 74.2
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 1205,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 79.0
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 2057,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 63.1
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 1055,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 52.1
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 2307,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 64.9
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:20",
+     "18:55",
+     8
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     8
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     9
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:05",
+     "19:05",
+     13
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:05",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:05",
+     "18:40",
+     2
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:30",
+     "18:40",
+     2
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:00",
+     "18:40",
+     6
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 57,
+   "both": 31
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 42.8
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 36.1,
+    "bins_with_all_three_lanes": 35,
+    "nearside_lane_share_of_vehicles_pct": 32.3
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3972,
+    6876,
+    5136
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1609,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.11
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1609,
+   "Castle Peak Rd westbound after Sham Tseng": 2156,
+   "Siu Lam on-slip to Tuen Mun Rd": 904
+  },
+  "entry": {
+   "hours_waiting_to_enter": 743.3,
+   "by_entry_edge": {
+    "1184210836": 741.8,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 4,
+    "wrong lane": 1
+   },
+   "by_edge": {
+    "52155204": 3,
+    "645999370": 1,
+    "1344086463": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 20465,
+   "inserted": 20465,
+   "waiting_at_end": 0,
+   "arrived": 19835,
+   "still_driving_at_end": 630,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 171,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 293
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-reference-s2027_p0-only",
+  "validation": {
+   "geh_under_5_pct": 85.11,
+   "speed_mape_pct": 32.94,
+   "speed_mape_free_flow_pct": 14.66,
+   "congestion_state_agreement_pct": 91.88,
+   "wrong_lane_teleports_other": 1
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline had a wrong-lane teleport other than at a lane shutting or in a jam.",
+  "delay_vehicle_hours_E": 1346.1,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 127,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 60.3
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 293,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 67.3
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1125,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 42.4
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 150,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 44.9
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1400,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 58.7
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:30",
+     "18:50",
+     5
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     6
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:55",
+     8
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:05",
+     "18:55",
+     11
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": null
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:30",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:20",
+     "18:40",
+     5
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 46,
+   "both": 30
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 44.7
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 36.2,
+    "bins_with_all_three_lanes": 33,
+    "nearside_lane_share_of_vehicles_pct": 35.0
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3804,
+    6960,
+    4980
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1470,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.12
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1470,
+   "Castle Peak Rd westbound after Sham Tseng": 2095,
+   "Siu Lam on-slip to Tuen Mun Rd": 908
+  },
+  "entry": {
+   "hours_waiting_to_enter": 6.0,
+   "by_entry_edge": {
+    "1184210836": 4.6,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 11,
+    "wrong lane": 1
+   },
+   "by_edge": {
+    "1344086462": 3,
+    ":6070929088_0": 2,
+    "1344086460": 2,
+    "52155204": 1,
+    "157931300#0": 1,
+    "1344086463": 1,
+    "1344086464": 1,
+    "645999370": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 1
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18686,
+   "still_driving_at_end": 637,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 87,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 278
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-reference-s2028_p0-only",
+  "validation": {
+   "geh_under_5_pct": 87.79,
+   "speed_mape_pct": 33.1,
+   "speed_mape_free_flow_pct": 14.34,
+   "congestion_state_agreement_pct": 92.08,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1264.4,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 59,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 61.0
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 237,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 62.4
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1069,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 40.1
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 81,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 45.0
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1326,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 55.4
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:45",
+     "18:55",
+     3
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:25",
+     "18:55",
+     6
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     9
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "18:50",
+     9
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:45",
+     "18:45",
+     1
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": null
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:25",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:25",
+     "18:30",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:20",
+     "18:40",
+     4
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 43,
+   "both": 28
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 44.9
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 37.3,
+    "bins_with_all_three_lanes": 36,
+    "nearside_lane_share_of_vehicles_pct": 32.3
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3936,
+    6960,
+    5112
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.11
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2101,
+   "Siu Lam on-slip to Tuen Mun Rd": 906
+  },
+  "entry": {
+   "hours_waiting_to_enter": 8.6,
+   "by_entry_edge": {
+    "1184210836": 7.2,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 6
+   },
+   "by_edge": {
+    "52155204": 4,
+    ":6070929088_0": 1,
+    "645999370": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18698,
+   "still_driving_at_end": 625,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 126,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 312
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-reference_p0-only",
+  "validation": {
+   "geh_under_5_pct": 87.2,
+   "speed_mape_pct": 31.98,
+   "speed_mape_free_flow_pct": 14.72,
+   "congestion_state_agreement_pct": 92.16,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1337.6,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 120,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 64.4
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 294,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 71.0
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1145,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 42.6
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 139,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 44.3
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1392,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 56.8
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:30",
+     "18:55",
+     6
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:15",
+     "18:45",
+     5
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     6
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:05",
+     "18:50",
+     10
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:45",
+     2
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": null
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:10",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:10",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:10",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:35",
+     3
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:00",
+     "18:40",
+     6
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 49,
+   "both": 32
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 40.2
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 33.0,
+    "bins_with_all_three_lanes": 32,
+    "nearside_lane_share_of_vehicles_pct": 34.7
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4356,
+    6720,
+    5124
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.1
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2098,
+   "Siu Lam on-slip to Tuen Mun Rd": 907
+  },
+  "entry": {
+   "hours_waiting_to_enter": 3.6,
+   "by_entry_edge": {
+    "1184210836": 2.1,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 14,
+    "wrong lane": 3
+   },
+   "by_edge": {
+    "1344086460": 6,
+    "52155204": 4,
+    "645999370": 3,
+    "1344086461": 1,
+    ":6070929088_0": 1,
+    "157931300#0": 1,
+    "1344086459": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18693,
+   "still_driving_at_end": 630,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 102,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 269
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-scene-down-s2027_p0-only",
+  "validation": {
+   "geh_under_5_pct": 86.3,
+   "speed_mape_pct": 33.85,
+   "speed_mape_free_flow_pct": 14.75,
+   "congestion_state_agreement_pct": 91.31,
+   "wrong_lane_teleports_other": 1
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline had a wrong-lane teleport other than at a lane shutting or in a jam.",
+  "delay_vehicle_hours_E": 1317.6,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 102,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 50.9
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 266,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 59.2
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1080,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 41.4
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 123,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 45.3
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1373,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 58.4
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "18:50",
+     5
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:25",
+     "18:45",
+     5
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:50",
+     9
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:05",
+     "18:50",
+     10
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": null
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": null
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:30",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     2
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 40,
+   "both": 23
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 45.7
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 39.9,
+    "bins_with_all_three_lanes": 36,
+    "nearside_lane_share_of_vehicles_pct": 32.7
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4440,
+    6672,
+    5172
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1470,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.12
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1470,
+   "Castle Peak Rd westbound after Sham Tseng": 2097,
+   "Siu Lam on-slip to Tuen Mun Rd": 908
+  },
+  "entry": {
+   "hours_waiting_to_enter": 4.4,
+   "by_entry_edge": {
+    "1184210836": 2.9,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 3,
+    "wrong lane": 1
+   },
+   "by_edge": {
+    ":6070929088_0": 2,
+    "645999370": 2
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 1
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18688,
+   "still_driving_at_end": 635,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 96,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 296
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-scene-down-s2028_p0-only",
+  "validation": {
+   "geh_under_5_pct": 87.5,
+   "speed_mape_pct": 32.23,
+   "speed_mape_free_flow_pct": 14.57,
+   "congestion_state_agreement_pct": 91.88,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1312.1,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 112,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 55.0
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 293,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 62.7
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1109,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 42.0
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 137,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 46.0
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1382,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 58.2
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:45",
+     "18:55",
+     3
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:20",
+     "18:55",
+     8
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     9
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "18:55",
+     10
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:30",
+     "18:30",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:30",
+     "18:30",
+     1
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:25",
+     "18:30",
+     2
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:25",
+     "18:30",
+     2
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:25",
+     "18:30",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:20",
+     "18:30",
+     3
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 43,
+   "both": 27
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 43.2
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 35.9,
+    "bins_with_all_three_lanes": 35,
+    "nearside_lane_share_of_vehicles_pct": 31.6
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4116,
+    6876,
+    4968
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.11
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2099,
+   "Siu Lam on-slip to Tuen Mun Rd": 905
+  },
+  "entry": {
+   "hours_waiting_to_enter": 8.5,
+   "by_entry_edge": {
+    "1184210836": 7.0,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 18,
+    "wrong lane": 1
+   },
+   "by_edge": {
+    "1344086460": 5,
+    "52155204": 4,
+    "1344086462": 4,
+    "645999370": 3,
+    ":1701670722_1": 1,
+    "1344086461": 1,
+    "1344086465": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18694,
+   "still_driving_at_end": 629,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 110,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 272
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-scene-down_p0-only",
+  "validation": {
+   "geh_under_5_pct": 88.39,
+   "speed_mape_pct": 33.34,
+   "speed_mape_free_flow_pct": 14.84,
+   "congestion_state_agreement_pct": 91.6,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1338.9,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 150,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 60.8
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 319,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 65.2
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1158,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 44.5
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 164,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 45.4
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1417,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 57.1
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:30",
+     "18:55",
+     5
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     7
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     8
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "18:50",
+     9
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": null
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:30",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     3
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 43,
+   "both": 26
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 44.7
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 38.8,
+    "bins_with_all_three_lanes": 36,
+    "nearside_lane_share_of_vehicles_pct": 33.2
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4128,
+    6876,
+    5136
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.1
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2098,
+   "Siu Lam on-slip to Tuen Mun Rd": 907
+  },
+  "entry": {
+   "hours_waiting_to_enter": 2.9,
+   "by_entry_edge": {
+    "1184210836": 1.4,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 8
+   },
+   "by_edge": {
+    "1344086460": 3,
+    "52155204": 2,
+    "1344086462": 1,
+    "1344086461": 1,
+    "1344086463": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18692,
+   "still_driving_at_end": 631,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 91,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 255
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-scene-up-s2027_p0-only",
+  "validation": {
+   "geh_under_5_pct": 85.41,
+   "speed_mape_pct": 33.32,
+   "speed_mape_free_flow_pct": 14.71,
+   "congestion_state_agreement_pct": 91.79,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1308.0,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 101,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 59.9
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 265,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 68.2
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1097,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 42.0
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 122,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 44.9
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1372,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 57.1
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:20",
+     "18:50",
+     2
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     6
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:55",
+     10
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "18:55",
+     10
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": null
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:05",
+     "18:05",
+     1
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "17:50",
+     "18:40",
+     11
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 47,
+   "both": 27
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 44.6
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 37.1,
+    "bins_with_all_three_lanes": 36,
+    "nearside_lane_share_of_vehicles_pct": 32.0
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3672,
+    6900,
+    5040
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1470,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.11
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1470,
+   "Castle Peak Rd westbound after Sham Tseng": 2097,
+   "Siu Lam on-slip to Tuen Mun Rd": 908
+  },
+  "entry": {
+   "hours_waiting_to_enter": 6.0,
+   "by_entry_edge": {
+    "1184210836": 4.5,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 10,
+    "wrong lane": 1
+   },
+   "by_edge": {
+    "52155204": 3,
+    "1344086462": 3,
+    "1344086460": 2,
+    "157931300#0": 2,
+    "645999370": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18690,
+   "still_driving_at_end": 633,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 96,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 297
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-scene-up-s2028_p0-only",
+  "validation": {
+   "geh_under_5_pct": 87.2,
+   "speed_mape_pct": 32.47,
+   "speed_mape_free_flow_pct": 14.33,
+   "congestion_state_agreement_pct": 92.17,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1281.9,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 89,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 54.1
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 267,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 62.1
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1099,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 39.9
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 111,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 43.5
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1356,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 56.4
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:30",
+     "18:50",
+     5
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:25",
+     "18:45",
+     5
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     8
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "18:50",
+     8
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": null
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": null
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:35",
+     "18:40",
+     2
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:25",
+     "18:40",
+     4
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "17:50",
+     "18:40",
+     11
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 49,
+   "both": 31
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 43.7
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 36.5,
+    "bins_with_all_three_lanes": 35,
+    "nearside_lane_share_of_vehicles_pct": 33.7
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4152,
+    6792,
+    5184
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.11
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2101,
+   "Siu Lam on-slip to Tuen Mun Rd": 906
+  },
+  "entry": {
+   "hours_waiting_to_enter": 8.5,
+   "by_entry_edge": {
+    "1184210836": 7.0,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 4
+   },
+   "by_edge": {
+    "52155204": 3,
+    ":1701670722_1": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18694,
+   "still_driving_at_end": 629,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 115,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 293
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-scene-up_p0-only",
+  "validation": {
+   "geh_under_5_pct": 87.79,
+   "speed_mape_pct": 32.21,
+   "speed_mape_free_flow_pct": 14.65,
+   "congestion_state_agreement_pct": 91.6,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1332.9,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 123,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 55.7
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 292,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 64.4
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1143,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 43.8
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 137,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 44.4
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1390,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 56.1
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "18:55",
+     6
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:25",
+     "18:50",
+     6
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:55",
+     10
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:05",
+     "18:55",
+     11
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:05",
+     "18:05",
+     1
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": null
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:30",
+     "18:30",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:35",
+     "18:40",
+     2
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:25",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "17:50",
+     "18:40",
+     11
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 52,
+   "both": 29
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 43.3
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 37.9,
+    "bins_with_all_three_lanes": 34,
+    "nearside_lane_share_of_vehicles_pct": 32.7
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3876,
+    6864,
+    5160
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.1
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2098,
+   "Siu Lam on-slip to Tuen Mun Rd": 906
+  },
+  "entry": {
+   "hours_waiting_to_enter": 3.4,
+   "by_entry_edge": {
+    "1184210836": 2.0,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 4
+   },
+   "by_edge": {
+    "52155204": 3,
+    "645999370": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18691,
+   "still_driving_at_end": 632,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 108,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 265
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-td-text-s2027_p0-only",
+  "validation": {
+   "geh_under_5_pct": 77.38,
+   "speed_mape_pct": 33.26,
+   "speed_mape_free_flow_pct": 15.47,
+   "congestion_state_agreement_pct": 90.83,
+   "wrong_lane_teleports_other": 1
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 1889.3,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": -150,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 95.7
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 15,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 77.5
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 847,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 54.1
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": -128,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 56.3
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1122,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 63.9
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:30",
+     "18:50",
+     5
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:15",
+     "18:45",
+     5
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:50",
+     9
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:05",
+     "19:20",
+     16
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:35",
+     3
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:10",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": null
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": null
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:25",
+     "18:25",
+     1
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": null
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": null
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": null
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 41,
+   "both": 25
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 47.2
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 46.7,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 13.4
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4056,
+    5688,
+    4968
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1470,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.12
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1470,
+   "Castle Peak Rd westbound after Sham Tseng": 2097,
+   "Siu Lam on-slip to Tuen Mun Rd": 908
+  },
+  "entry": {
+   "hours_waiting_to_enter": 144.5,
+   "by_entry_edge": {
+    "1184210836": 128.2,
+    "107646978#1": 15.9,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 20,
+    "wrong lane": 1
+   },
+   "by_edge": {
+    "52155204": 6,
+    "1344086462": 3,
+    "645999370": 3,
+    ":6070929088_0": 2,
+    "1344086463": 2,
+    "1344086460": 2,
+    "157931300#0": 1,
+    "1344086464": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 1
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19105,
+   "waiting_at_end": 0,
+   "arrived": 18471,
+   "still_driving_at_end": 634,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 96,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 329,
+    "107646978#1": 218
+   },
+   "balances": false
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-td-text-s2028_p0-only",
+  "validation": {
+   "geh_under_5_pct": 78.27,
+   "speed_mape_pct": 35.24,
+   "speed_mape_free_flow_pct": 15.34,
+   "congestion_state_agreement_pct": 90.45,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 1835.6,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": -143,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 86.5
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 35,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 73.0
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 867,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 55.5
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": -121,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 57.1
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1124,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 64.6
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "18:45",
+     5
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:20",
+     "18:45",
+     5
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     8
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "19:20",
+     15
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": null
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:15",
+     "18:15",
+     1
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": null
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": null
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": null
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": null
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": null
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:20",
+     "18:20",
+     1
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 35,
+   "both": 21
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 51.8
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 53.1,
+    "bins_with_all_three_lanes": 34,
+    "nearside_lane_share_of_vehicles_pct": 8.1
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4032,
+    5832,
+    5052
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.1
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2100,
+   "Siu Lam on-slip to Tuen Mun Rd": 905
+  },
+  "entry": {
+   "hours_waiting_to_enter": 153.9,
+   "by_entry_edge": {
+    "1184210836": 141.5,
+    "107646978#1": 12.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 20
+   },
+   "by_edge": {
+    "52155204": 6,
+    "645999370": 5,
+    "1344086460": 4,
+    "1344086462": 3,
+    ":6070929088_0": 1,
+    "1344086461": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19215,
+   "waiting_at_end": 0,
+   "arrived": 18586,
+   "still_driving_at_end": 629,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 152,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 380,
+    "107646978#1": 108
+   },
+   "balances": false
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0v-td-text_p0-only",
+  "validation": {
+   "geh_under_5_pct": 78.86,
+   "speed_mape_pct": 32.53,
+   "speed_mape_free_flow_pct": 15.32,
+   "congestion_state_agreement_pct": 91.02,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 1850.8,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": -230,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 99.0
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": -53,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 85.7
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 798,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 55.5
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": -208,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 54.9
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1045,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 60.6
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:20",
+     "18:45",
+     6
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:15",
+     "18:45",
+     5
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:45",
+     7
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:05",
+     "19:15",
+     15
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:30",
+     "18:40",
+     2
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:10",
+     "18:25",
+     2
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:10",
+     "18:40",
+     2
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:00",
+     "18:00",
+     1
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 46,
+   "both": 28
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 43.0
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 46.3,
+    "bins_with_all_three_lanes": 28,
+    "nearside_lane_share_of_vehicles_pct": 10.5
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4044,
+    5700,
+    5112
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.11
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2098,
+   "Siu Lam on-slip to Tuen Mun Rd": 907
+  },
+  "entry": {
+   "hours_waiting_to_enter": 134.2,
+   "by_entry_edge": {
+    "1184210836": 115.0,
+    "107646978#1": 18.8,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 25,
+    "wrong lane": 6
+   },
+   "by_edge": {
+    "1344086460": 10,
+    "52155204": 7,
+    "645999370": 7,
+    "1344086461": 2,
+    ":6070929088_0": 1,
+    "157931300#0": 1,
+    "1344086459": 1,
+    "1344086462": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19033,
+   "waiting_at_end": 0,
+   "arrived": 18402,
+   "still_driving_at_end": 631,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 120,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 308,
+    "107646978#1": 290
+   },
+   "balances": false
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0x-merge-at-site-s2027_p0-only",
+  "validation": {
+   "geh_under_5_pct": 87.79,
+   "speed_mape_pct": 31.27,
+   "speed_mape_free_flow_pct": 13.86,
+   "congestion_state_agreement_pct": 92.17,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1234.2,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 49,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 42.0
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 213,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 54.4
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1045,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 37.6
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 70,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 44.2
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1320,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 56.0
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "18:50",
+     2
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:25",
+     "18:50",
+     6
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     8
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:15",
+     "18:50",
+     8
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:15",
+     "18:45",
+     2
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": null
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:40",
+     "18:40",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:30",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:05",
+     "18:35",
+     5
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 39,
+   "both": 26
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 41.4
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 36.1,
+    "bins_with_all_three_lanes": 36,
+    "nearside_lane_share_of_vehicles_pct": 30.4
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4188,
+    6540,
+    5532
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1470,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.12
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1470,
+   "Castle Peak Rd westbound after Sham Tseng": 2097,
+   "Siu Lam on-slip to Tuen Mun Rd": 908
+  },
+  "entry": {
+   "hours_waiting_to_enter": 3.6,
+   "by_entry_edge": {
+    "1184210836": 2.2,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 6,
+    "wrong lane": 1
+   },
+   "by_edge": {
+    "52155204": 4,
+    "645999370": 2,
+    "1344086460": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18690,
+   "still_driving_at_end": 633,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 110,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 335
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0x-merge-at-site-s2028_p0-only",
+  "validation": {
+   "geh_under_5_pct": 89.28,
+   "speed_mape_pct": 31.39,
+   "speed_mape_free_flow_pct": 13.8,
+   "congestion_state_agreement_pct": 91.69,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1242.9,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 82,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 45.2
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 259,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 51.8
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1092,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 35.0
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 104,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 41.7
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1349,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 52.9
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:50",
+     "18:50",
+     1
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:20",
+     "18:50",
+     7
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:20",
+     "18:50",
+     7
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "18:50",
+     9
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": null
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": null
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:30",
+     "18:35",
+     2
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:30",
+     "18:30",
+     1
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:25",
+     "18:40",
+     3
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 33,
+   "both": 22
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 42.7
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 37.2,
+    "bins_with_all_three_lanes": 35,
+    "nearside_lane_share_of_vehicles_pct": 28.3
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    4188,
+    5676,
+    6348
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.1
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2099,
+   "Siu Lam on-slip to Tuen Mun Rd": 904
+  },
+  "entry": {
+   "hours_waiting_to_enter": 8.5,
+   "by_entry_edge": {
+    "1184210836": 7.0,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 6
+   },
+   "by_edge": {
+    "52155204": 3,
+    ":1701670722_1": 3
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18693,
+   "still_driving_at_end": 630,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 111,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 304
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0x-merge-at-site_p0-only",
+  "validation": {
+   "geh_under_5_pct": 88.69,
+   "speed_mape_pct": 31.28,
+   "speed_mape_free_flow_pct": 13.95,
+   "congestion_state_agreement_pct": 91.88,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": true,
+  "validation_reason": "",
+  "delay_vehicle_hours_E": 1306.4,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": 95,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 45.7
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 263,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 59.7
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1115,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 39.4
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 109,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 40.6
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1362,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 51.8
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "18:55",
+     4
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:20",
+     "18:50",
+     6
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     9
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     9
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": null
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:35",
+     "18:40",
+     2
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:35",
+     "18:35",
+     1
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:30",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "18:20",
+     "18:35",
+     4
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 41,
+   "both": 26
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 42.4
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 36.8,
+    "bins_with_all_three_lanes": 34,
+    "nearside_lane_share_of_vehicles_pct": 28.0
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3600,
+    6120,
+    6216
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.1
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2099,
+   "Siu Lam on-slip to Tuen Mun Rd": 907
+  },
+  "entry": {
+   "hours_waiting_to_enter": 2.9,
+   "by_entry_edge": {
+    "1184210836": 1.4,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 12
+   },
+   "by_edge": {
+    "52155204": 4,
+    ":1701670722_1": 3,
+    "1344086459": 2,
+    "645999370": 1,
+    ":6070929088_0": 1,
+    "157931300#0": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18688,
+   "still_driving_at_end": 635,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 116,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 285
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0x-turn-s2027_p0-only",
+  "validation": {
+   "geh_under_5_pct": 82.73,
+   "speed_mape_pct": 29.37,
+   "speed_mape_free_flow_pct": 14.42,
+   "congestion_state_agreement_pct": 92.08,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 1600.3,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": -54,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 50.6
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 109,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 67.0
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 942,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 46.0
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": -33,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 50.3
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1217,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 56.7
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "18:55",
+     7
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:20",
+     "18:50",
+     7
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     9
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "19:05",
+     12
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:20",
+     2
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:10",
+     "18:45",
+     2
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:45",
+     "18:45",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:45",
+     "18:45",
+     1
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:05",
+     "18:45",
+     2
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:05",
+     "18:45",
+     3
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:05",
+     "18:40",
+     4
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "17:50",
+     "18:40",
+     11
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 61,
+   "both": 35
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 40.7
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 42.9,
+    "bins_with_all_three_lanes": 35,
+    "nearside_lane_share_of_vehicles_pct": 33.3
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3420,
+    6468,
+    6108
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1470,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.1
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1470,
+   "Castle Peak Rd westbound after Sham Tseng": 2097,
+   "Siu Lam on-slip to Tuen Mun Rd": 908
+  },
+  "entry": {
+   "hours_waiting_to_enter": 4.8,
+   "by_entry_edge": {
+    "1184210836": 3.3,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 9
+   },
+   "by_edge": {
+    "52155204": 4,
+    ":1701670722_1": 4,
+    "645999370": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18686,
+   "still_driving_at_end": 637,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 151,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 397
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0x-turn-s2028_p0-only",
+  "validation": {
+   "geh_under_5_pct": 82.14,
+   "speed_mape_pct": 29.61,
+   "speed_mape_free_flow_pct": 14.17,
+   "congestion_state_agreement_pct": 92.36,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 1586.8,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": -88,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 58.1
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 88,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 68.0
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 922,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 46.3
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": -66,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 47.6
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1179,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 53.6
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "18:55",
+     7
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:20",
+     "18:50",
+     7
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     9
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "19:00",
+     11
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:50",
+     3
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:45",
+     "18:45",
+     1
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:40",
+     "18:45",
+     2
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:40",
+     "18:45",
+     2
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:35",
+     "18:45",
+     3
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:35",
+     "18:45",
+     3
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:35",
+     "18:40",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "17:50",
+     "18:40",
+     11
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 61,
+   "both": 37
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 41.8
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 40.5,
+    "bins_with_all_three_lanes": 35,
+    "nearside_lane_share_of_vehicles_pct": 32.4
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3324,
+    5880,
+    6444
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.11
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2098,
+   "Siu Lam on-slip to Tuen Mun Rd": 905
+  },
+  "entry": {
+   "hours_waiting_to_enter": 8.5,
+   "by_entry_edge": {
+    "1184210836": 7.0,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 5
+   },
+   "by_edge": {
+    "52155204": 5
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18693,
+   "still_driving_at_end": 630,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 180,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 405
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0x-turn-sigma05-s2027_p0-only",
+  "validation": {
+   "geh_under_5_pct": 81.84,
+   "speed_mape_pct": 30.6,
+   "speed_mape_free_flow_pct": 19.67,
+   "congestion_state_agreement_pct": 89.5,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 3655.1,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": -102,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 66.9
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 45,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 65.5
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 875,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 52.8
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": -124,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 46.1
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1137,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 44.3
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "19:05",
+     9
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:20",
+     "19:05",
+     8
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "19:00",
+     10
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "19:30",
+     17
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:50",
+     4
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:10",
+     "18:50",
+     3
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:45",
+     "18:45",
+     1
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:05",
+     "19:30",
+     4
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:35",
+     "19:45",
+     5
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:10",
+     "19:45",
+     6
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "17:50",
+     "19:40",
+     14
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 82,
+   "both": 42
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 39.0
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 45.5,
+    "bins_with_all_three_lanes": 35,
+    "nearside_lane_share_of_vehicles_pct": 28.9
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3120,
+    4224,
+    6048
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1461,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.1
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1461,
+   "Castle Peak Rd westbound after Sham Tseng": 2096,
+   "Siu Lam on-slip to Tuen Mun Rd": 908
+  },
+  "entry": {
+   "hours_waiting_to_enter": 1290.4,
+   "by_entry_edge": {
+    "1184210836": 1285.3,
+    "107646978#1": 4.8,
+    "757290378": 0.2,
+    "102290333": 0.2
+   },
+   "vehicles_waiting_at_end": 249
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 16
+   },
+   "by_edge": {
+    "52155204": 5,
+    "1344086462": 4,
+    "1344086460": 3,
+    "1344086463": 1,
+    "1344086464": 1,
+    "1344086459": 1,
+    "1184210821": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19050,
+   "waiting_at_end": 249,
+   "arrived": 18306,
+   "still_driving_at_end": 744,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 154,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 362,
+    "107646978#1": 24
+   },
+   "balances": false
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0x-turn-sigma05-s2028_p0-only",
+  "validation": {
+   "geh_under_5_pct": 80.05,
+   "speed_mape_pct": 30.42,
+   "speed_mape_free_flow_pct": 18.94,
+   "congestion_state_agreement_pct": 89.79,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 3359.2,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": -170,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 70.9
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": -15,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 65.4
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 815,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 59.1
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": -181,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 53.4
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1065,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 45.0
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "19:00",
+     8
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:20",
+     "19:00",
+     6
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "19:00",
+     10
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "19:30",
+     17
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:40",
+     3
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:10",
+     "18:15",
+     2
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": null
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "19:35",
+     "19:35",
+     1
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:10",
+     "19:30",
+     3
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:10",
+     "19:40",
+     4
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "17:50",
+     "18:40",
+     11
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 66,
+   "both": 35
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 39.8
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 46.9,
+    "bins_with_all_three_lanes": 36,
+    "nearside_lane_share_of_vehicles_pct": 30.3
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3360,
+    3108,
+    5796
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1465,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.12
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1465,
+   "Castle Peak Rd westbound after Sham Tseng": 2097,
+   "Siu Lam on-slip to Tuen Mun Rd": 908
+  },
+  "entry": {
+   "hours_waiting_to_enter": 962.8,
+   "by_entry_edge": {
+    "1184210836": 959.7,
+    "107646978#1": 2.7,
+    "757290378": 0.2,
+    "102290333": 0.2
+   },
+   "vehicles_waiting_at_end": 140
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 6
+   },
+   "by_edge": {
+    "52155204": 3,
+    ":1701670722_1": 3
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19177,
+   "waiting_at_end": 140,
+   "arrived": 18437,
+   "still_driving_at_end": 740,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 213,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 420,
+    "107646978#1": 6
+   },
+   "balances": false
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0x-turn-sigma05_p0-only",
+  "validation": {
+   "geh_under_5_pct": 80.95,
+   "speed_mape_pct": 30.7,
+   "speed_mape_free_flow_pct": 19.53,
+   "congestion_state_agreement_pct": 88.74,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 3665.0,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": -121,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 59.9
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 39,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 59.3
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 857,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 58.1
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": -142,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 47.8
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1122,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 45.2
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "19:05",
+     9
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:25",
+     "18:50",
+     5
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "19:00",
+     10
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "19:30",
+     17
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:10",
+     "18:50",
+     3
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:10",
+     "18:10",
+     1
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:00",
+     "18:10",
+     2
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:05",
+     "18:05",
+     1
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "19:40",
+     "19:40",
+     1
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "19:40",
+     "19:40",
+     1
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:20",
+     "19:20",
+     2
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "17:50",
+     "19:45",
+     14
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 66,
+   "both": 35
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 39.2
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 44.1,
+    "bins_with_all_three_lanes": 36,
+    "nearside_lane_share_of_vehicles_pct": 30.9
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3276,
+    4056,
+    5856
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1465,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.1
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1465,
+   "Castle Peak Rd westbound after Sham Tseng": 2093,
+   "Siu Lam on-slip to Tuen Mun Rd": 906
+  },
+  "entry": {
+   "hours_waiting_to_enter": 1231.6,
+   "by_entry_edge": {
+    "1184210836": 1224.5,
+    "107646978#1": 6.7,
+    "757290378": 0.2,
+    "102290333": 0.2
+   },
+   "vehicles_waiting_at_end": 221
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 6
+   },
+   "by_edge": {
+    "52155204": 5,
+    "1344086462": 1
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19074,
+   "waiting_at_end": 221,
+   "arrived": 18321,
+   "still_driving_at_end": 753,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 185,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 363,
+    "107646978#1": 28
+   },
+   "balances": false
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0x-turn_p0-only",
+  "validation": {
+   "geh_under_5_pct": 82.44,
+   "speed_mape_pct": 29.31,
+   "speed_mape_free_flow_pct": 14.76,
+   "congestion_state_agreement_pct": 91.98,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 1665.0,
+  "counts": {
+   "TDS90024": {
+    "model_minus_td_total_1730_2030": -6,
+    "td_total": 11592,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 51.7
+   },
+   "TDS90029": {
+    "model_minus_td_total_1730_2030": 163,
+    "td_total": 9986,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 70.7
+   },
+   "TDS90032": {
+    "model_minus_td_total_1730_2030": 1014,
+    "td_total": 9179,
+    "bins_compared": 20,
+    "mean_abs_bin_diff": 50.2
+   },
+   "TDS90033": {
+    "model_minus_td_total_1730_2030": 8,
+    "td_total": 10171,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 51.2
+   },
+   "TDS90034": {
+    "model_minus_td_total_1730_2030": 1261,
+    "td_total": 8926,
+    "bins_compared": 23,
+    "mean_abs_bin_diff": 53.9
+   }
+  },
+  "queue": {
+   "TDS90020": {
+    "td": null,
+    "model": [
+     "18:25",
+     "18:55",
+     7
+    ]
+   },
+   "TDS90021": {
+    "td": [
+     "18:30",
+     "18:40",
+     3
+    ],
+    "model": [
+     "18:20",
+     "18:50",
+     5
+    ]
+   },
+   "TDS90022": {
+    "td": [
+     "18:30",
+     "19:30",
+     7
+    ],
+    "model": [
+     "18:15",
+     "18:55",
+     9
+    ]
+   },
+   "TDS90023": {
+    "td": [
+     "18:15",
+     "19:35",
+     17
+    ],
+    "model": [
+     "18:10",
+     "19:05",
+     12
+    ]
+   },
+   "TDS90024": {
+    "td": [
+     "18:10",
+     "19:25",
+     13
+    ],
+    "model": [
+     "18:20",
+     "18:45",
+     2
+    ]
+   },
+   "TDS90025": {
+    "td": [
+     "18:10",
+     "19:30",
+     12
+    ],
+    "model": [
+     "18:20",
+     "18:45",
+     2
+    ]
+   },
+   "TDS90027": {
+    "td": [
+     "18:05",
+     "18:50",
+     7
+    ],
+    "model": [
+     "18:20",
+     "18:40",
+     2
+    ]
+   },
+   "TDS90028": {
+    "td": [
+     "18:00",
+     "18:50",
+     11
+    ],
+    "model": [
+     "18:40",
+     "18:40",
+     1
+    ]
+   },
+   "TDS90029": {
+    "td": [
+     "18:00",
+     "18:45",
+     10
+    ],
+    "model": [
+     "18:10",
+     "18:40",
+     2
+    ]
+   },
+   "TDS90030": {
+    "td": [
+     "17:55",
+     "18:50",
+     8
+    ],
+    "model": [
+     "18:05",
+     "18:40",
+     4
+    ]
+   },
+   "TDS90031": {
+    "td": [
+     "17:55",
+     "18:45",
+     7
+    ],
+    "model": [
+     "18:05",
+     "18:40",
+     6
+    ]
+   },
+   "TDS90032": {
+    "td": [
+     "17:50",
+     "18:40",
+     8
+    ],
+    "model": [
+     "17:50",
+     "18:40",
+     11
+    ]
+   }
+  },
+  "congested_bins": {
+   "td": 103,
+   "model": 63,
+   "both": 35
+  },
+  "mean_speed_1800_1845_TDS90024_31": {
+   "td": 20.6,
+   "model": 38.2
+  },
+  "lanes_1800_1845_TDS90025_31": {
+   "td": {
+    "mean_lane_speed_spread_kmh": 6.0,
+    "bins_with_all_three_lanes": 31,
+    "nearside_lane_share_of_vehicles_pct": 31.3
+   },
+   "model": {
+    "mean_lane_speed_spread_kmh": 37.7,
+    "bins_with_all_three_lanes": 36,
+    "nearside_lane_share_of_vehicles_pct": 33.1
+   }
+  },
+  "discharge_TDS90033_1845_1900_veh_h": {
+   "td": [
+    2430.0,
+    4560.0,
+    4500.0
+   ],
+   "model": [
+    3480,
+    6312,
+    6180
+   ]
+  },
+  "sham_tseng_exit": {
+   "vehicles_onto_slip_1730_2030": 1469,
+   "max_5min_waiting_vehicle_hours_on_slip": 0.13
+  },
+  "castle_peak_road_entered_1730_2030": {
+   "Sham Tseng exit slip": 1469,
+   "Castle Peak Rd westbound after Sham Tseng": 2098,
+   "Siu Lam on-slip to Tuen Mun Rd": 907
+  },
+  "entry": {
+   "hours_waiting_to_enter": 6.9,
+   "by_entry_edge": {
+    "1184210836": 5.4,
+    "107646978#1": 1.1,
+    "757290378": 0.2,
+    "102290333": 0.1
+   },
+   "vehicles_waiting_at_end": 0
+  },
+  "teleports": {
+   "by_kind": {
+    "jam": 9
+   },
+   "by_edge": {
+    "52155204": 7,
+    ":1701670722_1": 2
+   },
+   "wrong_lane_not_at_lane_shut_or_jam": 0
+  },
+  "ledger": {
+   "loaded": 19323,
+   "inserted": 19323,
+   "waiting_at_end": 0,
+   "arrived": 18691,
+   "still_driving_at_end": 632,
+   "left_at_ting_kau": {
+    "Ting Kau Bridge drivers staying on Route 3": 156,
+    "Tuen Mun Rd drivers taking the Ting Kau exit": 346
+   },
+   "balances": true
+  }
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0x-zipper-s2027_p0-only",
+  "validation": {
+   "geh_under_5_pct": 75.59,
+   "speed_mape_pct": 28.38,
+   "speed_mape_free_flow_pct": 15.94,
+   "congestion_state_agreement_pct": 90.17,
+   "wrong_lane_teleports_other": 0
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 2309.3,
+  "work_folder": "removed before this report: only the result's own numbers are shown"
+ },
+ {
+  "run_id": "2026-04-15_TMR_P0_c50_t59_p0x-zipper_p0-only",
+  "validation": {
+   "geh_under_5_pct": 77.67,
+   "speed_mape_pct": 27.24,
+   "speed_mape_free_flow_pct": 16.33,
+   "congestion_state_agreement_pct": 91.03,
+   "wrong_lane_teleports_other": 1
+  },
+  "validation_met": false,
+  "validation_reason": "Baseline is below the GEH validation target.",
+  "delay_vehicle_hours_E": 2239.3,
+  "work_folder": "removed before this report: only the result's own numbers are shown"
+ }
+]

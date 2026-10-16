@@ -1,0 +1,191 @@
+{
+ "TDS90017": {
+  "road": "Tuen Mun Road near Yau Kom Tau Village - Westbound",
+  "edge_id": "107646978#1",
+  "position_m": 283.9,
+  "lanes": 3,
+  "metres_from_td_coordinates": 8.7
+ },
+ "TDS90018": {
+  "road": "Tuen Mun Road near Yau Kom Tau Water Treatment Works - Westbound",
+  "edge_id": "107646978#1",
+  "position_m": 771.01,
+  "lanes": 3,
+  "metres_from_td_coordinates": 18.4
+ },
+ "TDS90019": {
+  "road": "Tuen Mun Road near Hanley Villa - Westbound",
+  "edge_id": "107646978#1",
+  "position_m": 1278.26,
+  "lanes": 3,
+  "metres_from_td_coordinates": 8.8
+ },
+ "TDS90020": {
+  "road": "Tuen Mun Road near Ting Kau - Westbound (1)",
+  "edge_id": "107646978#1",
+  "position_m": 1925.95,
+  "lanes": 3,
+  "metres_from_td_coordinates": 8.5
+ },
+ "TDS90021": {
+  "road": "Tuen Mun Road near Ting Kau - Westbound (2)",
+  "edge_id": "107646978#1",
+  "position_m": 2565.11,
+  "lanes": 3,
+  "metres_from_td_coordinates": 8.2
+ },
+ "TDS90022": {
+  "road": "Tuen Mun Road near Ting Kau - Westbound (3)",
+  "edge_id": "868844358",
+  "position_m": 514.64,
+  "lanes": 3,
+  "metres_from_td_coordinates": 7.3
+ },
+ "TDS90023": {
+  "road": "Tuen Mun Road near Ting Kau - Westbound (4)",
+  "edge_id": "1344086465",
+  "position_m": 47.45,
+  "lanes": 5,
+  "metres_from_td_coordinates": 11.4
+ },
+ "TDS90024": {
+  "road": "Tuen Mun Road near Ting Kau - Westbound (5)",
+  "edge_id": "157931300#0",
+  "position_m": 144.36,
+  "lanes": 3,
+  "metres_from_td_coordinates": 6.5
+ },
+ "TDS90025": {
+  "road": "Tuen Mun Road near Sham Tseng - Westbound (1)",
+  "edge_id": "157931300#0",
+  "position_m": 413.17,
+  "lanes": 3,
+  "metres_from_td_coordinates": 4.3
+ },
+ "TDS90026": {
+  "road": "Tuen Mun Road near Sham Tseng - Westbound (2)",
+  "edge_id": "52155204",
+  "position_m": 72.04,
+  "lanes": 3,
+  "metres_from_td_coordinates": 8.4
+ },
+ "TDS90027": {
+  "road": "Tuen Mun Road near Sham Tseng - Westbound (3)",
+  "edge_id": "389939170",
+  "position_m": 166.21,
+  "lanes": 3,
+  "metres_from_td_coordinates": 8.3
+ },
+ "TDS90028": {
+  "road": "Tuen Mun Road near Sham Tseng - Westbound (4)",
+  "edge_id": "389939170",
+  "position_m": 697.06,
+  "lanes": 3,
+  "metres_from_td_coordinates": 8.0
+ },
+ "TDS90029": {
+  "road": "Tuen Mun Road near Sham Tseng - Westbound (5)",
+  "edge_id": "389939170",
+  "position_m": 1232.19,
+  "lanes": 3,
+  "metres_from_td_coordinates": 6.8
+ },
+ "TDS90030": {
+  "road": "Tuen Mun Road near Sham Tseng - Westbound (6)",
+  "edge_id": "389939170",
+  "position_m": 1587.69,
+  "lanes": 3,
+  "metres_from_td_coordinates": 8.7
+ },
+ "TDS90031": {
+  "road": "Tuen Mun Road near Hong Kong Garden - Westbound (1)",
+  "edge_id": "389939170",
+  "position_m": 2071.92,
+  "lanes": 3,
+  "metres_from_td_coordinates": 9.1
+ },
+ "TDS90032": {
+  "road": "Tuen Mun Road near Hong Kong Garden - Westbound (2)",
+  "edge_id": "389939170-approach",
+  "position_m": 140.91,
+  "lanes": 3,
+  "metres_from_td_coordinates": 9.5
+ },
+ "TDS90033": {
+  "road": "Tuen Mun Road near Ka Loon Tsuen - Westbound (1)",
+  "edge_id": "389939170-b",
+  "position_m": 151.51,
+  "lanes": 3,
+  "metres_from_td_coordinates": 6.1
+ },
+ "TDS90034": {
+  "road": "Tuen Mun Road near Ka Loon Tsuen - Westbound (2)",
+  "edge_id": "389939170-b",
+  "position_m": 756.83,
+  "lanes": 3,
+  "metres_from_td_coordinates": 10.1
+ },
+ "TDS90035": {
+  "road": "Tuen Mun Road near Tai Lam - Westbound",
+  "edge_id": "389939170-b",
+  "position_m": 1301.88,
+  "lanes": 3,
+  "metres_from_td_coordinates": 12.6
+ },
+ "TDS90036": {
+  "road": "Tuen Mun Road near Tuen Mun Road Bus-Bus Interchange - Westbound (1)",
+  "edge_id": "389939170-b",
+  "position_m": 1827.99,
+  "lanes": 3,
+  "metres_from_td_coordinates": 9.8
+ },
+ "TDS90037": {
+  "road": "Tuen Mun Road near Tuen Mun Road Bus-Bus Interchange - Westbound (2)",
+  "edge_id": "389939170-b",
+  "position_m": 2348.75,
+  "lanes": 3,
+  "metres_from_td_coordinates": 6.4
+ },
+ "TDS90038": {
+  "road": "Tuen Mun Road near Correctional Services Department Married Staff Quarters - Westbound",
+  "edge_id": "1078219416",
+  "position_m": 5.51,
+  "lanes": 3,
+  "metres_from_td_coordinates": 2.5
+ },
+ "TDS90039": {
+  "road": "Tuen Mun Road near Tsing Lam Road - Westbound",
+  "edge_id": "1078219416",
+  "position_m": 394.74,
+  "lanes": 3,
+  "metres_from_td_coordinates": 8.9
+ },
+ "TDS90040": {
+  "road": "Tuen Mun Road near Kwun Fat Street - Westbound",
+  "edge_id": "1078219416",
+  "position_m": 991.02,
+  "lanes": 3,
+  "metres_from_td_coordinates": 8.6
+ },
+ "TDS90041": {
+  "road": "Tuen Mun Road near Siu Sau Tsuen - Westbound",
+  "edge_id": "1078219416",
+  "position_m": 1417.93,
+  "lanes": 3,
+  "metres_from_td_coordinates": 7.5
+ },
+ "TDS90042": {
+  "road": "Tuen Mun Road near So Kwun Wat Road - Westbound",
+  "edge_id": "1078219416",
+  "position_m": 1973.1,
+  "lanes": 3,
+  "metres_from_td_coordinates": 5.6
+ },
+ "TDS90043": {
+  "road": "Tuen Mun Road near Harrow International School Hong Kong - Westbound (1)",
+  "edge_id": "1078219416",
+  "position_m": 2618.05,
+  "lanes": 3,
+  "metres_from_td_coordinates": 31.5
+ }
+}

@@ -1,0 +1,17 @@
+{
+  "operator_briefing_en": "The proposed intervention aims to reduce delays by diverting traffic from Tsuen Wan & Ting Kau to Tuen Mun via Castle Peak Road. Evidence shows a -5% change in delay compared to no action. A tradeoff involves potential increased travel times for alternative routes, so monitor corridor performance. This plan awaits operator review.",
+  "operator_briefing_zh": "此提案旨在透過Castle Peak Road將Tsuen Wan & Ting Kau至Tuen Mun的車流進行導引，以減少延誤。相對於不採取額外措施，模擬延誤變化為-5%（保留正負號）。此計畫涉及替代路線的使用，因此需監測走廊表現。此計畫尚待運營商審核。",
+  "vms_messages": [],
+  "public_messages": [],
+  "uncertainty_note_en": "Assumes 50% compliance and 59 minutes to clear; lane and timing assumptions require review.",
+  "run_id": "2026-04-15_TMR_P2_c50_t59_p0x-merge-at-site-s2029_lead-capacity-oct15",
+  "recommended_plan_id": "P2",
+  "sources": [
+    "results/runs/2026-04-15_TMR_P0_c50_t59_p0x-merge-at-site-s2029_lead-capacity-oct15.json",
+    "results/runs/2026-04-15_TMR_P0_c50_t59_p0x-merge-at-site-s2029_lead-capacity-oct15.provenance.json",
+    "results/runs/2026-04-15_TMR_P1_c50_t59_p0x-merge-at-site-s2029_lead-capacity-oct15.json",
+    "results/runs/2026-04-15_TMR_P1_c50_t59_p0x-merge-at-site-s2029_lead-capacity-oct15.provenance.json",
+    "results/runs/2026-04-15_TMR_P2_c50_t59_p0x-merge-at-site-s2029_lead-capacity-oct15.json",
+    "results/runs/2026-04-15_TMR_P2_c50_t59_p0x-merge-at-site-s2029_lead-capacity-oct15.provenance.json"
+  ]
+}

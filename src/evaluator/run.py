@@ -21,6 +21,7 @@ import shutil
 from jsonschema import ValidationError
 
 from src.briefing.schema import RESULT_SCHEMA
+from src import validation_targets as targets
 from src.evaluation_provenance import capture_inputs, sidecar_path, verify_result, write_result
 from src.evaluator import metrics, scenario as scenarios, simulate
 from src.evaluator.actions import PlanActions, has_actions
@@ -30,8 +31,8 @@ from src.plans.validator import validate_plan
 from src.twin.common import ROOT, resolve
 
 CODE = ["src/evaluator/scenario.py", "src/evaluator/simulate.py", "src/evaluator/behaviour.py",
-        "src/evaluator/actions.py", "src/evaluator/metrics.py", "src/evaluator/run.py", "src/twin/evaluate.py"]
-TARGETS = "GEH < 5 for at least 85% of count bins and speed MAPE at most 15% (03-architecture.md §4)"
+        "src/evaluator/actions.py", "src/evaluator/metrics.py", "src/evaluator/run.py", "src/twin/evaluate.py",
+        "src/validation_targets.py"]
 
 
 def simulation_files(scenario_path, scenario):
@@ -195,17 +196,20 @@ def evaluate(plans_dir, plan_set, plan_id, scenario_path, compliance, clearance_
                     "delay_vs_do_nothing_pct": change if baseline else 0, **values},
         "validation": {},                                             # only P0 is compared with the real morning
     }
-    report = {"run_id": run_id, "status": scenario["status"], "validation_targets": TARGETS}
+    at_lane_shut, in_jam, other = metrics.wrong_lane_teleports((work / "sumo.log").read_text(encoding="utf-8"),
+                                                               health["closure_steps"], metrics.near_on(net))
+    report = {"run_id": run_id, "status": scenario["status"], "validation_targets": targets.DESCRIPTION,
+              "wrong_lane_teleports": {"at_a_lane_shutting": at_lane_shut, "in_a_jam": in_jam, "other": other}}
     if baseline:
-        report.update(validation_targets_met=baseline[1]["validation_targets_met"],
+        # A plan run is only as good as its P0, and fails on its own wrong-lane teleport too.
+        report.update(validation_targets_met=baseline[1]["validation_targets_met"] and not other,
                       compared_with={"run_id": baseline[0]["run_id"], "validation": baseline[0]["validation"]})
     else:
         evaluation = metrics.score_against_detectors(work, files["observations"],
                                                      scenario["run"]["warmup_seconds"])
-        result["validation"] = metrics.validation(evaluation)
+        result["validation"] = metrics.validation(evaluation, other)
         report.update(
-            validation_targets_met=(result["validation"]["geh_under_5_pct"] >= 85
-                                    and result["validation"]["speed_mape_pct"] <= 15),
+            validation_targets_met=targets.met(result["validation"]),
             validation_by_phase=metrics.by_phase(evaluation, scenario, clearance_min),
             validation_bins={"count": evaluation["count_bin_n"], "speed": evaluation["speed_bin_n"],
                              "unmatched_count": evaluation["unmatched_count_intervals"],
@@ -252,8 +256,11 @@ def main():
           f"{health['vehicles_waiting_to_enter_at_end']} still waiting, {health['teleports']['total']} teleports")
     print(f"delay {measured['total_vehicle_hours_delay']} vehicle-hours ({measured['delay_vs_do_nothing_pct']:+}% "
           f"against doing nothing), queue {measured['max_queue_m']} m")
-    print(f"{'This run' if result['validation'] else 'Its P0'}: GEH<5 {check['geh_under_5_pct']}%, speed MAPE "
-          f"{check['speed_mape_pct']}% -> validation targets "
+    other = report["wrong_lane_teleports"]["other"]
+    print(f"{'This run' if result['validation'] else 'Its P0'}: GEH<5 {check['geh_under_5_pct']}%, free-flow speed "
+          f"MAPE {check.get('speed_mape_free_flow_pct')}%, congestion state {check.get('congestion_state_agreement_pct')}"
+          f"% (whole-run speed MAPE {check['speed_mape_pct']}%); "
+          f"{len(other)} wrong-lane teleport(s) of this run not at a lane shutting -> validation targets "
           f"{'met' if report['validation_targets_met'] else 'NOT met; do not rank plans against this run'}")
     print(f"-> {path.relative_to(ROOT) if path.is_relative_to(ROOT) else path}")
 

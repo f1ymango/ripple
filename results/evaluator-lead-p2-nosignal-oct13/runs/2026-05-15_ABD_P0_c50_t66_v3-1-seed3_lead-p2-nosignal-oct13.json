@@ -1,0 +1,29 @@
+{
+  "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-seed3_lead-p2-nosignal-oct13",
+  "plan_id": "P0",
+  "incident_id": "IN-26-03365",
+  "scenario": {
+    "compliance": 0.5,
+    "clearance_min": 66.0,
+    "seed": 3
+  },
+  "metrics": {
+    "total_vehicle_hours_delay": 824.6,
+    "delay_vs_do_nothing_pct": 0,
+    "max_queue_m": {
+      "AID01103": 1094
+    },
+    "corridor_tt_p95_min": 31.6,
+    "emergency_tt_min": 2.8,
+    "co2_kg": 14209,
+    "residential_delay_share_pct": 0.0,
+    "vehicles_completed": 27100
+  },
+  "validation": {
+    "geh_under_5_pct": 93.52,
+    "speed_mape_pct": 24.15,
+    "speed_mape_free_flow_pct": 13.05,
+    "congestion_state_agreement_pct": 93.13,
+    "wrong_lane_teleports_other": 0
+  }
+}

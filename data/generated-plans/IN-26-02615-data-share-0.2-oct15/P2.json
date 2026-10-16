@@ -1,0 +1,31 @@
+{
+  "plan_id": "P2",
+  "label": "Share sweep: Castle Peak Road advice to 0.2 of the group (diagnostic, not a Ripple plan)",
+  "rationale": "Data's calibration-seed sweep of the Lead's P2 share; it shows how the saving moves with the share and proposes nothing.",
+  "diversions": [
+    {
+      "od_group": "Tsuen Wan & Ting Kau->Tuen Mun",
+      "via": "Castle Peak Road",
+      "share": 0.2
+    }
+  ],
+  "signals": [],
+  "vms": [],
+  "pt_nudge": {
+    "mode": "",
+    "intent": ""
+  },
+  "priority_corridor": {
+    "od": "Tuen Mun Road->crash site",
+    "keep_clear": [
+      "Tuen Mun Road"
+    ]
+  },
+  "constraints_checked": [
+    "residential_share_under_15pct",
+    "no_school_street_peak",
+    "emergency_corridor_clear",
+    "od_shares_at_most_one",
+    "no_blocked_road"
+  ]
+}

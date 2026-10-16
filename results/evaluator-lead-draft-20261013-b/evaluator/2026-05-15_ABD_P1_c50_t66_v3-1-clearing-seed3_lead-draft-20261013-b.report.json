@@ -1,0 +1,281 @@
+{
+  "run_id": "2026-05-15_ABD_P1_c50_t66_v3-1-clearing-seed3_lead-draft-20261013-b",
+  "status": "DIAGNOSTIC of replay-v3-1: a 4-minute clearing stage at reopening, seed 3. INCIDENT REPLAY, VERSION 3.1 (13 October): version 3 plus one change, drivers already in a lane onto the flyover when every lane shuts go on over it. Nothing in it sets a speed at a scored detector: every speed sign shows the ordinary mornings' speed, the same for P0, P1 and P2, and the queue before the fork forms by itself. Count bins measured in traffic under 30 km/h are not scored (the detectors undercount slow traffic). The leave share is the one value fitted to the morning, to when the queue reached AID01101. Read validation with the run report and docs/evaluator-replay-v3-2026-10-13.md",
+  "validation_targets": "GEH < 5 in at least 85% of count bins; speed MAPE at most 15% over bins measured at 30 km/h or more; model and detector agree on congested (under 30 km/h) or not in at least 85% of speed bins; no wrong-lane teleport except of a driver stuck from the moment a lane shut or in a jam (a jam teleport on its edge or the next during its wait or the 300 s before) (03-architecture.md section 4, version 2 of 13 October 2026)",
+  "wrong_lane_teleports": {
+    "at_a_lane_shutting": [
+      "f145.49 1198059119_1 5643"
+    ],
+    "in_a_jam": [],
+    "other": []
+  },
+  "validation_targets_met": true,
+  "compared_with": {
+    "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed3_lead-draft-20261013-b",
+    "validation": {
+      "geh_under_5_pct": 93.52,
+      "speed_mape_pct": 23.73,
+      "speed_mape_free_flow_pct": 12.97,
+      "congestion_state_agreement_pct": 93.39,
+      "wrong_lane_teleports_other": 0
+    }
+  },
+  "run_health": {
+    "complete": true,
+    "final_time_seconds": 11400.0,
+    "wall_seconds": 196.3,
+    "sumo_version": "SUMO 1.27.1",
+    "closure_steps": [
+      {
+        "second": 5340,
+        "lanes_closed": [
+          "44419212_0"
+        ]
+      },
+      {
+        "second": 5730,
+        "lanes_closed": [
+          "44419212_0",
+          "44419212_1"
+        ]
+      },
+      {
+        "second": 9300,
+        "lanes_closed": [
+          "44419212_0"
+        ]
+      },
+      {
+        "second": 9540,
+        "lanes_closed": []
+      }
+    ],
+    "drivers_rerouted_during_seconds": [
+      5730,
+      9300
+    ],
+    "drivers_sent_round_by_the_detour": 360,
+    "drivers_already_committed_kept_on": 2,
+    "drivers_let_in_at_a_lane_end": 64,
+    "vehicles_loaded": 33497,
+    "vehicles_inserted": 33192,
+    "vehicles_running_at_end": 409,
+    "vehicles_waiting_to_enter_at_end": 109,
+    "teleports": {
+      "total": 5,
+      "jam": 4,
+      "yield": 0,
+      "wrongLane": 1
+    }
+  },
+  "measurement_detail": {
+    "vehicles_in_scope": 28030,
+    "vehicles_in_scope_left_corridor": {
+      "at_an_exit": 236,
+      "kept_out_of_the_network": 196
+    },
+    "delay_hours_assumed_outside_network": 150.3,
+    "vehicles_in_scope_still_driving": 409,
+    "vehicles_in_scope_never_entered": 109,
+    "delay_hours_in_network": 525.4,
+    "delay_hours_waiting_to_enter": 208.3,
+    "delay_hours_waiting_to_enter_by_entry_edge": {
+      "815748543": 154.4,
+      "1194711693": 32.0,
+      "1197689855": 17.5,
+      "46108739": 1.3,
+      "1198059128": 0.7
+    },
+    "queue_path_m": {
+      "AID01103": 1097
+    },
+    "queue_share_of_path_pct": {
+      "AID01103": 99.9
+    },
+    "corridor_vehicles": 2062,
+    "corridor_vehicles_still_driving": 86,
+    "emergency_route_edges": 40,
+    "emergency_route_edges_with_traffic": 8,
+    "measurement_bin_seconds": 300
+  },
+  "metric_definitions": {
+    "total_vehicle_hours_delay": "Sum over in-scope vehicles of SUMO timeLoss (time lost against each vehicle's own free speed) plus departDelay (time waiting to enter), up to the end of the run. A vehicle that left the corridor because of the queue also counts the scenario's extra_minutes_outside, an assumption, and any time it waited outside the network; the run report gives that part separately.",
+    "delay_vs_do_nothing_pct": "Change in total_vehicle_hours_delay against the P0 run of the same scenario, compliance and clearance; zero for P0.",
+    "max_queue_m": "Per named path: largest distance over the run from the downstream end of the path's first edge back to the last waiting vehicle, following SUMO's queue output upstream edge by edge for as long as each edge's queue reaches its upstream end. Sampled every 10 seconds. It cannot exceed the path's length: near 100% in queue_share_of_path_pct means the queue ran off the path.",
+    "corridor_tt_p95_min": "95th percentile (nearest rank) of time in the network for in-scope vehicles on the scenario's corridor route. A vehicle still driving at the end counts with its time so far; one that left the corridor at an exit is not counted.",
+    "emergency_tt_min": "Length of each emergency-route edge divided by the mean speed of all traffic on it from closure onset to the end of the run, summed. An edge no vehicle used counts at its speed limit. General traffic, not blue-light running.",
+    "co2_kg": "Sum of SUMO's CO2 for in-scope vehicles, default emission class for every vehicle. Vehicles waiting outside the network emit nothing.",
+    "residential_delay_share_pct": "Share of all edge timeLoss after the warm-up that falls on edges of the scenario's residential types. Excludes time waiting to enter.",
+    "vehicles_completed": "In-scope vehicles that finished their trip in the network before the run ended. A vehicle that left the corridor because of the queue did not.",
+    "validation": "src/twin/evaluate.py, unchanged, over every observed bin after the warm-up (P0 only), rounded to two decimals towards failing. speed_mape_free_flow_pct uses only speed bins the detector measured at 30 km/h or more; congestion_state_agreement_pct is the share of speed bins where model and detector are on the same side of 30 km/h; wrong_lane_teleports_other counts SUMO wrong-lane teleports whose wait neither began within 60 seconds after a lane shut nor was inside a jam (a jam teleport on the same or next edge during the wait or the 300 seconds before it; wrong_lane_teleports)."
+  },
+  "assumptions": [
+    {
+      "choice": "Network and loops are Simulation's 7 Oct P0 packet, unchanged: results/twin/oct07-p0-replay-inputs.zip at 4ec5afe on sim/e1-evaluation-correctness, SHA-256 52b298aa73eb7e8621fce28223fc6b798100979f5735d0605ee62c2198b68505. The demand is the packet's 287 flows with the builder's driver settings (speedFactor 1, speedDev 0.05, sigma 0), rebuilt by src/twin/flow_balance_demand.py for 07:25 to 10:35: sim/work/p0-replay-build/demand.rou.xml, SHA-256 5cbf6f6c93807fd413b9148dce75c769d747a8234ef3ff0bd04c6fe4643b955e.",
+      "status": "model choice. The flows are the packet's, flow for flow; only the vehicle type's three driver attributes differ. The observations are the packet's with the slow-traffic counts withheld (see the count rule below)",
+      "source": "src/twin/flow_balance_demand.py (VTYPE); src/evaluator/README.md, Run it"
+    },
+    {
+      "choice": "The ordinary mornings' join between AID01108 and AID01109 (flow f22, 783.5 veh/h) enters on the main line at edge 1194711693, where on-ramp 46766432 meets it, instead of by the ramp: sim/work/p0-replay-build/demand-main-line-join.rou.xml, SHA-256 8caed7394039f64155dc7605458366507481ca8abd494193ff6c606130ad0f43, made from the demand file above by src/evaluator/main_line_join.py. Nothing else in the demand differs.",
+      "status": "model correction, 10 October. By the ramp, the network's merge let far fewer in than the detector downstream shows: vehicles waited up to 27 minutes to enter from 07:45, before the crash, 448.7 vehicle-hours in all, and AID01109 counted 19% under the detector before the crash",
+      "source": "docs/evaluator-replay-fixes-2026-10-10.md section 1"
+    },
+    {
+      "choice": "Speed signs: sim/work/p0-replay-build/speeds-ordinary.add.xml, SHA-256 bc56f6905074fad41974df35f71526d3102a8758a8a37fc900e49b1ca490947a. Every one of the 24 detectors' roads shows the ordinary mornings' quarter-hour speed all morning; none takes a speed from 15 May. The last 330 m before the fork and the flyover have no sign: E sets their speed. Made by `python -m src.evaluator.speed_signs --build sim/work/p0-replay-build --inputs sim/work/p0-replay/twin-inputs_20260515_no-mainline-join.json --observations sim/work/p0-replay/detectors.json --ordinary-only <all 24 detectors> --drop-edge 44419212 814979901#0 1198059118 1198059119 1198059120 --out sim/work/p0-replay-build/speeds-ordinary.add.xml`.",
+      "status": "model choice, 13 October: what Simulation asked for plan runs (go/no-go review section 4, Speed refresh). P0, P1 and P2 share the same signs and no sign carries anything from the incident morning, so no plan inherits the do-nothing morning's speeds. Every detector's speed error is now the model's",
+      "source": "src/evaluator/speed_signs.py; docs/evaluator-p0-go-no-go-2026-10-09.md section 4"
+    },
+    {
+      "choice": "With nothing closed, the flyover and the last 330 m before the fork run at 66 km/h.",
+      "status": "ordinary mornings: AID01103 and AID01104 run at 65 to 71 km/h in every quarter-hour 07:15 to 10:30. The network's own limit there is 50 km/h",
+      "source": "sim/work/p0-replay/twin-inputs_20260515_no-mainline-join.json, speed_profile_kmh"
+    },
+    {
+      "choice": "The slow lane, 44419212_0, closes at 08:54:00 (5,340 s).",
+      "status": "observed at AID01104: first of five readings in a row with no slow-lane vehicle while the fast lane carried traffic; the last reading with it open was 08:50:30",
+      "source": "results/data/closed-lanes_AID01104_20260515-0840_1010.md"
+    },
+    {
+      "choice": "While the slow lane alone is closed (08:54:00 to 09:00:30) it is closed to traffic, drivers move over in the last 77 m before the fork, and the fast lane passes the crash at 4.7 km/h.",
+      "status": "observed at AID01104: 19 vehicles in five readings passed in the fast lane, 456 veh/h, at 3 to 9 km/h. 4.7 km/h is the speed at which one lane of this model passes 456 veh/h. The speed applies to the whole 543 m edge; where on it the crash was is not observed. The 77 m is assumed",
+      "source": "results/data/closed-lanes_AID01104_20260515-0840_1010.md; results/data/lane-evidence_AID01104_20260515-0840_0920.md"
+    },
+    {
+      "choice": "Both lanes close at 09:00:30 (offset 390 s).",
+      "status": "observed at AID01104: every lane empty from 09:00:30. Single readings at 09:09, 09:14 and 09:30:30 show a few vehicles (17 in the five-minute counts 09:05-09:30); E does not model them. TD's 'all lanes' message came at 09:36",
+      "source": "results/data/closed-lanes_AID01104_20260515-0840_1010.md"
+    },
+    {
+      "choice": "While both lanes are closed nobody new gets onto the flyover: a driver entering the last 365 m before the fork (edges 814979900 to 1198059120) whose route crosses it takes Wong Chuk Hang Road under the flyover (closure.detour, the same edges as the plan route) and then the rest of their own route. The few vehicles already on the flyover drive off it.",
+      "status": "assumed behaviour, supported by the detectors: AID01104 on the flyover counted 17 vehicles in ten bins while AID01103 before the fork kept passing 350 to 550 veh/h, and AID01108 kept counting 96 a bin on the Canal Road route. Until 10 October SUMO chose the new route: it sent 96 of the 111 vehicles that used the Wong Nai Chung Road exit between 09:00 and 09:30, all bound for the Canal Road Flyover, into Happy Valley streets, which jammed at 1 to 2 km/h until the end of the run and blocked the tunnel exit. TD's 09:36 message advised Wong Chuk Hang Road",
+      "source": "docs/evaluator-replay-fixes-2026-10-10.md section 1; data/demo_incident_messages.jsonl"
+    },
+    {
+      "choice": "While both lanes are closed, the last 330 m before the fork keeps the speed it has with nothing closed (66 km/h): E sets no crawl. The queue forms by itself behind the one-lane turn-off onto Wong Chuk Hang Road and the two signals on it.",
+      "status": "model correction, 13 October. The 10 October replay set this stretch to 7 km/h, AID01103's own median speed. A speed limit there also limits how many get through: it held the detour to about 48 vehicles a bin, which matched AID01103's count, but that count was measured at 6 to 14 km/h, where these detectors miss vehicles (count rule below), and it left the tunnel side at half its counts. Without it the model passes about 72 a bin at AID01103, what the count corrected for slow traffic implies, and the tunnel side gets two thirds of its counts. The queue's speed at AID01101 to AID01103 is then the model's own, and is too fast",
+      "source": "docs/evaluator-replay-v3-2026-10-13.md sections 2 and 3"
+    },
+    {
+      "choice": "DIAGNOSTIC: at --clearance the fast lane reopens at the passing speed (4.7 km/h) while the slow lane stays shut for 4 minutes; then both lanes at full speed. 66 minutes gives 10:00:00 and 10:04:00.",
+      "status": "observed at AID01104: 0 to 3 vehicles a 30-second reading at 1 to 32 km/h from 10:00:00 to 10:02:30, both lanes carrying 17 to 18 a reading at 33 to 34 km/h from 10:04:00",
+      "source": "results/data/closed-lanes_AID01104_20260515-0955_1035.md"
+    },
+    {
+      "choice": "A driver stopped 60 s at the end of a lane it cannot follow its route from (on the last 365 m before the fork) is let in: the slow driver just behind in the lane it needs holds back up to 5 s, and it moves over one lane, avoiding any collision.",
+      "status": "model behaviour, 13 October. Without it SUMO lifted such drivers off the road after five minutes (wrong-lane teleports) while their lane stood still behind them. One remains, at 08:59:04 in the six minutes when only the slow lane was shut. The run report counts the drivers let in",
+      "source": "src/evaluator/simulate.py, Closure.let_in"
+    },
+    {
+      "choice": "When both lanes shut (09:00:30), a driver already on the last 18 m before the fork (edge 1198059120) in a lane that leads only onto the flyover keeps its route and goes on over the flyover at the passing speed, instead of being sent round by Wong Chuk Hang Road.",
+      "status": "model behaviour, 13 October (version 3.1). In version 3 such drivers were sent round a detour they could not reach and SUMO lifted them off the road five minutes later (wrong-lane teleports at 09:05 and 09:10). The run report counts them",
+      "source": "src/evaluator/simulate.py, Closure.send_round"
+    },
+    {
+      "choice": "Every vehicle is 6.5 m long, not the demand file's 5 m.",
+      "status": "ASSUMED mean for this road's mix of cars, buses, minibuses and goods vehicles; no classified count is in the repository. It sets how much road a queue of a given size takes. The note gives the score with 5 m",
+      "source": "docs/evaluator-replay-2026-10-08.md section 3"
+    },
+    {
+      "choice": "Drivers leave when they meet the queue. A driver heading for the fork who reaches one of the three exits at Aberdeen (edges 44577543, 1197441887 and 26560250) in a nearside lane while the traffic just ahead moves under 15 km/h takes the exit with probability 0.2. A driver whom the queue keeps from entering the network at Aberdeen Praya Road gives up with the same probability for each minute of waiting.",
+      "status": "fitted to one observable, 13 October: when the queue reached AID01101. AID01101 first ran under 30 km/h in the 09:50 bin; with share 0.2 the model's does at 09:45, with 0.25 and 0.3 never, with nothing leaving at 09:20. The 10 October share (0.4) was fitted to AID01102 counting about 30 a bin against AID01101's 90, but AID01102 was then at 3 to 12 km/h, where these detectors count only 55 to 73% of vehicles. Where leaving drivers went is not observed",
+      "source": "docs/evaluator-replay-v3-2026-10-13.md section 4; results/data/count-bias_AID01106_AID01107.md"
+    },
+    {
+      "choice": "A driver who leaves the corridor is charged 20 minutes of delay for the rest of the trip, which the model does not contain.",
+      "status": "ASSUMED, NO SOURCE. The run report states this part of the delay separately so that it can be recomputed with another figure",
+      "source": "docs/evaluator-replay-2026-10-08.md section 5"
+    },
+    {
+      "choice": "TD's messages time what an operator could know, not the closure: first report 09:01, all lanes 09:36, end 10:02.",
+      "status": "observed report times",
+      "source": "data/demo_incident_messages.jsonl; data/demo_shortlist.md"
+    },
+    {
+      "choice": "Plan actions. The od groups are the flyover's traffic by where it leaves the network: the Canal Road Flyover (485146382) or Wong Nai Chung Road (1194711688). 'Wong Chuk Hang Road' is the road under the flyover, off at edge 1198059138 and back on at 1198059128. 'Wong Chuk Hang Road / Tong Bin Lane' is the second signal on it; its green for Wong Chuk Hang Road eastbound is phase 0 of the network's program.",
+      "status": "the routes are the only detour the network contains. The signal is an ASSUMED NETWORK CONTROL, not a sourced TD control: its program is netconvert's guess, 24 s of green in 90 s, the real timing and whether TD can extend it are not in any source we have, and in this model the signal is not what limits the surface road",
+      "source": "data/plan-context/IN-26-03365_first-report-v2.md; sim/work/p0-replay/network.net.xml"
+    },
+    {
+      "choice": "Queue path AID01103: from the upstream end of the scene (edge 814979900, 100 m before AID01103) back along the main eastbound route to the network entry on Aberdeen Praya Road, 1,097 m.",
+      "status": "measurement choice. In every run so far the queue fills this path, so the figure is 'at least'",
+      "source": "sim/work/p0-replay-build/demand.rou.xml, route of flow f2"
+    },
+    {
+      "choice": "Corridor travel time: vehicles from the Aberdeen Praya Road entry (1197689855) over the flyover (44419212) to the Canal Road Flyover exit (485146382).",
+      "status": "measurement choice",
+      "source": "sim/work/p0-replay-build/demand.rou.xml"
+    },
+    {
+      "choice": "Emergency route: fastest free-flow path in this network from Aberdeen Praya Road (edge 1197441895) by Shek Pai Wan Road to the northbound Pok Fu Lam Road edge nearest Queen Mary Hospital (944309310).",
+      "status": "CANDIDATE, NOT REVIEWED. The hospital's position is not from a repository source. Only 8 of the 40 edges carry modelled traffic, so the figure is close to free-flow time",
+      "source": "docs/00-brief.md (Queen Mary Hospital on the western alternative); docs/02-data.md section 5"
+    },
+    {
+      "choice": "Residential streets are edges tagged highway.residential or highway.living_street in the OSM-built network.",
+      "status": "OSM tags, not a land-use survey",
+      "source": "sim/work/p0-replay/network.net.xml"
+    },
+    {
+      "choice": "Not fully modelled: the tunnel side during the closure. AID01106 and AID01107 counted 895 and 824 vehicles in the ten valid bins 09:05 to 09:55; the model sends about 610.",
+      "status": "KNOWN GAP, smaller than on 10 October (about 470). TD's Road Network confirms no road from Aberdeen to the tunnel avoids AID01103, so the extra crossed AID01103 uncounted, came from Wong Chuk Hang, or both. The road under the flyover's lanes and signal timings are OSM's and netconvert's and decide how much the detour passes; they are not verified",
+      "source": "docs/evaluator-replay-v3-2026-10-13.md section 3"
+    },
+    {
+      "choice": "Count rule: the observations are sim/work/v3/detectors-slow-withheld.json, SHA-256 5ad28fea5616c4ce80123362d95f83c24730231824c419f276abc55f26ca8d40, the packet's sim/work/p0-replay/detectors.json with the count set to null in the 51 bins whose measured speed is under 30 km/h (`python -m src.loaders.fetch withhold-slow-counts --min-count-speed 30`). Their speeds are still scored.",
+      "status": "measured, 13 October, on days other than 15 May: AID01106 and AID01107 have no junction between them in TD's Road Network, yet AID01106 counts 55% of AID01107's vehicles when it runs under 10 km/h, 73% at 10 to 20 and 80% at 20 to 30, and 96 to 102% from 30 km/h up (1,598 five-minute bins on 48 days). A model that moves the right number of vehicles fails GEH in such a bin",
+      "source": "results/data/count-bias_AID01106_AID01107.md; src/loaders/count_bias.py; TD Road Network (2nd Generation), data.gov.hk, RdNet_IRNP.gdb.zip of 9 October 2026"
+    },
+    {
+      "choice": "A driver stopped 60 s at the end of a lane that cannot take it on its way is also let in along the AID01103 queue path (closure.scene.let_in_edges), not only on the approach and reroute edges.",
+      "status": "Added 13 October afternoon: in the E 3.1 runs of the Lead plans, drivers on 814979902 lane 0 were lifted off the road by SUMO after 300 s (a wrong-lane teleport) in 2 of the first 6 cells, which fails the run under validation version 2. Applies the same to every plan.",
+      "source": "src/evaluator/simulate.py let_in; sim/work/evaluator/*v3-1-seed3*P1*/sumo.log and *v3-1-seed4*P0*/sumo.log"
+    }
+  ],
+  "plan_effects_modelled": {
+    "active_seconds": [
+      5760.0,
+      9300
+    ],
+    "diversions": [
+      {
+        "od_group": "Aberdeen->Canal Road Flyover",
+        "probability_a_driver_follows": 0.5
+      },
+      {
+        "od_group": "Aberdeen->Wong Nai Chung Road",
+        "probability_a_driver_follows": 0.5
+      }
+    ],
+    "vehicles_that_took_the_advised_route": 453,
+    "of_them_back_on_the_reopened_road": 171,
+    "signals": [],
+    "vms": "0 sign(s) named; no effect of their own in the twin"
+  },
+  "driver_rerouting": "drivers reroute by themselves while every lane is closed",
+  "drivers_leaving": {
+    "rule": "drivers who see the queue at an exit, or are kept out of the network by it, leave the corridor",
+    "share": 0.2,
+    "vehicles_left": 432,
+    "vehicles_left_by_edge": {
+      "1197441887": 106,
+      "1197689855": 196,
+      "26560250": 130
+    }
+  },
+  "simulation_inputs": {
+    "code:src/evaluator/actions.py": "src/evaluator/actions.py",
+    "code:src/evaluator/behaviour.py": "src/evaluator/behaviour.py",
+    "code:src/evaluator/metrics.py": "src/evaluator/metrics.py",
+    "code:src/evaluator/run.py": "src/evaluator/run.py",
+    "code:src/evaluator/scenario.py": "src/evaluator/scenario.py",
+    "code:src/evaluator/simulate.py": "src/evaluator/simulate.py",
+    "code:src/twin/evaluate.py": "src/twin/evaluate.py",
+    "code:src/validation_targets.py": "src/validation_targets.py",
+    "detector_loops": "sim/work/p0-replay/detectors.add.xml",
+    "network": "sim/work/p0-replay/network.net.xml",
+    "observations": "sim/work/v3/detectors-slow-withheld.json",
+    "routes": "sim/work/p0-replay-build/demand-main-line-join.rou.xml",
+    "scenario": "sim/scenarios/evaluator-diagnostics/v3-1/v3-1-clearing-seed3.json",
+    "speed_signs": "sim/work/p0-replay-build/speeds-ordinary.add.xml"
+  }
+}

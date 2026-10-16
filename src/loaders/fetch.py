@@ -29,10 +29,12 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import json
 from pathlib import Path
 
-from src.loaders import (archive, bin_survival, candidates, closed_lanes, corridor, detectors, flow_balance,
-                         free_flow, holidays, incidents, lane_evidence, lanes, live, twin_export, twin_inputs)
+from src.loaders import (archive, bin_survival, candidates, closed_lanes, corridor, count_bias, detectors, flow_balance,
+                         free_flow, holidays, incidents, lane_evidence, lanes, live, merge_tradeoff, twin_export,
+                         twin_inputs)
 from src.loaders.common import HK, MIN_DURATION_MIN
 
 
@@ -162,7 +164,7 @@ def cmd_twin_detectors(args) -> None:
     out = Path(args.out)
     try:
         doc = twin_export.build(start, end, args.bin_minutes, min_coverage_pct=args.min_coverage,
-                                keep_from=out)
+                                keep_from=out, min_count_speed_kmh=args.min_count_speed)
     except (ValueError, RuntimeError) as exc:
         raise SystemExit(f"error: {exc}") from None
     twin_export.write(doc, out)
@@ -175,6 +177,30 @@ def cmd_twin_detectors(args) -> None:
     print(f"Observation grid begins {start:%Y-%m-%d %H:%M}; set "
           "observation_start_sim_seconds to its offset after any warm-up, and "
           "time the incident against the detector-observed queue onset.")
+
+
+def cmd_withhold_slow_counts(args) -> None:
+    doc = json.loads(Path(args.observations).read_text(encoding="utf-8"))
+    out = twin_export.withhold_slow_counts(doc, args.min_count_speed)
+    twin_export.write(out, Path(args.out))
+    print(f"{out['source']['counts_withheld_as_slow']} counts measured under {args.min_count_speed:g} km/h "
+          f"withheld -> {args.out}")
+
+
+def cmd_count_bias(args) -> None:
+    result = count_bias.compare(args.up, args.down, tuple(d.replace("-", "") for d in args.exclude_day))
+    path = count_bias.write(result)
+    for row in result["bands"]:
+        print(f"  {row['band_kmh']:>6} km/h: {row['bins']:4d} bins  {args.up}/{args.down} = {row['up_over_down']}")
+    print(f"-> {path}")
+
+
+def cmd_merge_tradeoff(args) -> None:
+    result = merge_tradeoff.compare(args.main, args.after, tuple(d.replace("-", "") for d in args.exclude_day))
+    path = merge_tradeoff.write(result)
+    for state, r in result["states"].items():
+        print(f"  {args.after} {state}: {r['quarter_hours']} quarter-hours, slope {r['slope_join_per_main_vehicle']}")
+    print(f"-> {path}")
 
 
 def cmd_bin_survival(args) -> None:
@@ -324,7 +350,30 @@ def main() -> None:
     p.add_argument("--min-coverage", type=int, default=detectors.MIN_COVERAGE_PCT,
                    dest="min_coverage")
     p.add_argument("--out", default=str(twin_export.OUT_PATH))
+    p.add_argument("--min-count-speed", type=float, default=None, dest="min_count_speed",
+                   help="withhold a bin's count where its measured speed is under this (km/h)")
     p.set_defaults(func=cmd_twin_detectors)
+
+    p = sub.add_parser("withhold-slow-counts",
+                       help="null the counts measured in slow traffic in an existing observations file")
+    p.add_argument("--observations", required=True)
+    p.add_argument("--min-count-speed", type=float, required=True, dest="min_count_speed")
+    p.add_argument("--out", required=True)
+    p.set_defaults(func=cmd_withhold_slow_counts)
+
+    p = sub.add_parser("count-bias",
+                       help="two detectors with no junction between them, counts by speed band (-> results/data/)")
+    p.add_argument("--up", default="AID01106")
+    p.add_argument("--down", default="AID01107")
+    p.add_argument("--exclude-day", nargs="*", default=[], help="YYYY-MM-DD days to leave out")
+    p.set_defaults(func=cmd_count_bias)
+
+    p = sub.add_parser("merge-tradeoff",
+                       help="a congested merge: what the join loses per main-line vehicle (-> results/data/)")
+    p.add_argument("--main", default="AID01108")
+    p.add_argument("--after", default="AID01109")
+    p.add_argument("--exclude-day", nargs="*", default=[], help="YYYY-MM-DD days to leave out")
+    p.set_defaults(func=cmd_merge_tradeoff)
 
     p = sub.add_parser("bin-survival",
                        help="how many bins each calibration threshold leaves (-> results/data/)")

@@ -1,0 +1,2558 @@
+{
+  "grid": "sim/scenarios/rankings/IN-26-03365_lead-draft-20261013-b.json",
+  "proposed_by": "Data, 13 October 2026",
+  "enforced": false,
+  "passes_per_check": {
+    "validation_version_2": 33,
+    "closure_flow_after_flyover": 0,
+    "queue_onset": 18,
+    "queue_recovery": 1,
+    "waiting_to_enter_at_end": 27,
+    "wrong_lane_teleports": 33
+  },
+  "cells": [
+    {
+      "name": "main",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_replay-v3-1_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 93.34,
+            "speed_mape_pct": 23.88,
+            "speed_mape_free_flow_pct": 13.03,
+            "congestion_state_agreement_pct": 93.39,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 621,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 10.9,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 615,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -10,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.22,
+          "entry_wait_share_of_delay_pct": 22.3
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 1
+        }
+      }
+    },
+    {
+      "name": "seed1",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-seed1_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 93.16,
+            "speed_mape_pct": 23.87,
+            "speed_mape_free_flow_pct": 12.82,
+            "congestion_state_agreement_pct": 93.39,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 634,
+              "simulated_over_counted": 0.71,
+              "geh_hourly_equivalent": 10.3,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 641,
+              "simulated_over_counted": 0.78,
+              "geh_hourly_equivalent": 7.4,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 633,
+              "simulated_over_counted": 0.66,
+              "geh_hourly_equivalent": 12.6,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -10,
+            "AID01102": 0,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.31,
+          "entry_wait_share_of_delay_pct": 23.6
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 0
+        }
+      }
+    },
+    {
+      "name": "seed2",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-seed2_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.98,
+            "speed_mape_pct": 23.69,
+            "speed_mape_free_flow_pct": 13.11,
+            "congestion_state_agreement_pct": 93.9,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 624,
+              "simulated_over_counted": 0.7,
+              "geh_hourly_equivalent": 10.8,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 10
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 611,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -5,
+            "AID01103": 15
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.29,
+          "entry_wait_share_of_delay_pct": 21.9
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f146.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 2
+        }
+      }
+    },
+    {
+      "name": "seed3",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-seed3_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 93.52,
+            "speed_mape_pct": 24.15,
+            "speed_mape_free_flow_pct": 13.05,
+            "congestion_state_agreement_pct": 93.13,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 614,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 11.2,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 619,
+              "simulated_over_counted": 0.75,
+              "geh_hourly_equivalent": 8.4,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 612,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": -15,
+            "AID01102": 10,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.24,
+          "entry_wait_share_of_delay_pct": 21.6
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.49 1198059119_1 5643"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 2
+        }
+      }
+    },
+    {
+      "name": "seed4",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-seed4_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.62,
+            "speed_mape_pct": 23.52,
+            "speed_mape_free_flow_pct": 12.91,
+            "congestion_state_agreement_pct": 93.64,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 623,
+              "simulated_over_counted": 0.7,
+              "geh_hourly_equivalent": 10.8,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 613,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -5,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.29,
+          "entry_wait_share_of_delay_pct": 23.7
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f144.6 1198059120_1 5642",
+              "f145.50 1198059119_1 5642"
+            ],
+            "in_a_jam": [
+              "f12.155 814979902_0 6792"
+            ],
+            "other": []
+          },
+          "jam_teleports": 6
+        }
+      }
+    },
+    {
+      "name": "seed5",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-seed5_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.98,
+            "speed_mape_pct": 24.1,
+            "speed_mape_free_flow_pct": 12.9,
+            "congestion_state_agreement_pct": 93.26,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 617,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 11.1,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 622,
+              "simulated_over_counted": 0.75,
+              "geh_hourly_equivalent": 8.2,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 611,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -5,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.3,
+          "entry_wait_share_of_delay_pct": 24.6
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 4
+        }
+      }
+    },
+    {
+      "name": "clearing",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 93.16,
+            "speed_mape_pct": 23.32,
+            "speed_mape_free_flow_pct": 13.03,
+            "congestion_state_agreement_pct": 93.51,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 621,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 10.9,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 615,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -10,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.34,
+          "entry_wait_share_of_delay_pct": 21.8
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 1
+        }
+      }
+    },
+    {
+      "name": "clearing-seed1",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed1_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.8,
+            "speed_mape_pct": 23.88,
+            "speed_mape_free_flow_pct": 12.86,
+            "congestion_state_agreement_pct": 93.77,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 634,
+              "simulated_over_counted": 0.71,
+              "geh_hourly_equivalent": 10.3,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 641,
+              "simulated_over_counted": 0.78,
+              "geh_hourly_equivalent": 7.4,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 633,
+              "simulated_over_counted": 0.66,
+              "geh_hourly_equivalent": 12.6,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -10,
+            "AID01102": 0,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.28,
+          "entry_wait_share_of_delay_pct": 22.9
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 0
+        }
+      }
+    },
+    {
+      "name": "clearing-seed2",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed2_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.62,
+            "speed_mape_pct": 23.75,
+            "speed_mape_free_flow_pct": 13.07,
+            "congestion_state_agreement_pct": 93.64,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 624,
+              "simulated_over_counted": 0.7,
+              "geh_hourly_equivalent": 10.8,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 10
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 611,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -5,
+            "AID01103": 15
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.3,
+          "entry_wait_share_of_delay_pct": 21.7
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f146.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 3
+        }
+      }
+    },
+    {
+      "name": "clearing-seed3",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed3_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 93.52,
+            "speed_mape_pct": 23.73,
+            "speed_mape_free_flow_pct": 12.97,
+            "congestion_state_agreement_pct": 93.39,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 614,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 11.2,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 619,
+              "simulated_over_counted": 0.75,
+              "geh_hourly_equivalent": 8.4,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 612,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": -15,
+            "AID01102": 10,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.24,
+          "entry_wait_share_of_delay_pct": 21.2
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.49 1198059119_1 5643"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 1
+        }
+      }
+    },
+    {
+      "name": "clearing-seed4",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed4_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.44,
+            "speed_mape_pct": 23.45,
+            "speed_mape_free_flow_pct": 12.98,
+            "congestion_state_agreement_pct": 93.51,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 623,
+              "simulated_over_counted": 0.7,
+              "geh_hourly_equivalent": 10.8,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 613,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -5,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.31,
+          "entry_wait_share_of_delay_pct": 22.1
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f144.6 1198059120_1 5642",
+              "f145.50 1198059119_1 5642"
+            ],
+            "in_a_jam": [
+              "f12.155 814979902_0 6792"
+            ],
+            "other": []
+          },
+          "jam_teleports": 6
+        }
+      }
+    },
+    {
+      "name": "clearing-seed5",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-clearing-seed5_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.98,
+            "speed_mape_pct": 24.06,
+            "speed_mape_free_flow_pct": 12.92,
+            "congestion_state_agreement_pct": 93.39,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 617,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 11.1,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 622,
+              "simulated_over_counted": 0.75,
+              "geh_hourly_equivalent": 8.2,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 611,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -5,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.27,
+          "entry_wait_share_of_delay_pct": 23.7
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 5
+        }
+      }
+    },
+    {
+      "name": "ramp",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 93.52,
+            "speed_mape_pct": 23.86,
+            "speed_mape_free_flow_pct": 13.01,
+            "congestion_state_agreement_pct": 93.39,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 621,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 10.9,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 615,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -10,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": false,
+          "value": 1.29,
+          "entry_wait_share_of_delay_pct": 54.6
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 1
+        }
+      }
+    },
+    {
+      "name": "ramp-seed1",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed1_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.98,
+            "speed_mape_pct": 23.86,
+            "speed_mape_free_flow_pct": 12.8,
+            "congestion_state_agreement_pct": 93.51,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 634,
+              "simulated_over_counted": 0.71,
+              "geh_hourly_equivalent": 10.3,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 641,
+              "simulated_over_counted": 0.78,
+              "geh_hourly_equivalent": 7.4,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 633,
+              "simulated_over_counted": 0.66,
+              "geh_hourly_equivalent": 12.6,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -10,
+            "AID01102": 0,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": false,
+          "value": 1.29,
+          "entry_wait_share_of_delay_pct": 56.8
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 0
+        }
+      }
+    },
+    {
+      "name": "ramp-seed2",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed2_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.44,
+            "speed_mape_pct": 23.66,
+            "speed_mape_free_flow_pct": 13.07,
+            "congestion_state_agreement_pct": 93.9,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 624,
+              "simulated_over_counted": 0.7,
+              "geh_hourly_equivalent": 10.8,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 10
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 611,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -5,
+            "AID01103": 15
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": false,
+          "value": 1.47,
+          "entry_wait_share_of_delay_pct": 58.1
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f146.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 2
+        }
+      }
+    },
+    {
+      "name": "ramp-seed3",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed3_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 93.16,
+            "speed_mape_pct": 24.12,
+            "speed_mape_free_flow_pct": 13.01,
+            "congestion_state_agreement_pct": 93.26,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 614,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 11.2,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 619,
+              "simulated_over_counted": 0.75,
+              "geh_hourly_equivalent": 8.4,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 612,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": -15,
+            "AID01102": 10,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": false,
+          "value": 1.16,
+          "entry_wait_share_of_delay_pct": 51.3
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.49 1198059119_1 5643"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 2
+        }
+      }
+    },
+    {
+      "name": "ramp-seed4",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed4_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 93.16,
+            "speed_mape_pct": 23.5,
+            "speed_mape_free_flow_pct": 12.89,
+            "congestion_state_agreement_pct": 93.64,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 623,
+              "simulated_over_counted": 0.7,
+              "geh_hourly_equivalent": 10.8,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 613,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -5,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": false,
+          "value": 1.26,
+          "entry_wait_share_of_delay_pct": 55.7
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f144.6 1198059120_1 5642",
+              "f145.50 1198059119_1 5642"
+            ],
+            "in_a_jam": [
+              "f12.155 814979902_0 6792"
+            ],
+            "other": []
+          },
+          "jam_teleports": 6
+        }
+      }
+    },
+    {
+      "name": "ramp-seed5",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-ramp-seed5_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 93.16,
+            "speed_mape_pct": 24.09,
+            "speed_mape_free_flow_pct": 12.87,
+            "congestion_state_agreement_pct": 93.39,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 617,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 11.1,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 622,
+              "simulated_over_counted": 0.75,
+              "geh_hourly_equivalent": 8.2,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 611,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -5,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": false,
+          "value": 1.29,
+          "entry_wait_share_of_delay_pct": 58.2
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 4
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_replay-v3-1_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.08,
+            "speed_mape_pct": 23.3,
+            "speed_mape_free_flow_pct": 12.76,
+            "congestion_state_agreement_pct": 93.25,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 621,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 10.9,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 615,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -10,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 5,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.37,
+          "entry_wait_share_of_delay_pct": 25.0
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 1
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04-seed1",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_v3-1-seed1_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.44,
+            "speed_mape_pct": 23.6,
+            "speed_mape_free_flow_pct": 12.67,
+            "congestion_state_agreement_pct": 93.38,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 634,
+              "simulated_over_counted": 0.71,
+              "geh_hourly_equivalent": 10.3,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 641,
+              "simulated_over_counted": 0.78,
+              "geh_hourly_equivalent": 7.4,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 633,
+              "simulated_over_counted": 0.66,
+              "geh_hourly_equivalent": 12.6,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -10,
+            "AID01102": 0,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 5,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.39,
+          "entry_wait_share_of_delay_pct": 24.2
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 1
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04-seed2",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_v3-1-seed2_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 91.9,
+            "speed_mape_pct": 23.02,
+            "speed_mape_free_flow_pct": 12.71,
+            "congestion_state_agreement_pct": 94.02,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 624,
+              "simulated_over_counted": 0.7,
+              "geh_hourly_equivalent": 10.8,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 10
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 611,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -5,
+            "AID01103": 15
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.34,
+          "entry_wait_share_of_delay_pct": 24.7
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f146.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 2
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04-seed3",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_v3-1-seed3_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.44,
+            "speed_mape_pct": 23.24,
+            "speed_mape_free_flow_pct": 12.68,
+            "congestion_state_agreement_pct": 93.51,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 614,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 11.2,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 619,
+              "simulated_over_counted": 0.75,
+              "geh_hourly_equivalent": 8.4,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 612,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": -15,
+            "AID01102": 10,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 5,
+            "AID01102": -5,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.35,
+          "entry_wait_share_of_delay_pct": 23.4
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.49 1198059119_1 5643"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 1
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04-seed4",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_v3-1-seed4_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.08,
+            "speed_mape_pct": 22.87,
+            "speed_mape_free_flow_pct": 12.7,
+            "congestion_state_agreement_pct": 93.89,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 623,
+              "simulated_over_counted": 0.7,
+              "geh_hourly_equivalent": 10.8,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 613,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -5,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": true,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -10,
+            "AID01103": -10
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.36,
+          "entry_wait_share_of_delay_pct": 24.6
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f144.6 1198059120_1 5642",
+              "f145.50 1198059119_1 5642"
+            ],
+            "in_a_jam": [
+              "f12.155 814979902_0 6792"
+            ],
+            "other": []
+          },
+          "jam_teleports": 6
+        }
+      }
+    },
+    {
+      "name": "reopen-10:04-seed5",
+      "run_id": "2026-05-15_ABD_P0_c50_t70_v3-1-seed5_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.44,
+            "speed_mape_pct": 23.62,
+            "speed_mape_free_flow_pct": 12.63,
+            "congestion_state_agreement_pct": 93.51,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 617,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 11.1,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 622,
+              "simulated_over_counted": 0.75,
+              "geh_hourly_equivalent": 8.2,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 611,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.5,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -5,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.41,
+          "entry_wait_share_of_delay_pct": 25.9
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 4
+        }
+      }
+    },
+    {
+      "name": "compliance-30",
+      "run_id": "2026-05-15_ABD_P0_c30_t66_replay-v3-1_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 93.34,
+            "speed_mape_pct": 23.88,
+            "speed_mape_free_flow_pct": 13.03,
+            "congestion_state_agreement_pct": 93.39,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 621,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 10.9,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 615,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -10,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.22,
+          "entry_wait_share_of_delay_pct": 22.3
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 1
+        }
+      }
+    },
+    {
+      "name": "compliance-70",
+      "run_id": "2026-05-15_ABD_P0_c70_t66_replay-v3-1_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 93.34,
+            "speed_mape_pct": 23.88,
+            "speed_mape_free_flow_pct": 13.03,
+            "congestion_state_agreement_pct": 93.39,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 621,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 10.9,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 628,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.0,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 615,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": true,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -10,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.22,
+          "entry_wait_share_of_delay_pct": 22.3
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 1
+        }
+      }
+    },
+    {
+      "name": "leave-0",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-leave0_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 91.54,
+            "speed_mape_pct": 24.23,
+            "speed_mape_free_flow_pct": 13.46,
+            "congestion_state_agreement_pct": 93.39,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 618,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 11.0,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 623,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.2,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 615,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": -30,
+            "AID01102": -10,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.73,
+          "entry_wait_share_of_delay_pct": 38.8
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 2
+        }
+      }
+    },
+    {
+      "name": "leave-10",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-leave10_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.98,
+            "speed_mape_pct": 23.62,
+            "speed_mape_free_flow_pct": 13.2,
+            "congestion_state_agreement_pct": 93.26,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 612,
+              "simulated_over_counted": 0.68,
+              "geh_hourly_equivalent": 11.3,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 616,
+              "simulated_over_counted": 0.75,
+              "geh_hourly_equivalent": 8.5,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 605,
+              "simulated_over_counted": 0.63,
+              "geh_hourly_equivalent": 13.8,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": -25,
+            "AID01102": -10,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.32,
+          "entry_wait_share_of_delay_pct": 23.9
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 0
+        }
+      }
+    },
+    {
+      "name": "leave-30",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-leave30_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 94.06,
+            "speed_mape_pct": 26.0,
+            "speed_mape_free_flow_pct": 13.04,
+            "congestion_state_agreement_pct": 92.88,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 620,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 10.9,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 624,
+              "simulated_over_counted": 0.76,
+              "geh_hourly_equivalent": 8.1,
+              "five_minute_bins_geh_under_5": 10
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 607,
+              "simulated_over_counted": 0.63,
+              "geh_hourly_equivalent": 13.7,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": null,
+            "AID01102": -5,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -15,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.21,
+          "entry_wait_share_of_delay_pct": 23.4
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 5
+        }
+      }
+    },
+    {
+      "name": "leave-40",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-leave40_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 94.24,
+            "speed_mape_pct": 26.85,
+            "speed_mape_free_flow_pct": 12.97,
+            "congestion_state_agreement_pct": 92.75,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 617,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 11.1,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 622,
+              "simulated_over_counted": 0.75,
+              "geh_hourly_equivalent": 8.2,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 609,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.6,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": null,
+            "AID01102": -5,
+            "AID01103": 5
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.16,
+          "entry_wait_share_of_delay_pct": 24.3
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 2
+        }
+      }
+    },
+    {
+      "name": "length-5m",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-length5_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.44,
+            "speed_mape_pct": 24.99,
+            "speed_mape_free_flow_pct": 12.75,
+            "congestion_state_agreement_pct": 93.13,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 619,
+              "simulated_over_counted": 0.69,
+              "geh_hourly_equivalent": 11.0,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 622,
+              "simulated_over_counted": 0.75,
+              "geh_hourly_equivalent": 8.2,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 614,
+              "simulated_over_counted": 0.64,
+              "geh_hourly_equivalent": 13.4,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": 5,
+            "AID01102": 35,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.19,
+          "entry_wait_share_of_delay_pct": 24.2
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [
+              "f145.50 1198059119_1 5644"
+            ],
+            "in_a_jam": [
+              "f15.143 814979902_0 8021"
+            ],
+            "other": []
+          },
+          "jam_teleports": 12
+        }
+      }
+    },
+    {
+      "name": "length-5m-seed1",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-length5-seed1_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.98,
+            "speed_mape_pct": 25.5,
+            "speed_mape_free_flow_pct": 12.88,
+            "congestion_state_agreement_pct": 92.88,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 644,
+              "simulated_over_counted": 0.72,
+              "geh_hourly_equivalent": 9.9,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 649,
+              "simulated_over_counted": 0.79,
+              "geh_hourly_equivalent": 7.1,
+              "five_minute_bins_geh_under_5": 9
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 642,
+              "simulated_over_counted": 0.67,
+              "geh_hourly_equivalent": 12.2,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": 10,
+            "AID01102": 25,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": 0,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.11,
+          "entry_wait_share_of_delay_pct": 22.5
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 11
+        }
+      }
+    },
+    {
+      "name": "length-5m-seed2",
+      "run_id": "2026-05-15_ABD_P0_c50_t66_v3-1-length5-seed2_lead-draft-20261013-b",
+      "checks": {
+        "validation_version_2": {
+          "passes": true,
+          "value": {
+            "geh_under_5_pct": 92.62,
+            "speed_mape_pct": 25.32,
+            "speed_mape_free_flow_pct": 12.78,
+            "congestion_state_agreement_pct": 93.51,
+            "wrong_lane_teleports_other": 0
+          }
+        },
+        "closure_flow_after_flyover": {
+          "passes": false,
+          "value": {
+            "AID01106": {
+              "bins": 10,
+              "counted": 895,
+              "simulated": 646,
+              "simulated_over_counted": 0.72,
+              "geh_hourly_equivalent": 9.8,
+              "five_minute_bins_geh_under_5": 8
+            },
+            "AID01107": {
+              "bins": 10,
+              "counted": 824,
+              "simulated": 654,
+              "simulated_over_counted": 0.79,
+              "geh_hourly_equivalent": 6.9,
+              "five_minute_bins_geh_under_5": 10
+            },
+            "AID01108": {
+              "bins": 10,
+              "counted": 957,
+              "simulated": 648,
+              "simulated_over_counted": 0.68,
+              "geh_hourly_equivalent": 11.9,
+              "five_minute_bins_geh_under_5": 8
+            }
+          }
+        },
+        "queue_onset": {
+          "passes": false,
+          "value": {
+            "AID01101": null,
+            "AID01102": 0,
+            "AID01103": 0
+          }
+        },
+        "queue_recovery": {
+          "passes": false,
+          "value": {
+            "AID01101": -5,
+            "AID01102": -10,
+            "AID01103": -15
+          }
+        },
+        "waiting_to_enter_at_end": {
+          "passes": true,
+          "value": 0.19,
+          "entry_wait_share_of_delay_pct": 22.3
+        },
+        "wrong_lane_teleports": {
+          "passes": true,
+          "value": {
+            "at_a_lane_shutting": [],
+            "in_a_jam": [],
+            "other": []
+          },
+          "jam_teleports": 14
+        }
+      }
+    }
+  ]
+}

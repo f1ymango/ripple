@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sham Tseng Interchange (TD junction NT405, OpenStreetMap traffic_signals:ref). TD publishes no timings.
+     netconvert's guess ran five exclusive phases, 12 s of a 90 s cycle per approach, and gridlocked Castle Peak Rd
+     on an ordinary Wednesday. These stages are built from the junction's own conflict matrix instead (links that
+     do not conflict run together), vehicle-actuated, with 3 s amber, 2 s all-red after each stage and 6 s of all-red
+     per cycle standing in for the pedestrian crossings (pedestrians are not modelled).
+     Links: 2,3 Castle Peak Rd westbound ahead; 4 its right turn to the slip road; 5,6 the Tuen Mun Rd exit slip
+     onto Castle Peak Rd westbound; 7 the slip's turn to the slip road; 8,9 Castle Peak Rd eastbound;
+     0,1,10,11 signals on the slip roads at other nodes of the same controller.
+     A  westbound and eastbound ahead     B  the exit slip     C  westbound ahead and its right turn -->
+<additional>
+    <tlLogic id="joinedS_1707529259_5106010530_cluster_1707529249_1707529253_1707529254_1707529258_#11more_cluster_1707529275_7061433809" type="actuated" programID="0" offset="0">
+        <phase duration="20" minDur="10" maxDur="45" state="GGGGrrrGGGGG"/>
+        <phase duration="3"  state="GGyyrrrGyyGG"/>
+        <phase duration="2"  state="GGrrrrrGrrGG"/>
+        <phase duration="15" minDur="6"  maxDur="40" state="GGrrrGGGrrGG"/>
+        <phase duration="3"  state="GGrrryyyrrGG"/>
+        <phase duration="2"  state="GGrrrrrrrrGG"/>
+        <phase duration="8"  minDur="5"  maxDur="15" state="GGGGGrrrrrGG"/>
+        <phase duration="3"  state="GGGGyrrrrrGG"/>
+        <phase duration="2"  state="GGrrrrrrrrGG"/>
+        <phase duration="6"  state="rrrrrrrrrrrr"/>
+    </tlLogic>
+</additional>

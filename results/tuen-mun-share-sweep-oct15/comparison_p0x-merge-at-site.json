@@ -1,0 +1,350 @@
+[
+ {
+  "cell": "p0x-merge-at-site c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1306.4,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 401,
+    "corrected": {
+     "0 min outside": 1279.7,
+     "4 min outside": 1306.4,
+     "10 min outside": 1346.5
+    }
+   },
+   "P2": {
+    "delay_E": 1198.9,
+    "extra_driving_h": 6.7,
+    "cars_on_a_longer_route": 94,
+    "left_at_ting_kau": 391,
+    "corrected": {
+     "0 min outside": 1179.5,
+     "4 min outside": 1205.6,
+     "10 min outside": 1244.7
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site c70",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1306.4,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 401,
+    "corrected": {
+     "0 min outside": 1279.7,
+     "4 min outside": 1306.4,
+     "10 min outside": 1346.5
+    }
+   },
+   "P2": {
+    "delay_E": 1117.9,
+    "extra_driving_h": 17.3,
+    "cars_on_a_longer_route": 237,
+    "left_at_ting_kau": 331,
+    "corrected": {
+     "0 min outside": 1113.2,
+     "4 min outside": 1135.2,
+     "10 min outside": 1168.3
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1307.7,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 408,
+    "corrected": {
+     "0 min outside": 1280.5,
+     "4 min outside": 1307.7,
+     "10 min outside": 1348.5
+    }
+   },
+   "P2": {
+    "delay_E": 1292.8,
+    "extra_driving_h": 6.3,
+    "cars_on_a_longer_route": 88,
+    "left_at_ting_kau": 338,
+    "corrected": {
+     "0 min outside": 1276.6,
+     "4 min outside": 1299.1,
+     "10 min outside": 1332.9
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed c70",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1307.7,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 408,
+    "corrected": {
+     "0 min outside": 1280.5,
+     "4 min outside": 1307.7,
+     "10 min outside": 1348.5
+    }
+   },
+   "P2": {
+    "delay_E": 1200.8,
+    "extra_driving_h": 14.4,
+    "cars_on_a_longer_route": 198,
+    "left_at_ting_kau": 352,
+    "corrected": {
+     "0 min outside": 1191.7,
+     "4 min outside": 1215.2,
+     "10 min outside": 1250.4
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2027 c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1279.1,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 433,
+    "corrected": {
+     "0 min outside": 1250.2,
+     "4 min outside": 1279.1,
+     "10 min outside": 1322.4
+    }
+   },
+   "P2": {
+    "delay_E": 1199.4,
+    "extra_driving_h": 9.2,
+    "cars_on_a_longer_route": 124,
+    "left_at_ting_kau": 396,
+    "corrected": {
+     "0 min outside": 1182.2,
+     "4 min outside": 1208.6,
+     "10 min outside": 1248.2
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2027 c70",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1279.1,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 433,
+    "corrected": {
+     "0 min outside": 1250.2,
+     "4 min outside": 1279.1,
+     "10 min outside": 1322.4
+    }
+   },
+   "P2": {
+    "delay_E": 1164.3,
+    "extra_driving_h": 17.1,
+    "cars_on_a_longer_route": 232,
+    "left_at_ting_kau": 368,
+    "corrected": {
+     "0 min outside": 1156.9,
+     "4 min outside": 1181.4,
+     "10 min outside": 1218.2
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2028 c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1215.7,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 487,
+    "corrected": {
+     "0 min outside": 1183.2,
+     "4 min outside": 1215.7,
+     "10 min outside": 1264.4
+    }
+   },
+   "P2": {
+    "delay_E": 1258.5,
+    "extra_driving_h": 8.6,
+    "cars_on_a_longer_route": 112,
+    "left_at_ting_kau": 292,
+    "corrected": {
+     "0 min outside": 1247.6,
+     "4 min outside": 1267.1,
+     "10 min outside": 1296.3
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-fixed-s2028 c70",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1215.7,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 487,
+    "corrected": {
+     "0 min outside": 1183.2,
+     "4 min outside": 1215.7,
+     "10 min outside": 1264.4
+    }
+   },
+   "P2": {
+    "delay_E": 1147.0,
+    "extra_driving_h": 17.4,
+    "cars_on_a_longer_route": 235,
+    "left_at_ting_kau": 362,
+    "corrected": {
+     "0 min outside": 1140.3,
+     "4 min outside": 1164.4,
+     "10 min outside": 1200.6
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-s2027 c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1234.2,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 445,
+    "corrected": {
+     "0 min outside": 1204.5,
+     "4 min outside": 1234.2,
+     "10 min outside": 1278.7
+    }
+   },
+   "P2": {
+    "delay_E": 1129.8,
+    "extra_driving_h": 9.5,
+    "cars_on_a_longer_route": 128,
+    "left_at_ting_kau": 392,
+    "corrected": {
+     "0 min outside": 1113.2,
+     "4 min outside": 1139.3,
+     "10 min outside": 1178.5
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-s2027 c70",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1234.2,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 445,
+    "corrected": {
+     "0 min outside": 1204.5,
+     "4 min outside": 1234.2,
+     "10 min outside": 1278.7
+    }
+   },
+   "P2": {
+    "delay_E": 1130.6,
+    "extra_driving_h": 21.6,
+    "cars_on_a_longer_route": 292,
+    "left_at_ting_kau": 289,
+    "corrected": {
+     "0 min outside": 1132.9,
+     "4 min outside": 1152.2,
+     "10 min outside": 1181.1
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-s2028 c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1242.9,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 415,
+    "corrected": {
+     "0 min outside": 1215.2,
+     "4 min outside": 1242.9,
+     "10 min outside": 1284.4
+    }
+   },
+   "P2": {
+    "delay_E": 1145.0,
+    "extra_driving_h": 8.7,
+    "cars_on_a_longer_route": 114,
+    "left_at_ting_kau": 407,
+    "corrected": {
+     "0 min outside": 1126.5,
+     "4 min outside": 1153.7,
+     "10 min outside": 1194.4
+    }
+   }
+  }
+ },
+ {
+  "cell": "p0x-merge-at-site-s2028 c70",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1242.9,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 415,
+    "corrected": {
+     "0 min outside": 1215.2,
+     "4 min outside": 1242.9,
+     "10 min outside": 1284.4
+    }
+   },
+   "P2": {
+    "delay_E": 1133.5,
+    "extra_driving_h": 21.9,
+    "cars_on_a_longer_route": 291,
+    "left_at_ting_kau": 267,
+    "corrected": {
+     "0 min outside": 1137.6,
+     "4 min outside": 1155.4,
+     "10 min outside": 1182.1
+    }
+   }
+  }
+ }
+]

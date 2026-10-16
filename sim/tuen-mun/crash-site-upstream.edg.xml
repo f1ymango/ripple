@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Simulation's P0 variant 2 (docs/tuen-mun-p0-simulation-review-2026-10-14.md, 600c158): the same 250 m scene and
+     250 m approach as crash-site.edg.xml, moved to the upstream end of the TDS90032 (2,597 m) - TDS90033 (3,107 m) span. -->
+<edges>
+    <edge id="389939170">
+        <split pos="2355" idBefore="389939170" idAfter="389939170-approach"/>
+        <split pos="2605" idBefore="389939170-approach" idAfter="389939170-scene"/>
+        <split pos="2855" idBefore="389939170-scene" idAfter="389939170-b"/>
+    </edge>
+</edges>

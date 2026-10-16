@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IN-26-02615: the crash site, cut out of the 5.4 km Tuen Mun Road edge so a closure shuts 250 m, not all of it,
+     with the 250 m before it as the approach where drivers pass the scene.
+     Between TDS90032 (2,597 m) and TDS90033 (3,107 m): the queue starts at TDS90032 at 17:50 while TDS90033
+     stays free (sim/tuen-mun/README.md). scripts/tuen_mun/build_network.py -->
+<edges>
+    <edge id="389939170">
+        <split pos="2450" idBefore="389939170" idAfter="389939170-approach"/>
+        <split pos="2700" idBefore="389939170-approach" idAfter="389939170-scene"/>
+        <split pos="2950" idBefore="389939170-scene" idAfter="389939170-b"/>
+    </edge>
+</edges>

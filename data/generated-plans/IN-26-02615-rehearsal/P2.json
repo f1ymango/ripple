@@ -1,0 +1,31 @@
+{
+  "plan_id": "P2",
+  "label": "Advise part of the traffic to use Castle Peak Road and lengthen its green",
+  "rationale": "Rehearsal stand-in: the detour advised to part of each od group, and the junctions on it given their full green extension.",
+  "diversions": [
+    {
+      "od_group": "Tsuen Wan & Ting Kau->Tuen Mun",
+      "via": "Castle Peak Road",
+      "share": 0.3
+    }
+  ],
+  "signals": [],
+  "vms": [],
+  "pt_nudge": {
+    "mode": "",
+    "intent": ""
+  },
+  "priority_corridor": {
+    "od": "Tuen Mun Road->crash site",
+    "keep_clear": [
+      "Tuen Mun Road"
+    ]
+  },
+  "constraints_checked": [
+    "residential_share_under_15pct",
+    "no_school_street_peak",
+    "emergency_corridor_clear",
+    "od_shares_at_most_one",
+    "no_blocked_road"
+  ]
+}

@@ -523,3 +523,57 @@ def test_check_only_rejects_output_arguments(module, args, monkeypatch):
     with pytest.raises(SystemExit) as exc:
         module.main()
     assert exc.value.code == 2
+
+
+def version_2(records):
+    """The fixture runs as E writes them since 13 October: run_ids ending in the plan set, a version 2 block."""
+    for _, record in records:
+        record["run_id"] = f"mock_{record['plan_id']}_c50_t60_mock-scenario_mock-set"
+    records[0][1]["validation"] = {"geh_under_5_pct": 93.5, "speed_mape_pct": 24.8, "speed_mape_free_flow_pct": 13.0,
+                                   "congestion_state_agreement_pct": 93.3, "wrong_lane_teleports_other": 0}
+    return records
+
+
+def mock_ranking(records, first="P2"):
+    return {"plan_set": "mock-set", "incident_id": records[0][1]["incident_id"], "first": first,
+            "verdicts": ["P1 before P0", "P2 before P0", "P2 before P1"] if first else ["P1 and P2 tie"],
+            "cells": [{"run_ids": {r["plan_id"]: r["run_id"] for _, r in records},
+                       "counts": True,
+                       "total_vehicle_hours_delay": {r["plan_id"]: r["metrics"]["total_vehicle_hours_delay"]
+                                                     for _, r in records}}]}
+
+
+def test_a_version_2_baseline_needs_a_ranking_that_puts_the_winner_before_both_others(inputs):
+    records = version_2(artifacts())
+    with pytest.raises(ValueError, match="No ranking"):
+        select(checked(inputs), records)
+    plan, result, _, _ = select(checked(inputs), records, mock_ranking(records))
+    assert plan["plan_id"] == result["plan_id"] == "P2"
+    with pytest.raises(ValueError, match=r"puts no plan before both others \(P1 and P2 tie\)"):
+        select(checked(inputs), records, mock_ranking(records, first=None))
+
+
+@pytest.mark.parametrize("change, error", [
+    (lambda r: r.update(plan_set="other-set"), "another plan set"),
+    (lambda r: r["cells"][0]["run_ids"].update(P1="other"), "not a cell"),
+    (lambda r: r["cells"][0]["total_vehicle_hours_delay"].update(P2=79), "delays differ"),
+    (lambda r: r.update(first="P1"), "disagree"),
+])
+def test_a_ranking_for_other_runs_is_refused(inputs, change, error):
+    records = version_2(artifacts())
+    ranking = mock_ranking(records)
+    change(ranking)
+    with pytest.raises(ValueError, match=error):
+        select(checked(inputs), records, ranking)
+
+
+@pytest.mark.parametrize("counts", [False, None])
+def test_a_non_counting_ranking_cell_cannot_be_recommended(inputs, counts):
+    records = version_2(artifacts())
+    ranking = mock_ranking(records)
+    if counts is None:
+        del ranking["cells"][0]["counts"]
+    else:
+        ranking["cells"][0]["counts"] = counts
+    with pytest.raises(ValueError, match="cell that does not count"):
+        select(checked(inputs), records, ranking)

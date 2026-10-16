@@ -18,8 +18,8 @@ USD 300–600/month range lacked a price or usage source and is withdrawn.
 | Metric | Status / Value | Source / Traceability |
 | :--- | :--- | :--- |
 | **Operational infrastructure cost** | Not measured | Requires a priced deployment configuration |
-| **Delay savings ($ value)** | No accepted benefit claim | Incident P0 and plan comparison remain unaccepted |
-| **CO₂ reduction benefits ($ value)** | No accepted benefit claim | Incident P0 and plan comparison remain unaccepted |
+| **Delay savings ($ value)** | Not measured | Tuen Mun's saved −4.3% is a modelled delay comparison, not an observed road saving or monetised benefit; see [Simulation's final call](../docs/tuen-mun-simulation-final-call-2026-10-15.md) |
+| **CO₂ reduction benefits ($ value)** | Not measured | No accepted real-road or monetised effect from the two-case pack |
 | **Benefit-cost ratio (BCR)** | Not calculated | Requires sourced costs and accepted benefits |
 
 ---
@@ -27,4 +27,4 @@ USD 300–600/month range lacked a price or usage source and is withdrawn.
 ## 3. Financial Feasibility Governance Rules
 
 1. **No Speculative Benefit Calculations**: Benefit-Cost Ratio must **not** be calculated using partial, pre-incident, or unvalidated simulation metrics.
-2. **Freeze Boundary Alignment**: The provisional 16 Oct freeze (Lead update, 13 Oct) locks supported figures; the 15 Oct delivery checkpoint remains. If the incident comparison remains unaccepted, financial return claims stay out of the submission.
+2. **Freeze Boundary Alignment**: The confirmed 16 Oct claims freeze locks the labelled two-case comparison; the 15 Oct delivery checkpoint remains. Its modelled Tuen Mun result is not an accepted financial return claim, so BCR stays out of the submission.

@@ -1,0 +1,31 @@
+{
+  "plan_id": "P2",
+  "label": "Capacity-bounded Castle Peak Road advice",
+  "rationale": "Limit advice to a small share so the Sham Tseng exit is less likely to overload under the fixed-signal sensitivity. No signal change is assumed; evaluate this candidate against P0.",
+  "diversions": [
+    {
+      "od_group": "Tsuen Wan & Ting Kau->Tuen Mun",
+      "via": "Castle Peak Road",
+      "share": 0.11
+    }
+  ],
+  "signals": [],
+  "vms": [],
+  "pt_nudge": {
+    "mode": "",
+    "intent": ""
+  },
+  "priority_corridor": {
+    "od": "Tuen Mun Road->crash site",
+    "keep_clear": [
+      "Tuen Mun Road"
+    ]
+  },
+  "constraints_checked": [
+    "residential_share_under_15pct",
+    "no_school_street_peak",
+    "emergency_corridor_clear",
+    "od_shares_at_most_one",
+    "no_blocked_road"
+  ]
+}

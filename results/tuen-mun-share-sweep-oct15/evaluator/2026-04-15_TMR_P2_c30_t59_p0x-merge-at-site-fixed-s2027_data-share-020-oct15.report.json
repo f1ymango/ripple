@@ -1,0 +1,189 @@
+{
+  "run_id": "2026-04-15_TMR_P2_c30_t59_p0x-merge-at-site-fixed-s2027_data-share-020-oct15",
+  "status": "DATA'S CANDIDATE P0 AFTER SIMULATION'S REVIEW, a diagnostic until Simulation reviews it: Data's candidate after the variant runs (not one of Simulation's five): drivers learn of the lane closure and move over on the 250 m approach, not along the whole 2.45 km edge before it; in replay-v2 the queue on that edge collapsed into the one open lane and gridlocked at Sham Tseng 18:00-18:15",
+  "validation_targets": "GEH < 5 in at least 85% of count bins; speed MAPE at most 15% over bins measured at 30 km/h or more; model and detector agree on congested (under 30 km/h) or not in at least 85% of speed bins; no wrong-lane teleport except of a driver stuck from the moment a lane shut or in a jam (a jam teleport on its edge or the next during its wait or the 300 s before) (03-architecture.md section 4, version 2 of 13 October 2026)",
+  "wrong_lane_teleports": {
+    "at_a_lane_shutting": [],
+    "in_a_jam": [],
+    "other": []
+  },
+  "validation_targets_met": true,
+  "compared_with": {
+    "run_id": "2026-04-15_TMR_P0_c30_t59_p0x-merge-at-site-fixed-s2027_data-share-020-oct15",
+    "validation": {
+      "geh_under_5_pct": 87.79,
+      "speed_mape_pct": 31.57,
+      "speed_mape_free_flow_pct": 13.99,
+      "congestion_state_agreement_pct": 92.08,
+      "wrong_lane_teleports_other": 0
+    }
+  },
+  "run_health": {
+    "complete": true,
+    "final_time_seconds": 14400.0,
+    "wall_seconds": 350.1,
+    "sumo_version": "SUMO 1.27.1",
+    "closure_steps": [
+      {
+        "second": 4680,
+        "lanes_closed": [
+          "389939170-scene_2"
+        ]
+      },
+      {
+        "second": 5340,
+        "lanes_closed": [
+          "389939170-scene_1",
+          "389939170-scene_2"
+        ]
+      },
+      {
+        "second": 6420,
+        "lanes_closed": [
+          "389939170-scene_2"
+        ]
+      },
+      {
+        "second": 7860,
+        "lanes_closed": [
+          "389939170-scene_1",
+          "389939170-scene_2"
+        ]
+      },
+      {
+        "second": 8220,
+        "lanes_closed": []
+      }
+    ],
+    "drivers_rerouted_during_seconds": null,
+    "drivers_let_in_at_a_lane_end": 14,
+    "vehicles_loaded": 19323,
+    "vehicles_inserted": 19323,
+    "vehicles_running_at_end": 641,
+    "vehicles_waiting_to_enter_at_end": 0,
+    "teleports": {
+      "total": 7,
+      "jam": 7,
+      "yield": 0,
+      "wrongLane": 0
+    }
+  },
+  "measurement_detail": {
+    "vehicles_in_scope": 16837,
+    "vehicles_in_scope_left_corridor": {
+      "at_an_exit": 396,
+      "kept_out_of_the_network": 0
+    },
+    "delay_hours_assumed_outside_network": 26.4,
+    "vehicles_in_scope_still_driving": 641,
+    "vehicles_in_scope_never_entered": 0,
+    "delay_hours_in_network": 1169.4,
+    "delay_hours_waiting_to_enter": 3.6,
+    "delay_hours_waiting_to_enter_by_entry_edge": {
+      "1184210836": 2.2,
+      "107646978#1": 1.1,
+      "757290378": 0.2,
+      "102290333": 0.1
+    },
+    "queue_path_m": {
+      "Tuen Mun Road back from the crash site": 7594
+    },
+    "queue_share_of_path_pct": {
+      "Tuen Mun Road back from the crash site": 62.7
+    },
+    "corridor_vehicles": 5454,
+    "corridor_vehicles_still_driving": 231,
+    "emergency_route_edges": 2,
+    "emergency_route_edges_with_traffic": 2,
+    "measurement_bin_seconds": 300
+  },
+  "metric_definitions": {
+    "total_vehicle_hours_delay": "Sum over in-scope vehicles of SUMO timeLoss (time lost against each vehicle's own free speed) plus departDelay (time waiting to enter), up to the end of the run. A vehicle that left the corridor because of the queue also counts the scenario's extra_minutes_outside, an assumption, and any time it waited outside the network; the run report gives that part separately.",
+    "delay_vs_do_nothing_pct": "Change in total_vehicle_hours_delay against the P0 run of the same scenario, compliance and clearance; zero for P0.",
+    "max_queue_m": "Per named path: largest distance over the run from the downstream end of the path's first edge back to the last waiting vehicle, following SUMO's queue output upstream edge by edge for as long as each edge's queue reaches its upstream end. Sampled every 10 seconds. It cannot exceed the path's length: near 100% in queue_share_of_path_pct means the queue ran off the path.",
+    "corridor_tt_p95_min": "95th percentile (nearest rank) of time in the network for in-scope vehicles on the scenario's corridor route. A vehicle still driving at the end counts with its time so far; one that left the corridor at an exit is not counted.",
+    "emergency_tt_min": "Length of each emergency-route edge divided by the mean speed of all traffic on it from closure onset to the end of the run, summed. An edge no vehicle used counts at its speed limit. General traffic, not blue-light running.",
+    "co2_kg": "Sum of SUMO's CO2 for in-scope vehicles, default emission class for every vehicle. Vehicles waiting outside the network emit nothing.",
+    "residential_delay_share_pct": "Share of all edge timeLoss after the warm-up that falls on edges of the scenario's residential types. Excludes time waiting to enter.",
+    "vehicles_completed": "In-scope vehicles that finished their trip in the network before the run ended. A vehicle that left the corridor because of the queue did not.",
+    "validation": "src/twin/evaluate.py, unchanged, over every observed bin after the warm-up (P0 only), rounded to two decimals towards failing. speed_mape_free_flow_pct uses only speed bins the detector measured at 30 km/h or more; congestion_state_agreement_pct is the share of speed bins where model and detector are on the same side of 30 km/h; wrong_lane_teleports_other counts SUMO wrong-lane teleports whose wait neither began within 60 seconds after a lane shut nor was inside a jam (a jam teleport on the same or next edge during the wait or the 300 seconds before it; wrong_lane_teleports)."
+  },
+  "assumptions": [
+    {
+      "choice": "Data's candidate after the variant runs (not one of Simulation's five): drivers learn of the lane closure and move over on the 250 m approach, not along the whole 2.45 km edge before it; in replay-v2 the queue on that edge collapsed into the one open lane and gridlocked at Sham Tseng 18:00-18:15",
+      "status": "changed from replay-v2, Data's, after the variant runs",
+      "source": "docs/tuen-mun-p0-simulation-review-2026-10-14.md"
+    },
+    {
+      "choice": "Network: OpenStreetMap geometry, lanes and signal positions; TD Road Network speed limits; netconvert's signal timings",
+      "status": "TD publishes no signal timings",
+      "source": "sim/tuen-mun/network-audit.md"
+    },
+    {
+      "choice": "Closure phases from TD's lane detectors; onset 17:48, reopening after 59 min; the 18:41-18:47 near stop modelled as one lane open",
+      "status": "measured, one simplification",
+      "source": "docs/tuen-mun-2026-10-14.md"
+    },
+    {
+      "choice": "Open lanes pass the scene at 30 km/h",
+      "status": "fitted to the throughput past the site",
+      "source": "docs/tuen-mun-2026-10-14.md"
+    },
+    {
+      "choice": "Drivers at Ting Kau who see the queue stay on Route 3 with probability 0.2, each charged 4 min",
+      "status": "share fitted to TDS90024; minutes from TD segment speeds",
+      "source": "docs/tuen-mun-2026-10-14.md"
+    },
+    {
+      "choice": "Demand: TDS90019 on the day; the Ting Kau merge as on ordinary Wednesdays; Castle Peak Rd from the 2024 census; exits at Sham Tseng and Siu Lam fitted on ordinary Wednesdays",
+      "status": "observed, census and fitted",
+      "source": "sim/tuen-mun/demand_20260415.json"
+    },
+    {
+      "choice": "Vehicles 7.0 m long on average including buses and lorries",
+      "status": "assumption",
+      "source": "docs/tuen-mun-2026-10-14.md"
+    }
+  ],
+  "plan_effects_modelled": {
+    "active_seconds": [
+      5340.0,
+      8220.0
+    ],
+    "diversions": [
+      {
+        "od_group": "Tsuen Wan & Ting Kau->Tuen Mun",
+        "probability_a_driver_follows": 0.06
+      }
+    ],
+    "vehicles_that_took_the_advised_route": 165,
+    "of_them_back_on_the_reopened_road": 41,
+    "signals": [],
+    "vms": "0 sign(s) named; no effect of their own in the twin"
+  },
+  "driver_rerouting": "none: every vehicle keeps its route",
+  "drivers_leaving": {
+    "rule": "drivers who see the queue at an exit, or are kept out of the network by it, leave the corridor",
+    "share": 0.2,
+    "vehicles_left": 396,
+    "vehicles_left_by_edge": {
+      "1184210823": 109,
+      "209559418": 287
+    }
+  },
+  "simulation_inputs": {
+    "code:src/evaluator/actions.py": "src/evaluator/actions.py",
+    "code:src/evaluator/behaviour.py": "src/evaluator/behaviour.py",
+    "code:src/evaluator/metrics.py": "src/evaluator/metrics.py",
+    "code:src/evaluator/run.py": "src/evaluator/run.py",
+    "code:src/evaluator/scenario.py": "src/evaluator/scenario.py",
+    "code:src/evaluator/simulate.py": "src/evaluator/simulate.py",
+    "code:src/twin/evaluate.py": "src/twin/evaluate.py",
+    "code:src/validation_targets.py": "src/validation_targets.py",
+    "detector_loops": "sim/tuen-mun/detectors.add.xml",
+    "network": "sim/tuen-mun/network-fixed-time.net.xml",
+    "observations": "sim/tuen-mun/observations_20260415.json",
+    "routes": "sim/tuen-mun/demand_20260415.rou.xml",
+    "scenario": "sim/scenarios/tuen-mun/evaluator_IN-26-02615_p0x-merge-at-site-fixed-s2027.json"
+  }
+}

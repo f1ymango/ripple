@@ -1,0 +1,82 @@
+[
+ {
+  "cell": "replay-v2-s2029 c30",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1281.7,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 431,
+    "corrected": {
+     "0 min outside": 1253.0,
+     "4 min outside": 1281.7,
+     "10 min outside": 1324.8
+    }
+   },
+   "P1": {
+    "delay_E": 1329.7,
+    "extra_driving_h": 28.9,
+    "cars_on_a_longer_route": 392,
+    "left_at_ting_kau": 344,
+    "corrected": {
+     "0 min outside": 1335.7,
+     "4 min outside": 1358.6,
+     "10 min outside": 1393.0
+    }
+   },
+   "P2": {
+    "delay_E": 1283.0,
+    "extra_driving_h": 4.4,
+    "cars_on_a_longer_route": 59,
+    "left_at_ting_kau": 355,
+    "corrected": {
+     "0 min outside": 1263.7,
+     "4 min outside": 1287.4,
+     "10 min outside": 1322.9
+    }
+   }
+  }
+ },
+ {
+  "cell": "replay-v2-s2029 c50",
+  "p0_validation_met": true,
+  "p0_validation_reason": "",
+  "plans": {
+   "P0": {
+    "delay_E": 1281.7,
+    "extra_driving_h": 0.0,
+    "cars_on_a_longer_route": 0,
+    "left_at_ting_kau": 431,
+    "corrected": {
+     "0 min outside": 1253.0,
+     "4 min outside": 1281.7,
+     "10 min outside": 1324.8
+    }
+   },
+   "P1": {
+    "delay_E": 1852.2,
+    "extra_driving_h": 33.2,
+    "cars_on_a_longer_route": 448,
+    "left_at_ting_kau": 316,
+    "corrected": {
+     "0 min outside": 1864.3,
+     "4 min outside": 1885.4,
+     "10 min outside": 1917.0
+    }
+   },
+   "P2": {
+    "delay_E": 1262.1,
+    "extra_driving_h": 7.4,
+    "cars_on_a_longer_route": 98,
+    "left_at_ting_kau": 353,
+    "corrected": {
+     "0 min outside": 1245.9,
+     "4 min outside": 1269.5,
+     "10 min outside": 1304.8
+    }
+   }
+  }
+ }
+]

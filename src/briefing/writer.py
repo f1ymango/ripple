@@ -4,7 +4,7 @@ from pathlib import Path
 import re
 import unicodedata
 
-from src.briefing.results import load_results, select
+from src.briefing.results import load_ranking, load_results, select
 from src.briefing.schema import BRIEFING_SCHEMA, DRAFT_SCHEMA
 from src.generation import generate_checked, validate
 from src.evaluation_provenance import verify_result
@@ -139,7 +139,8 @@ def prepare_comparison(plans, result_paths, *, generation_inputs,
                            generation_inputs["incident"])
     result_paths = list(result_paths)
     artifacts = load_results(result_paths, results_root)
-    plan, result, baseline, sources = select(plans, artifacts)
+    ranking = load_ranking(artifacts[0][1]["run_id"], Path(results_root).parent / "rankings") if artifacts else None
+    plan, result, baseline, sources = select(plans, artifacts, ranking)
     if result["incident_id"] != generation_inputs["incident"]["incident_id"]:
         raise ValueError("Saved results belong to a different incident from the plan input")
     by_plan = {p["plan_id"]: p for p in plans}

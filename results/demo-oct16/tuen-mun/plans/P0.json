@@ -1,0 +1,25 @@
+{
+  "plan_id": "P0",
+  "label": "No Intervention",
+  "rationale": "Baseline scenario with no additional measures taken.",
+  "diversions": [],
+  "signals": [],
+  "vms": [],
+  "pt_nudge": {
+    "mode": "",
+    "intent": ""
+  },
+  "priority_corridor": {
+    "od": "Tuen Mun Road->crash site",
+    "keep_clear": [
+      "Tuen Mun Road"
+    ]
+  },
+  "constraints_checked": [
+    "residential_share_under_15pct",
+    "no_school_street_peak",
+    "emergency_corridor_clear",
+    "od_shares_at_most_one",
+    "no_blocked_road"
+  ]
+}

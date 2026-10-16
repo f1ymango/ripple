@@ -1,0 +1,247 @@
+{
+ "day": "2026-05-06",
+ "window": [
+  "16:30",
+  "20:30"
+ ],
+ "bin_minutes": 15,
+ "shares": {
+  "sham_tseng_exit": 0.1216,
+  "of_them_on_along_castle_peak_road": 0.3753,
+  "siu_lam_exit": 0.2816,
+  "castle_peak_road_through_traffic_rejoining_at_siu_lam": 0.5,
+  "ordinary_ratio_TDS90039_to_TDS90033": 0.7929
+ },
+ "split": {
+  "to_tuen_mun": 0.6310425599999999,
+  "to_siu_lam": 0.24735744,
+  "to_sham_tseng": 0.07596352,
+  "to_sham_tseng_then_cpr": 0.04563648
+ },
+ "census": {
+  "6209": {
+   "aadt_weekday_two_way": 8680,
+   "pm_peak_westbound": 460,
+   "pm_peak_eastbound": 230
+  },
+  "5657": {
+   "aadt_two_way": 13480
+  },
+  "weekday_hourly_pct": {
+   "16": 5.824689,
+   "17": 6.520005,
+   "18": 8.001823,
+   "19": 7.101334,
+   "20": 5.243361
+  }
+ },
+ "westbound_share_castle_peak_road": 0.6666666666666666,
+ "bins": [
+  {
+   "bin": "16:30",
+   "tuen_mun_road_from_tsuen_wan": 630.0,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 631.75,
+   "ting_kau_merge_ordinary": 495.5,
+   "castle_peak_road_westbound": 84.2638342,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 129.37089806560365,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 64.68544903280184,
+   "castle_peak_road_eastbound_to_tsuen_wan": 42.13191710000001
+  },
+  {
+   "bin": "16:45",
+   "tuen_mun_road_from_tsuen_wan": 609.0,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 605.0833333333334,
+   "ting_kau_merge_ordinary": 439.16666666666663,
+   "castle_peak_road_westbound": 84.2638342,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 129.37089806560365,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 64.68544903280184,
+   "castle_peak_road_eastbound_to_tsuen_wan": 42.13191710000001
+  },
+  {
+   "bin": "17:00",
+   "tuen_mun_road_from_tsuen_wan": 735.0,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 681.75,
+   "ting_kau_merge_ordinary": 380.5,
+   "castle_peak_road_westbound": 94.32273899999998,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 144.8144102186788,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 72.40720510933942,
+   "castle_peak_road_eastbound_to_tsuen_wan": 47.1613695
+  },
+  {
+   "bin": "17:15",
+   "tuen_mun_road_from_tsuen_wan": 878.5,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 708.4166666666666,
+   "ting_kau_merge_ordinary": 446.83333333333337,
+   "castle_peak_road_westbound": 94.32273899999998,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 144.8144102186788,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 72.40720510933942,
+   "castle_peak_road_eastbound_to_tsuen_wan": 47.1613695
+  },
+  {
+   "bin": "17:30",
+   "tuen_mun_road_from_tsuen_wan": 787.5,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 745.8333333333334,
+   "ting_kau_merge_ordinary": 471.2499999999999,
+   "castle_peak_road_westbound": 94.32273899999998,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 144.8144102186788,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 72.40720510933942,
+   "castle_peak_road_eastbound_to_tsuen_wan": 47.1613695
+  },
+  {
+   "bin": "17:45",
+   "tuen_mun_road_from_tsuen_wan": 819.0,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 756.3333333333334,
+   "ting_kau_merge_ordinary": 582.4999999999999,
+   "castle_peak_road_westbound": 94.32273899999998,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 144.8144102186788,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 72.40720510933942,
+   "castle_peak_road_eastbound_to_tsuen_wan": 47.1613695
+  },
+  {
+   "bin": "18:00",
+   "tuen_mun_road_from_tsuen_wan": 759.0,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 743.0,
+   "ting_kau_merge_ordinary": 494.91666666666674,
+   "castle_peak_road_westbound": 115.75970606666667,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 177.72674689962034,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 88.8633734498102,
+   "castle_peak_road_eastbound_to_tsuen_wan": 57.87985303333335
+  },
+  {
+   "bin": "18:15",
+   "tuen_mun_road_from_tsuen_wan": 825.0,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 787.9166666666666,
+   "ting_kau_merge_ordinary": 545.0000000000001,
+   "castle_peak_road_westbound": 115.75970606666667,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 177.72674689962034,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 88.8633734498102,
+   "castle_peak_road_eastbound_to_tsuen_wan": 57.87985303333335
+  },
+  {
+   "bin": "18:30",
+   "tuen_mun_road_from_tsuen_wan": 840.0,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 792.5,
+   "ting_kau_merge_ordinary": 430.75,
+   "castle_peak_road_westbound": 115.75970606666667,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 177.72674689962034,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 88.8633734498102,
+   "castle_peak_road_eastbound_to_tsuen_wan": 57.87985303333335
+  },
+  {
+   "bin": "18:45",
+   "tuen_mun_road_from_tsuen_wan": 834.0,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 737.6666666666666,
+   "ting_kau_merge_ordinary": 446.91666666666663,
+   "castle_peak_road_westbound": 115.75970606666667,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 177.72674689962034,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 88.8633734498102,
+   "castle_peak_road_eastbound_to_tsuen_wan": 57.87985303333335
+  },
+  {
+   "bin": "19:00",
+   "tuen_mun_road_from_tsuen_wan": 756.0,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 708.0,
+   "ting_kau_merge_ordinary": 489.75,
+   "castle_peak_road_westbound": 102.73263186666665,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 157.7261819547456,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 78.86309097737282,
+   "castle_peak_road_eastbound_to_tsuen_wan": 51.36631593333333
+  },
+  {
+   "bin": "19:15",
+   "tuen_mun_road_from_tsuen_wan": 711.5,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 672.1666666666666,
+   "ting_kau_merge_ordinary": 444.91666666666663,
+   "castle_peak_road_westbound": 102.73263186666665,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 157.7261819547456,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 78.86309097737282,
+   "castle_peak_road_eastbound_to_tsuen_wan": 51.36631593333333
+  },
+  {
+   "bin": "19:30",
+   "tuen_mun_road_from_tsuen_wan": 645.0,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 591.8333333333334,
+   "ting_kau_merge_ordinary": 399.83333333333326,
+   "castle_peak_road_westbound": 102.73263186666665,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 157.7261819547456,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 78.86309097737282,
+   "castle_peak_road_eastbound_to_tsuen_wan": 51.36631593333333
+  },
+  {
+   "bin": "19:45",
+   "tuen_mun_road_from_tsuen_wan": 495.0,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 531.0833333333334,
+   "ting_kau_merge_ordinary": 437.41666666666663,
+   "castle_peak_road_westbound": 102.73263186666665,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 157.7261819547456,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 78.86309097737282,
+   "castle_peak_road_eastbound_to_tsuen_wan": 51.36631593333333
+  },
+  {
+   "bin": "20:00",
+   "tuen_mun_road_from_tsuen_wan": 487.5,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 497.0,
+   "ting_kau_merge_ordinary": 369.58333333333337,
+   "castle_peak_road_westbound": 75.8539558,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 116.4591485403189,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 58.22957427015946,
+   "castle_peak_road_eastbound_to_tsuen_wan": 37.926977900000004
+  },
+  {
+   "bin": "20:15",
+   "tuen_mun_road_from_tsuen_wan": 500.5,
+   "counted_at": "TDS90019",
+   "tuen_mun_road_from_tsuen_wan_ordinary": 529.3333333333334,
+   "ting_kau_merge_ordinary": 247.33333333333326,
+   "castle_peak_road_westbound": 75.8539558,
+   "castle_peak_road_westbound_extra": 0.0,
+   "castle_peak_road_westbound_at_tsing_lung_tau": 116.4591485403189,
+   "castle_peak_road_eastbound_at_tsing_lung_tau": 58.22957427015946,
+   "castle_peak_road_eastbound_to_tsuen_wan": 37.926977900000004
+  }
+ ],
+ "routes": {
+  "tmr_to_tuen_mun": "107646978#1 1344086477 868844358 1344086463 1344086464 1344086465 1344086462 1344086461 1344086460 1344086459 157931300#0 645999370 52155204 389939170 389939170-approach 389939170-scene 389939170-b 1078219426 1078219424 1078219423 50857792 1078219417 1078219418 1078219416",
+  "tmr_to_siu_lam": "107646978#1 1344086477 868844358 1344086463 1344086464 1344086465 1344086462 1344086461 1344086460 1344086459 157931300#0 645999370 52155204 389939170 389939170-approach 389939170-scene 389939170-b 1078219426 1078219422 1078219421",
+  "tmr_to_sham_tseng": "107646978#1 1344086477 868844358 1344086463 1344086464 1344086465 1344086462 1344086461 1344086460 1344086459 157931300#0 645999370 158584378 452269559",
+  "tmr_to_sham_tseng_then_cpr": "107646978#1 1344086477 868844358 1344086463 1344086464 1344086465 1344086462 1344086461 1344086460 1344086459 157931300#0 645999370 158584378 452269559 158584373 452269552 -756050077 -756050082 -756050083 452269553#0 389939167#0 300687110#0 300687110#1 1313130367 1312957701#0 1312957701#1 158584344#0 158584344#1 441107653 441107654 158584334#2 173181473 150053247 158584336#0 158584336#1 442382931 9411886 158584332 158584318 1078219451 158785721 833628376 263981124#1 1503376211 440273461 158785751#0 158785731#0 158785731#1 927442186#0 158785733#0 158785733#1 158785733#2 158785733#4 158785734#0 158785734#1 158785738#0 158785738#1 158785738#2 158785732 996758532 158785729 158785727#1 829563400",
+  "tkb_to_tuen_mun": "1184210836 1184210830 1184210821 158584348 310337089 1344086465 1344086462 1344086461 1344086460 1344086459 157931300#0 645999370 52155204 389939170 389939170-approach 389939170-scene 389939170-b 1078219426 1078219424 1078219423 50857792 1078219417 1078219418 1078219416",
+  "tkb_to_siu_lam": "1184210836 1184210830 1184210821 158584348 310337089 1344086465 1344086462 1344086461 1344086460 1344086459 157931300#0 645999370 52155204 389939170 389939170-approach 389939170-scene 389939170-b 1078219426 1078219422 1078219421",
+  "tkb_to_sham_tseng": "1184210836 1184210830 1184210821 158584348 310337089 1344086465 1344086462 1344086461 1344086460 1344086459 157931300#0 645999370 158584378 452269559",
+  "tkb_to_sham_tseng_then_cpr": "1184210836 1184210830 1184210821 158584348 310337089 1344086465 1344086462 1344086461 1344086460 1344086459 157931300#0 645999370 158584378 452269559 158584373 452269552 -756050077 -756050082 -756050083 452269553#0 389939167#0 300687110#0 300687110#1 1313130367 1312957701#0 1312957701#1 158584344#0 158584344#1 441107653 441107654 158584334#2 173181473 150053247 158584336#0 158584336#1 442382931 9411886 158584332 158584318 1078219451 158785721 833628376 263981124#1 1503376211 440273461 158785751#0 158785731#0 158785731#1 927442186#0 158785733#0 158785733#1 158785733#2 158785733#4 158785734#0 158785734#1 158785738#0 158785738#1 158785738#2 158785732 996758532 158785729 158785727#1 829563400",
+  "cpr_to_tuen_mun": "757290378 173395428#0 729332889 729332893#0 158584322#1 742768327 173395429 742768322 780201624 780528576 780528573 300687109 441109858 783261559 158584323#0 158584323#1 784197170 784197164 784197172 784769711 784769708 784197173 441109864 198399255 300687111 390627236 1228988537 158584311 756050075#0 389939167#0 300687110#0 300687110#1 1313130367 1312957701#0 1312957701#1 158584344#0 158584344#1 441107653 441107654 158584334#2 173181473 150053247 158584336#0 158584336#1 442382931 9411886 158584332 158584318 1078219451 158785721 833628376 263981124#1 25159375 -833525676 833525675 1078219417 1078219418 1078219416",
+  "cpr_to_so_kwun_wat": "757290378 173395428#0 729332889 729332893#0 158584322#1 742768327 173395429 742768322 780201624 780528576 780528573 300687109 441109858 783261559 158584323#0 158584323#1 784197170 784197164 784197172 784769711 784769708 784197173 441109864 198399255 300687111 390627236 1228988537 158584311 756050075#0 389939167#0 300687110#0 300687110#1 1313130367 1312957701#0 1312957701#1 158584344#0 158584344#1 441107653 441107654 158584334#2 173181473 150053247 158584336#0 158584336#1 442382931 9411886 158584332 158584318 1078219451 158785721 833628376 263981124#1 1503376211 440273461 158785751#0 158785731#0 158785731#1 927442186#0 158785733#0 158785733#1 158785733#2 158785733#4 158785734#0 158785734#1 158785738#0 158785738#1 158785738#2 158785732 996758532 158785729 158785727#1 829563400",
+  "cpr_eastbound_to_tsuen_wan": "102290333 158785730#0 158785730#1 439181302 158785735#0 158785735#1 158785735#3 158785735#4 158785735#5 439181303 114413655#0 114413655#2 257554662#0 257554662#2 464127002#1 257554667#0 257554667#2 439181301 833626223 440273460 37625483 833628377 440273459 625776511#1 1078219453 158584317 158584330 9409770#0 150053258 25159468 1381162824 441107655#0 441107655#1 150053251#0 150053251#1 150053251#2 173181475 441107645 441107652 150049805 441107646#0 441107646#1 390627227 25159564 1349495661#1 1228989639 1313130364 1228987295 389939166 756050088#0 756050122#1 756050121 756050123 756050080 441109863 158584310 198399259 784769702 784769704 784769706 1051241644 784197162#0 783290503#0 441109860#0 441109860#1 780201571 742768318 780201585 729332880 729332884#0 729332884#1 729332882 729332887 173395446",
+  "cpr_eastbound_to_sham_tseng": "102290333 158785730#0 158785730#1 439181302 158785735#0 158785735#1 158785735#3 158785735#4 158785735#5 439181303 114413655#0 114413655#2 257554662#0 257554662#2 464127002#1 257554667#0 257554667#2 439181301 833626223 440273460 37625483 833628377 440273459 625776511#1 1078219453 158584317 158584330 9409770#0 150053258 25159468 1381162824 441107655#0 441107655#1 150053251#0 150053251#1 150053251#2 173181475 441107645 441107652 150049805 441107646#0 441107646#1 390627227 25159564 1349495661#1 1228989639 1313130364 1228987295 389939166 756050088#0 756050122#1 756050121 756050123 756050080 441109863 158584310"
+ }
+}

@@ -7,9 +7,11 @@ or until the first lane reopens, whichever comes first:
                share x compliance. From then on that driver takes the advised
                route in place of the closed road, wherever they are when the
                advice starts or when they set off, and does not leave the
-               corridor at an exit (behaviour.py). When the advice stops, a
-               driver who has not yet reached the detour goes back to the
-               reopened road.
+               corridor at an exit (behaviour.py). A route may leave the
+               driver's road before the closed road (a long way round) and
+               meet it again further on; a driver already past where it
+               leaves keeps their road. When the advice stops, a driver who
+               has not yet reached the detour goes back to their own road.
   signals      the junction's green phases for the advised route run
                `green_extend_s` longer; the other phases keep their length, so
                the cycle grows by as much.
@@ -52,9 +54,10 @@ class PlanActions:
         except KeyError as missing:
             raise NotImplementedError(f"The scenario's plan_actions block does not place {missing}") from None
         for advice in self.advice:
-            if advice["replace"][0] != advice["via_edge"]:
+            advice.setdefault("leaves_at", advice["via_edge"])
+            if "replace" in advice and advice["replace"][0] != advice["leaves_at"]:
                 raise NotImplementedError(f"Route {advice['via']!r} does not start on the road od group "
-                                          f"{advice['od_group']!r} is advised to avoid ({advice['via_edge']})")
+                                          f"{advice['od_group']!r} is advised to avoid ({advice['leaves_at']})")
         tls_ids = [signal["tls_id"] for signal in self.signals]
         if len(tls_ids) != len(set(tls_ids)):
             raise NotImplementedError("Two of the plan's junctions are one traffic light in this network")
@@ -64,6 +67,7 @@ class PlanActions:
         self.signs = len(plan["vms"])
         self.started, self.retry, self.rerouted, self.base_program = False, set(), set(), {}
         self.group_of = {}                                  # a rerouted driver's route no longer names the closed road
+        self.replaced = {}                                  # the edges of its own route each rerouted driver left
         self.returned = 0
 
     def choice(self, vehicle, route):
@@ -113,16 +117,24 @@ class PlanActions:
         advice = self.choice(vehicle, route)
         if not advice:
             return
-        here, first = traci.vehicle.getRouteIndex(vehicle), route.index(advice["via_edge"])
-        after = first + len(advice["replace"])
-        if here >= first or list(route[first:after]) != advice["replace"]:
-            return                                          # already on the closed road, or not on the road the advice replaces
+        if advice["leaves_at"] not in route:
+            return                                          # joins the road after the advised route leaves it
+        here, first = traci.vehicle.getRouteIndex(vehicle), route.index(advice["leaves_at"])
+        if "replace" in advice:
+            after = first + len(advice["replace"])
+            on_it = list(route[first:after]) == advice["replace"]
+        else:
+            on_it = advice["rejoin"] in route[first + 1:]
+            after = route.index(advice["rejoin"], first + 1) if on_it else first
+        if here >= first or not on_it:
+            return                                          # already past where it leaves, or not on the road it replaces
         try:
             traci.vehicle.setRoute(vehicle, list(route[max(here, 0):first]) + advice["with"] + list(route[after:]))
         except traci.TraCIException:
             self.retry.add(vehicle)                         # on a junction just now: try again next second
             return
         self.group_of[vehicle] = advice
+        self.replaced[vehicle] = list(route[first:after])
         self.rerouted.add(vehicle)
 
     def withdraw(self, traci, vehicle):
@@ -135,7 +147,7 @@ class PlanActions:
         if here >= first:
             return                                          # already on the detour
         try:
-            traci.vehicle.setRoute(vehicle, list(route[max(here, 0):first]) + advice["replace"]
+            traci.vehicle.setRoute(vehicle, list(route[max(here, 0):first]) + self.replaced[vehicle]
                                    + list(route[first + len(advice["with"]):]))
         except traci.TraCIException:
             return                                          # on a junction just now: keeps the detour

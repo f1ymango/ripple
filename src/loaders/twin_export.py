@@ -13,6 +13,12 @@ What goes in each observation:
   speed_kmh  the measured speed wherever a vehicle was measured; null where
              none was -- speed survives low coverage, counts do not.
 
+With `min_count_speed_kmh` a count is also withheld (null) where the bin's
+measured speed is under that speed: these detectors count too few vehicles in
+slow traffic (src/loaders/count_bias.py), so the bin cannot score a model's
+count. Its speed stays. `withhold_slow_counts` applies the same rule to a
+document already written, such as a replay's packet copy.
+
 Nothing is interpolated or invented (CLAUDE.md rule 4). Detector positions come
 from data/detectors.csv; an edge_id / position_m already filled in by hand in
 an existing output file is kept.
@@ -56,7 +62,8 @@ def _number(value):
 def build(start: dt.datetime, end: dt.datetime, bin_minutes: int = detectors.BIN_MINUTES,
           detector_ids: list[str] | None = None,
           min_coverage_pct: int = detectors.MIN_COVERAGE_PCT,
-          rows: list[dict] | None = None, keep_from: Path | None = None) -> dict:
+          rows: list[dict] | None = None, keep_from: Path | None = None,
+          min_count_speed_kmh: float | None = None) -> dict:
     """The twin's observed-data document for [start, end).
 
     `start` and `end` must sit on slot boundaries. The first observation time
@@ -102,7 +109,7 @@ def build(start: dt.datetime, end: dt.datetime, bin_minutes: int = detectors.BIN
                               "speed_kmh": _number(b["speed_kmh"]),
                               "coverage_pct": b["coverage_pct"]} for b in mine],
         })
-    return {
+    doc = {
         "timezone": "Asia/Hong_Kong",
         "interval_seconds": bin_minutes * 60,
         "source": {
@@ -116,6 +123,23 @@ def build(start: dt.datetime, end: dt.datetime, bin_minutes: int = detectors.BIN
         },
         "detectors": out,
     }
+    return withhold_slow_counts(doc, min_count_speed_kmh) if min_count_speed_kmh else doc
+
+
+def withhold_slow_counts(doc: dict, min_kmh: float) -> dict:
+    """A copy of `doc` with every count measured under `min_kmh` set to null; speeds and all else unchanged."""
+    out = json.loads(json.dumps(doc))
+    withheld = 0
+    for detector in out["detectors"]:
+        for obs in detector["observations"]:
+            if obs.get("count") is not None and obs.get("speed_kmh") is not None and obs["speed_kmh"] < min_kmh:
+                obs["count"] = None
+                withheld += 1
+    out["source"]["count_rule"] = (out["source"].get("count_rule", "") +
+                                   f"; also null where the bin's measured speed is under {min_kmh:g} km/h "
+                                   f"(detectors undercount slow traffic: results/data/count-bias_AID01106_AID01107.md)")
+    out["source"]["counts_withheld_as_slow"] = withheld
+    return out
 
 
 def summary(doc: dict) -> dict:

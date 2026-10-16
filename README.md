@@ -3,20 +3,40 @@
 An AI incident co-pilot for Hong Kong traffic operators. Ripple is designed to
 read the Transport Department's incident message, test response plans in a
 road-network simulation, and recommend a plan only when the evidence supports
-one. It can draft operator messages, but the current incident replay has **no
-accepted traffic-benefit recommendation**; see the tracker below.
+one. It can draft operator messages; the two-case prototype now shows both a
+no-recommendation verdict and a labelled modelled candidate. Neither is a
+measured road-saving claim; see the tracker below.
 
 **Ripple recommends; it never controls.** Nothing reaches a sign or a signal
 until a human operator approves it, and every approval is logged.
 
 Built for the Hong Kong Inter-University GenAI Hackathon for the SDGs 2026
-(hack4sdg), Track 1: Green Transport & Smart Mobility. Pilot corridor:
-Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
+(hack4sdg), Track 1: Green Transport & Smart Mobility. The original pilot
+corridor is Aberdeen Tunnel; the final demonstration also compares a Tuen Mun
+incident. Submission: **18 Oct 2026, 23:59 HKT**
+([2026 instructions](https://www.hack4sdg.com/2026-roadmap/final-submission-2026/)).
 
 ## Tracker
 
-**Last updated: Wed 14 Oct 2026 (HKT)** · Week 4 in progress
+**Last updated: Fri 16 Oct 2026 (HKT)** · Week 4 wrap-up
 · Weekly sync / stand-up: Wednesday afternoon
+
+> **Lead claim lock — Thu 15 Oct:** The **16 Oct results/claims freeze is
+> confirmed**. The [two-incident demo pack](docs/demo-two-incidents-2026-10-16.md)
+> gives two distinct outcomes: Aberdeen's P0/P2 tie means no recommendation;
+> in the frozen Tuen Mun SUMO grid, the Lead's capacity-bounded 11% P2 ranks
+> before P0 and broadcast P1 (−4.3% modelled delay versus P0, 95% paired
+> interval −5.6% to −3.0%; 18 scored conditions). The
+> [Simulation final call](docs/tuen-mun-simulation-final-call-2026-10-15.md)
+> allows a **labelled modelled-candidate comparison**, not a measured
+> road-saving claim: Tuen Mun's replay queue moves too fast and clears early.
+> The [Lead handoff](docs/2026-10-15-two-case-demo-handoff.md) gives both cases
+> equal prominence within the case-study section. Deck/video export, human
+> briefing review, access checks and upload remain; see the
+> [freeze-to-delivery checklist](docs/2026-10-16-freeze-and-delivery-checklist.md).
+
+The earlier decisions below are history; the 15 Oct two-case claim lock above
+governs the final presentation.
 
 > **Model decision — Lead, Mon 5 Oct (HKT):** Continue flow-balance SUMO as the
 > primary path for a bounded incident P0 diagnostic; keep the simplified model
@@ -34,38 +54,33 @@ Aberdeen Tunnel and its alternatives. Submission: 18 Oct 2026.
 > replay and matching plan results pass the [acceptance gates](docs/04-plan.md).
 > The original 14 Oct freeze was superseded by the Lead update below.
 
-> **Lead update — Tue 13 Oct:** Provisional results/claims freeze is now
+> **Lead update — Tue 13 Oct:** The proposed results/claims freeze moved to
 > **16 Oct** (hour unconfirmed). Keep the **15 Oct** evidence/export checkpoint
 > and **17 Oct** internal submission target. The [GenAI handoff](docs/lead-genai-handoff-2026-10-13.md)
 > supplies actual model-generated draft P0/P1/P2. Incident acceptance remains
 > separate, and the joint P0 NO-GO is unchanged.
 
-**Current verdict:** The observed incident playback, recorded Reader/plan
-capture and fixture-backed operator workflow are available. The original
-model-generated plans and two [Lead P2 diagnostics](docs/lead-p2-diagnostic-2026-10-13.md)
-are saved. On an **unmerged Data branch**, the original-plan
-[ranking](https://github.com/f1ymango/ripple/blob/9552cd4/docs/evaluator-lead-plans-2026-10-13.md)
-recommends nothing, and [198 matched diagnostic runs](https://github.com/f1ymango/ripple/blob/9552cd4/docs/incident-p0-verdict-2026-10-14.md)
-find no source-supported P2 that beats P0. Data's proposed P0 checks fail
-closure flow after the flyover in 33/33 cells and queue recovery in 32/33;
-Simulation review is still requested. Its separate
-[root-cause assessment](https://github.com/f1ymango/ripple/blob/a48b8c9/docs/component-c-validation-root-cause-2026-10-13.md)
-also finds a material closure-flow deficit and ramp-dependent plan effects.
-The incident-P0 **NO-GO** remains. No measured delay, travel-time or CO₂
-saving is approved for the public demo. Data's separate
-[slow-lane what-if](https://github.com/f1ymango/ripple/blob/9552cd4/docs/whatif-slow-lane-2026-10-14.md)
-is hypothetical and unvalidated, not an operator diversion rule.
+**Current verdict:** The [saved two-case bundle](results/demo-oct16/) contains
+plans, matched P0/P1/P2 result files with provenance, rankings and console
+verdicts. Aberdeen refuses to recommend; Tuen Mun's 11% targeted plan ranks
+first in the model. Simulation accepts that **presentation scope only**; its
+[final call](docs/tuen-mun-simulation-final-call-2026-10-15.md) still rejects
+a measured-benefit or physically validated incident-replay claim. The
+[Tuen Mun F draft](data/generated-briefings/IN-26-02615-p2-demo-oct16.json)
+is a single-cell bilingual draft pending human language/operator review, not
+an approved public instruction. The [submission manifest](deck/submission-manifest.md)
+tracks exports and access separately from these source artifacts.
 
 ✅ done · 🟡 in progress · ⚪ not started, or nothing in the repo yet
 
-**Scientific path (not yet accepted for the public cut):** ✅ demo incident
-chosen → ✅ source-pinned draft plans → 🟡 diagnostic comparisons (branch-only)
-→ ⚪ accepted incident baseline → ⚪ validated recommendation.
+**Scientific path (not fully met):** ✅ incident choices → ✅ source-pinned
+plans and comparable saved grid → ⚪ physically accepted incident baseline →
+⚪ measured-road benefit. The Tuen Mun ranking is a modelled candidate, not
+the missing physical acceptance.
 
-**Current submission path:** ✅ observed incident playback → ✅ saved Reader
-and candidate-plan evidence → ✅ Markdown deck sources and manifest → 🟡 final
-media/export/access checks. The original targets remain recorded below;
-diagnostic results do not silently count as acceptance.
+**Current submission path:** ✅ observed Aberdeen playback → ✅ saved Reader,
+two-case plans/results/provenance and console verdicts → 🟡 two-case deck/video
+sources and briefing review → ⚪ rendered deliverables, access and receipt.
 
 > **Keeping this current.** In the same pull request as your work, update your
 > rows and add a line to the [update log](#update-log). A status only counts if
@@ -83,8 +98,8 @@ diagnostic results do not silently count as acceptance.
 | Tue 6 Oct (HKT) | Agree the evidence-labelled P0 setup for IN-26-03365 | 🟡 Data supplied the proposed edge, detector-inferred initial lane and phase times. A bounded P0 diagnostic ran on 7 Oct; Data and Simulation's later [joint corrected-replay review](https://github.com/f1ymango/ripple/blob/a8d04aa/docs/evaluator-p0-go-no-go-2026-10-09.md) retains NO-GO for public plan comparison ([lane evidence](results/data/closed-lanes_AID01104_20260515-0840_1010.md)) |
 | Fri 9 Oct (HKT) | Lock demo scope against accepted evidence | ✅ Lead narrowed the public demo to observed playback and a clearly labelled operator-workflow demonstration. SUMO/E diagnostic work continues, but no incident-specific route, trajectory or benefit claim is approved ([decision](docs/04-plan.md)) |
 | Mon 12 Oct | Pitching workshop, everyone (HKU Innovation Wing 2, 14:00–17:30) | ⚪ |
-| Thu 15 Oct | Reviewable evidence pack, deck/export and video handoff | 🟡 Markdown evidence and [submission manifest](deck/submission-manifest.md) exist; rendered deck, playable video and access handoff are pending |
-| Fri 16 Oct (provisional) | 🔒 **Results/claims freeze**: lock supported figures; hour unconfirmed | ⚪ |
+| Thu 15 Oct | Reviewable evidence pack, deck/export and video handoff | 🟡 [Two-case results and provenance](results/demo-oct16/) and [Lead handoff](docs/2026-10-15-two-case-demo-handoff.md) are ready for editing; rendered deck, playable video and access handoff are pending |
+| Fri 16 Oct | 🔒 **Results/claims freeze** | ✅ Lead locked the saved 11% plan set and labelled two-case claims; later result changes require matched reruns and review ([delivery rule](docs/2026-10-16-freeze-and-delivery-checklist.md)) |
 | Sat 17 Oct | 📤 Submit deck + prototype (official deadline Sun 18 Oct) | ⚪ |
 | Thu 22 Oct | Finalists announced | ⚪ |
 | Sat 24 Oct | Final pitch, CityU Kowloon Tong | ⚪ |
@@ -95,12 +110,12 @@ diagnostic results do not silently count as acceptance.
 |---|---|---|---|
 | A | Loaders: detector and incident archives, live poller | Data | 🟡 Archive client, incident timelines from all three STN files, detector bins on a full 5-minute grid, corridor table, candidate screen against ordinary days, live poller, and the hand-over to the twin (`fetch twin-detectors` → `sim/scenarios/detectors.json`) ([src/loaders/](src/loaders/)). Committed output: [data/detectors.csv](data/detectors.csv), [data/candidates.md](data/candidates.md), [data/demo_shortlist.md](data/demo_shortlist.md). Week 2 checks on the demo morning: usable calibration bins per threshold ([bin survival](results/data/bin-survival_20260515-0755_1035.md)), which lane closed first ([lane by lane](results/data/lane-evidence_AID01104_20260515-0840_0920.md)), and IN-26-03365 re-screened after the 29 Sep screen fixes ([re-check](results/data/candidates_2026-05-15.md)). For the twin: [flow balance](results/data/flow-balance_20260515-0755_0855.md) and [free-flow speeds](results/data/free-flow_20260508_20260424_0730-1100.md) |
 | B | Incident Reader (GenAI #1): STN message → `incident.json` | Lead | 🟡 Week 2 evaluation complete on 100 hand-labelled messages. Initial held-out all-field accuracy: citywide **50%**, corridor **75%**. After prompt and label corrections informed by those results, development scores reached 75% and 85%; these are not fresh held-out results. An October prompt experiment performed worse and was not adopted. Output preservation regressions protect evidence. A [portable recorded B/D page](evidence/demo/README.md) shows two saved input/output pairs, not a fresh accuracy result ([score history](data/labelled_incidents/LABELLING.md#score-history), [Lead work](docs/2026-10-01-lead-work.md)) |
-| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 The no-closure count fit was independently reproduced (**96.7% GEH<5**), but speed fit depends on imposed inputs ([review](docs/sumo-flow-balance-review-2026-10-05.md)). The [joint incident review](docs/evaluator-p0-go-no-go-2026-10-09.md) remains **NO-GO**. Simulation's 13 Oct [branch-only root-cause assessment](https://github.com/f1ymango/ripple/blob/a48b8c9/docs/component-c-validation-root-cause-2026-10-13.md) reports substantial undercounting downstream during closure; an earlier rehearsal P2's effect changes sign with ramp modelling. Detector placement/turning evidence, ramp behaviour, queue/recovery and independent speed fit remain unresolved. |
-| D | Plan Generator (GenAI #2): P0/P1/P2 + constraint validator | Lead | 🟡 Actual Qwen3:8b draft P0/P1/P2 passed the constraints and E action-mapping checks; the context is retrospective and the plans are not accepted recommendations ([handoff](docs/lead-genai-handoff-2026-10-13.md)). [PR #67](https://github.com/f1ymango/ripple/pull/67) added two source-pinned, model-free P2 diagnostics: original shares without the assumed signal, and half-shares without it. Data has now [run both on its branch](https://github.com/f1ymango/ripple/blob/9552cd4/docs/incident-p0-verdict-2026-10-14.md); neither establishes a benefit over P0. The [offline capture page](evidence/demo/README.md) labels recorded proposals separately from live or measured output. |
-| E | Evaluator: runs every plan, writes metrics to `results/` | Data | 🟡 Evaluator and integrity fixes are merged ([PR #61](https://github.com/f1ymango/ripple/pull/61), [PR #62](https://github.com/f1ymango/ripple/pull/62)). Data's [v3 ranking and proposed validation/contract changes](https://github.com/f1ymango/ripple/blob/9552cd4/docs/evaluator-lead-plans-2026-10-13.md) remain **branch-only**: the original-plan grid recommends nothing. Its [14 Oct P0 checks and matched P2 diagnostics](https://github.com/f1ymango/ripple/blob/9552cd4/docs/incident-p0-verdict-2026-10-14.md) also withhold any supported P2 win; the closure-flow and recovery checks fail almost every baseline. Aggregate passes do not resolve Simulation's physical replay objections. No accepted real plan set exists in main's `results/runs/`; the public-benefit NO-GO remains. |
-| F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Provenance, metric tokens and VMS checks are implemented. The model now receives token meanings and selected action semantics without raw result values. A bounded 13 Oct retry produced two structurally valid synthetic drafts, both rejected on semantic review; there is **no accepted bilingual output**. See the [follow-up](docs/lead-genai-follow-up-2026-10-13.md). Real E acceptance and human language review remain outstanding. |
+| C | Twin: SUMO model of the corridor, calibrated to detectors | Simulation | 🟡 Aberdeen retains a physical incident-P0 NO-GO. For Tuen Mun, headline validation targets pass on the frozen grid, but the queue is too fast, clears early and discharges too much after reopening. Simulation's [final call](docs/tuen-mun-simulation-final-call-2026-10-15.md) allows a labelled modelled comparison only, not a measured road benefit. |
+| D | Plan Generator (GenAI #2): P0/P1/P2 + constraint validator | Lead | 🟡 Recorded Qwen3:8b drafts and constraint checks exist for Aberdeen ([handoff](docs/lead-genai-handoff-2026-10-13.md)). For Tuen Mun, D's draft P2 advised 80%; the Lead's deterministic [capacity bound](docs/2026-10-15-two-case-demo-handoff.md) capped it at **11% before the fresh-seed runs**. P1 remains a blanket-advice comparator; no AI optimal-share claim is made. |
+| E | Evaluator: runs every plan, writes metrics to `results/` | Data | 🟡 The [two-case bundle](results/demo-oct16/) preserves matching runs, provenance and verdicts. Under the team's ranking rule, Aberdeen's P0/P2 tie yields no recommendation; Tuen Mun's P2 ranks before P0 and P1 across 18 scored conditions (−4.3% modelled delay versus P0, paired 95% interval −5.6% to −3.0%). These are simulator outputs, not measured traffic savings ([evidence](docs/demo-two-incidents-2026-10-16.md)). |
+| F | Briefing Writer (GenAI #3): briefing + bilingual sign text | Lead | 🟡 Provenance, metric-token and VMS checks are implemented. A [Tuen Mun bilingual draft](data/generated-briefings/IN-26-02615-p2-demo-oct16.json) is bound to the single packed 50%-compliance, seed-2029 E result; its about −5% token is **not** the 18-condition −4.3% ranking. Human language and operator review remain before it can be presented as approved advice ([handoff](docs/2026-10-15-two-case-demo-handoff.md)). |
 | G | Operator console: map, plan comparison, Approve + audit log | Visuals | 🟡 The provenance-checked operator workflow ([PR #41](https://github.com/f1ymango/ripple/pull/41)) and observed-message playback, road geometry and approximate scene callout ([PR #53](https://github.com/f1ymango/ripple/pull/53)) are merged. The focused Windows CI and 67 local tests passed for PR #53. Its rough-cut video is local, not a committed final artifact. Recommended-route highlighting and evaluated-vehicle replay remain gated on accepted C/E outputs ([operator integration](src/console/OPERATOR_WORKFLOW.md)). |
-| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 Interim form submitted; one qualitative [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md) is documented. Markdown deck and Q&A sources are merged ([PR #49](https://github.com/f1ymango/ripple/pull/49), [PR #50](https://github.com/f1ymango/ripple/pull/50), [PR #66](https://github.com/f1ymango/ripple/pull/66)); they are **not** rendered deliverables. The [submission manifest](deck/submission-manifest.md) lists the missing deck export, playable video and access handoff. Additional interviews and accepted benefit figures remain open. |
+| H | Evidence pack: validation, accuracy, interviews, deck | Impact | 🟡 The two-case [source pack](docs/demo-two-incidents-2026-10-16.md) and [Markdown slides](deck/slides.md) exist; they are **not** rendered deliverables. The [submission manifest](deck/submission-manifest.md) tracks the remaining deck export, playable video, human review and access handoff. No measured benefit figure is approved. |
 
 The JSON contracts between modules are in
 [docs/03-architecture.md](docs/03-architecture.md). Build to them.
@@ -109,10 +124,10 @@ The JSON contracts between modules are in
 
 | Owner | Deliverable | Next evidence |
 |---|---|---|
-| Data + Simulation | Jointly review Data's P0 definition, six reported checks and the matched P2 results; identify independent turning/entry, ramp and late-recovery evidence if a future accepted replay is possible | 🟡 Data's [14 Oct branch report](https://github.com/f1ymango/ripple/blob/9552cd4/docs/incident-p0-verdict-2026-10-14.md) finds no supported P2 win and fails closure-flow/recovery checks; Simulation's [root-cause report](https://github.com/f1ymango/ripple/blob/a48b8c9/docs/component-c-validation-root-cause-2026-10-13.md) remains separate. Confirm the no-recommendation cut for the 15 Oct pack; keep every run labelled diagnostic and preserve original provenance. |
-| Lead | Confirm the 15 Oct no-recommendation cut, review Data's proposed E/F/G contract only after a PR exists, and finish GenAI/media/access checks | 🟡 Draft plans and [recorded offline B/D capture aid](evidence/demo/README.md) are available. Data's P2 runs do not support a benefit; accepted F wording, media capture/export and uploader/access confirmation remain. Do not promote a diagnostic rank or hypothetical what-if into operator advice. |
-| Visuals | Integrate the recorded-Reader pickup and deliver the scoped observed-playback video | 🟡 [PR #53](https://github.com/f1ymango/ripple/pull/53) is merged and locally rehearsed. A playable cut, narration/captions and matching source manifest remain to be delivered; route/trajectory claims remain excluded. |
-| Impact | Render and review the five-criteria deck from the corrected source pack | 🟡 Evidence wording, Reader attribution, links and costing boundaries are corrected. A rendered deck/editable source, final visual review and delivery link remain open; benefit figures stay blank. |
+| Data + Simulation | Lock the original run bundle, paired ranking, provenance and final P0 call for both cases | ✅ [Two-case bundle](results/demo-oct16/) and [Simulation final call](docs/tuen-mun-simulation-final-call-2026-10-15.md) are saved; Tuen Mun remains a labelled modelled candidate, not a measured benefit. No replacement P0 or plan-share tuning is in the frozen comparison. |
+| Lead | Lock the two-case wording, review the F draft, and check final submission access | 🟡 [Lead handoff](docs/2026-10-15-two-case-demo-handoff.md) and [single-cell F draft](data/generated-briefings/IN-26-02615-p2-demo-oct16.json) exist. Human bilingual/operator sign-off, final number-to-source check, uploader and receipt remain. |
+| Visuals | Deliver a balanced Aberdeen/Tuen Mun video with a visible modelled-result caption | 🟡 [Source handoff](docs/2026-10-15-two-case-demo-handoff.md) and [result card](evidence/demo/tuen-mun-result-card-2026-10-15.html) exist. A playable, reviewed two-case cut, captions and source manifest remain; do not show Aberdeen map as Tuen Mun. |
+| Impact | Export and review the two-case deck against the five judging criteria | 🟡 [Slide source](deck/slides.md) and [evidence manifest](deck/submission-manifest.md) exist. Rendered deck/editable source, visual review and delivery link remain; keep the Tuen Mun number explicitly modelled. |
 
 ### Week 1 outcomes (21–27 Sep)
 
@@ -124,7 +139,11 @@ The JSON contracts between modules are in
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | 🟡 SUMO and a draft network run locally; record/share evidence and improve route coverage ([guide](src/twin/README.md)) |
 | Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | Interview notes, sourced problem claims, and an interim report outline | 🟡 one [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md) completed on 26 Sep; problem claims revised with direct sources in [docs/05-pitch.md](docs/05-pitch.md); [interim report](docs/interim-report.md) remains an outline |
 
-### Integration status
+### Historical integration status (through 13 Oct)
+
+The notes in this section record the earlier integration checkpoint. The
+current two-case verdict and remaining submission work are in the tracker
+above and the [delivery checklist](docs/2026-10-16-freeze-and-delivery-checklist.md).
 
 The console framing, theme and playback control fixes are merged in
 [PR #31](https://github.com/f1ymango/ripple/pull/31), with a
@@ -146,7 +165,7 @@ The provisional October replay inputs are archived in
 [results/twin/oct04-provisional-replay-inputs.zip](results/twin/oct04-provisional-replay-inputs.zip),
 but the standalone network and E1 loops are not reviewed releases.
 
-### Current handoffs and open decisions
+### Historical handoffs (superseded by the 16 Oct claim lock)
 
 - **Incident P0 and the comparator (Data + Simulation).** Agree what P0 means:
   it has no extra Lead action, but the scenario automatically diverts around
@@ -249,9 +268,9 @@ but the standalone network and E1 loops are not reviewed releases.
 ### Original definition of done
 
 These are the original product goals. Unmet simulation-dependent items remain
-visible and deferred; they are not prerequisites for the approved observed-only
-submission and are not marked complete by diagnostic evidence. The console's
-checked software capability is fixture-tested, not a real-plan approval.
+visible and deferred; the two-case modelled candidate does not by itself
+complete a physically validated benefit claim. The console's checked software
+capability is not a real-world plan approval.
 
 - [ ] One real archived incident replayed end to end
 - [ ] Validation chart: simulated vs observed, with a stated error
@@ -272,18 +291,36 @@ checked software capability is fixture-tested, not a real-plan approval.
 - [x] Observed TD-message and detector playback implemented and locally rehearsed
 - [x] Saved Reader input, output and complete AI call log identified for an on-screen demonstration
 - [x] Fixture-backed operator workflow explicitly separated from real incident evidence
-- [x] Public route, ranking and benefit claims excluded under the 9 Oct decision
-- [x] Markdown deck source covers all five judging criteria with evidence limitations
+- [x] Two-case plan/result/provenance bundle and ranking saved with distinct modelled-versus-observed labels
+- [x] Markdown deck source covers all five judging criteria with the two-case story
 - [x] Submission/evidence manifest records owners, allowed claims and missing artifacts
+- [ ] Tuen Mun bilingual briefing receives human language and operator review
 - [ ] Recorded-Reader pickup integrated into the actual video
-- [ ] Narrated/captioned video inspected and delivered through an accessible link or file
+- [ ] Balanced, narrated/captioned two-case video inspected and delivered through an accessible link or file
 - [ ] Rendered deck and editable source inspected and delivered
-- [ ] Final claim/source pass confirms every presented number is traceable
+- [ ] Final claim/source pass confirms each presented number and the visible Tuen Mun modelled-result caption
 - [ ] Prototype/deck/video access, uploader and submission receipt confirmed
 
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Fri 16 Oct**
+- Lead froze the saved [two-case comparison](results/demo-oct16/) and its
+  labelled public claims. The [delivery checklist](docs/2026-10-16-freeze-and-delivery-checklist.md)
+  now records the organiser's **18 Oct, 23:59 HKT** one-file deck deadline,
+  mandatory cover fields and irreversible upload. The single-cell Tuen Mun F
+  draft is not approved for public copy as written; deck/video export, access,
+  uploader and receipt remain open.
+
+**Thu 15 Oct**
+- Lead confirmed the **16 Oct results/claims freeze** and the balanced
+  [two-case demo direction](docs/2026-10-15-two-case-demo-handoff.md).
+  The [saved bundle](results/demo-oct16/) lets Aberdeen show a tie/refusal and
+  Tuen Mun show a modelled 11% targeted P2 ranking before P0 and P1. The
+  [Simulation final call](docs/tuen-mun-simulation-final-call-2026-10-15.md)
+  approves that labelled presentation, not a measured road-saving claim.
+  Exported deck/video, F human sign-off and submission access remain open.
 
 **Wed 14 Oct**
 - Data's [branch-only incident verdict](https://github.com/f1ymango/ripple/blob/9552cd4/docs/incident-p0-verdict-2026-10-14.md)
