@@ -12,15 +12,14 @@ product story: **know when to hold back and when to target a response**.
 This replaces the earlier plan to append Tuen Mun as a 15–25-second afterthought.
 Visuals' 92.6-second silent Aberdeen rough cut is useful footage, not a locked
 edit. Recut it into two balanced chapters. Approximately 90 seconds is the
-team's working video target, **not an organiser-imposed length**. The official
-[2026 deliverables page](https://www.hack4sdg.com/deliverables/) confirms an
-**18 October** deadline for a pitch deck and prototype proof or information;
-the [2026 roadmap](https://www.hack4sdg.com/2026-roadmap/) confirms the date.
-The organiser lists demos, applications, videos, technical links and files as
-possible prototype evidence. Its accessible pages do **not** establish an
-upload hour, accepted deck formats, required filename or cover fields, whether
-an upload can be replaced, or a laptop rule. Check these on the live 2026
-submission form before delivery. Build a self-contained, pre-tested deck even
+team's working video target, **not an organiser-imposed length**. The
+organiser's [2026 final-submission instructions](https://www.hack4sdg.com/2026-roadmap/final-submission-2026/)
+set the hard deadline at **18 October, 23:59 HKT**. They require one `.ppt`,
+`.pptx` or `.pdf` deck per team, not a cloud-based slide link, with cover fields
+and filename; prototype proof or links belong inside the deck. Uploaded slides
+cannot be replaced, and teams cannot use their own devices for the final
+presentation. The [16 Oct delivery checklist](2026-10-16-freeze-and-delivery-checklist.md)
+records the exact requirements. Build a self-contained, pre-tested deck even
 if the video link fails to play. The final stage allows a five-minute pitch
 plus Q&A; the video must support that pitch, not consume it.
 
@@ -72,14 +71,15 @@ request to rebuild the rendering stack.
   divert made it worse**. Put the exact measure and source in a readable
   caption. On the Aberdeen panel, lead with the tie and Ripple's refusal to
   endorse a plan. Together they demonstrate selection, not just abstention.
-- Submit the deck **and** prototype proof or information. Include a
+- Submit the deck **with embedded prototype proof or information**. Include a
   console/Reader capture and the Tuen Mun comparison in the deck so its core
-  story survives a failed video link; supply an accessible video or technical
-  link as prototype evidence if the live form permits it. Check playback,
-  sharing permissions and the actual upload requirements before submitting.
-- Prepare a clear cover slide with team name, project title, track and members,
-  but verify any mandatory cover fields, file format and naming rule on the
-  live 2026 form. Do not copy a prior year's submission rules as 2026 rules.
+  story survives a failed video link; embed an accessible video or technical
+  link as prototype evidence. Check playback and sharing permissions before
+  the irreversible upload.
+- Include every mandatory cover field and the assigned team-number filename
+  specified on the [2026 submission page](https://www.hack4sdg.com/2026-roadmap/final-submission-2026/);
+  verify the team's actual identity details with the uploader. Do not infer
+  them from a previous year's deck.
 
 ## Public wording and technical backup
 

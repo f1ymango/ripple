@@ -1,5 +1,18 @@
 # Presentation Deck Draft (16 Oct Two-Incident & GenAI Update)
 
+> **Export blocker — mandatory cover slide:** this Markdown draft starts with
+> the problem slide, not the organiser's required first page. Before export,
+> Impact must add a cover with the verified team name, project title, thematic
+> track, a description of at most 30 words, and each member's full name and
+> university. Use the assigned `Team Number – [Team Name]` filename, and place
+> the accessible prototype/video link inside the one-file deck. See the
+> [2026 submission rules](https://www.hack4sdg.com/2026-roadmap/final-submission-2026/)
+> and [delivery checklist](../docs/2026-10-16-freeze-and-delivery-checklist.md).
+> Suggested 27-word description: “Ripple is an AI incident co-pilot that reads
+> traffic reports, tests response plans in a road-network simulation, and helps
+> operators decide when to advise—or hold back.” Verify the final word count
+> after Impact edits it.
+
 ---
 
 ## Slide 1: Problem & Real-World Impact — convincing framing
@@ -49,8 +62,9 @@
 - **Works with real archived inputs**: timeline playback shows bilingual TD
   messages, five-minute detector observations, coverage labels and a road
   graph ([playback guide](../docs/console-observed-playback.md)).
-- **Aberdeen Case (Observed Incident; Simulated Refusal)**: Both flyover lanes
-  closed. In the model, drivers use Wong Chuk Hang Road, the only open bypass.
+- **Aberdeen Case (Observed Incident; Simulated Refusal)**: TD later reported
+  both flyover lanes closed; the archived detector timeline shows traffic
+  disappearing earlier. In the model, drivers use Wong Chuk Hang Road, the only open bypass.
   P0 and P2 tie under the team's ranking rule, so the console withholds a
   recommendation.
 - **Tuen Mun Road Case (Simulated Positive Prototype)**: Demonstrates active routing value.

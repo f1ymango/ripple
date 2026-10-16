@@ -8,11 +8,11 @@
 
 | | Aberdeen (IN-26-03365, 15 May 2026) | Tuen Mun (IN-26-02615, 15 Apr 2026) |
 |---|---|---|
-| What happened | Crash on the Wong Chuk Hang Road flyover (Aberdeen Tunnel bound) near Yip Kan Street, morning peak; both lanes shut 09:00–10:00; the only way round is Wong Chuk Hang Road under it | Crash on Tuen Mun Road near Hong Kong Garden, evening peak; one or two of three lanes shut 17:48–18:47 |
+| What happened | Crash on the Wong Chuk Hang Road flyover (Aberdeen Tunnel bound) near Yip Kan Street, morning peak; archived flyover detectors went empty from 09:00:30 and TD later reported all lanes closed; the exact physical closure phases are inferred | Crash on Tuen Mun Road near Hong Kong Garden, evening peak; TD reported one lane remaining at 17:59 and reopening at 18:46, while detectors show an earlier slowdown |
 | Ripple's plans | P1: send drivers round; P2: the Lead's coordinated detour (80%/70% shares plus a signal change at Tong Bin Lane) | P1: advise everyone to Tuen Mun via Castle Peak Road; P2: advise 11% of them |
 | What the simulator found, over a grid of seeds and assumptions | P2 and doing nothing **tie**; sending drivers round is worse | P2 **beats** doing nothing and beats sending everyone round |
 | What Ripple does | **Refuses to recommend.** The evidence does not support any plan over doing nothing. | **Recommends P2**, as a modelled candidate |
-| Message | Ripple will not push a plan it cannot back | Targeted advice helps; telling everyone to divert makes things worse |
+| Message | Ripple will not push a plan it cannot back | In this modelled comparison, targeted advice ranks first; blanket advice raises aggregate delay |
 
 ## Result card: Tuen Mun
 **Modelled candidate, not a measured road saving.**
@@ -34,8 +34,8 @@
 - `results/tuen-mun-lead-grid-oct15-p0x-merge-at-site/comparison_p0x-merge-at-site.{json,txt}` (`scripts/tuen_mun/report.py`)
 
 **Say:**
-- "In our simulation of the 15 April Tuen Mun crash, advising about one in nine Tuen Mun-bound drivers to use Castle Peak Road cut total delay by about 4%."
-- "Advising everyone made it 20–40% worse."
+- "In our simulation of the 15 April Tuen Mun crash, advising about one in nine eligible Tuen Mun-bound drivers to use Castle Peak Road reduced modelled total delay by about 4% versus no advice."
+- "Advising everyone raised modelled delay by about 37% on aggregate across the same grid."
 
 **Do not say:**
 - that this was measured on the road;

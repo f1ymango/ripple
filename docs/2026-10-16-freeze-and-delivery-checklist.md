@@ -1,9 +1,12 @@
 # 16 October claim freeze and final delivery — Lead checklist
 
-**Decision:** freeze the saved two-incident comparison on 16 October HKT. The
-internal submission target is 17 October; the organiser's [2026 deliverables
-page](https://www.hack4sdg.com/deliverables/) confirms an 18 October deadline.
-The exact upload hour, format and form rules still need a live-form check.
+**Lead decision, 16 October HKT:** the saved two-incident result set and its
+public claims are frozen. The internal delivery target is 17 October. The
+organiser's [2026 final-submission instructions](https://www.hack4sdg.com/2026-roadmap/final-submission-2026/)
+set the hard deadline at **18 October 2026, 23:59 HKT**. The actual submission
+link and account permissions still need an uploader check. An unauthenticated
+open of the linked SharePoint upload redirected to HKU Microsoft sign-in;
+confirm the named uploader can reach the actual upload before the deadline.
 
 ## Locked source set
 
@@ -23,11 +26,37 @@ The exact upload hour, format and form rules still need a live-form check.
 | Owner | Check | Status at 15 Oct |
 | --- | --- | --- |
 | Lead + Impact | Every displayed number and caption points to the [source manifest](../deck/submission-manifest.md) and the observed/modelled distinction is visible. | Pending final export review |
-| Impact | Carry Mark's merged [15 Oct slide draft](https://github.com/f1ymango/ripple/pull/70) through a two-case consistency pass; resolve the open [Q&A PR #69](https://github.com/f1ymango/ripple/pull/69) before using it as presenter copy. | Markdown slides integrated with claim corrections; Q&A still pending |
-| Lead | Human bilingual/operator review of the [single-cell F draft](../data/generated-briefings/IN-26-02615-p2-demo-oct16.json) if it appears publicly. Do not present it as an approved sign or use its about −5% token as the grid result. | Pending |
+| Impact | Carry Mark's merged [15 Oct slide draft](https://github.com/f1ymango/ripple/pull/70) through a two-case consistency pass. Review the [16 Oct Lead Q&A source copy](../deck/qa-sheet.md), reconcile the open [Q&A PR #69](https://github.com/f1ymango/ripple/pull/69), and sign off presenter wording before export. | Markdown slides and Lead Q&A source updated; Impact editorial review pending |
+| Lead | Review the [single-cell F draft](../data/generated-briefings/IN-26-02615-p2-demo-oct16.json) before any public use. Its Chinese text contains the literal drafting instruction `保留正負號`, and its −5% token describes one cell, not the 18-cell ranking. Preserve the original generated artifact; omit its text from the deck/video unless a human-corrected version passes operator and language review. | Lead content review: **not approved for public use as written** |
 | Impact | Export an editable deck and reviewable pitch file covering both cases and the five judging criteria; check visual readability, captions and citations. | No rendered deck in the repository at this checkpoint |
 | Visuals | Deliver a balanced playable two-case cut with captions and a source manifest. Show Tuen Mun's comparison panel/result card, not the Aberdeen map. | No playable final video in the repository at this checkpoint |
-| Lead + uploader | Inspect the live 2026 form for exact upload requirements; test prototype/deck/video access from a viewer account; record who submits and preserve the receipt. | Pending |
+| Lead + uploader | Confirm the named uploader and access to the live deck upload; test every prototype/video link from a viewer account; submit the locked deck once, then preserve the receipt. | Pending; no uploader or receipt recorded |
+
+## Organiser's 2026 upload rules — checked 16 October
+
+- **Pitch deck:** one file per team, `.ppt`, `.pptx` or `.pdf`; no online or
+  cloud-based slide deck. The first slide must show the team name, project
+  title, thematic track, a description of at most 30 words, and every member's
+  full name and university. Name the file `Team Number – [Team Name]`, using
+  the team's actual assigned number and name. The deck must be primarily in
+  English; translate any other-language content into English.
+- **Prototype proof:** embed the demo video, application, technical or GitHub
+  links inside that deck. A working prototype is important to selection; do
+  not leave the only proof in a separate message or an inaccessible local file.
+  Check playback and sharing permissions from an account other than the
+  uploader's. The final pitch uses the uploaded deck; teams cannot use their
+  own laptops or devices for the presentation.
+- **Upload is irreversible:** the organiser says slides are locked once the
+  upload button is pressed. Finish the source/caption and cover-slide review
+  before submitting. Missing the deadline or violating the instructions is
+  an automatic disqualification risk. If a technical submission failure occurs,
+  the [official page](https://www.hack4sdg.com/2026-roadmap/final-submission-2026/)
+  provides an emergency email route **before** the deadline; this is not a
+  substitute for a normal upload.
+- **Optional Tencent/WorkBuddy prize:** a separate WorkBuddy-use report may be
+  submitted as a PDF with the same first-page identity fields and filename
+  pattern. This is optional for the main competition and should not displace
+  the deck and prototype-proof delivery.
 
 ## Post-freeze change rule
 
@@ -57,7 +86,8 @@ detection). It also adds Simulation's Tuen Mun queue-limit caption.
 Mark's separate [Q&A PR #69](https://github.com/f1ymango/ripple/pull/69) is
 still open with changes requested: it repeats early-alert and P0-optimal
 language, implies P2 wins each of 18 conditions, calls the confirmed freeze
-provisional, and omits the P0 queue limitation. Keep the existing Q&A out of
-the final presenter pack until Impact updates it. The current video shot list
-and timed narration also describe only the older Aberdeen cut; Visuals owns
-the two-case recut and retiming before export.
+provisional, and omits the P0 queue limitation. Lead's current
+[two-case Q&A source](../deck/qa-sheet.md) addresses those points, but Impact
+must reconcile the PR and approve presenter copy before export. The current
+video shot list and timed narration also describe only the older Aberdeen cut;
+Visuals owns the two-case recut and retiming before export.

@@ -13,11 +13,12 @@ until a human operator approves it, and every approval is logged.
 Built for the Hong Kong Inter-University GenAI Hackathon for the SDGs 2026
 (hack4sdg), Track 1: Green Transport & Smart Mobility. The original pilot
 corridor is Aberdeen Tunnel; the final demonstration also compares a Tuen Mun
-incident. Submission: 18 Oct 2026.
+incident. Submission: **18 Oct 2026, 23:59 HKT**
+([2026 instructions](https://www.hack4sdg.com/2026-roadmap/final-submission-2026/)).
 
 ## Tracker
 
-**Last updated: Thu 15 Oct 2026 (HKT)** · Week 4 wrap-up
+**Last updated: Fri 16 Oct 2026 (HKT)** · Week 4 wrap-up
 · Weekly sync / stand-up: Wednesday afternoon
 
 > **Lead claim lock — Thu 15 Oct:** The **16 Oct results/claims freeze is
@@ -98,7 +99,7 @@ sources and briefing review → ⚪ rendered deliverables, access and receipt.
 | Fri 9 Oct (HKT) | Lock demo scope against accepted evidence | ✅ Lead narrowed the public demo to observed playback and a clearly labelled operator-workflow demonstration. SUMO/E diagnostic work continues, but no incident-specific route, trajectory or benefit claim is approved ([decision](docs/04-plan.md)) |
 | Mon 12 Oct | Pitching workshop, everyone (HKU Innovation Wing 2, 14:00–17:30) | ⚪ |
 | Thu 15 Oct | Reviewable evidence pack, deck/export and video handoff | 🟡 [Two-case results and provenance](results/demo-oct16/) and [Lead handoff](docs/2026-10-15-two-case-demo-handoff.md) are ready for editing; rendered deck, playable video and access handoff are pending |
-| Fri 16 Oct | 🔒 **Results/claims freeze**: lock supported figures; hour unconfirmed | 🟡 Date confirmed; freeze the saved 11% plan set and labelled two-case claims after final source/caption review |
+| Fri 16 Oct | 🔒 **Results/claims freeze** | ✅ Lead locked the saved 11% plan set and labelled two-case claims; later result changes require matched reruns and review ([delivery rule](docs/2026-10-16-freeze-and-delivery-checklist.md)) |
 | Sat 17 Oct | 📤 Submit deck + prototype (official deadline Sun 18 Oct) | ⚪ |
 | Thu 22 Oct | Finalists announced | ⚪ |
 | Sat 24 Oct | Final pitch, CityU Kowloon Tong | ⚪ |
@@ -138,7 +139,11 @@ The JSON contracts between modules are in
 | Simulation | Install SUMO; build the Aberdeen network from OSM; get vehicles moving | a video of cars moving | 🟡 SUMO and a draft network run locally; record/share evidence and improve route coverage ([guide](src/twin/README.md)) |
 | Impact | Line up 2–3 user interviews; fact-check the evidence claims; start the interim report | Interview notes, sourced problem claims, and an interim report outline | 🟡 one [minibus-driver interview](evidence/interviews/2026-09-26-minibus-driver.md) completed on 26 Sep; problem claims revised with direct sources in [docs/05-pitch.md](docs/05-pitch.md); [interim report](docs/interim-report.md) remains an outline |
 
-### Integration status
+### Historical integration status (through 13 Oct)
+
+The notes in this section record the earlier integration checkpoint. The
+current two-case verdict and remaining submission work are in the tracker
+above and the [delivery checklist](docs/2026-10-16-freeze-and-delivery-checklist.md).
 
 The console framing, theme and playback control fixes are merged in
 [PR #31](https://github.com/f1ymango/ripple/pull/31), with a
@@ -160,7 +165,7 @@ The provisional October replay inputs are archived in
 [results/twin/oct04-provisional-replay-inputs.zip](results/twin/oct04-provisional-replay-inputs.zip),
 but the standalone network and E1 loops are not reviewed releases.
 
-### Current handoffs and open decisions
+### Historical handoffs (superseded by the 16 Oct claim lock)
 
 - **Incident P0 and the comparator (Data + Simulation).** Agree what P0 means:
   it has no extra Lead action, but the scenario automatically diverts around
@@ -299,6 +304,14 @@ capability is not a real-world plan approval.
 ### Update log
 
 Newest first. One line per change that matters, with a link to the proof.
+
+**Fri 16 Oct**
+- Lead froze the saved [two-case comparison](results/demo-oct16/) and its
+  labelled public claims. The [delivery checklist](docs/2026-10-16-freeze-and-delivery-checklist.md)
+  now records the organiser's **18 Oct, 23:59 HKT** one-file deck deadline,
+  mandatory cover fields and irreversible upload. The single-cell Tuen Mun F
+  draft is not approved for public copy as written; deck/video export, access,
+  uploader and receipt remain open.
 
 **Thu 15 Oct**
 - Lead confirmed the **16 Oct results/claims freeze** and the balanced
