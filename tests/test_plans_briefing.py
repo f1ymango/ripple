@@ -538,6 +538,7 @@ def mock_ranking(records, first="P2"):
     return {"plan_set": "mock-set", "incident_id": records[0][1]["incident_id"], "first": first,
             "verdicts": ["P1 before P0", "P2 before P0", "P2 before P1"] if first else ["P1 and P2 tie"],
             "cells": [{"run_ids": {r["plan_id"]: r["run_id"] for _, r in records},
+                       "counts": True,
                        "total_vehicle_hours_delay": {r["plan_id"]: r["metrics"]["total_vehicle_hours_delay"]
                                                      for _, r in records}}]}
 
@@ -563,4 +564,16 @@ def test_a_ranking_for_other_runs_is_refused(inputs, change, error):
     ranking = mock_ranking(records)
     change(ranking)
     with pytest.raises(ValueError, match=error):
+        select(checked(inputs), records, ranking)
+
+
+@pytest.mark.parametrize("counts", [False, None])
+def test_a_non_counting_ranking_cell_cannot_be_recommended(inputs, counts):
+    records = version_2(artifacts())
+    ranking = mock_ranking(records)
+    if counts is None:
+        del ranking["cells"][0]["counts"]
+    else:
+        ranking["cells"][0]["counts"] = counts
+    with pytest.raises(ValueError, match="cell that does not count"):
         select(checked(inputs), records, ranking)

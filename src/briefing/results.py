@@ -49,6 +49,8 @@ def check_ranking(ranking, runs, winner):
     cell = next((c for c in ranking.get("cells", []) if c.get("run_ids") == ids), None)
     if cell is None:
         raise ValueError("These runs are not a cell of the plan set's ranking")
+    if cell.get("counts") is not True:
+        raise ValueError("These runs are a cell that does not count in the plan set's ranking")
     if cell.get("total_vehicle_hours_delay") != {pid: r["metrics"]["total_vehicle_hours_delay"] for pid, r in runs.items()}:
         raise ValueError("The ranking's delays differ from these results")
     first = ranking.get("first")
