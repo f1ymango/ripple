@@ -1,0 +1,40 @@
+{
+  "status": "local Visuals silent-review export for final-deck testing",
+  "purpose": "Judge-readable, silent version of the v10 prototype demonstration",
+  "video": {
+    "path": "docs/video/ripple-two-case-website-demo-2026-10-18-v11.mp4",
+    "sha256": "6c4293d220907d80be8124f69725b08721836ff30420d10dfccd437083ab8f03",
+    "duration_seconds": 90,
+    "frame_size": "1920x1080",
+    "frame_rate": 24,
+    "frames": 2160,
+    "audio": false
+  },
+  "sources": [
+    {
+      "path": "docs/video/ripple-two-case-website-demo-2026-10-18-v10.mp4",
+      "sha256": "94bc1359de037da89ba6e4a31d1f843acea281174293eaf440272d19a9e2482d"
+    },
+    {
+      "path": "docs/video/ripple-two-case-website-demo-2026-10-18-v10.sources.json",
+      "sha256": "240db432f36167d2d35de68ba4848a5d283acd23432ae5adcada0529fe203d00"
+    },
+    {
+      "path": "docs/video/website-demo-silent-v11.ffgraph",
+      "sha256": "9cfba613f42ca48b0ce140db2883a5e370be1fff4f73562b6a22cd4c050a4a59"
+    },
+    {
+      "path": "deck/website-demo-presenter-cues-v10-2026-10-18.md",
+      "sha256": "d8c2c45508fbc3e4140f6ffbe5a79024b8716820b80d221c8a8058331206f4c8"
+    }
+  ],
+  "added_caption_windows": [
+    "0-12 s: Ripple incident decision support; archived readings",
+    "12-25 s: Aberdeen real observed playback; dots are five-minute detector readings",
+    "25-37 s: saved Aberdeen comparison; no tested plan clearly beats doing nothing",
+    "37-48 s: original TD notice and observed-speed source check",
+    "50-75 s: P0 no extra advice, P1 blanket detour, P2 targeted share"
+  ],
+  "claim_boundary": "Inherits v10 source and evidence boundaries. New captions explain existing footage and plan labels; they introduce no new measured or simulated numerical result. Aberdeen is archived observed playback plus a saved diagnostic. Tuen Mun is a modelled candidate with the queue/reopening limitation; no measured road saving, approved briefing, or operator approval is shown.",
+  "verification": "FFmpeg decoded all 2160 frames at 1920x1080, 24 fps, 90.00 s with no audio. Frames at 0, 13, 30, 42, 52, 70, 80 and 88 seconds were inspected for caption legibility, case transitions and absence of F text. Existing TD, DATA.GOV.HK and map attribution remains visible."
+}
