@@ -1,4 +1,4 @@
-# CLAUDE.md — copy this into the repo root, rename to CLAUDE.md
+# CLAUDE.md — instructions for AI coding assistants working in this repo
 
 > This file is read automatically by Claude Code at the start of every session
 > in this repo. Keep it short; point at the context files rather than repeating
