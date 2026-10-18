@@ -29,7 +29,7 @@ def load(root: Path, results_dir: Path, p2_run: dict) -> dict:
     if p2_run.get("incident_id") != INCIDENT_ID or p2_run.get("plan_id") != "P2":
         raise ValueError("Selected run is not Tuen Mun P2.")
     run_id = p2_run["run_id"]
-    provenance = json.loads((results_dir / f"{run_id}.provenance.json").read_text())
+    provenance = json.loads((results_dir / f"{run_id}.provenance.json").read_text(encoding="utf-8"))
     if provenance.get("run_id") != run_id or provenance.get("plan_id") != "P2":
         raise ValueError("Run provenance does not match the selected P2 result.")
     inputs = provenance["simulation_inputs"]
@@ -39,13 +39,13 @@ def load(root: Path, results_dir: Path, p2_run: dict) -> dict:
     observations_path = root / OBSERVATIONS
     if _sha(observations_path) != inputs["observations"]:
         raise ValueError("Tuen Mun observations differ from the evaluated run.")
-    observations = json.loads(observations_path.read_text())
+    observations = json.loads(observations_path.read_text(encoding="utf-8"))
     scenario_path = next(
         (path for path in sorted((root / SCENARIOS).glob("*.json"))
          if _sha(path) == inputs["scenario"]), None)
     if scenario_path is None:
         raise ValueError("The evaluated Tuen Mun scenario is unavailable.")
-    scenario = json.loads(scenario_path.read_text())
+    scenario = json.loads(scenario_path.read_text(encoding="utf-8"))
     edge_ids = scenario["plan_actions"]["routes"]["Castle Peak Road"]["with"]
     geometry = road_geometry.load_geometry(network, inputs["network"])
     route = road_geometry.route_geometry(geometry, edge_ids, inputs["network"])
