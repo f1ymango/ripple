@@ -1,5 +1,12 @@
 # Submission and evidence manifest — 16 October 2026
 
+> **Historical checkpoint.** The inventory below records the 16 October
+> source freeze and has not been rewritten as a submission receipt. The frozen
+> [final PowerPoint](deliverables/final/Team%201075%20%E2%80%93%20UST%20Ripple.pptx)
+> and its matching [standalone product film](deliverables/final/ripple-product-film-56s.mp4)
+> are now available in this repository. The organiser's upload status is not
+> established by this manifest.
+
 This manifest separates source material from deliverables that have actually
 been exported and reviewed. It includes the working
 [two-incident source pack](../docs/demo-two-incidents-2026-10-16.md), the
