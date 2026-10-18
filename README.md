@@ -2,29 +2,30 @@
   <img src="docs/img/readme/banner.png" alt="Ripple: test the detour before you send it" width="100%">
 </p>
 
-**Ripple** is an AI incident copilot for Hong Kong traffic operators. When a
-crash blocks a road, Ripple reads the Transport Department's incident notice,
-drafts a few response options, tests them in a road-network simulation, and
-recommends one only when the evidence separates them. A human operator makes
-the final call.
+## Test the detour before you send it.
 
-Built for the Hong Kong Inter-University GenAI Hackathon for the SDGs 2026
-(Hack4SDG), **Track 1: Green Transport & Smart Mobility**.
+**Ripple** gives Hong Kong traffic operators a way to compare incident-response
+options before advising drivers. It reads a Transport Department notice,
+proposes targeted advice, tests it against alternatives in a road-network
+simulation, and shows the evidence for a human decision.
 
-> [!NOTE]
-> Ripple is a research prototype. It replays **archived** incidents from open
-> government data. It does not control real roads, signs or signals, and the
-> results below are simulated comparisons, not measured road savings.
+Built by **UST Ripple · Team 1075** for the Hong Kong Inter-University GenAI
+Hackathon for the SDGs 2026, **Track 1: Green Transport & Smart Mobility**.
+
+**[View the final pitch deck](deck/deliverables/final/Team%201075%20%E2%80%93%20UST%20Ripple.pptx)**
+· **[Watch the product film](deck/deliverables/final/ripple-product-film-56s.mp4)**
+· **[See the two UI clips](deck/README.md#operator-console-clips)**
+· **[Inspect the saved evidence](results/demo-oct16/)**
 
 ---
 
-## The problem
+## The opportunity
 
-When a key road is blocked, everyone tends to get the same advice: *“use
-alternative routes.”* If every driver takes the same detour, the jam simply
-moves to the next road, while other roads still have room. Navigation apps
-optimise each trip; an operator has to protect the whole corridor, quickly and
-with a message they can defend.
+When a key road is blocked, generic advice to *“use alternative routes”* can
+move the queue to the next road. Navigation apps optimise individual journeys;
+an operator has to consider the whole corridor. Ripple makes that choice
+visible: **no extra advice, blanket diversion, or a capacity-bounded targeted
+plan**, tested under the same scenario assumptions.
 
 <p align="center"><img src="docs/img/readme/problem.png" alt="Every driver takes the same detour, so the jam moves; another road still has room" width="80%"></p>
 
@@ -45,6 +46,9 @@ drafts candidate plans and writes explanations; the simulator computes the
 metrics, and a person approves.
 
 ## What the prototype shows
+
+This competition prototype replays archived incidents and compares simulated
+responses. It does not operate live road signs or signals.
 
 ### 1 · The Reader turns a notice into incident data
 
@@ -67,7 +71,7 @@ The AI drafted diverting 80% of eligible drivers; a deterministic capacity rule
 capped it at **11%** before any run. Across 18 scored simulated conditions, the
 targeted plan P2 had **4.3% less total delay** than no extra advice (paired 95%
 interval 3.0–5.6%) and was lower in 17 of 18, while sending everyone (P1) added
-about 37%.
+about 37%. These are modelled comparisons, not measured road savings.
 
 *Limitation:* the replayed queue moves too fast (about 42 km/h against about
 21 km/h observed) and clears early, so this is a labelled modelled comparison,
@@ -89,10 +93,12 @@ repository, so it is not fully reproducible from here.
 
 <p align="center"><img src="docs/img/readme/console-aberdeen.gif" alt="Operator console replaying archived detector speeds and TD messages for the Aberdeen incident" width="85%"></p>
 
-The console replays archived five-minute detector readings and the published
-TD messages on the corridor map. Coloured roads are network geometry, not route
-advice. Details: [observed-playback guide](docs/console-observed-playback.md)
-and [operator workflow](src/console/OPERATOR_WORKFLOW.md).
+The console replays archived five-minute detector readings and published TD
+messages on separate Aberdeen and Tuen Mun corridor maps. Coloured roads are
+network geometry, not route advice. Watch the [Aberdeen](deck/deliverables/final/aberdeen-ui-demo.mp4)
+and [Tuen Mun](deck/deliverables/final/tuen-mun-ui-demo.mp4) clips, or read the
+[observed-playback guide](docs/console-observed-playback.md) and
+[operator workflow](src/console/OPERATOR_WORKFLOW.md).
 
 Frozen two-case outputs (plans, runs, provenance, rankings and console verdicts)
 are in [`results/demo-oct16/`](results/demo-oct16/).
@@ -109,7 +115,7 @@ are in [`results/demo-oct16/`](results/demo-oct16/).
 | [`data/`](data/README.md) | Corridor tables, labelled incidents, archived demo messages, generated plans and briefings |
 | [`sim/`](sim/README.md) | SUMO networks and scenario files for Aberdeen and Tuen Mun |
 | [`evidence/`](evidence/README.md) | Model call logs, the recorded Reader demo page, user interview notes |
-| [`deck/`](deck/README.md) | Pitch sources: slide drafts, Q&A sheet, costing notes, submission manifest |
+| [`deck/`](deck/README.md) | Final deck and video, plus pitch sources and Q&A notes |
 | [`scripts/`](scripts/README.md) | One-off builders for the demo pack, result cards and Tuen Mun inputs |
 | [`tests/`](tests/) | Offline test suite (no model or SUMO needed) |
 
@@ -153,10 +159,18 @@ including the data-layer downloads, is in [CLAUDE.md](CLAUDE.md#commands).
 
 ## Team
 
-Five students working as **Lead** (Reader, plans, briefing, integration),
-**Data** (loaders, evaluator), **Simulation** (SUMO twin and calibration),
-**Visuals** (operator console, video) and **Impact** (deck, evidence pack). The
-week-by-week history is kept in the [team tracker](docs/project-tracker.md).
+All five team members are from **The Hong Kong University of Science and
+Technology (HKUST)**:
+
+| Role | Member |
+|---|---|
+| Lead | WONG, Wai Ki Ricky |
+| Data | Kwan Po Chit |
+| Simulation | PATAR Arivan |
+| Visuals | Lo, Check Yin Dave |
+| Impact | WANG Yian |
+
+The week-by-week history is kept in the [team tracker](docs/project-tracker.md).
 
 ## Data and attribution
 
