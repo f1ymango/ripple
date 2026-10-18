@@ -166,3 +166,10 @@ Traffic detector data and Special Traffic News from
 open: no personal data and no vehicle identifiers. Simulation uses
 [Eclipse SUMO](https://eclipse.dev/sumo/); the Reader runs
 [Qwen3](https://github.com/QwenLM/Qwen3) locally through Ollama.
+
+## Licence
+
+The code is released under the [MIT Licence](LICENSE). Data derived from
+DATA.GOV.HK and the Transport Department remains subject to the
+[DATA.GOV.HK terms of use](https://data.gov.hk/en/terms-and-conditions);
+map tiles and third-party tools (SUMO, Ollama, Qwen3) keep their own licences.
