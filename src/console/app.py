@@ -51,7 +51,8 @@ import pandas as pd
 import pydeck as pdk
 import streamlit as st
 
-from src.console import incident_callout, incident_playback, operator_workflow, recommendation, road_geometry
+from src.console import (incident_callout, incident_playback, operator_workflow,
+                         recommendation, road_geometry, tuen_mun_route)
 
 # Tests point this at a fixture directory; everything else reads the real data/.
 DATA_DIR = Path(os.environ.get("RIPPLE_DATA_DIR") or ROOT / "data")
@@ -646,6 +647,64 @@ def colour_legend() -> None:
     )
 
 
+def show_tuen_mun_route(comparison: dict) -> None:
+    """Map the selected evaluated P2 corridor, subject to its input hashes."""
+    if comparison["incident_id"] != tuen_mun_route.INCIDENT_ID:
+        return
+    p2 = comparison["runs"].get("P2")
+    if not p2:
+        return
+    try:
+        preview = tuen_mun_route.load(ROOT, RESULTS_DIR, p2)
+    except (KeyError, OSError, ValueError, TypeError) as exc:
+        st.caption(f"Tuen Mun route geometry unavailable: {exc}")
+        return
+    times = preview["times"]
+    initial_time = next((i for i, value in enumerate(times)
+                         if value[11:16] == "18:00"), 0)
+    observed_time = st.selectbox(
+        "Archived Tuen Mun detector time (HKT)", times, index=initial_time,
+        format_func=lambda value: value[11:16], key="tuen_mun_detector_time")
+    detector_points = tuen_mun_route.detector_points(preview["detectors"], observed_time)
+    west, south, east, north = preview["bounds"]
+    x_span = max((east - west) / 360, 1e-9)
+    mercator = lambda lat: math.asinh(math.tan(math.radians(lat)))
+    y_span = max((mercator(north) - mercator(south)) / (2 * math.pi), 1e-9)
+    zoom = min(math.log2(640 / (512 * x_span)),
+               math.log2(350 / (512 * y_span)), 15)
+    view = pdk.ViewState(longitude=(west + east) / 2,
+                         latitude=(south + north) / 2, zoom=zoom)
+    path_options = dict(get_path="path", get_color="colour", get_width="width",
+                        width_units='"pixels"', pickable=True,
+                        cap_rounded=True, joint_rounded=True)
+    deck = pdk.Deck(
+        layers=[
+            pdk.Layer("PathLayer", id="tuen-mun-road-context",
+                      data=preview["roads"], **path_options),
+            pdk.Layer("PathLayer", id="tuen-mun-p2-detour",
+                      data=preview["route"], **path_options),
+            pdk.Layer("ScatterplotLayer", id="tuen-mun-td-detectors",
+                      data=detector_points, get_position="position",
+                      get_fill_color="colour", get_radius=42,
+                      radius_min_pixels=5, radius_max_pixels=9, pickable=True,
+                      stroked=True, get_line_color=[255, 255, 255, 220],
+                      line_width_min_pixels=1),
+            pdk.Layer("ScatterplotLayer", id="tuen-mun-network-nodes",
+                      data=preview["nodes"], get_position="position",
+                      get_fill_color="colour", get_radius=65,
+                      radius_min_pixels=7, radius_max_pixels=12, pickable=True),
+        ], initial_view_state=view, map_provider="carto", map_style="road",
+        tooltip={"text": "{tooltip}"})
+    st.markdown("**Tuen Mun · tested Castle Peak Road detour**")
+    st.pydeck_chart(deck)
+    st.caption("Magenta: saved P2 detour · small dots: 27 TD roadside detectors "
+               "(red <30, orange 30–59, teal ≥60 km/h, grey no reading) · "
+               "large white dots: road junctions · large red dot: modelled crash site. "
+               "Detector colours are observed at the selected time; the route and "
+               "plan comparison are simulated, not live advice. The observations, "
+               "scenario and network hashes match the selected P2 run.")
+
+
 def show_plan_comparison() -> dict | None:
     """Show only complete, validated simulator comparisons from the contracts."""
     st.subheader("Simulation plan comparison")
@@ -702,6 +761,7 @@ def show_plan_comparison() -> dict | None:
     st.success(f"Recommended operator response: {winner_label} ({winner_id}). "
                + (f"Lower simulated total delay than each other plan over a grid of {cells} seeds and "
                   "assumptions (95% confidence)." if cells else "Lowest simulated total delay among these validated runs."))
+    show_tuen_mun_route(comparison)
     st.caption(f"Plan results for {chosen_incident} are simulated with the same "
                "compliance, clearance and seed. The map above shows the selected "
                "recorded detector window.")

@@ -1,4 +1,108 @@
-# Observed incident demo — video shot list
+# Two-case incident demo — video shot list
+
+> Historical edit notes. The current deliverables are
+> `docs/video/ripple-two-case-website-demo-2026-10-18-v17-detectors-narrated.mp4`
+> and `deck/ripple-visual-demo-pitch-2026-10-18-v17-detectors-review.pptx`.
+> Earlier rough-cut exports named below were removed before the final push.
+
+## Current speech-led website demo — 15 October
+
+The current 90-second review export is
+`docs/video/ripple-two-case-website-demo-2026-10-16-v9.mp4`. It replaces the
+motion/slideshow cut for the live pitch: actual 1920 × 1080 console footage
+fills the frame, the Aberdeen incident marker remains stable while detector
+bins change, and Tuen Mun's real comparison is highlighted P0 → P1 → P2. The
+edit is intentionally silent for the team's live speech; use
+`deck/website-demo-presenter-cues-2026-10-15.md`. It shows one Tuen Mun
+simulation condition and a saved F draft pending human review. The Tuen Mun
+footer carries Simulation's short queue/recovery caveat from its final 15 Oct
+call. The v5 timing
+table below describes the earlier motion review, not this website demo.
+
+| Time | Actual website demonstration |
+| --- | --- |
+| 0–37 s | Aberdeen observed map and changing five-minute readings; editorial footer notes the tested-plan tie. |
+| 37–48 s | Original TD incident notice and speed chart. |
+| 48–75 s | Tuen Mun single-condition P0/P1/P2 comparison, with editorial focus outlines. |
+| 75–90 s | Saved briefing draft and operator decision controls; no approval is recorded. |
+
+## Current Visuals edit — 15 October, for Lead/Impact review
+
+The 14 October Aberdeen-only cut and its narration are superseded by the
+[Lead's two-case handoff](../docs/2026-10-15-two-case-demo-handoff.md). The
+working cut gives Aberdeen and Tuen Mun roughly equal time within the incident
+story. It uses Data's frozen two-case pack at `c4ec872`. This is a **review
+draft** until the 16 October P0/ranking check and Lead's public wording lock.
+The final submission deck must stand on its own when a video or external link
+cannot play on the organiser's preloaded computer.
+
+The organiser's submission instructions supplied on 15 October require **one
+deck file** in `.ppt`, `.pptx` or `.pdf` by **18 October, 23:59 HKT**. Slides
+lock at upload, cannot be revised or presented from our own laptop, and the
+pitch is limited to five minutes. The first slide needs team name, project
+title, track, a description of at most 30 words, and every member's full name
+and university; the filename must be `Team Number – [Team Name]`. The deck
+must be primarily English. Prototype proof belongs inside the deck: embed
+the reviewed video or include a tested access link, while keeping still proof
+of the working console and comparison readable offline. Impact owns the final
+deck assembly and the uploader/access check.
+
+| Time | Visual and claim | Source boundary |
+| --- | --- | --- |
+| 0–16 s | Animated operator problem and four-step Ripple workflow. | Product framing; no measured improvement claim. |
+| 16–24 s | **Aberdeen.** Archived 15 May TD notice names Wong Chuk Hang Road flyover. | Report publication and approximate site, not a physical closure-time measurement. |
+| 24–33 s | Real console recording: five-minute detector map and readings change. | TD observations; no route recommendation or evaluated vehicle tracks. |
+| 33–39 s | Saved bilingual Reader input/output beside its source. | Recorded Qwen3:8b inference, not a live call or accuracy benchmark. |
+| 39–48 s | **No clear winner.** Ripple withholds a plan recommendation. | `results/demo-oct16/aberdeen/verdict.json`; no claim that every real intervention fails. |
+| 48–55 s | **Tuen Mun.** Illustrated road schematic closes two lanes in sequence. | TD reported only one lane available; illustration is not a vehicle replay. |
+| 55–64 s | P0/P1/P2 response cards and advice-share bars build in sequence. | P0 no added advice; P1 fixed blanket comparator; P2 capacity-bounded 11% candidate. |
+| 64–73 s | Animated 18-condition result: P0 0%, P1 +37.3%, P2 −4.3%. | **Prototype simulation, 18 scored conditions.** Mean paired E-delay differences versus P0, not observed road savings; P0 queue/recovery limitation stated. |
+| 73–80 s | Actual Tuen Mun console comparison capture with a slow focus move. | One displayed 50%-compliance, seed-2029 condition; not the 18-condition mean. |
+| 80–90 s | One operator workflow, two outcomes; human review before public advice. | F's bilingual Tuen Mun text is still a draft. Do not film it as approved VMS/public copy. |
+
+Editable scene source: `docs/video/judge-cut-motion-2026-10-15.html`.
+The Tuen Mun console crop is `docs/img/tuen-mun-console-comparison-2026-10-15.png`.
+The 90-second motion review is
+`docs/video/ripple-two-case-90s-motion-review-2026-10-15-v5.mp4`, with an
+adjacent source-hash manifest. It embeds a cropped excerpt of the archived
+Aberdeen console recording and an actual Tuen Mun comparison-panel capture.
+It remains silent until a continuous human voice track is recorded and checked.
+
+## Judge-first review recut — 15 October
+
+The earlier v3 review depended too much on knowing the project already. The
+captioned v4 review was
+`docs/video/ripple-two-case-90s-judge-review-2026-10-15-v4.mp4`, rendered from
+`docs/video/judge-cut-scenes-2026-10-15.html`. Its large on-screen sentences
+make the story understandable without audio. The matching connected human
+recording script is `deck/video-voiceover-judges-2026-10-15.md`.
+
+| Time | What an outsider sees |
+| --- | --- |
+| 0–16 s | The operator's crash-response problem, then Ripple's four-step workflow: read, draft, simulate, human decide. |
+| 16–48 s | Aberdeen's archived flyover crash, observed detector playback, saved AI Reader, then the no-recommendation outcome. |
+| 48–80 s | A clearly labelled Tuen Mun closure schematic, P0/P1/P2 advice choices, the 18-condition model result, then a real console comparison capture. |
+| 80–90 s | Two outcomes side by side; an operator decides before advice is sent. |
+
+The Tuen Mun lane drawing illustrates the archived TD report that only one lane
+remained. It is not an evaluated vehicle trajectory or a route map. The
+−4.3%/ +37.3% chart is an 18-condition model comparison, while the console
+capture shows one matched condition. The current v5 motion review retains those
+labels and adds real Aberdeen playback, sequenced lane and plan animations,
+moving result bars, and a guided focus move over the Tuen Mun console capture.
+It remains a local silent review until a coherent human narration is recorded,
+synchronized, and tested in the submission deck.
+Two slide inserts for Impact: `deck/two-case-visuals-review-2026-10-15.html`
+and its review PDF. The video MP4 stays local, as previously agreed; the source
+script and evidence labels can be reviewed in Git.
+
+For a final cut, replace the silent timing review with **one human narration**
+using `deck/video-voiceover-judges-2026-10-15.md`, then time the captions to that
+recording. Check the final file from the submitted slide file on a separate
+computer or account. If the 16 October matched P0 or ranking changes, update
+the chart, narration, slides and source manifest together before upload.
+
+## Historical Aberdeen-only edit — 14 October
 
 Owner: Visuals. Updated 12 October against the existing 92.6-second silent rough
 cut. This follows the approved [9 October observed-playback scope](../docs/04-plan.md).
