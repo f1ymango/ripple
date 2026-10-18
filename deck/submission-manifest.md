@@ -1,4 +1,6 @@
-# Submission and evidence manifest — 16 October 2026
+# Submission and evidence manifest — updated 18 October 2026
+
+**Media update:** Visuals' [18 October handoff](final-visuals-handoff-2026-10-18.md) adds a [ten-slide review deck](ripple-visual-demo-pitch-2026-10-18-v17-detectors-review.pptx) and [90-second narrated demo](../docs/video/ripple-two-case-website-demo-2026-10-18-v17-detectors-narrated.mp4). The [submission media index](submission/README.md) identifies the current versions and remaining upload gates.
 
 This manifest separates source material from deliverables that have actually
 been exported and reviewed. It includes the working
@@ -6,8 +8,7 @@ been exported and reviewed. It includes the working
 [Lead presentation handoff](../docs/2026-10-15-two-case-demo-handoff.md), and
 [Simulation's final call](../docs/tuen-mun-simulation-final-call-2026-10-15.md).
 A source draft, passing test or local-only artifact is not a submitted
-deliverable. The **16 October results/claims freeze is in effect**; the
-internal submission target remains 17 October. The organiser's
+deliverable. The **16 October results/claims freeze is in effect**. The organiser's
 [2026 final-submission instructions](https://www.hack4sdg.com/2026-roadmap/final-submission-2026/)
 set the hard deck deadline at **18 October, 23:59 HKT**. The
 [Lead delivery checklist](../docs/2026-10-16-freeze-and-delivery-checklist.md)
@@ -28,11 +29,11 @@ Status terms:
 | Item | Owner | Status | Source or delivery path | Allowed use and remaining acceptance |
 | --- | --- | --- | --- | --- |
 | Deck copy | Impact | Draft | [`slides.md`](slides.md), [`qa-sheet.md`](qa-sheet.md), [`costing.md`](costing.md), [`real-vs-simulated.md`](real-vs-simulated.md) | Mark's [15 Oct slide PR #70](https://github.com/f1ymango/ripple/pull/70) is merged as Markdown source, and the two-case claim corrections are on this wrap-up branch. Lead updated the Q&A source for the frozen cut on 16 Oct; Impact must reconcile its open [PR #69](https://github.com/f1ymango/ripple/pull/69) and review the final presenter copy. Impact still needs a two-case consistency pass across slides, Q&A, costing and pitch copy before export. Keep Tuen Mun's modelled-result and queue-limit caption visible. |
-| Rendered pitch deck | Impact | **Missing** | No `.pptx` or presentation `.pdf` in `deck/` at this checkpoint | Supply an editable source and reviewable export; verify fonts, links, citations and slide readability before delivery. `docs/img/interim-console-2026-10-02.pdf` is a historical console image, not the deck. |
+| Rendered pitch deck | Visuals + Impact | **Review deck delivered; upload pending** | [Ten-slide PPTX](ripple-visual-demo-pitch-2026-10-18-v17-detectors-review.pptx), [Visuals handoff](final-visuals-handoff-2026-10-18.md) | Slide 5 embeds the narrated demo. Replace role placeholders with verified full names and universities, review captions and playback on the submission machine, then choose the exact one-file upload. No matching PDF export is versioned here. |
 | Observed incident prototype | Visuals + Lead | Reviewable code; locally rehearsed | [`../docs/console-observed-playback.md`](../docs/console-observed-playback.md), [`../src/console/app.py`](../src/console/app.py), merged PRs [#53](https://github.com/f1ymango/ripple/pull/53) and [#56](https://github.com/f1ymango/ripple/pull/56) | Show archived TD messages, detector observations, provisional road geometry and the approximate incident callout with their existing labels. It does not establish a route recommendation. |
-| Video edit sources | Visuals | Draft; Aberdeen-only source | [`video-shot-list.md`](video-shot-list.md), [`video-narration.srt`](video-narration.srt), [two-case edit handoff](../docs/2026-10-15-two-case-demo-handoff.md) | The shot list and timed narration describe an earlier 92.6-second silent Aberdeen rough cut held outside this repository. They must be recut and retimed for the two-case story; the narration is not an existing audio track. |
-| Playable rough cut / final video | Visuals | **Missing** | No `.mp4`, `.mov` or `.webm` in the inspected workspace | Supply an accessible review artifact, then check pacing, map legibility, coverage labels, narration, captions and attribution. |
-| Video source manifest | Visuals | **Missing** | Described as adjacent to Visuals' local rough cut; no file or verified link is recorded here | Supply the manifest with the cut. Capture hashes establish which display inputs were used, not evaluated-run provenance. |
+| Video edit sources | Visuals | Current two-case source delivered | [Narration and route-map source](../docs/video/ripple-two-case-narration-v17.json), [Visuals handoff](final-visuals-handoff-2026-10-18.md), [updated shot list](video-shot-list.md) | The earlier `video-narration.srt` remains historical; use the versioned v17 narration and route-map sources for this cut. |
+| Playable two-case video | Visuals | **Delivered; venue playback pending** | [Narrated 90-second MP4](../docs/video/ripple-two-case-website-demo-2026-10-18-v17-detectors-narrated.mp4) | The same MP4 bytes are embedded in slide 5. The frozen modelled-result and queue limitation are narrated. Check playback from a transferred deck before upload. |
+| Video source record | Visuals | Reviewable | [Narration JSON](../docs/video/ripple-two-case-narration-v17.json), [Visuals handoff](final-visuals-handoff-2026-10-18.md) | Records the observed detector bin and directed candidate route source; the route map is not live guidance or vehicle replay. |
 | Recorded Reader demonstration | Lead + Visuals | Reviewable evidence; pickup not yet captured | Raw messages [`../data/demo_incident_messages.jsonl`](../data/demo_incident_messages.jsonl), saved output [`../results/reader/2026-09-29T1608_qwen3-8b.jsonl`](../results/reader/2026-09-29T1608_qwen3-8b.jsonl), call log [`../evidence/ai-log/2026-09-29.jsonl`](../evidence/ai-log/2026-09-29.jsonl) | Show input beside output for message IDs `138270` and `138272`, labelled “Recorded Qwen3:8b inference — not a live model call.” Retain or flag the first output's known imperfect note. This example is not an accuracy benchmark. |
 | Offline recorded B/D capture aid | Lead | Reviewable page; video pickup not yet captured | [Page and rebuild instructions](../evidence/demo/README.md) | Self-contained page displays the saved Reader pair and candidate actions with source hashes and P0 NO-GO. It is not live inference, a rendered video or a recommendation. |
 | Reader evaluation | Lead | Reviewable | [`../results/reader/2026-09-25T0048_qwen3-8b_score.json`](../results/reader/2026-09-25T0048_qwen3-8b_score.json), [`../data/labelled_incidents/LABELLING.md`](../data/labelled_incidents/LABELLING.md) | Report initial held-out all-fields-correct scores (50% citywide, 75% corridor) separately from the corrected-prompt development scores (75%, 85%). The 1 October experiment was not adopted. |
@@ -61,14 +62,12 @@ refetch these inputs solely to recreate an unchanged check.
 
 ## Freeze-to-submission owner handoff
 
-- **Impact:** export and visually review the two-case deck. Give Aberdeen's
-  refusal and Tuen Mun's labelled modelled candidate comparable case-study
-  space; map the displayed numbers to the saved result cards and include the
-  concise queue-limit caption. Preserve the five judging criteria.
-- **Visuals:** deliver an accessible balanced two-case cut, captions and source
-  manifest. Capture the recorded Reader; for Tuen Mun use the comparison panel
-  or [result card](../evidence/demo/tuen-mun-result-card-2026-10-15.html), not
-  the Aberdeen map. Keep the modelled-result caption on screen.
+- **Impact:** review the delivered two-case deck in slideshow mode and check
+  each displayed number against the frozen result cards. Keep Aberdeen's
+  refusal and Tuen Mun's modelled result and queue limitation clear.
+- **Visuals:** the 90-second cut and source record are delivered. Check the
+  embedded video and captions from the transferred deck on the actual
+  presentation computer; keep the Tuen Mun route labelled as a model candidate.
 - **Data and Simulation:** keep the original frozen 11% pack and provenance
   unchanged. The [final call](../docs/tuen-mun-simulation-final-call-2026-10-15.md)
   permits a labelled comparison only. Any correctness fix that changes a run,
@@ -77,5 +76,5 @@ refetch these inputs solely to recreate an unchanged check.
   and human-reviewed; check each presented figure and its source, then verify
   deck/prototype access, named uploader and receipt. The organiser's
   [2026 instructions](https://www.hack4sdg.com/2026-roadmap/final-submission-2026/)
-  set **18 October, 23:59 HKT** and a locked one-file deck upload. Target
-  internal submission on **17 October**.
+  set **18 October, 23:59 HKT** and a locked one-file deck upload. Record the
+  exact uploaded file and receipt.
