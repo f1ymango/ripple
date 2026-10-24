@@ -1,5 +1,10 @@
 # docs/
 
+These documents preserve the **Hack4SDG 2026 competition alpha**. Read
+[project status](../PROJECT_STATUS.md) for the current repository posture.
+Dated plans and deadlines below describe what the team was doing then; they do
+not set requirements for a future Ripple implementation.
+
 Start with the numbered core documents. The final two-case results and the
 dated working notes come after them. File names are kept as they were written,
 because code, scenario files and saved results cite them by path.

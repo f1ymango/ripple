@@ -12,6 +12,14 @@ simulation, and shows the evidence for a human decision.
 Built by **UST Ripple · Team 1075** for the Hong Kong Inter-University GenAI
 Hackathon for the SDGs 2026, **Track 1: Green Transport & Smart Mobility**.
 
+> **Project status — competition alpha.** This repository preserves the team's
+> 2026 prototype and submission materials. The demo replays archived incidents;
+> it is not a deployed traffic service. The
+> [judge-facing snapshot](https://github.com/f1ymango/ripple/tree/judge-facing-2026-10-18)
+> records the version prepared for the competition. Ripple remains an open
+> initiative: a future version may be rebuilt from the ground up under the same
+> name. See [project status and continuity](PROJECT_STATUS.md).
+
 **[View the final pitch deck](deck/deliverables/final/Team%201075%20%E2%80%93%20UST%20Ripple.pptx)**
 · **[Watch the product film](deck/deliverables/final/ripple-product-film-56s.mp4)**
 · **[See the two UI clips](deck/README.md#operator-console-clips)**
@@ -45,7 +53,7 @@ plan**, tested under the same scenario assumptions.
 drafts candidate plans and writes explanations; the simulator computes the
 metrics, and a person approves.
 
-## What the prototype shows
+## What the alpha prototype shows
 
 This competition prototype replays archived incidents and compares simulated
 responses. It does not operate live road signs or signals.
@@ -119,7 +127,7 @@ are in [`results/demo-oct16/`](results/demo-oct16/).
 | [`scripts/`](scripts/README.md) | One-off builders for the demo pack, result cards and Tuen Mun inputs |
 | [`tests/`](tests/) | Offline test suite (no model or SUMO needed) |
 
-## Quick start
+## Run the 2026 alpha locally
 
 Python 3.11 or newer.
 
@@ -143,7 +151,9 @@ python -m src.reader.run           # parses data/labelled_incidents/messages.jso
 The simulator needs [SUMO](https://eclipse.dev/sumo/); see
 [`src/twin/README.md`](src/twin/README.md) and
 [`src/evaluator/README.md`](src/evaluator/README.md). The full command list,
-including the data-layer downloads, is in [CLAUDE.md](CLAUDE.md#commands).
+including the data-layer downloads, is in [AGENTS.md](AGENTS.md#commands).
+Review dependencies before any public deployment; this setup is intended for
+local exploration of the archived prototype.
 
 ## Principles
 
@@ -157,20 +167,25 @@ including the data-layer downloads, is in [CLAUDE.md](CLAUDE.md#commands).
 - **Ripple recommends; it never controls.** Nothing reaches a sign or signal
   without a human operator's approval.
 
-## Team
+## Team and credit
 
 All five team members are from **The Hong Kong University of Science and
 Technology (HKUST)**:
 
-| Role | Member |
-|---|---|
-| Lead | WONG, Wai Ki Ricky |
-| Data | Kwan Po Chit |
-| Simulation | PATAR Arivan |
-| Visuals | Lo, Check Yin Dave |
-| Impact | WANG Yian |
+| 2026 role | Member | Main work area |
+|---|---|---|
+| Lead | WONG, Wai Ki Ricky | Incident Reader, plan and briefing stages, integration |
+| Data | Kwan Po Chit | Data loaders and evaluation |
+| Simulation | PATAR Arivan | SUMO network, scenarios and calibration |
+| Visuals | Lo, Check Yin Dave | Operator console and visual demo |
+| Impact | WANG Yian | Pitch, impact case and evidence pack |
 
-The week-by-week history is kept in the [team tracker](docs/project-tracker.md).
+These are the team's 2026 areas of responsibility, not an exclusive list of
+individual contributions. Teammates can add their preferred public name,
+GitHub profile and specific contributions through the process in
+[CONTRIBUTING.md](CONTRIBUTING.md#credit-and-attribution). The
+[commit history](https://github.com/f1ymango/ripple/commits/main/) and
+[team tracker](docs/project-tracker.md) preserve the work behind the alpha.
 
 ## Data and attribution
 

@@ -11,7 +11,7 @@ traci==1.27.1
 pyproj==3.8.0
 
 # G: Operator console
-streamlit==1.40.2
+streamlit==1.54.0
 pydeck==0.9.1
 altair==5.5.0
 pandas==2.3.3
