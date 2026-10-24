@@ -1,4 +1,4 @@
-# AGENTS.md — copy this into the repo root, rename to AGENTS.md
+# AGENTS.md — repository guidance
 
 > This file is read automatically by Codex at the start of every session
 > in this repo. Keep it short; point at the context files rather than repeating
@@ -7,8 +7,10 @@
 ## Project
 
 **Ripple** — an AI incident co-pilot for Hong Kong traffic operators.
-Hackathon project for hack4sdg 2026, Track 1 (Green Transport & Smart Mobility).
-**Submission 18 Oct 2026; internal target 17 Oct. Provisional results freeze 16 Oct (Lead update, 13 Oct; hour unconfirmed).**
+The current implementation is the UST Ripple Team 1075 competition alpha for
+Hack4SDG 2026, Track 1 (Green Transport & Smart Mobility). The competition
+phase is over. Read [PROJECT_STATUS.md](PROJECT_STATUS.md) before treating any
+dated plan or deadline as current. A future Ripple phase may use a new design.
 
 Before doing anything substantial, read:
 - `docs/00-brief.md` — the product, the components, and what is out of scope
@@ -20,10 +22,12 @@ Before doing anything substantial, read:
 1. **The LLM never produces a number that the simulator can compute.** It reads
    messages, proposes candidate plans, and writes explanations. Every metric
    comes from the simulator and lands in `results/`.
-2. **Build to the contracts in `docs/03-architecture.md`.** If a contract needs
-   to change, stop and ask — another teammate is building against it right now.
-3. **Do not expand scope.** The out-of-scope list in `00-brief.md` §3 is final.
-   No city-wide control, no custom model training, no consumer app.
+2. **For alpha fixes, preserve the contracts in `docs/03-architecture.md`.**
+   If a future phase changes them, document the new phase and migrate its
+   callers and evidence together.
+3. **Label the phase.** The scope in `docs/00-brief.md` describes the 2026
+   competition entry. A future project can choose a different scope without
+   retroactively changing the alpha's claims.
 4. **Never invent data.** If a data source is unavailable, say so; do not
    fabricate plausible values, even for a placeholder. Mock files must be
    clearly named `mock_*` and live in `tests/fixtures/`.
@@ -31,8 +35,11 @@ Before doing anything substantial, read:
    `evidence/ai-log/`.
 6. **Prompts live in files** under `src/*/prompts/`, never as inline strings.
 7. **Runs are seeded and reproducible.** Never hand-edit anything in `results/`.
-8. **Small, readable code.** A teammate must be able to read any file we demo.
-   If it cannot be explained in the Q&A, it does not ship.
+8. **Small, readable code.** A teammate should be able to understand the
+   alpha's behavior and how its saved results were produced.
+9. **Preserve the competition record.** Do not move or rewrite the
+   `judge-facing-2026-10-18` tag or final deck and media. Keep new results
+   separate from the saved 2026 evidence.
 
 ## Commands
 
@@ -87,7 +94,7 @@ results/       ⭐ single source of truth for every number we present
 evidence/      ai-log/, interviews/, audit_log.jsonl
 ```
 
-## Ownership
+## 2026 competition ownership (historical)
 
 | Area | Owner |
 |---|---|
